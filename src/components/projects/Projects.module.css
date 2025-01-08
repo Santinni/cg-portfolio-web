@@ -1,0 +1,66 @@
+.section {
+    padding: 5rem 1rem;
+    background-color: var(--background-secondary);
+}
+
+.container {
+    max-width: 72rem;
+    margin: 0 auto;
+}
+
+.title {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.grid {
+    display: grid;
+    gap: 5rem;
+}
+
+.project {
+    position: relative;
+}
+
+.imageContainer {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 0.5rem;
+}
+
+.content {
+    margin-top: 1.5rem;
+}
+
+.projectTitle {
+    font-size: 1.5rem;
+    line-height: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.description {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+.tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.tag {
+    padding: 0.25rem 0.75rem;
+    background-color: var(--card-background);
+    color: var(--text-secondary);
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+}

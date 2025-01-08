@@ -1,111 +1,59 @@
-import Image from "next/image";
-import styles from "./page.module.css";
-import { getMediaData } from "@/lib/api/media";
+import Hero from "@/components/hero/Hero";
+import Services from "@/components/services/Services";
+import Projects from "@/components/projects/Projects";
+import About from "@/components/about/About";
+import Contact from "@/components/contact/Contact";
+import { getPayloadClient } from "@/payload/payloadClient";
+import { unstable_cache } from "next/cache";
+import { AboutType, ProjectType, ServiceType, ContactType } from "@/types";
+
+const getPageDataCached = unstable_cache(
+  async () => {
+    const payload = await getPayloadClient();
+
+    const [services, projects, about, contact] = await Promise.all([
+      payload.find({
+        collection: "services",
+        depth: 1,
+      }),
+      payload.find({
+        collection: "projects",
+        depth: 1,
+      }),
+      payload.find({
+        collection: "about",
+        depth: 1,
+      }),
+      payload.find({
+        collection: "contact",
+        depth: 1,
+      }),
+    ]);
+
+    return {
+      services: services.docs as ServiceType[],
+      projects: projects.docs as ProjectType[],
+      about: about.docs[0] as AboutType,
+      contact: contact.docs[0] as ContactType,
+    };
+  },
+  ["page-data"],
+  {
+    tags: ["services", "projects", "about", "contact"],
+    revalidate: 60,
+  }
+);
 
 export default async function Home() {
-  const mediaData = await getMediaData(3);
+  const { services, projects, about, contact } = await getPageDataCached();
 
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-          {mediaData &&
-            mediaData.url &&
-            mediaData.width &&
-            mediaData.height &&
-            mediaData.alt && (
-              <Image
-                src={mediaData.url}
-                alt={mediaData.alt}
-                width={mediaData.width}
-                height={mediaData.height}
-                priority
-              />
-            )}
-        </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+    <main>
+      <Hero />
+      <Services services={services} />
+      <Projects projects={projects} />
+      <About data={about} />
+      <Contact data={contact} />
+    </main>
   );
 }

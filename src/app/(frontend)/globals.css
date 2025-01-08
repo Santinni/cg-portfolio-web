@@ -1,6 +1,13 @@
 :root {
-  --background: #ffffff;
+  --background: #0a0f1c;
   --foreground: #171717;
+  --background-secondary: #0d1225;
+  --card-background: #1a1f2c;
+  --card-background-hover: #252a37;
+  --text-primary: #ffffff;
+  --text-secondary: #9ca3af;
+  --accent: #facc15;
+  --accent-hover: #fbbf24;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -17,8 +24,9 @@ body {
 }
 
 body {
-  color: var(--foreground);
+  margin: 0;
   background: var(--background);
+  color: var(--text-primary);
   font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
