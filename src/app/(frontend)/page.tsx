@@ -1,7 +1,10 @@
 import Image from "next/image";
 import styles from "./page.module.css";
+import { getMediaData } from "@/lib/api/media";
 
-export default function Home() {
+export default async function Home() {
+  const mediaData = await getMediaData(3);
+
   return (
     <div className={styles.page}>
       <main className={styles.main}>
@@ -44,6 +47,19 @@ export default function Home() {
           >
             Read our docs
           </a>
+          {mediaData &&
+            mediaData.url &&
+            mediaData.width &&
+            mediaData.height &&
+            mediaData.alt && (
+              <Image
+                src={mediaData.url}
+                alt={mediaData.alt}
+                width={mediaData.width}
+                height={mediaData.height}
+                priority
+              />
+            )}
         </div>
       </main>
       <footer className={styles.footer}>
