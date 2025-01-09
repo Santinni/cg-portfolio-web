@@ -32,6 +32,21 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+html {
+  overflow-y: scroll;
+  scrollbar-gutter: stable;
+  height: 100%;
+  height: -webkit-fill-available;
+}
+
+body {
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+  min-height: 100dvh;
+  overscroll-behavior-y: none;
+  -webkit-overflow-scrolling: touch;
+}
+
 * {
   box-sizing: border-box;
   padding: 0;

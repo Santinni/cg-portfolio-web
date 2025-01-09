@@ -1,10 +1,42 @@
 .hero {
     position: relative;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    background-image: url("/media/bg-hero-600x343.webp");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-color: #0a0f1c;
+    background-blend-mode: color-dodge;
+}
+
+@media only screen and (min-width: 900px) {
+    .hero {
+        background-image: url("/media/bg-hero-900x514.webp");
+    }
+}
+
+@media only screen and (min-width: 1200px) {
+    .hero {
+        background-image: url("/media/bg-hero-1200x630.webp");
+    }
+}
+
+@media only screen and (min-width: 1400px) {
+    .hero {
+        background-image: url("/media/bg-hero-1400x800.webp");
+    }
+}
+
+@media only screen and (max-width: 1024px),
+only screen and (hover: none) and (pointer: coarse) {
+    .hero {
+        background-attachment: scroll;
+    }
 }
 
 .overlay {
