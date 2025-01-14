@@ -1,0 +1,83 @@
+:root {
+    /* Spacing variables */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 12px;
+	--spacing-base: 16px;
+	--spacing-lg: 24px;
+    --spacing-xl: 32px;
+    --spacing-2xl: 48px;
+    --spacing-3xl: 64px;
+
+    /* Colors */
+    --color-midnight-blue: #0a0f1c;
+    --color-dark-gray: #0a0a0a;
+    --color-charcoal: #171717;
+    --color-navy: #0d1225;
+    --color-slate: #1a1f2c;
+    --color-slate-dark: #252a37;
+    --color-white: #ffffff;
+    --color-gray: #9ca3af;
+    --color-yellow: #facc15;
+    --color-yellow-dark: #fbbf24;
+    --color-blue-gray: #1e293b;
+    --color-light-gray: #ededed;
+
+    /* Backgrounds */
+    --background: var(--color-midnight-blue);
+    --foreground: var(--color-charcoal);
+    --background-secondary: var(--color-navy);
+    --card-background: var(--color-slate);
+    --card-background-hover: var(--color-slate-dark);
+
+    /* Text colors */
+    --text-color-primary: var(--color-white);
+    --text-color-secondary: var(--color-gray);
+    --text-color-tertiary: var(--color-midnight-blue);
+    --accent: var(--color-yellow);
+    --accent-hover: var(--color-yellow-dark);
+
+    /* Shadows */
+    --shadow: var(--color-blue-gray);
+    --box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+
+    /* Border radius */
+    --border-radius-sm: 0.25rem;
+    --border-radius-md: 0.375rem;
+    --border-radius: 0.5rem;
+    --border-radius-lg: 0.75rem;
+    --border-radius-xl: 1rem;
+    --border-radius-2xl: 1.5rem;
+
+    /* Font weights */
+    --font-weight-light: 300;
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-bold: 700;
+
+    /* Font sizes */
+    --font-size-sm: 0.875rem;
+    --font-size-md: 1rem;
+    --font-size-lg: 1.25rem;
+    --font-size-xl: 1.5rem;
+    --font-size-2xl: 1.875rem;
+    --font-size-3xl: 2.25rem;
+	--font-size-4xl: 3rem;
+	--font-size-5xl: 3.75rem;
+
+    /* Line heights */
+	--line-height-xs: 1;
+    --line-height-sm: 1.25;
+    --line-height-md: 1.5;
+    --line-height-lg: 1.75;
+    --line-height-xl: 2;
+    --line-height-2xl: 2.25;
+    --line-height-3xl: 2.5;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background: var(--color-dark-gray);
+        --foreground: var(--color-light-gray);
+    }
+}

@@ -1,0 +1,90 @@
+.section {
+  padding: var(--spacing-3xl) var(--spacing-base);
+  background-color: var(--background);
+}
+
+.container {
+  max-width: 72rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+}
+
+.title {
+  font-size: var(--font-size-2xl);
+  line-height: var(--line-height-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-color-primary);
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+}
+
+.text {
+  color: var(--text-color-secondary);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-base);
+}
+
+.floatingButton {
+  position: fixed;
+  bottom: var(--spacing-xl);
+  right: var(--spacing-xl);
+}
+
+.button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--accent);
+  color: var(--background);
+  padding-block: var(--spacing-md);
+  border-radius: 9999px;
+  font-weight: var(--font-weight-medium);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  /* transition: background-color 0.2s; */
+  overflow: hidden;
+  width: 48px;
+  height: 48px;
+}
+
+.button:hover {
+  background-color: var(--accent-hover);
+  width: 176px;
+
+  & .buttonText {
+    opacity: 1;
+  }
+}
+
+.buttonText {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  white-space: nowrap;
+  transition: opacity 0.3s ease-in-out;
+  line-height: 48px;
+  position: absolute;
+  left: 48px;
+  top: 0;
+}
+
+.downloadIcon {
+  color: var(--background);
+  position: absolute;
+  left: 12px;
+  top: 12px;
+}

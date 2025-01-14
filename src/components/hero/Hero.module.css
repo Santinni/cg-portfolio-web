@@ -2,6 +2,7 @@
     position: relative;
     min-height: 100vh;
     display: flex;
+	flex-direction: column;
     align-items: center;
     justify-content: center;
     overflow: hidden;
@@ -10,8 +11,9 @@
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    background-color: #0a0f1c;
+    background-color: var(--background);
     background-blend-mode: color-dodge;
+	padding: var(--spacing-xl);
 }
 
 @media only screen and (min-width: 900px) {
@@ -51,47 +53,62 @@ only screen and (hover: none) and (pointer: coarse) {
     text-align: center;
     max-width: 64rem;
     margin: 0 auto;
-    padding: 0 1rem;
+    padding: 0 var(--spacing-base);
 }
 
 .title {
-    font-size: 2.25rem;
-    line-height: 2.5rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 1.5rem;
+    font-size: var(--font-size-3xl);
+    line-height: var(--line-height-3xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--text-color-primary);
+    margin-bottom: var(--spacing-lg);
 }
 
 .description {
-    font-size: 1.125rem;
-    line-height: 1.75rem;
-    color: var(--text-secondary);
-    margin-bottom: 2rem;
+    font-size: var(--font-size-lg);
+    line-height: var(--line-height-lg);
+    color: var(--text-color-secondary);
+    margin-bottom: var(--spacing-xl);
 }
 
 .button {
     background-color: var(--accent);
-    color: black;
-    padding: 0.75rem 2rem;
+    color: --color-midnight-blue;
+    padding: var(--spacing-md) var(--spacing-xl);
     border-radius: 9999px;
-    font-weight: 500;
+    font-weight: var(--font-weight-medium);
     border: none;
     cursor: pointer;
     transition: background-color 0.2s;
 }
 
 .button:hover {
-    background-color: var(--accent-hover);
+	background-color: var(--accent-hover);
 }
 
 @media (min-width: 768px) {
     .title {
-        font-size: 3.75rem;
-        line-height: 1;
+		font-size: var(--font-size-5xl);
+		line-height: var(--line-height-xs);
     }
 
     .description {
-        font-size: 1.25rem;
-        line-height: 1.75rem;
+		font-size: var(--font-size-lg);
+		line-height: var(--line-height-lg);
     }
+}
+
+.referencesPanel {
+	background-color: var(--shadow);
+	box-shadow: var(--box-shadow);
+	z-index: 10;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	gap: var(--spacing-md);
+	padding: var(--spacing-2xl);
+	border-radius: var(--border-radius-xl);
+	margin: 0 auto;
+	width: 100%;
 }
