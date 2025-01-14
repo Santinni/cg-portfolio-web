@@ -11,6 +11,7 @@ export default function Hero() {
         </p>
         <button className={styles.button}>Get Started</button>
       </div>
+      <div className={styles.referencesPanel}></div>
     </section>
   );
 }

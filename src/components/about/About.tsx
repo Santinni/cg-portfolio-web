@@ -1,9 +1,9 @@
 import Image from "next/image";
 import styles from "./About.module.css";
 import { AboutType } from "@/types/about";
+import { Fragment } from "react";
 
 export default function About({ data }: { data: AboutType }) {
-  console.log(data);
   return (
     <section className={styles.section}>
       <div className={styles.container}>
@@ -16,7 +16,7 @@ export default function About({ data }: { data: AboutType }) {
                   <p key={index} className={styles.paragraph}>
                     {(node.children as Array<{ text: string }>).map(
                       (child, i) => (
-                        <span key={i}>{child.text}</span>
+                        <Fragment key={i}>{child.text}</Fragment>
                       )
                     )}
                   </p>
