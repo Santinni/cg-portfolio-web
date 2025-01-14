@@ -1,5 +1,5 @@
 .section {
-    padding: 5rem 1rem;
+    padding: var(--spacing-3xl) var(--spacing-base);
     background-color: var(--background-secondary);
 }
 
@@ -9,31 +9,31 @@
 }
 
 .title {
-    font-size: 1.875rem;
-    line-height: 2.25rem;
-    font-weight: 700;
-    color: var(--text-primary);
+    font-size: var(--font-size-2xl);
+    line-height: var(--line-height-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--text-color-primary);
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: var(--spacing-xl);
 }
 
 .content {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: var(--spacing-xl);
 }
 
 .text {
-    color: var(--text-secondary);
-    font-size: 1rem;
-    line-height: 1.5;
+    color: var(--text-color-secondary);
+    font-size: var(--font-size-md);
+    line-height: var(--line-height-md);
     text-align: center;
 }
 
 .form {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: var(--spacing-base);
     max-width: 32rem;
     margin: 0 auto;
 }
@@ -41,23 +41,23 @@
 .inputGroup {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: var(--spacing-sm);
 }
 
 .label {
-    color: var(--text-primary);
-    font-size: 0.875rem;
-    font-weight: 500;
+    color: var(--text-color-primary);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
 }
 
 .input,
 .textarea {
-    padding: 0.5rem;
-    border-radius: 0.25rem;
-    border: 1px solid var(--text-secondary);
+    padding: var(--spacing-sm);
+    border-radius: var(--border-radius-sm);
+    border: 1px solid var(--text-color-secondary);
     background-color: var(--card-background);
-    color: var(--text-primary);
-    font-size: 1rem;
+    color: var(--text-color-primary);
+    font-size: var(--font-size-md);
 }
 
 .textarea {
@@ -67,14 +67,14 @@
 
 .button {
     background-color: var(--accent);
-    color: black;
-    padding: 0.75rem 1rem;
-    border-radius: 0.25rem;
-    font-weight: 500;
+    color: var(--text-color-tertiary);
+    padding: var(--spacing-md) var(--spacing-base);
+    border-radius: var(--border-radius-sm);
+    font-weight: var(--font-weight-medium);
     border: none;
     cursor: pointer;
     transition: background-color 0.2s;
-    font-size: 1rem;
+    font-size: var(--font-size-md);
 }
 
 .button:hover {

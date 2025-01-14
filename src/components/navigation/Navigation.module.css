@@ -4,12 +4,7 @@
     z-index: 50;
     background-color: rgba(10, 15, 28, 0.8);
     backdrop-filter: blur(8px);
-}
-
-.container {
-    max-width: 72rem;
-    margin: 0 auto;
-    padding: 0 1rem;
+    padding-inline: var(--spacing-xl);
 }
 
 .wrapper {
@@ -20,9 +15,9 @@
 }
 
 .logo {
-    color: var(--text-primary);
-    font-weight: 700;
-    font-size: 1.25rem;
+    color: var(--text-color-primary);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-lg);
     text-decoration: none;
 }
 
@@ -31,21 +26,21 @@
 }
 
 .link {
-    color: var(--text-secondary);
+    color: var(--text-color-secondary);
     text-decoration: none;
     transition: color 0.2s;
 }
 
 .link:hover {
-    color: var(--text-primary);
+    color: var(--text-color-primary);
 }
 
 .button {
     background-color: var(--accent);
     color: black;
-    padding: 0.5rem 1rem;
+    padding: var(--spacing-sm) var(--spacing-base);
     border-radius: 9999px;
-    font-weight: 500;
+    font-weight: var(--font-weight-medium);
     border: none;
     cursor: pointer;
     transition: background-color 0.2s;
@@ -56,11 +51,11 @@
 }
 
 .menuButton {
-    color: var(--text-primary);
+    color: var(--text-color-primary);
     background: none;
     border: none;
     cursor: pointer;
-    padding: 0.5rem;
+    padding: var(--spacing-sm);
 }
 
 .mobileMenu {
@@ -69,26 +64,26 @@
 }
 
 .mobileMenuContent {
-    padding: 0.5rem;
+    padding: var(--spacing-sm);
 }
 
 .mobileLink {
     display: block;
-    padding: 0.5rem 0.75rem;
-    color: var(--text-secondary);
+    padding: var(--spacing-sm) var(--spacing-md);
+    color: var(--text-color-secondary);
     text-decoration: none;
     transition: color 0.2s;
 }
 
 .mobileLink:hover {
-    color: var(--text-primary);
+    color: var(--text-color-primary);
 }
 
 @media (min-width: 768px) {
     .desktopMenu {
         display: flex;
         align-items: center;
-        gap: 2rem;
+        gap: var(--spacing-xl);
     }
 
     .menuButton {

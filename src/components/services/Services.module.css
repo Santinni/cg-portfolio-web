@@ -1,5 +1,5 @@
 .section {
-    padding: 5rem 1rem;
+    padding: var(--spacing-3xl) var(--spacing-base);
 }
 
 .container {
@@ -8,23 +8,23 @@
 }
 
 .title {
-    font-size: 1.875rem;
-    line-height: 2.25rem;
-    font-weight: 700;
-    color: var(--text-primary);
+    font-size: var(--font-size-2xl);
+    line-height: var(--line-height-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--text-color-primary);
     text-align: center;
-    margin-bottom: 3rem;
+    margin-bottom: var(--spacing-xl);
 }
 
 .grid {
     display: grid;
-    gap: 1.5rem;
+    gap: var(--spacing-lg);
 }
 
 .card {
     background-color: var(--card-background);
-    padding: 1.5rem;
-    border-radius: 0.5rem;
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius);
     transition: background-color 0.2s;
 }
 
@@ -33,20 +33,20 @@
 }
 
 .icon {
-    margin-bottom: 1rem;
+    margin-bottom: var(--spacing-base);
     color: var(--accent);
 }
 
 .cardTitle {
-    font-size: 1.25rem;
-    line-height: 1.75rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 0.5rem;
+    font-size: var(--font-size-lg);
+    line-height: var(--line-height-lg);
+    font-weight: var(--font-weight-bold);
+    color: var(--text-color-primary);
+    margin-bottom: var(--spacing-sm);
 }
 
 .description {
-    color: var(--text-secondary);
+    color: var(--text-color-secondary);
 }
 
 @media (min-width: 768px) {
