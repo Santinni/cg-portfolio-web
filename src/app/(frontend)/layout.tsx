@@ -9,6 +9,9 @@ export const metadata: Metadata = {
   title: "Codeguy - Web Solutions",
   description:
     "Codeguy - Profesionální webová řešení a vývoj moderních webových aplikací. Specializujeme se na React, Next.js a TypeScript.",
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({

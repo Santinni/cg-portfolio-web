@@ -3,11 +3,11 @@ export interface AboutType {
   title: string;
   content: {
     root: {
-      type: string;
-      children: {
+      children: Array<{
+        [key: string]: unknown;
         type: string;
         version: number;
-      }[];
+      }>;
       direction: "ltr" | "rtl" | null;
       format: "" | "left" | "start" | "center" | "right" | "end" | "justify";
       indent: number;

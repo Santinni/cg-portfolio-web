@@ -20,7 +20,7 @@ export const About: CollectionConfig = {
       name: "image",
       type: "upload",
       relationTo: "media",
-      required: true,
+      required: false,
     },
   ],
 };

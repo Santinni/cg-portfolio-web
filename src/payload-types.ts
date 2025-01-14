@@ -212,7 +212,7 @@ export interface About {
     };
     [k: string]: unknown;
   };
-  image: number | Media;
+  image?: (number | null) | Media;
   updatedAt: string;
   createdAt: string;
 }
