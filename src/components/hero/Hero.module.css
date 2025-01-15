@@ -54,6 +54,11 @@ only screen and (hover: none) and (pointer: coarse) {
     max-width: 64rem;
     margin: 0 auto;
     padding: 0 var(--spacing-base);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
 }
 
 .title {
@@ -99,16 +104,32 @@ only screen and (hover: none) and (pointer: coarse) {
 }
 
 .referencesPanel {
+    box-sizing: border-box;
 	background-color: var(--shadow);
 	box-shadow: var(--box-shadow);
+    color: var(--text-color-secondary);
 	z-index: 10;
 	display: flex;
 	flex-direction: row;
-	justify-content: center;
+    flex-wrap: wrap;
+	justify-content: space-around;
 	align-items: center;
 	gap: var(--spacing-md);
+    row-gap: 2rem;
 	padding: var(--spacing-2xl);
 	border-radius: var(--border-radius-xl);
 	margin: 0 auto;
 	width: 100%;
+    z-index: 10;
+    border: 0 solid #e5e7eb;
 }
+
+.referencesPanel svg {
+    width: 100%;
+    height: auto;
+    max-width: 8rem;
+    max-height: 4rem;
+}
+
+
+
