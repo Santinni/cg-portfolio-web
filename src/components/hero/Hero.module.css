@@ -127,8 +127,8 @@ only screen and (hover: none) and (pointer: coarse) {
 .referencesPanel svg {
     width: 100%;
     height: auto;
-    max-width: 8rem;
-    max-height: 4rem;
+    max-width: 7rem;
+    max-height: 3.5rem;
 }
 
 

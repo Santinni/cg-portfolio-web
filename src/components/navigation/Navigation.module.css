@@ -15,6 +15,10 @@
 }
 
 .logo {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    justify-content: flex-start;
     color: var(--text-color-primary);
     font-weight: var(--font-weight-bold);
     font-size: var(--font-size-lg);

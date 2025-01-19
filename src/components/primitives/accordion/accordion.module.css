@@ -1,0 +1,44 @@
+.accordion {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-base);
+}
+
+.accordionHead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+.accordionItem {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-base);
+}
+
+.accordionTrigger {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-color-primary);
+}
+
+.accordionBody {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-base);
+    height: 0;
+    overflow: hidden;
+    transition: height 0.3s ease-in-out;
+    padding: 0;
+    margin: 0;
+}
+
+.accordionBody.open {
+    height: auto;
+    padding: var(--spacing-base);
+    margin-top: var(--spacing-base);
+    margin-bottom: var(--spacing-base);
+    
+}

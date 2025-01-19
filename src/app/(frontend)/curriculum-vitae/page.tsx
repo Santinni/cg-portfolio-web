@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./page.module.css";
 import { DownloadCloud } from "lucide-react";
+import Accordion from "@/components/primitives/accordion";
 
 const CurriculumPage = () => {
   return (
@@ -12,43 +13,12 @@ const CurriculumPage = () => {
           <h2 className={styles.subtitle}>Who am I?</h2>
           <div className={styles.content}>
             <div className={styles.text}>
-              <p>
-                Bringing web applications to life with React – mid-level
-                frontend developer focused on usability, performance, and
-                scalability.
-              </p>
-              <p>
-                With over eight years of experience, currently I am specializing
-                in React and Next.js development.
-              </p>
-              <p>
-                I focus on building high-quality web applications with modern
-                technologies, delivering scalable, accessible, and
-                high-performance solutions.
-              </p>
-              <p>
-                In recent roles, I’ve designed and documented reusable UI
-                components and design systems using tools like Storybook and
-                RadixUI. My work spans complex frontend architectures,
-                particularly in industries like B2C energy, where adaptability,
-                performance, and sustainability are critical.
-              </p>
-              <p>
-                I thrive on collaboration, clear communication, and delivering
-                reliable solutions. Fluent in English and with beginner-level
-                Swedish, I am committed to continuous learning and professional
-                growth. I bring a combination of technical excellence,
-                problem-solving skills, and a dedication to teamwork to every
-                project.
-              </p>
-              <p>
-                I am currently looking for a new challenge and am open to new
-                opportunities.
-              </p>
+              <Accordion />
             </div>
           </div>
         </div>
       </section>
+      <hr />
       <section className={styles.section}>
         <div className={styles.container}>
           <h2 className={styles.title}>Technological stack</h2>
@@ -81,6 +51,7 @@ const CurriculumPage = () => {
           </div>
         </div>
       </section>
+      <hr />
       <div className={styles.floatingButton}>
         <a
           className={styles.button}

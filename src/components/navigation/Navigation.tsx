@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import styles from "./Navigation.module.css";
+import Image from "next/image";
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,6 +13,7 @@ export default function Navigation() {
     <nav className={styles.nav}>
       <div className={styles.wrapper}>
         <Link href="/" className={styles.logo}>
+          <Image src="/kklogo.svg" alt="Logo" width={40} height={40} />
           Karel Kutchan
         </Link>
 
