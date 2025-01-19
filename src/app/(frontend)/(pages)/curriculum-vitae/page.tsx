@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./page.module.css";
-import { DownloadCloud } from "lucide-react";
-import Accordion from "@/components/primitives/accordion";
+import { DownloadCloud, Link, Linkedin } from "lucide-react";
+import Accordion from "@/app/(frontend)/components/primitives/accordion";
 
 const CurriculumPage = () => {
   return (
@@ -52,6 +52,12 @@ const CurriculumPage = () => {
         </div>
       </section>
       <hr />
+      <section className={styles.section}>
+        <Link href="https://www.linkedin.com/in/karelkutchan/" target="_blank">
+          <Linkedin />
+        </Link>
+        <Linkedin />
+      </section>
       <div className={styles.floatingButton}>
         <a
           className={styles.button}

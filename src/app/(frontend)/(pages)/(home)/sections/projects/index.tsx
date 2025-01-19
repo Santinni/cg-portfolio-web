@@ -17,7 +17,7 @@ interface ProjectsProps {
 
 export default function Projects({ projects }: ProjectsProps) {
   return (
-    <section className={styles.section}>
+    <section className={styles.section} id="projects">
       <div className={styles.container}>
         <h2 className={styles.title}>What I&apos;ve Accomplished</h2>
         <div className={styles.grid}>

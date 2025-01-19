@@ -1,4 +1,4 @@
-@import "../../styles/variables.css";
+@import "./variables.css";
 
 html,
 body {
@@ -19,6 +19,7 @@ html {
   scrollbar-gutter: stable;
   height: 100%;
   height: -webkit-fill-available;
+  scroll-behavior: smooth;
 }
 
 body {

@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronDownIcon } from "lucide-react";
+import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 import styles from "./accordion.module.css";
 import { useState } from "react";
 
@@ -18,7 +18,11 @@ const Accordion = () => {
           className={styles.accordionTrigger}
           onClick={() => setIsOpen(!isOpen)}
         >
-          <ChevronDownIcon className={styles.accordionIcon} />
+          {isOpen ? (
+            <ChevronUpIcon className={styles.accordionIcon} />
+          ) : (
+            <ChevronDownIcon className={styles.accordionIcon} />
+          )}
         </button>
       </div>
       <div className={`${styles.accordionBody} ${isOpen ? styles.open : ""}`}>

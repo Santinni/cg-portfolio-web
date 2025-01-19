@@ -12,7 +12,7 @@ interface ServicesProps {
 
 export default function Services({ services }: ServicesProps) {
   return (
-    <section className={styles.section}>
+    <section className={styles.section} id="services">
       <div className={styles.container}>
         <h2 className={styles.title}>Your vision, my expertise</h2>
         <div className={styles.grid}>

@@ -1,8 +1,8 @@
-import Hero from "@/components/hero/Hero";
-import Services from "@/components/services/Services";
-import Projects from "@/components/projects/Projects";
-import About from "@/components/about/About";
-import Contact from "@/components/contact/Contact";
+import Hero from "@/app/(frontend)/(pages)/(home)/sections/hero";
+import Services from "@/app/(frontend)/(pages)/(home)/sections/services";
+import Projects from "@/app/(frontend)/(pages)/(home)/sections/projects";
+import About from "@/app/(frontend)/(pages)/(home)/sections/about";
+import Contact from "@/app/(frontend)/(pages)/(home)/sections/contact";
 import { getPayloadClient } from "@/payload/payloadClient";
 import { unstable_cache } from "next/cache";
 import { AboutType, ProjectType, ServiceType, ContactType } from "@/types";

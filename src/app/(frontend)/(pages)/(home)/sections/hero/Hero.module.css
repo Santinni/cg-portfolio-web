@@ -14,6 +14,7 @@
     background-color: var(--background);
     background-blend-mode: color-dodge;
 	padding: var(--spacing-xl);
+    padding-top: var(--spacing-3xl);
 }
 
 @media only screen and (min-width: 900px) {
@@ -59,19 +60,27 @@ only screen and (hover: none) and (pointer: coarse) {
     align-items: center;
     justify-content: center;
     flex: 1;
+
+    @media screen and (max-width: 768px) and (orientation: portrait) {
+        padding-top: var(--spacing-2xl);
+    }
 }
 
-.title {
-    font-size: var(--font-size-3xl);
-    line-height: var(--line-height-3xl);
-    font-weight: var(--font-weight-bold);
+.heroTitle {
+    font-size: clamp(var(--font-size-3xl), 5vw, var(--font-size-5xl));
+    line-height: clamp(var(--line-height-2xl), 1.1 + 0.5vw, var(--line-height-3xl));
+    font-weight: var(--font-weight-light);
     color: var(--text-color-primary);
     margin-bottom: var(--spacing-lg);
+
+
 }
 
 .description {
     font-size: var(--font-size-lg);
     line-height: var(--line-height-lg);
+    font-size: clamp(var(--font-size-lg), 5vw, var(--font-size-2xl));
+    line-height: clamp(var(--line-height-lg), 1.1 + 0.5vw, var(--line-height-2xl));
     color: var(--text-color-secondary);
     margin-bottom: var(--spacing-xl);
 }
@@ -89,18 +98,6 @@ only screen and (hover: none) and (pointer: coarse) {
 
 .button:hover {
 	background-color: var(--accent-hover);
-}
-
-@media (min-width: 768px) {
-    .title {
-		font-size: var(--font-size-5xl);
-		line-height: var(--line-height-xs);
-    }
-
-    .description {
-		font-size: var(--font-size-lg);
-		line-height: var(--line-height-lg);
-    }
 }
 
 .referencesPanel {
@@ -124,11 +121,52 @@ only screen and (hover: none) and (pointer: coarse) {
     border: 0 solid #e5e7eb;
 }
 
-.referencesPanel svg {
+.referencesTitle {
+    font-size: var(--font-size-lg);
+    line-height: var(--line-height-lg);
+    color: var(--text-color-secondary);
+    margin-bottom: var(--spacing-md);
+}
+
+.references {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.referenceIcon {
     width: 100%;
     height: auto;
-    max-width: 7rem;
-    max-height: 3.5rem;
+    max-width: 4rem;
+    max-height: 2rem;
+
+    @media (min-width: 380px) {
+        max-width: 15%;
+        max-height: 7.5%;
+    }
+
+    @media (min-width: 768px) {
+        max-width: 7rem;
+        max-height: 3.5rem;
+    }
+
+    @media (min-width: 1200px) {
+        max-width: 12rem;
+        max-height: 6rem;
+    }
+
+    @media (min-width: 1400px) {
+        max-width: 14rem;
+        max-height: 7rem;
+    }
+
+    @media (min-width: 1600px) {
+        max-width: 16rem;
+        max-height: 8rem;
+    }
 }
 
 

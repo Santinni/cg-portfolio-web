@@ -37,7 +37,7 @@ export default function Contact({ data }: ContactProps) {
   };
 
   return (
-    <section className={styles.section}>
+    <section className={styles.section} id="contact">
       <div className={styles.container}>
         <h2 className={styles.title}>{data.title}</h2>
         <div className={styles.content}>

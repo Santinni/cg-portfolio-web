@@ -18,19 +18,21 @@ export default function Navigation() {
         </Link>
 
         <div className={styles.desktopMenu}>
-          <Link href="/about" className={styles.link}>
+          <Link href="/#about" className={styles.link}>
             About
           </Link>
-          <Link href="/services" className={styles.link}>
+          <Link href="/#services" className={styles.link}>
             Services
           </Link>
-          <Link href="/projects" className={styles.link}>
+          <Link href="/#projects" className={styles.link}>
             Projects
           </Link>
           <Link href="/curriculum-vitae" className={styles.link}>
             CV
           </Link>
-          <button className={styles.button}>Contact</button>
+          <Link href="/#contact" className={styles.button}>
+            Contact
+          </Link>
         </div>
 
         <button

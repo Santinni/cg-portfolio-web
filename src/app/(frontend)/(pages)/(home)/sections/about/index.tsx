@@ -5,7 +5,7 @@ import { Fragment } from "react";
 
 export default function About({ data }: { data: AboutType }) {
   return (
-    <section className={styles.section}>
+    <section className={styles.section} id="about">
       <div className={styles.container}>
         <h2 className={styles.title}>{data.title}</h2>
         <div className={styles.content}>
