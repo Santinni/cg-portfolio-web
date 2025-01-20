@@ -46,19 +46,21 @@ export default function Navigation() {
       {isOpen && (
         <div className={styles.mobileMenu}>
           <div className={styles.mobileMenuContent}>
-            <Link href="/about" className={styles.mobileLink}>
+            <Link href="/#about" className={styles.mobileLink}>
               About
             </Link>
-            <Link href="/services" className={styles.mobileLink}>
+            <Link href="/#services" className={styles.mobileLink}>
               Services
             </Link>
-            <Link href="/projects" className={styles.mobileLink}>
+            <Link href="/#projects" className={styles.mobileLink}>
               Projects
             </Link>
             <Link href="/curriculum-vitae" className={styles.mobileLink}>
               CV
             </Link>
-            <button className={styles.mobileLink}>Contact</button>
+            <Link href="/#contact" className={styles.mobileLink}>
+              Contact
+            </Link>
           </div>
         </div>
       )}

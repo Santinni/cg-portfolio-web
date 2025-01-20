@@ -8,8 +8,8 @@ const CurriculumPage = () => {
     <main>
       <section className={styles.section}>
         <div className={styles.container}>
+          <h1 className={styles.title}>curriculum vitæ</h1>
           <h1 className={styles.subtitle}>Karel Kutchan</h1>
-          <h1 className={styles.title}>Curriculum Vitae</h1>
           <h2 className={styles.subtitle}>Who am I?</h2>
           <div className={styles.content}>
             <div className={styles.text}>

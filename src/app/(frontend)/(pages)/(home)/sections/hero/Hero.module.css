@@ -1,6 +1,7 @@
 .hero {
     position: relative;
-    min-height: 100vh;
+    min-height: 100vh; /* fallback for minor mobile devices */
+    min-height: 100svh;
     display: flex;
 	flex-direction: column;
     align-items: center;
@@ -15,6 +16,7 @@
     background-blend-mode: color-dodge;
 	padding: var(--spacing-xl);
     padding-top: var(--spacing-3xl);
+    gap: var(--spacing-xl);
 }
 
 @media only screen and (min-width: 900px) {
@@ -54,7 +56,6 @@ only screen and (hover: none) and (pointer: coarse) {
     text-align: center;
     max-width: 64rem;
     margin: 0 auto;
-    padding: 0 var(--spacing-base);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -62,7 +63,11 @@ only screen and (hover: none) and (pointer: coarse) {
     flex: 1;
 
     @media screen and (max-width: 768px) and (orientation: portrait) {
-        padding-top: var(--spacing-2xl);
+        padding-top: var(--spacing-xl);
+    }
+
+    @media screen and (min-width: 460px) {
+        padding-inline: var(--spacing-base);
     }
 }
 
@@ -119,13 +124,19 @@ only screen and (hover: none) and (pointer: coarse) {
 	width: 100%;
     z-index: 10;
     border: 0 solid #e5e7eb;
+
+    @media screen and (max-width: 768px) {
+        flex-direction: column;
+        row-gap: var(--spacing-base);
+        padding: var(--spacing-lg);
+    }
 }
 
 .referencesTitle {
     font-size: var(--font-size-lg);
     line-height: var(--line-height-lg);
     color: var(--text-color-secondary);
-    margin-bottom: var(--spacing-md);
+    font-weight: var(--font-weight-light);
 }
 
 .references {
@@ -135,6 +146,7 @@ only screen and (hover: none) and (pointer: coarse) {
     justify-content: space-around;
     align-items: center;
     gap: var(--spacing-md);
+    flex: 1;
 }
 
 .referenceIcon {
@@ -142,31 +154,8 @@ only screen and (hover: none) and (pointer: coarse) {
     height: auto;
     max-width: 4rem;
     max-height: 2rem;
-
-    @media (min-width: 380px) {
-        max-width: 15%;
-        max-height: 7.5%;
-    }
-
-    @media (min-width: 768px) {
-        max-width: 7rem;
-        max-height: 3.5rem;
-    }
-
-    @media (min-width: 1200px) {
-        max-width: 12rem;
-        max-height: 6rem;
-    }
-
-    @media (min-width: 1400px) {
-        max-width: 14rem;
-        max-height: 7rem;
-    }
-
-    @media (min-width: 1600px) {
-        max-width: 16rem;
-        max-height: 8rem;
-    }
+    max-width: clamp(4rem, 5vw, 7rem);
+    max-height: clamp(2rem, 2.5vw, 3.5rem);
 }
 
 
