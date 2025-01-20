@@ -147,6 +147,7 @@ only screen and (hover: none) and (pointer: coarse) {
     align-items: center;
     gap: var(--spacing-md);
     flex: 1;
+    width: 100%;
 }
 
 .referenceIcon {

@@ -1,6 +1,12 @@
+"use client";
+
 import styles from "./Hero.module.css";
 
 export default function Hero() {
+  const handleClick = () => {
+    console.log("clicked");
+  };
+
   return (
     <section className={styles.hero}>
       <div className={styles.overlay} />
@@ -9,7 +15,9 @@ export default function Hero() {
         <p className={styles.description}>
           Building modern and reliable web applications
         </p>
-        <button className={styles.button}>Get Started</button>
+        <button className={styles.button} onClick={handleClick}>
+          Get Started
+        </button>
       </div>
       <div className={styles.referencesPanel}>
         <div className={styles.referencesTitle}>Cooperated with:</div>

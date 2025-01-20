@@ -4,7 +4,6 @@
     z-index: 50;
     background-color: rgba(10, 15, 28, 0.8);
     backdrop-filter: blur(8px);
-    padding-inline: var(--spacing-xl);
 }
 
 .wrapper {
@@ -12,6 +11,11 @@
     justify-content: space-between;
     align-items: center;
     height: 4rem;
+    padding-inline: var(--spacing-xl);
+
+    @media (max-width: 850px) {
+        padding-inline: var(--spacing-md);
+    }
 }
 
 .logo {
@@ -33,6 +37,7 @@
     color: var(--text-color-primary);
     text-decoration: none;
     transition: color 0.2s;
+    padding: var(--spacing-sm) var(--spacing-base);
 }
 
 .link:hover {
@@ -62,28 +67,54 @@
     padding: var(--spacing-sm);
 }
 
+.menuIcon {
+    width: 2rem;
+    height: 2rem;
+}
+
+.menuIcon.open {
+    opacity: 0;
+}
+
+.mobileMenuHeader {
+    display: flex;
+    justify-content: flex-end;
+    padding: var(--spacing-sm);
+    padding-inline: var(--spacing-md);
+}
+
 .mobileMenu {
-    background-color: var(--background);
+    background-color: rgba(10, 15, 28, 0.8);
+    backdrop-filter: blur(8px);
+    border: none;
     border-top: 1px solid rgba(75, 85, 99, 0.4);
+    min-width: 100vw;
+    min-height: 100svh;
 }
 
 .mobileMenuContent {
-    padding: var(--spacing-sm);
+    padding-block: var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    align-items: center;
+    justify-content: center;
 }
 
 .mobileLink {
     display: block;
     padding: var(--spacing-sm) var(--spacing-md);
-    color: var(--text-color-secondary);
+    color: var(--text-color-primary);
     text-decoration: none;
     transition: color 0.2s;
+    font-size: var(--font-size-2xl);
 }
 
 .mobileLink:hover {
     color: var(--text-color-primary);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 850px) {
     .desktopMenu {
         display: flex;
         align-items: center;
