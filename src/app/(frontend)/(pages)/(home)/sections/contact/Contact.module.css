@@ -64,19 +64,3 @@
     min-height: 8rem;
     resize: vertical;
 }
-
-.button {
-    background-color: var(--accent);
-    color: var(--text-color-tertiary);
-    padding: var(--spacing-md) var(--spacing-base);
-    border-radius: var(--border-radius-sm);
-    font-weight: var(--font-weight-medium);
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    font-size: var(--font-size-md);
-}
-
-.button:hover {
-    background-color: var(--accent-hover);
-}

@@ -1,0 +1,154 @@
+.button {
+    background-color: var(--accent);
+    color: var(--text-color-tertiary);
+    padding: var(--spacing-md) var(--spacing-xl);
+    border-radius: var(--border-radius-rounded);
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-medium);
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    position: relative;
+    font-family: inherit;
+}
+
+.button:hover {
+    background-color: var(--accent-hover);
+}
+
+.buttonContent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.variant-primary {
+    background-color: var(--accent);
+    color: var(--background);
+}
+
+.variant-secondary {
+    background-color: var(--background);
+    color: var(--accent);
+}
+
+.variant-transparent {
+    background-color: transparent;
+    color: var(--accent);
+    &:hover {
+        background-color: transparent;
+    }
+}
+
+.variant-text {
+    background-color: transparent;
+    color: var(--accent);
+}
+
+.variant-link {
+    background-color: transparent;
+    color: var(--accent);
+}
+
+.accent-light {
+    background-color: var(--accent);
+    color: var(--background);
+}
+
+.accent-dark {
+    background-color: var(--accent);
+    color: var(--background);
+}
+
+.size-small {
+    padding: var(--spacing-sm) var(--spacing-md);
+}
+
+.size-medium {
+    padding: var(--spacing-md) var(--spacing-xl);
+}
+
+.size-large {
+    padding: var(--spacing-lg) var(--spacing-xl);
+}
+
+.text-size-small {
+    font-size: var(--font-size-sm);
+}
+
+.text-size-medium {
+    font-size: var(--font-size-md);
+}
+
+.text-size-large {
+    font-size: var(--font-size-lg);
+}
+
+.text-weight-light {
+    font-weight: var(--font-weight-light);
+}
+
+.text-weight-normal {
+    font-weight: var(--font-weight-normal);
+}
+
+.text-weight-medium {
+    font-weight: var(--font-weight-medium);
+}
+
+.text-weight-bold {
+    font-weight: var(--font-weight-bold);
+}
+
+.fullWidth {
+    width: 100%;
+}
+
+.rounded {
+    border-radius: var(--border-radius-rounded);
+    padding: var(--spacing-md);
+}
+
+.loading {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.loadingIcon {
+    animation: spin 3s linear infinite, pulse 1.5s ease-in-out infinite;
+    color: var(--background);
+}
+
+.disabled {
+    background-color: var(--background);
+    color: var(--accent);
+}
+
+.isLoading {
+    color: transparent;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.3;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.3;
+    }
+}

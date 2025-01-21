@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/app/(frontend)/components/primitives/button";
 import styles from "./Hero.module.css";
 
 export default function Hero() {
@@ -15,9 +16,7 @@ export default function Hero() {
         <p className={styles.description}>
           Building modern and reliable web applications
         </p>
-        <button className={styles.button} onClick={handleClick}>
-          Get Started
-        </button>
+        <Button onClick={handleClick}>Get Started</Button>
       </div>
       <div className={styles.referencesPanel}>
         <div className={styles.referencesTitle}>Cooperated with:</div>

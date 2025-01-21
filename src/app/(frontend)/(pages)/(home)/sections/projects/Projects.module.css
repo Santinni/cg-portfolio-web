@@ -60,7 +60,7 @@
     padding: var(--spacing-xs) var(--spacing-md);
     background-color: var(--card-background);
     color: var(--text-color-secondary);
-    border-radius: 9999px;
+    border-radius: var(--border-radius-rounded);
     font-size: var(--font-size-sm);
     line-height: var(--line-height-sm);
 }
