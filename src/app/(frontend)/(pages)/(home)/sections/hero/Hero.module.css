@@ -94,7 +94,7 @@ only screen and (hover: none) and (pointer: coarse) {
     background-color: var(--accent);
     color: --color-midnight-blue;
     padding: var(--spacing-md) var(--spacing-xl);
-    border-radius: 9999px;
+    border-radius: var(--border-radius-rounded);
     font-weight: var(--font-weight-medium);
     border: none;
     cursor: pointer;

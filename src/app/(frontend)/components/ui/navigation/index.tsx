@@ -6,6 +6,7 @@ import { Menu, X } from "lucide-react";
 import styles from "./Navigation.module.css";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { Button } from "../../primitives/button";
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
@@ -85,6 +86,9 @@ export default function Navigation() {
           <button className={styles.menuButton} onClick={handleClose}>
             <X className={styles.menuIcon} />
           </button>
+          <Button className={styles.menuButton} onClick={handleClose}>
+            <X className={styles.menuIcon} />
+          </Button>
         </div>
         <div className={styles.mobileMenuContent}>
           <Link
