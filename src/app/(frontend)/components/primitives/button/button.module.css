@@ -1,6 +1,6 @@
 .button {
     background-color: var(--accent);
-    color: var(--color-midnight-blue);
+    color: var(--text-color-tertiary);
     padding: var(--spacing-md) var(--spacing-xl);
     border-radius: var(--border-radius-rounded);
     font-size: var(--font-size-md);

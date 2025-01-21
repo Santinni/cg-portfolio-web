@@ -44,21 +44,6 @@
     color: var(--text-color-secondary);
 }
 
-.button {
-    background-color: var(--accent);
-    color: black;
-    padding: var(--spacing-sm) var(--spacing-base);
-    border-radius: var(--border-radius-rounded);
-    font-weight: var(--font-weight-medium);
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.button:hover {
-    background-color: var(--accent-hover);
-}
-
 .menuButton {
     color: var(--text-color-primary);
     background: none;

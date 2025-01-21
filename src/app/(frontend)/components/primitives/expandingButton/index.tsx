@@ -1,5 +1,6 @@
 import { forwardRef, cloneElement, ReactElement } from "react";
 import styles from "./ExpandingButton.module.css";
+import Link from "next/link";
 
 interface ExpandingButtonProps {
   href: string;
@@ -14,7 +15,7 @@ export const ExpandingButton = forwardRef<
   ExpandingButtonProps
 >(({ href, download, buttonText, icon, isFloating }, ref) => {
   const expandingButtonContent = (
-    <a
+    <Link
       className={styles.expandingButton}
       href={href}
       download={download}
@@ -22,7 +23,7 @@ export const ExpandingButton = forwardRef<
     >
       {cloneElement(icon, { className: styles.expandingButtonIcon })}
       <span className={styles.expandingButtonText}>{buttonText}</span>
-    </a>
+    </Link>
   );
 
   return isFloating ? (

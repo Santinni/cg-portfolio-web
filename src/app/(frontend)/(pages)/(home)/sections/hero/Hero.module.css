@@ -90,21 +90,6 @@ only screen and (hover: none) and (pointer: coarse) {
     margin-bottom: var(--spacing-xl);
 }
 
-.button {
-    background-color: var(--accent);
-    color: --color-midnight-blue;
-    padding: var(--spacing-md) var(--spacing-xl);
-    border-radius: var(--border-radius-rounded);
-    font-weight: var(--font-weight-medium);
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.button:hover {
-	background-color: var(--accent-hover);
-}
-
 .referencesPanel {
     box-sizing: border-box;
 	background-color: var(--shadow);

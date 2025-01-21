@@ -7,6 +7,7 @@ import styles from "./Navigation.module.css";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Button } from "../../primitives/button";
+import { LinkButton } from "../../primitives/linkButton";
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
@@ -61,32 +62,29 @@ export default function Navigation() {
             <Link href="/curriculum-vitae" className={styles.link}>
               CV
             </Link>
-            <Link
-              href="/#contact"
-              className={styles.button}
-              onClick={() => handleClose()}
-            >
+            <LinkButton href="/#contact" onClick={() => handleClose()}>
               Contact
-            </Link>
+            </LinkButton>
           </div>
-
-          <button
+          <Button
             className={styles.menuButton}
             onClick={handleOpen}
             aria-expanded={isOpen}
             aria-controls="mobile-menu"
             aria-label="Toggle mobile menu"
+            variant="transparent"
           >
             <Menu className={`${styles.menuIcon} ${isOpen ? "open" : ""}`} />
-          </button>
+          </Button>
         </div>
       </nav>
       <dialog ref={dialogRef} className={styles.mobileMenu} id="mobile-menu">
         <div className={styles.mobileMenuHeader}>
-          <button className={styles.menuButton} onClick={handleClose}>
-            <X className={styles.menuIcon} />
-          </button>
-          <Button className={styles.menuButton} onClick={handleClose}>
+          <Button
+            className={styles.menuButton}
+            onClick={handleClose}
+            variant="transparent"
+          >
             <X className={styles.menuIcon} />
           </Button>
         </div>
