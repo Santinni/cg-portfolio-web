@@ -3,6 +3,7 @@
 import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 import styles from "./accordion.module.css";
 import { useState } from "react";
+import { Button } from "../button";
 
 const Accordion = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,16 +15,18 @@ const Accordion = () => {
           scalability. Bringing web applications to life with React, Next.js and
           HTMX{isOpen ? "." : "…"}
         </p>
-        <button
+        <Button
           className={styles.accordionTrigger}
           onClick={() => setIsOpen(!isOpen)}
+          variant="transparent"
+          rounded
         >
           {isOpen ? (
             <ChevronUpIcon className={styles.accordionIcon} />
           ) : (
             <ChevronDownIcon className={styles.accordionIcon} />
           )}
-        </button>
+        </Button>
       </div>
       <div className={`${styles.accordionBody} ${isOpen ? styles.open : ""}`}>
         <p>

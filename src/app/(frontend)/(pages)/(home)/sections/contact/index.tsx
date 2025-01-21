@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import styles from "./Contact.module.css";
+import { Button } from "@/app/(frontend)/components/primitives/button";
 
 interface ContactProps {
   data: {
@@ -84,9 +85,7 @@ export default function Contact({ data }: ContactProps) {
                 className={styles.textarea}
               ></textarea>
             </div>
-            <button type="submit" className={styles.button}>
-              Send Message
-            </button>
+            <Button type="submit">Send Message</Button>
           </form>
         </div>
       </div>

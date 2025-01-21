@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./page.module.css";
 import { DownloadCloud, Link, Linkedin } from "lucide-react";
 import Accordion from "@/app/(frontend)/components/primitives/accordion";
+import { ExpandingButton } from "../../components/primitives/expandingButton";
 
 const CurriculumPage = () => {
   return (
@@ -58,16 +59,13 @@ const CurriculumPage = () => {
         </Link>
         <Linkedin />
       </section>
-      <div className={styles.floatingButton}>
-        <a
-          className={styles.button}
-          href="/curriculum-vitae/CV_Karel_Kutchan.pdf"
-          download
-        >
-          <DownloadCloud className={styles.downloadIcon} />
-          <span className={styles.buttonText}>Download CV</span>
-        </a>
-      </div>
+      <ExpandingButton
+        href="/curriculum-vitae/CV_Karel_Kutchan.pdf"
+        download
+        buttonText="Download CV"
+        icon={<DownloadCloud className={styles.downloadIcon} />}
+        isFloating
+      />
     </main>
   );
 };
