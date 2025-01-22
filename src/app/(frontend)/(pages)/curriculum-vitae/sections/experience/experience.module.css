@@ -1,0 +1,111 @@
+.experience {
+  width: 100%;
+  padding: var(--spacing-xl) 0;
+}
+
+.sectionTitle {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-color-primary);
+  margin-bottom: var(--spacing-xl);
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+}
+
+.timelineItem {
+  display: grid;
+  grid-template-columns: minmax(120px, auto) 1fr;
+  gap: var(--spacing-lg);
+  padding-bottom: var(--spacing-xl);
+  position: relative;
+}
+
+.timelineItem:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  left: 110px;
+  top: 30px;
+  bottom: 0;
+  width: 2px;
+  background-color: var(--border-color);
+}
+
+.timelinePeriod {
+  color: var(--text-color-secondary);
+  font-size: var(--font-size-sm);
+  white-space: nowrap;
+}
+
+.timelineContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.timelineTitle {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-color-primary);
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.timelineCompany {
+  font-size: var(--font-size-base);
+  color: var(--text-color-secondary);
+  font-weight: var(--font-weight-normal);
+}
+
+.timelineDescription {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.timelineDescription li {
+  color: var(--text-color-secondary);
+  line-height: 1.6;
+  position: relative;
+  padding-left: var(--spacing-lg);
+}
+
+.timelineDescription li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.7em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--text-color-secondary);
+}
+
+@media (max-width: 640px) {
+  .timelineItem {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
+  }
+
+  .timelineItem:not(:last-child)::before {
+    left: 0;
+    top: 50px;
+  }
+
+  .timelinePeriod {
+    padding-left: var(--spacing-xl);
+  }
+
+  .timelineContent {
+    padding-left: var(--spacing-xl);
+  }
+}
+

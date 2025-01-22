@@ -1,36 +1,71 @@
 .section {
-  padding: var(--spacing-3xl) var(--spacing-base);
-  background-color: var(--background);
+    padding: var(--spacing-3xl) var(--spacing-base);
+    background-color: var(--background);
 }
 
 .container {
-  max-width: 72rem;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xl);
+    max-width: 72rem;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xl);
 }
 
 .title {
-  font-size: var(--font-size-2xl);
-  line-height: var(--line-height-2xl);
-  font-weight: var(--font-weight-bold);
-  color: var(--text-color-primary);
-  text-align: center;
-  margin-bottom: var(--spacing-xl);
+    font-size: var(--font-size-2xl);
+    line-height: var(--line-height-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--text-color-primary);
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
 }
 
-.content {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xl);
+.header {
+    text-align: center;
+    margin-bottom: var(--spacing-2xl);
+}
+
+.name {
+    font-size: var(--font-size-xl);
+    color: var(--text-color-primary);
+    margin: 0;
+}
+
+.profession {
+    color: var(--text-color-secondary);
+    margin-top: var(--spacing-sm);
+}
+
+.socialLinks {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-2xl);
+}
+
+.socialLink {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    color: var(--text-color-secondary);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.socialLink:hover {
+    color: var(--text-color-primary);
+}
+
+.downloadIcon {
+    width: 1.2rem;
+    height: 1.2rem;
 }
 
 .text {
-  color: var(--text-color-secondary);
-  font-size: var(--font-size-md);
-  line-height: var(--line-height-md);
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-base);
+    color: var(--text-color-secondary);
+    font-size: var(--font-size-md);
+    line-height: var(--line-height-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-base);
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
-import styles from "./accordion.module.css";
+import styles from "./Accordion.module.css";
 import { useState } from "react";
 import { Button } from "../button";
 
