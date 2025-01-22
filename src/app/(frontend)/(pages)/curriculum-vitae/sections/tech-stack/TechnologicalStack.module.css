@@ -20,14 +20,14 @@
   margin: 0;
 }
 
-.accordionContent {
+.contentWrapper {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-xl);
-  max-height: 0;
-  overflow: hidden;
-  opacity: 0;
-  transition: all 0.3s ease-in-out;
+
+  @media screen and (min-width: 768px) {
+    flex-direction: row;
+  }
 }
 
 .accordionContent.open {
@@ -64,3 +64,10 @@
   border-radius: var(--border-radius);
 }
 
+.sectionTitle {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  margin: 0;
+  margin-bottom: var(--spacing-base);
+  font-weight: var(--font-weight-normal);
+}

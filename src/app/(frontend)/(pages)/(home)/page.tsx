@@ -48,12 +48,12 @@ export default async function Home() {
   const { services, projects, about, contact } = await getPageDataCached();
 
   return (
-    <main>
+    <>
       <Hero />
       <Services services={services} />
-      <Projects projects={projects} />
+      {/* <Projects projects={projects} /> */}
       <About data={about} />
       <Contact data={contact} />
-    </main>
+    </>
   );
 }

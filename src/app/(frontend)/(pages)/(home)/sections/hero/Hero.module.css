@@ -77,8 +77,6 @@ only screen and (hover: none) and (pointer: coarse) {
     font-weight: var(--font-weight-light);
     color: var(--text-color-primary);
     margin-bottom: var(--spacing-lg);
-
-
 }
 
 .description {

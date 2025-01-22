@@ -1,30 +1,32 @@
-import styles from "./education.module.css"
+import styles from "./Education.module.css";
 
 type EducationItem = {
-  period: string
-  institution: string
-  degree: string
-}
+  period: string;
+  institution: string;
+  degree: string;
+};
 
 const educationItems: EducationItem[] = [
   {
     period: "2002-2006",
     institution: "COPTH, Poděbradská 1/179",
-    degree: "Electrical engineering, telecommunications and computer technologies",
+    degree:
+      "Electrical engineering, telecommunications and computer technologies",
   },
-]
+];
 
 type CourseItem = {
-  year: string
-  name: string
-  description?: string
-}
+  year: string;
+  name: string;
+  description?: string;
+};
 
 const courses: CourseItem[] = [
   {
     year: "2018",
     name: "VzhuruDolu.cz",
-    description: "Optimalizace rychlosti načítání, CSS kód: organizace a údržba, SVG do hloubky, Principy JavaScriptu",
+    description:
+      "Optimalizace rychlosti načítání, CSS kód: organizace a údržba, SVG do hloubky, Principy JavaScriptu",
   },
   {
     year: "2018",
@@ -38,7 +40,8 @@ const courses: CourseItem[] = [
   {
     year: "2016-2018",
     name: "Free Code Camp",
-    description: "Full Stack Web Development Certification, Computer Software Engineering",
+    description:
+      "Full Stack Web Development Certification, Computer Software Engineering",
   },
   {
     year: "2015",
@@ -50,7 +53,7 @@ const courses: CourseItem[] = [
     name: "S - COMP Centre CZ s.r.o., Ohradní 1079/59",
     description: "Web Application Programmer, Graphic studio worker",
   },
-]
+];
 
 export const Education = () => {
   return (
@@ -75,12 +78,13 @@ export const Education = () => {
             <div className={styles.courseYear}>{course.year}</div>
             <div className={styles.courseDetails}>
               <h4 className={styles.courseName}>{course.name}</h4>
-              {course.description && <p className={styles.courseDescription}>{course.description}</p>}
+              {course.description && (
+                <p className={styles.courseDescription}>{course.description}</p>
+              )}
             </div>
           </div>
         ))}
       </div>
     </section>
-  )
-}
-
+  );
+};

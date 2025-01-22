@@ -1,21 +1,20 @@
 import React from "react";
 import styles from "./page.module.css";
 import { DownloadCloud, Linkedin } from "lucide-react";
-import { WhoAmI } from "./sections/about-me";
+import { WhoAmI } from "./sections/who-am-i";
 import { TechnologicalStack } from "./sections/tech-stack";
 import { Experience } from "./sections/experience";
 import { Education } from "./sections/education";
 import { Contact } from "./sections/contact";
-import { ExpandingButton } from "@/app/(frontend)/components/primitives/expandingButton";
+import { ExpandingButton } from "@/app/(frontend)/components/primitives/expanding-button";
 
 const CurriculumPage = () => {
   return (
-    <main>
+    <>
       <section className={styles.section}>
         <div className={styles.container}>
-          <h1 className={styles.title}>curriculum vitæ</h1>
-
           <div className={styles.header}>
+            <h1 className={styles.headline}>curriculum vitæ</h1>
             <h2 className={styles.name}>Karel Kutchan</h2>
             <p className={styles.profession}>Frontend Developer</p>
 
@@ -51,7 +50,7 @@ const CurriculumPage = () => {
         icon={<DownloadCloud className={styles.downloadIcon} />}
         isFloating
       />
-    </main>
+    </>
   );
 };
 

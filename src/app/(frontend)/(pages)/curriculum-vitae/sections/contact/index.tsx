@@ -1,5 +1,5 @@
-import { Mail, Phone, MapPin } from "lucide-react"
-import styles from "./contact.module.css"
+import { Mail, Phone, MapPin } from "lucide-react";
+import styles from "./Contact.module.css";
 
 export const Contact = () => {
   return (
@@ -14,9 +14,8 @@ export const Contact = () => {
       </div>
       <div className={styles.contactItem}>
         <MapPin className={styles.icon} />
-        <span>Svitákova 2790/3, Praha 5</span>
+        <span>Prague, Czech Republic</span>
       </div>
     </div>
-  )
-}
-
+  );
+};
