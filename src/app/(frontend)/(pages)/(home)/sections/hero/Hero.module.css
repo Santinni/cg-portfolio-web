@@ -79,13 +79,12 @@ only screen and (hover: none) and (pointer: coarse) {
     margin-bottom: var(--spacing-lg);
 }
 
-.description {
-    font-size: var(--font-size-lg);
-    line-height: var(--line-height-lg);
+.subtitle {
     font-size: clamp(var(--font-size-lg), 5vw, var(--font-size-2xl));
     line-height: clamp(var(--line-height-lg), 1.1 + 0.5vw, var(--line-height-2xl));
     color: var(--text-color-secondary);
     margin-bottom: var(--spacing-xl);
+    text-align: center;
 }
 
 .referencesPanel {

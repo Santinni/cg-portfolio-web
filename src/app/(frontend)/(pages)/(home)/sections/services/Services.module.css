@@ -8,12 +8,26 @@
 }
 
 .title {
-    font-size: var(--font-size-2xl);
-    line-height: var(--line-height-2xl);
-    font-weight: var(--font-weight-bold);
+    font-size: clamp(var(--font-size-lg), 8vw, var(--font-size-3xl));
+    line-height: clamp(var(--line-height-lg), 1.1 + 0.5vw, var(--line-height-2xl));
     color: var(--text-color-primary);
+    font-weight: var(--font-weight-light);
     text-align: center;
     margin-bottom: var(--spacing-xl);
+    margin-top: var(--spacing-md);
+
+    &:has(+ .subtitle) {
+        margin-bottom: 0;
+    }
+}
+
+.subtitle {
+    font-size: clamp(var(--font-size-md), 5vw, var(--font-size-xl));
+    line-height: clamp(var(--line-height-lg), 1.1 + 0.5vw, var(--line-height-2xl));
+    color: var(--text-color-secondary);
+    margin-bottom: var(--spacing-xl);
+    margin-top: var(--spacing-md);
+    text-align: center;
 }
 
 .grid {
