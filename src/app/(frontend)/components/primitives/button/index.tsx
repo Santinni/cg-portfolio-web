@@ -1,5 +1,5 @@
 import { ButtonHTMLAttributes, forwardRef } from "react";
-import styles from "./button.module.css";
+import styles from "./Button.module.css";
 import clsx from "clsx";
 import { Loader } from "lucide-react";
 
@@ -48,7 +48,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         [styles[`accent-${accent}`]]: accent,
         [styles[`size-${size}`]]: size,
         [styles.disabled]: disabled,
-        [styles[`text-weight-${textWeight}`]]: textWeight ,
+        [styles[`text-weight-${textWeight}`]]: textWeight,
         [styles.fullWidth]: fullWidth,
         [styles[`text-size-${textSize}`]]: textSize,
         [styles.rounded]: rounded,

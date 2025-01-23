@@ -1,4 +1,3 @@
-// import Link from "next/link";
 import Link, { LinkProps } from "next/link";
 import styles from "./LinkButton.module.css";
 

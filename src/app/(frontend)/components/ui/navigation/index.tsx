@@ -39,13 +39,6 @@ export default function Navigation() {
 
           <div className={styles.desktopMenu}>
             <Link
-              href="/#about"
-              className={styles.link}
-              onClick={() => handleClose()}
-            >
-              About
-            </Link>
-            <Link
               href="/#services"
               className={styles.link}
               onClick={() => handleClose()}
@@ -53,12 +46,19 @@ export default function Navigation() {
               Services
             </Link>
             <Link
+              href="/#about"
+              className={styles.link}
+              onClick={() => handleClose()}
+            >
+              About
+            </Link>
+            {/* <Link
               href="/#projects"
               className={styles.link}
               onClick={() => handleClose()}
             >
               Projects
-            </Link>
+            </Link> */}
             <Link href="/curriculum-vitae" className={styles.link}>
               CV
             </Link>
@@ -90,13 +90,6 @@ export default function Navigation() {
         </div>
         <div className={styles.mobileMenuContent}>
           <Link
-            href="/#about"
-            className={styles.mobileLink}
-            onClick={() => handleClose()}
-          >
-            About
-          </Link>
-          <Link
             href="/#services"
             className={styles.mobileLink}
             onClick={() => handleClose()}
@@ -104,22 +97,25 @@ export default function Navigation() {
             Services
           </Link>
           <Link
+            href="/#about"
+            className={styles.mobileLink}
+            onClick={() => handleClose()}
+          >
+            About
+          </Link>
+          {/* <Link
             href="/#projects"
             className={styles.mobileLink}
             onClick={() => handleClose()}
           >
             Projects
-          </Link>
+          </Link> */}
           <Link href="/curriculum-vitae" className={styles.mobileLink}>
             CV
           </Link>
-          <Link
-            href="/#contact"
-            className={styles.button}
-            onClick={() => handleClose()}
-          >
+          <LinkButton href="/#contact" onClick={() => handleClose()}>
             Contact
-          </Link>
+          </LinkButton>
         </div>
       </dialog>
     </>

@@ -14,7 +14,10 @@ export default function Services({ services }: ServicesProps) {
   return (
     <section className={styles.section} id="services">
       <div className={styles.container}>
-        <h2 className={styles.title}>Your vision, my expertise</h2>
+        <h2 className={styles.title}>How may I help you?</h2>
+        <p className={styles.subtitle}>
+          Together, we can turn your visions into reality.
+        </p>
         <div className={styles.grid}>
           {services.map((service, index) => (
             <div key={index} className={styles.card}>

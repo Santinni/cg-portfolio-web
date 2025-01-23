@@ -1,0 +1,79 @@
+.accordion {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-base);
+}
+
+.accordionHead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+.accordionItem {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-base);
+}
+
+.trigger {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-color-primary);
+}
+
+.accordionBody {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-base);
+    max-height: 150px;
+    overflow: hidden;
+    opacity: 0;
+    transition: all 1s ease-in-out;
+}
+
+.expandableText {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-base);
+    align-items: center;
+}
+
+.expandableTextTitle {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--spacing-base);
+}
+
+.expandableTextBody {
+    max-height: 55px;
+    overflow: hidden;
+    transition: max-height 2s ease-in-out;
+    opacity: 1;
+
+    & + .trigger {
+        transform: rotate(0deg);
+        transition: transform 1.5s ease-in-out;
+    }
+
+    &.open {
+        max-height: 1000px;
+        transition: max-height 2s ease-in-out;
+
+        & + .trigger {
+            transform: rotate(180deg);
+            transition: transform 1.5s ease-in-out;
+        }
+    }
+}
+
+.trigger {
+    transform: translateX(50%);
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--accent);
+}

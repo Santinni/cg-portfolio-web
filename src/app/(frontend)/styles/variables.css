@@ -33,6 +33,7 @@
     /* Text colors */
     --text-color-primary: var(--color-white);
     --text-color-secondary: var(--color-gray);
+    /* --text-color-secondary: var(--color-white); */
     --text-color-tertiary: var(--color-midnight-blue);
     --accent: var(--color-yellow);
     --accent-hover: var(--color-yellow-dark);

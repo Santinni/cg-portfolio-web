@@ -24,17 +24,17 @@ export const Contact: CollectionConfig = {
     {
       name: "phone",
       type: "text",
-      required: false,
+      required: true,
     },
     {
       name: "linkedin",
       type: "text",
-      required: false,
+      required: true,
     },
     {
       name: "github",
       type: "text",
-      required: false,
+      required: true,
     },
   ],
 };

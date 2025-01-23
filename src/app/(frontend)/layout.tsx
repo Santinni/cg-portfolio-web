@@ -35,7 +35,7 @@ export default function RootLayout({
     <html lang="cs">
       <body className={inter.className}>
         <Navigation />
-        {children}
+        <main>{children}</main>
       </body>
     </html>
   );

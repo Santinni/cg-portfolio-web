@@ -13,7 +13,7 @@ export default function Hero() {
       <div className={styles.overlay} />
       <div className={styles.content}>
         <h1 className={styles.heroTitle}>Crafting Reactive Web Solutions</h1>
-        <p className={styles.description}>
+        <p className={styles.subtitle}>
           Building modern and reliable web applications
         </p>
         <Button onClick={handleClick}>Get Started</Button>
