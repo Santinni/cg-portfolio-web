@@ -1,4 +1,4 @@
-import styles from "./Experience.module.css";
+import styles from "./Exp.module.css";
 
 type ExperienceItem = {
   period: string;

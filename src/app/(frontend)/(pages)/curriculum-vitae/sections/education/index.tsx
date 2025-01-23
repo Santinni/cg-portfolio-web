@@ -1,4 +1,4 @@
-import styles from "./Education.module.css";
+import styles from "./Edu.module.css";
 
 type EducationItem = {
   period: string;

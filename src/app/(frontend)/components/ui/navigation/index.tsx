@@ -7,7 +7,6 @@ import styles from "./Navigation.module.css";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Button } from "../../primitives/button";
-import { LinkButton } from "../../primitives/linkButton";
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
@@ -59,12 +58,16 @@ export default function Navigation() {
             >
               Projects
             </Link> */}
+            <Link
+              className={styles.link}
+              href="/#contact"
+              onClick={() => handleClose()}
+            >
+              Contact
+            </Link>
             <Link href="/curriculum-vitae" className={styles.link}>
               CV
             </Link>
-            <LinkButton href="/#contact" onClick={() => handleClose()}>
-              Contact
-            </LinkButton>
           </div>
           <Button
             className={styles.menuButton}
@@ -110,12 +113,16 @@ export default function Navigation() {
           >
             Projects
           </Link> */}
+          <Link
+            className={styles.mobileLink}
+            href="/#contact"
+            onClick={() => handleClose()}
+          >
+            Contact
+          </Link>
           <Link href="/curriculum-vitae" className={styles.mobileLink}>
             CV
           </Link>
-          <LinkButton href="/#contact" onClick={() => handleClose()}>
-            Contact
-          </LinkButton>
         </div>
       </dialog>
     </>
