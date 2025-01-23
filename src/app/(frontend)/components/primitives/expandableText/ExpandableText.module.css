@@ -48,6 +48,8 @@
     margin-bottom: var(--spacing-base);
 }
 
+
+
 .expandableTextBody {
     max-height: 55px;
     overflow: hidden;

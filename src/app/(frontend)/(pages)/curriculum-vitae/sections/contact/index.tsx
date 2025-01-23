@@ -1,5 +1,5 @@
 import { Mail, Phone, MapPin } from "lucide-react";
-import styles from "./Contact.module.css";
+import styles from "./Cont.module.css";
 
 export const Contact = () => {
   return (

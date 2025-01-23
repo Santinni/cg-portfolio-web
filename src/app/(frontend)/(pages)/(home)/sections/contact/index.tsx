@@ -1,10 +1,12 @@
 "use client";
 
-import { Button } from "@/app/(frontend)/components/primitives/button";
+// import { Button } from "@/app/(frontend)/components/primitives/button";
 // import { useState } from "react";
 import styles from "./Contact.module.css";
 // import { Button } from "@/app/(frontend)/components/primitives/button";
 import type { Contact as ContactType } from "@/payload-types";
+import { GithubIcon, LinkedinIcon } from "lucide-react";
+import BookingModal from "@/app/(frontend)/components/ui/bookingModal";
 
 interface ContactProps {
   data: ContactType;
@@ -41,19 +43,41 @@ export default function Contact({ data }: ContactProps) {
         <h2 className={styles.title}>{data.title}</h2>
         <p className={styles.subtitle}>{data.description}</p>
         <div className={styles.content}>
-          <a href={`mailto:${data.email}`}>{data.email}</a>
-          {data.phone && <a href={`tel:${data.phone}`}>{data.phone}</a>}
-          {data.linkedin && (
-            <a href={data.linkedin} target="_blank" rel="noopener noreferrer">
-              {data.linkedin}
+          <div className={styles.linkWrapper}>
+            <a className={styles.contactItem} href={`mailto:${data.email}`}>
+              {data.email}
             </a>
-          )}
-          {data.github && (
-            <a href={data.github} target="_blank" rel="noopener noreferrer">
-              {data.github}
-            </a>
-          )}
-          <Button>Book a meeting</Button>
+            {data.phone && (
+              <a className={styles.contactItem} href={`tel:${data.phone}`}>
+                {data.phone}
+              </a>
+            )}
+          </div>
+          <div className={styles.linkWrapper}>
+            {data.linkedin && (
+              <a
+                className={styles.contactItem}
+                href={data.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                title="LinkedIn"
+              >
+                <LinkedinIcon />
+              </a>
+            )}
+            {data.github && (
+              <a
+                className={styles.contactItem}
+                href={data.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                title="GitHub"
+              >
+                <GithubIcon />
+              </a>
+            )}
+          </div>
+          <BookingModal />
           {/* <form className={styles.form} onSubmit={handleSubmit}>
             <div className={styles.inputGroup}>
               <label htmlFor="name" className={styles.label}>
