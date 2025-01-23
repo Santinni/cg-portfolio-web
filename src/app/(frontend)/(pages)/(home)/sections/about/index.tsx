@@ -1,9 +1,13 @@
 import Image from "next/image";
 import styles from "./About.module.css";
-import { AboutType } from "@/types/about";
+import type { About as AboutType, Media } from "@/payload-types";
 import { Fragment } from "react";
 
-export default function About({ data }: { data: AboutType }) {
+interface AboutProps {
+  data: AboutType;
+}
+
+export default function About({ data }: AboutProps) {
   return (
     <section className={styles.section} id="about">
       <div className={styles.container}>
@@ -32,7 +36,7 @@ export default function About({ data }: { data: AboutType }) {
           {data.image && (
             <div className={styles.imageContainer}>
               <Image
-                src={data.image.url}
+                src={(data.image as Media).url || ""}
                 alt="About me"
                 fill
                 style={{ objectFit: "cover" }}

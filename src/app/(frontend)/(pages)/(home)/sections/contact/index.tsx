@@ -35,8 +35,6 @@ export default function Contact({ data }: ContactProps) {
   //   setFormData({ name: "", email: "", message: "" });
   // };
 
-  console.log(data);
-
   return (
     <section className={styles.section} id="contact">
       <div className={styles.container}>
