@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { ReactNode, useRef, useState } from "react";
 import Link from "next/link";
 import { Home, Menu, X } from "lucide-react";
 import styles from "./Navigation.module.css";
@@ -8,13 +8,13 @@ import Image from "next/image";
 import { Button } from "../../primitives/button";
 import { useId } from "react";
 
-const navItems: { label: string; href: string }[] = [
-  { label: "Home", href: "/" },
-  { label: "Services", href: "/#services" },
-  { label: "About", href: "/#about" },
-  // { label: "Projects", href: "/#projects" },
-  { label: "Contact", href: "/#contact" },
-  { label: "CV", href: "/curriculum-vitae" },
+const navItems: { label: string; href: string; icon: ReactNode | null }[] = [
+  { label: "Home", href: "/", icon: <Home /> },
+  { label: "Services", href: "/#services", icon: null },
+  { label: "About", href: "/#about", icon: null },
+  // { label: "Projects", href: "/#projects", icon: null },
+  { label: "Contact", href: "/#contact", icon: null },
+  { label: "CV", href: "/curriculum-vitae", icon: null },
 ];
 
 export default function Navigation() {
@@ -45,7 +45,7 @@ export default function Navigation() {
           <div className={styles.desktopMenu}>
             {navItems.map((item) => (
               <Link key={item.href} href={item.href} className={styles.link}>
-                {item.label === "Home" ? <Home /> : item.label}
+                {item.icon ? item.icon : item.label}
               </Link>
             ))}
           </div>
@@ -56,6 +56,7 @@ export default function Navigation() {
             aria-controls={id}
             aria-label="Toggle mobile menu"
             variant="transparent"
+            rounded
           >
             <Menu className={`${styles.menuIcon} ${isOpen ? "open" : ""}`} />
           </Button>
@@ -68,6 +69,7 @@ export default function Navigation() {
             className={styles.menuButton}
             onClick={toggleMenu}
             variant="transparent"
+            rounded
           >
             <X className={styles.menuIcon} />
           </Button>
@@ -80,7 +82,7 @@ export default function Navigation() {
               className={styles.mobileLink}
               onClick={toggleMenu}
             >
-              {item.label === "Home" ? <Home /> : item.label}
+              {item.icon ? item.icon : item.label}
             </Link>
           ))}
         </div>

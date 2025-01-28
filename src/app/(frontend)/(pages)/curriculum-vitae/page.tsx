@@ -1,14 +1,17 @@
 import React from "react";
-import styles from "./page.module.css";
-import { DownloadCloud, Linkedin } from "lucide-react";
-import { WhoAmI } from "./sections/who-am-i";
-import { TechnologicalStack } from "./sections/tech-stack";
-import { Experience } from "./sections/experience";
-import { Education } from "./sections/education";
-import { Contact } from "./sections/contact";
+
+import { DownloadCloud } from "lucide-react";
+
 import { ExpandingButton } from "@/app/(frontend)/components/primitives/expanding-button";
 
-const CurriculumPage = () => {
+import styles from "./page.module.css";
+import { Contact } from "./sections/contact";
+import { Education } from "./sections/education";
+import { Experience } from "./sections/experience";
+import { TechnologicalStack } from "./sections/tech-stack";
+import { WhoAmI } from "./sections/who-am-i";
+
+export const CurriculumPage = () => {
   return (
     <>
       <section className={styles.section}>
@@ -17,29 +20,12 @@ const CurriculumPage = () => {
             <h1 className={styles.headline}>curriculum vitæ</h1>
             <h2 className={styles.name}>Karel Kutchan</h2>
             <p className={styles.profession}>Frontend Developer</p>
-
             <Contact />
           </div>
-
           <WhoAmI />
-
           <TechnologicalStack />
-
           <Experience />
-
           <Education />
-
-          <div className={styles.socialLinks}>
-            <a
-              href="https://www.linkedin.com/in/karelkutchan/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.socialLink}
-            >
-              <Linkedin />
-              <span>LinkedIn Profile</span>
-            </a>
-          </div>
         </div>
       </section>
 

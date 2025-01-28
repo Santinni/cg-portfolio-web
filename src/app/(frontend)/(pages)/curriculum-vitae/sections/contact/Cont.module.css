@@ -9,13 +9,15 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
-  color: var(--text-color-secondary);
+  /* color: var(--text-color-secondary); */
+  color: var(--accent);
 }
 
 .icon {
   width: 1.2rem;
   height: 1.2rem;
-  color: var(--text-color-primary);
+  /* color: var(--text-color-primary); */
+  color: var(--accent);
 }
 
 .contactItem a {
