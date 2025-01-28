@@ -1,30 +1,36 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { ReactNode, useRef, useState } from "react";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import { Home, Menu, X } from "lucide-react";
 import styles from "./Navigation.module.css";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
 import { Button } from "../../primitives/button";
+import { useId } from "react";
+
+const navItems: { label: string; href: string; icon: ReactNode | null }[] = [
+  { label: "Home", href: "/", icon: <Home /> },
+  { label: "Services", href: "/#services", icon: null },
+  { label: "About", href: "/#about", icon: null },
+  // { label: "Projects", href: "/#projects", icon: null },
+  { label: "Contact", href: "/#contact", icon: null },
+  { label: "CV", href: "/curriculum-vitae", icon: null },
+];
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const dialogRef = useRef<HTMLDialogElement>(null);
-  const pathname = usePathname();
+  const id = useId();
 
-  useEffect(() => {
-    handleClose();
-  }, [pathname]);
-
-  const handleOpen = () => {
-    setIsOpen(true);
-    dialogRef.current?.showModal();
-  };
-
-  const handleClose = () => {
-    setIsOpen(false);
-    dialogRef.current?.close();
+  const toggleMenu = () => {
+    if (!dialogRef.current) return;
+    if (dialogRef.current.open) {
+      dialogRef.current.close();
+      setIsOpen(false);
+    } else {
+      dialogRef.current.showModal();
+      setIsOpen(true);
+    }
   };
 
   return (
@@ -37,92 +43,48 @@ export default function Navigation() {
           </Link>
 
           <div className={styles.desktopMenu}>
-            <Link
-              href="/#services"
-              className={styles.link}
-              onClick={() => handleClose()}
-            >
-              Services
-            </Link>
-            <Link
-              href="/#about"
-              className={styles.link}
-              onClick={() => handleClose()}
-            >
-              About
-            </Link>
-            {/* <Link
-              href="/#projects"
-              className={styles.link}
-              onClick={() => handleClose()}
-            >
-              Projects
-            </Link> */}
-            <Link
-              className={styles.link}
-              href="/#contact"
-              onClick={() => handleClose()}
-            >
-              Contact
-            </Link>
-            <Link href="/curriculum-vitae" className={styles.link}>
-              CV
-            </Link>
+            {navItems.map((item) => (
+              <Link key={item.href} href={item.href} className={styles.link}>
+                {item.icon ? item.icon : item.label}
+              </Link>
+            ))}
           </div>
           <Button
             className={styles.menuButton}
-            onClick={handleOpen}
+            onClick={toggleMenu}
             aria-expanded={isOpen}
-            aria-controls="mobile-menu"
+            aria-controls={id}
             aria-label="Toggle mobile menu"
             variant="transparent"
+            rounded
           >
             <Menu className={`${styles.menuIcon} ${isOpen ? "open" : ""}`} />
           </Button>
         </div>
       </nav>
-      <dialog ref={dialogRef} className={styles.mobileMenu} id="mobile-menu">
+      {/* Mobile dialog menu */}
+      <dialog ref={dialogRef} className={styles.mobileMenu} id={id}>
         <div className={styles.mobileMenuHeader}>
           <Button
             className={styles.menuButton}
-            onClick={handleClose}
+            onClick={toggleMenu}
             variant="transparent"
+            rounded
           >
             <X className={styles.menuIcon} />
           </Button>
         </div>
         <div className={styles.mobileMenuContent}>
-          <Link
-            href="/#services"
-            className={styles.mobileLink}
-            onClick={() => handleClose()}
-          >
-            Services
-          </Link>
-          <Link
-            href="/#about"
-            className={styles.mobileLink}
-            onClick={() => handleClose()}
-          >
-            About
-          </Link>
-          {/* <Link
-            href="/#projects"
-            className={styles.mobileLink}
-            onClick={() => handleClose()}
-          >
-            Projects
-          </Link> */}
-          <Link
-            className={styles.mobileLink}
-            href="/#contact"
-            onClick={() => handleClose()}
-          >
-            Contact
-          </Link>
-          <Link href="/curriculum-vitae" className={styles.mobileLink}>
-            CV
-          </Link>
+          {navItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={styles.mobileLink}
+              onClick={toggleMenu}
+            >
+              {item.icon ? item.icon : item.label}
+            </Link>
+          ))}
         </div>
       </dialog>
     </>

@@ -72,23 +72,10 @@
     resize: vertical;
 }
 
-.contactItem {
-    color: var(--accent);
-    font-size: var(--font-size-md);
-    font-weight: var(--font-weight-medium);
-    text-decoration: none;
-    transition: color 0.3s ease;
-
-    &:hover {
-        color: var(--text-color-primary);
-        text-decoration: underline;
-    }
-}
-
 .linkWrapper {
     display: flex;
     flex-flow: row wrap;
-    gap: var(--spacing-3xl);
+    gap: clamp(var(--spacing-base), 5vw, var(--spacing-3xl));
     justify-content: center;
     align-items: center;
 }

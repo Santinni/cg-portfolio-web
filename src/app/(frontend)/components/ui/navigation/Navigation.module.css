@@ -41,7 +41,7 @@
 }
 
 .link:hover {
-    color: var(--text-color-secondary);
+    color: var(--accent);
 }
 
 .menuButton {
@@ -64,7 +64,7 @@
 .mobileMenuHeader {
     display: flex;
     justify-content: flex-end;
-    padding: var(--spacing-sm);
+    padding: 4px;
     padding-inline: var(--spacing-md);
 }
 

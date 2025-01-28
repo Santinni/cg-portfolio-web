@@ -14,6 +14,7 @@
 
 .button:hover {
     background-color: var(--accent-hover);
+    color: var(--text-color-tertiary);
 }
 
 .buttonContent {
