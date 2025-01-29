@@ -1,4 +1,7 @@
 .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     background-color: var(--accent);
     color: var(--text-color-tertiary);
     padding: var(--spacing-md) var(--spacing-xl);

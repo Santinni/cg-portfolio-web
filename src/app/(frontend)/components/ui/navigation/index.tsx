@@ -1,12 +1,22 @@
 "use client";
 
-import { ReactNode, useRef, useState } from "react";
-import Link from "next/link";
-import { Home, Menu, X } from "lucide-react";
-import styles from "./Navigation.module.css";
-import Image from "next/image";
-import { Button } from "../../primitives/button";
-import { useId } from "react";
+import {
+  ReactNode,
+  useId,
+  useRef,
+  useState,
+} from 'react';
+
+import {
+  Home,
+  Menu,
+  X,
+} from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+
+import { Button } from '../../primitives/button';
+import styles from './Navigation.module.css';
 
 const navItems: { label: string; href: string; icon: ReactNode | null }[] = [
   { label: "Home", href: "/", icon: <Home /> },
@@ -36,7 +46,7 @@ export default function Navigation() {
   return (
     <>
       <nav className={styles.nav}>
-        <div className={styles.wrapper}>
+        <div className={styles.menuWrapper}>
           <Link href="/" className={styles.logo}>
             <Image src="/kklogo.svg" alt="Logo" width={40} height={40} />
             Karel Kutchan
@@ -44,7 +54,7 @@ export default function Navigation() {
 
           <div className={styles.desktopMenu}>
             {navItems.map((item) => (
-              <Link key={item.href} href={item.href} className={styles.link}>
+              <Link key={item.href} href={item.href} className={styles.navLink}>
                 {item.icon ? item.icon : item.label}
               </Link>
             ))}
@@ -58,7 +68,9 @@ export default function Navigation() {
             variant="transparent"
             rounded
           >
-            <Menu className={`${styles.menuIcon} ${isOpen ? "open" : ""}`} />
+            <Menu
+              className={`${styles.menuIcon} ${isOpen ? styles.open : ""}`}
+            />
           </Button>
         </div>
       </nav>
@@ -79,7 +91,7 @@ export default function Navigation() {
             <Link
               key={item.href}
               href={item.href}
-              className={styles.mobileLink}
+              className={styles.mobileNavLink}
               onClick={toggleMenu}
             >
               {item.icon ? item.icon : item.label}

@@ -24,7 +24,9 @@
 
 .expandingButton:hover {
     background-color: var(--accent-hover);
+    color: var(--background);
     width: 176px;
+
 
     & .expandingButtonText {
         opacity: 1;

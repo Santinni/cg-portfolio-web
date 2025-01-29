@@ -6,12 +6,13 @@
     backdrop-filter: blur(8px);
 }
 
-.wrapper {
+.menuWrapper {
     display: flex;
     justify-content: space-between;
     align-items: center;
     height: 4rem;
     padding-inline: var(--spacing-xl);
+
 
     @media (max-width: 850px) {
         padding-inline: var(--spacing-md);
@@ -31,17 +32,25 @@
 
 .desktopMenu {
     display: none;
+
+    @media screen and (min-width: 850px) {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xl);
+
+    }
 }
 
-.link {
+
+.navLink {
     color: var(--text-color-primary);
     text-decoration: none;
     transition: color 0.2s;
     padding: var(--spacing-sm) var(--spacing-base);
-}
 
-.link:hover {
-    color: var(--accent);
+    &:hover {
+        color: var(--accent);
+    }
 }
 
 .menuButton {
@@ -50,12 +59,22 @@
     border: none;
     cursor: pointer;
     padding: var(--spacing-sm);
+
+    &:hover {
+        color: var(--accent);
+    }
+
+    @media screen and (min-width: 850px) {
+        display: none;
+    }
 }
 
 .menuIcon {
     width: 2rem;
     height: 2rem;
+    opacity: 1;
 }
+
 
 .menuIcon.open {
     opacity: 0;
@@ -75,6 +94,10 @@
     border-top: 1px solid rgba(75, 85, 99, 0.4);
     min-width: 100vw;
     min-height: 100svh;
+
+    @media screen and (min-width: 850px) {
+        display: none;
+    }
 }
 
 .mobileMenuContent {
@@ -86,31 +109,16 @@
     justify-content: center;
 }
 
-.mobileLink {
-    display: block;
+.mobileNavLink {
     padding: var(--spacing-sm) var(--spacing-md);
     color: var(--text-color-primary);
     text-decoration: none;
     transition: color 0.2s;
     font-size: var(--font-size-2xl);
-}
+    text-align: center;
+    width: 100%;
 
-.mobileLink:hover {
-    color: var(--text-color-primary);
-}
-
-@media (min-width: 850px) {
-    .desktopMenu {
-        display: flex;
-        align-items: center;
-        gap: var(--spacing-xl);
-    }
-
-    .menuButton {
-        display: none;
-    }
-
-    .mobileMenu {
-        display: none;
+    &:hover {
+        color: var(--accent);
     }
 }

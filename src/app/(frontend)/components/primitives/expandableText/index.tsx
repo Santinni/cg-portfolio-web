@@ -1,9 +1,15 @@
 "use client";
 
-import { ChevronDownIcon } from "lucide-react";
-import styles from "./ExpandableText.module.css";
-import { FC, PropsWithChildren, useState } from "react";
-import { Button } from "../button";
+import {
+  FC,
+  PropsWithChildren,
+  useState,
+} from 'react';
+
+import { ChevronDownIcon } from 'lucide-react';
+
+import { Button } from '../button';
+import styles from './ExpandableText.module.css';
 
 const ExpandableText: FC<PropsWithChildren> = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,7 +26,7 @@ const ExpandableText: FC<PropsWithChildren> = ({ children }) => {
         variant="transparent"
         rounded
       >
-        <ChevronDownIcon className={styles.accordionIcon} />
+        <ChevronDownIcon className={styles.triggerIcon} />
       </Button>
     </div>
   );
