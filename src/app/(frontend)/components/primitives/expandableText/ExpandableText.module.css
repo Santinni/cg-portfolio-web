@@ -48,8 +48,6 @@
     margin-bottom: var(--spacing-base);
 }
 
-
-
 .expandableTextBody {
     max-height: 55px;
     overflow: hidden;
@@ -78,4 +76,9 @@
     border: none;
     cursor: pointer;
     color: var(--accent);
+    transition: color 0.2s ease;
+
+    &:hover {
+        color: var(--text-color-primary);
+    }
 }
