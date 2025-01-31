@@ -1,7 +1,13 @@
-import Image from "next/image";
-import styles from "./About.module.css";
-import type { About as AboutType, Media } from "@/payload-types";
-import { Fragment } from "react";
+import { Fragment } from 'react';
+
+import Image from 'next/image';
+
+import type {
+  About as AboutType,
+  Media,
+} from '@/payload-types';
+
+import styles from './About.module.css';
 
 interface AboutProps {
   data: AboutType;
