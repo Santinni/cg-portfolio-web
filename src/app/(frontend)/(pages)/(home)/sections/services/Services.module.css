@@ -1,5 +1,6 @@
 .section {
     padding: var(--spacing-3xl) var(--spacing-base);
+    background-color: var(--background-secondary);
 }
 
 .container {

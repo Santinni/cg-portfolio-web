@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { DownloadCloud } from 'lucide-react';
 
 import {

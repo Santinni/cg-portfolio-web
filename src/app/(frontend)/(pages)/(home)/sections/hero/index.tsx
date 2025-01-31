@@ -1,7 +1,8 @@
 "use client";
 
-import { Button } from "@/app/(frontend)/components/primitives/button";
-import styles from "./Hero.module.css";
+import { Button } from '@/app/(frontend)/components/primitives/button';
+
+import styles from './Hero.module.css';
 
 export default function Hero() {
   return (

@@ -46,6 +46,8 @@
 }
 
 .profession {
+    font-size: clamp(var(--font-size-md), 5vw, var(--font-size-lg));
+    line-height: clamp(var(--line-height-lg), 1.1 + 0.5vw, var(--line-height-xl));
     color: var(--text-color-secondary);
     margin-top: var(--spacing-sm);
     text-align: center;

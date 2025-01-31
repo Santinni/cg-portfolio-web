@@ -1,16 +1,12 @@
-import styles from "./Services.module.css";
+import { Service } from '@/payload-types';
 
-interface Service {
-  title: string;
-  description: string;
-  icon: string;
-}
+import styles from './Services.module.css';
 
 interface ServicesProps {
-  services: Service[];
+  data: Service[];
 }
 
-export default function Services({ services }: ServicesProps) {
+export default function Services({ data }: ServicesProps) {
   return (
     <section className={styles.section} id="services">
       <div className={styles.container}>
@@ -19,7 +15,7 @@ export default function Services({ services }: ServicesProps) {
           Together, we can turn your visions into reality.
         </p>
         <div className={styles.grid}>
-          {services.map((service, index) => (
+          {data.map((service, index) => (
             <div key={index} className={styles.card}>
               <div className={styles.icon}>{service.icon}</div>
               <h3 className={styles.cardTitle}>{service.title}</h3>

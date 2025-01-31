@@ -1,16 +1,23 @@
 "use client";
 
+import {
+  GithubIcon,
+  LinkedinIcon,
+} from 'lucide-react';
+
+import BookingModal from '@/app/(frontend)/components/ui/bookingModal';
+// import { Button } from "@/app/(frontend)/components/primitives/button";
+import type { Contact as ContactType } from '@/payload-types';
+
 // import { Button } from "@/app/(frontend)/components/primitives/button";
 // import { useState } from "react";
-import styles from "./Contact.module.css";
-// import { Button } from "@/app/(frontend)/components/primitives/button";
-import type { Contact as ContactType } from "@/payload-types";
-import { GithubIcon, LinkedinIcon } from "lucide-react";
-import BookingModal from "@/app/(frontend)/components/ui/bookingModal";
+import styles from './Contact.module.css';
 
 interface ContactProps {
   data: ContactType;
 }
+
+// TODO: Add contact form component, and add it to the contact section. Use it in modal.
 
 export default function Contact({ data }: ContactProps) {
   // const [formData, setFormData] = useState({
