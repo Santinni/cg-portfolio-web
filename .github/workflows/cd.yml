@@ -9,7 +9,7 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
   COMPOSE_PROJECT_NAME: codeguy
-  DOMAIN: codeguy.cz
+  DOMAIN: ${{ secrets.DOMAIN }}
 
 jobs:
   deploy:
