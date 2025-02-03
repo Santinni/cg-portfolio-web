@@ -1,0 +1,137 @@
+name: CD
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+  COMPOSE_PROJECT_NAME: codeguy
+  DOMAIN: codeguy.cz
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    # Runs only if CI workflow has been successful
+    needs: [code-check, docker-build]
+
+    environment:
+      name: production
+      url: https://codeguy.cz
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Cache Docker layers
+        uses: actions/cache@v3
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate image metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=sha,format=long
+            type=ref,event=branch
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            NODE_ENV=production
+            DOMAIN=${{ env.DOMAIN }}
+            NEXT_PUBLIC_SERVER_URL=https://${{ env.DOMAIN }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+
+      - name: Move cache
+        run: |
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+
+      - name: Create .env file on VPS
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_KEY }}
+          script: |
+            cd /opt/codeguy
+            cat > .env << EOL
+            NODE_ENV=production
+            DOMAIN=${{ env.DOMAIN }}
+            PAYLOAD_SECRET=${{ secrets.PAYLOAD_SECRET }}
+            NEXT_PUBLIC_SERVER_URL=https://${{ env.DOMAIN }}
+            DB_USER=${{ secrets.DB_USER }}
+            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+            DB_NAME=${{ secrets.DB_NAME }}
+            COMPOSE_PROJECT_NAME=${{ env.COMPOSE_PROJECT_NAME }}
+            EOL
+
+      - name: Deploy to DigitalOcean
+        id: deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_KEY }}
+          script: |
+            cd /opt/codeguy
+            echo "Pulling latest images..."
+            docker-compose pull
+            echo "Stopping and removing old containers..."
+            docker-compose down
+            echo "Starting new containers..."
+            docker-compose up -d
+            echo "Cleaning up old images..."
+            docker system prune -af
+            echo "Deployment completed successfully!"
+
+      - name: Check deployment
+        id: healthcheck
+        run: |
+          # Wait 30 seconds for services to start
+          sleep 30
+          # Check availability
+          curl -sSf https://${{ env.DOMAIN }}/api/health || exit 1
+
+      - name: Notify on success
+        if: success()
+        run: |
+          echo "🎉 Deployment on ${{ env.DOMAIN }} completed successfully!"
+          echo "Version: ${{ github.sha }}"
+          echo "Time: $(date)"
+
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "❌ Deployment on ${{ env.DOMAIN }} failed!"
+          echo "Version: ${{ github.sha }}"
+          echo "Time: $(date)"

@@ -2,36 +2,44 @@ version: '3.8'
 
 services:
   web:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ${REGISTRY:-ghcr.io}/${GITHUB_REPOSITORY}:${IMAGE_TAG:-latest}
     restart: always
-    ports:
-      - "3000:3000"
     environment:
-      - NODE_ENV=${NODE_ENV}
-      - PAYLOAD_SECRET=${PAYLOAD_SECRET}
-      - NEXT_PUBLIC_SERVER_URL=${NEXT_PUBLIC_SERVER_URL}
-      # - DATABASE_URI=postgres://${DB_USER}:${DB_PASSWORD}@db:5432/${DB_NAME}
-      - DATABASE_URI=${DATABASE_URI}
+      - NODE_ENV=${NODE_ENV:-production}
+      - DOMAIN=${DOMAIN:-codeguy.cz}
+      - PAYLOAD_SECRET=${PAYLOAD_SECRET:?PAYLOAD_SECRET is required}
+      - NEXT_PUBLIC_SERVER_URL=https://${DOMAIN:-codeguy.cz}
+      - DATABASE_URI=postgres://${DB_USER:?DB_USER is required}:${DB_PASSWORD:?DB_PASSWORD is required}@db:5432/${DB_NAME:?DB_NAME is required}
+      - PAYLOAD_CONFIG_PATH=${PAYLOAD_CONFIG_PATH:-src/payload.config.ts}
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+      start_period: 5s
 
   db:
     image: postgres:17-alpine
     restart: always
     environment:
-      - POSTGRES_USER=${DB_USER}
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
-      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER:?DB_USER is required}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:?DB_PASSWORD is required}
+      - POSTGRES_DB=${DB_NAME:?DB_NAME is required}
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:?DB_USER is required} -d ${DB_NAME:?DB_NAME is required}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   caddy:
     image: caddy:2-alpine
@@ -40,19 +48,26 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy_data:/data
       - caddy_config:/config
     depends_on:
-      - web
+      web:
+        condition: service_healthy
     networks:
       - app-network
+    environment:
+      - DOMAIN=${DOMAIN:-codeguy.cz}
 
 volumes:
   postgres_data:
+    name: ${COMPOSE_PROJECT_NAME:-codeguy}_postgres_data
   caddy_data:
+    name: ${COMPOSE_PROJECT_NAME:-codeguy}_caddy_data
   caddy_config:
+    name: ${COMPOSE_PROJECT_NAME:-codeguy}_caddy_config
 
 networks:
   app-network:
-    driver: bridge 
+    name: ${COMPOSE_PROJECT_NAME:-codeguy}_network
+    driver: bridge

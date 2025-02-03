@@ -1,31 +1,76 @@
+{
+    # Global settings
+    email karel@codeguy.cz
+    auto_https on
+}
+
 codeguy.cz {
-    reverse_proxy web:3000
-    
-    # Automatické HTTPS
+    reverse_proxy web:3000 {
+        # Health checks
+        health_uri /api/health
+        health_interval 30s
+        health_timeout 5s
+        health_status 200
+    }
+
+    # Automatic HTTPS
     tls {
         protocols tls1.2 tls1.3
+        curves x25519
+        alpn h2 http/1.1
     }
-    
-    # Základní bezpečnostní hlavičky
+
+    # Basic security headers
     header {
-        # Povolení CORS
+        # Allow CORS
         Access-Control-Allow-Origin *
-        # Bezpečnostní hlavičky
+        Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+        Access-Control-Allow-Headers "DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization"
+
+        # Security headers
         Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
         X-Content-Type-Options "nosniff"
         X-Frame-Options "DENY"
         Referrer-Policy "strict-origin-when-cross-origin"
-        Content-Security-Policy "upgrade-insecure-requests"
-        # Odstranění citlivých informací
+        Content-Security-Policy "upgrade-insecure-requests; default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https:;"
+        Permissions-Policy "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
+
+        # Remove sensitive information
         -Server
+        -X-Powered-By
     }
-    
-    # Komprese
-    encode zstd gzip
-    
-    # Logování
+
+    # Compression
+    encode {
+        gzip 6
+        zstd
+        minimum_length 1000
+    }
+
+    # Static files cache
+    handle_path {
+        file_server {
+            root /app/public
+        }
+        header Cache-Control "public, max-age=31536000"
+        header {
+            ?type application/javascript
+            ?type text/css
+            ?type image/*
+            ?type font/*
+        }
+    }
+
+    # Logs
     log {
-        output file /var/log/caddy/access.log
-        format json
+        output file /var/log/caddy/access.log {
+            roll_size 10MB
+            roll_keep 10
+            roll_keep_for 720h
+        }
+        format json {
+            time_format iso8601
+            time_local
+        }
     }
-} 
+}

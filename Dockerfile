@@ -1,38 +1,44 @@
 # Build stage
 FROM node:22.0.0-alpine AS builder
 
-# Instalace pnpm
+# Install required dependencies
+RUN apk add --no-cache libc6-compat
+
+# Install pnpm
 RUN npm install -g pnpm
 
-# Vytvoření pracovního adresáře
+# Create working directory
 WORKDIR /app
 
-# Kopírování package.json a pnpm-lock.yaml
+# Copy package.json and pnpm-lock.yaml
 COPY package.json pnpm-lock.yaml ./
 
-# Instalace závislostí
+# Install dependencies
 RUN pnpm install --frozen-lockfile
 
-# Kopírování zdrojových souborů
+# Copy source files
 COPY . .
 
-# Build aplikace
+# Build application
 RUN pnpm run build
 
 # Production stage
 FROM node:22.0.0-alpine AS runner
 
-# Instalace pnpm
+# Install required dependencies
+RUN apk add --no-cache libc6-compat
+
+# Install pnpm
 RUN npm install -g pnpm
 
-# Vytvoření non-root uživatele
+# Create non-root user
 RUN addgroup --system --gid 1001 nodejs \
     && adduser --system --uid 1001 nextjs
 
-# Nastavení pracovního adresáře
+# Set working directory
 WORKDIR /app
 
-# Kopírování potřebných souborů z build stage
+# Copy required files from build stage
 COPY --from=builder /app/package.json ./
 COPY --from=builder /app/pnpm-lock.yaml ./
 COPY --from=builder /app/.next ./.next
@@ -40,17 +46,25 @@ COPY --from=builder /app/public ./public
 COPY --from=builder /app/src ./src
 COPY --from=builder /app/next.config.ts ./
 
-# Instalace pouze produkčních závislostí
+# Install only production dependencies
 RUN pnpm install --prod
 
-# Změna vlastníka souborů
+# Change file ownership
 RUN chown -R nextjs:nodejs /app
 
-# Přepnutí na non-root uživatele
+# Switch to non-root user
 USER nextjs
 
-# Expose portu
+# Set environment variables
+ENV NODE_ENV=production \
+    PORT=3000
+
+# Expose port
 EXPOSE 3000
 
-# Spuštění aplikace
+# Healthcheck
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
+    CMD wget --no-verbose --tries=1 --spider http://localhost:3000/api/health || exit 1
+
+# Start application
 CMD ["pnpm", "start"] 
