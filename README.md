@@ -84,7 +84,7 @@ cg-portfolio-web/
 │   │   │   │   ├── primitives/  # Basic UI components (buttons, inputs, etc.)
 │   │   │   │   └── ui/          # Complex UI components (navigation, cards, etc.)
 │   │   │   ├── styles/         # Global styles and variables
-│   │   ├── (backend-payload)/  # PayloadCMS admin interface and configuration
+│   │   ├── (payload)/  # PayloadCMS admin interface and configuration
 │   │   └── routes/            # API routes and endpoints
 │   ├── collections/  # PayloadCMS collections (data models and schemas)
 │   ├── lib/         # Utility functions, hooks, and shared business logic
@@ -96,7 +96,7 @@ cg-portfolio-web/
 This structure follows modern Next.js and PayloadCMS best practices with a clear separation of concerns:
 
 - **Frontend**: All client-side code is organized under `src/app/(frontend)`, following Next.js 14+ App Router conventions
-- **Backend**: PayloadCMS admin and API functionality is isolated in `src/app/(backend-payload)`
+- **Backend**: PayloadCMS admin and API functionality is isolated in `src/app/(payload)`
 - **Components**: UI components are split between basic primitives and complex UI components
 - **Data Layer**: Collections and types provide a robust data modeling system
 - **Configuration**: Environment and build settings are kept at the root level
@@ -122,7 +122,3 @@ pnpm start
 ## 📝 License
 
 [License Type] - see the [LICENSE.md](LICENSE.md) file for details
-
-## 👥 Contributing
-
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
