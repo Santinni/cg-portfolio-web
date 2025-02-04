@@ -10,9 +10,14 @@ on:
 jobs:
   code-check:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -22,29 +27,68 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v3
         with:
-          version: 8
+          version: 9.12.0
           run_install: false
 
       - name: Get pnpm store directory
+        id: pnpm-cache
         shell: bash
         run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+          pnpm --version
+          node --version
+          echo "PNPM_HOME=$HOME/.local/share/pnpm" >> $GITHUB_ENV
+          STORE_PATH=$(pnpm store path)
+          echo "Store path is: $STORE_PATH"
+          echo "STORE_PATH=$STORE_PATH" >> $GITHUB_ENV
 
       - name: Setup pnpm cache
         uses: actions/cache@v3
         with:
-          path: ${{ env.STORE_PATH }}
+          path: |
+            ${{ env.STORE_PATH }}
+            ${{ env.PNPM_HOME }}
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
 
+      - name: Check for lockfile
+        shell: bash
+        run: |
+          ls -la
+          if [[ ! -f pnpm-lock.yaml ]]; then
+            echo "❌ Error: pnpm-lock.yaml is missing"
+            exit 1
+          else
+            echo "✅ pnpm-lock.yaml found"
+          fi
+
+      - name: Debug file structure
+        shell: bash
+        run: |
+          echo "Current directory:"
+          pwd
+          echo "\nDirectory contents:"
+          ls -la
+          echo "\nParent directory contents:"
+          ls -la ..
+          echo "\nRoot directory contents:"
+          ls -la /
+          echo "\nFind pnpm-lock.yaml:"
+          find / -name pnpm-lock.yaml 2>/dev/null || echo "No pnpm-lock.yaml found"
+
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        shell: bash
+        run: |
+          echo "Using pnpm store at: $STORE_PATH"
+          echo "PNPM_HOME is set to: $PNPM_HOME"
+          pnpm install --frozen-lockfile
 
       - name: Lint
+        shell: bash
         run: pnpm lint
 
       - name: Type check
+        shell: bash
         run: pnpm tsc --noEmit
 
   docker-build:
@@ -76,6 +120,7 @@ jobs:
           cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
       - name: Move cache
+        shell: bash
         run: |
           rm -rf /tmp/.buildx-cache
           mv /tmp/.buildx-cache-new /tmp/.buildx-cache

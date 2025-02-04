@@ -11,6 +11,14 @@ services:
       - NEXT_PUBLIC_SERVER_URL=https://${DOMAIN:-codeguy.cz}
       - DATABASE_URI=postgres://${DB_USER:?DB_USER is required}:${DB_PASSWORD:?DB_PASSWORD is required}@db:5432/${DB_NAME:?DB_NAME is required}
       - PAYLOAD_CONFIG_PATH=${PAYLOAD_CONFIG_PATH:-src/payload.config.ts}
+    deploy:
+      resources:
+        limits:
+          cpus: '0.7'
+          memory: 512M
+        reservations:
+          cpus: '0.2'
+          memory: 256M
     depends_on:
       db:
         condition: service_healthy
@@ -32,6 +40,16 @@ services:
       - POSTGRES_DB=${DB_NAME:?DB_NAME is required}
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./postgres/backup:/backup
+      - ./postgres/logs:/var/log/postgresql
+    deploy:
+      resources:
+        limits:
+          cpus: '0.7'
+          memory: 512M
+        reservations:
+          cpus: '0.2'
+          memory: 256M
     networks:
       - app-network
     healthcheck:
@@ -40,6 +58,26 @@ services:
       timeout: 5s
       retries: 5
       start_period: 10s
+    command: >
+      postgres
+      -c logging_collector=on
+      -c log_directory=/var/log/postgresql
+      -c log_filename=postgresql-%Y-%m-%d_%H%M%S.log
+      -c log_rotation_age=1d
+      -c log_rotation_size=10MB
+      # Optimized for low memory environment
+      -c shared_buffers=128MB
+      -c work_mem=4MB
+      -c maintenance_work_mem=32MB
+      -c effective_cache_size=256MB
+      -c max_connections=20
+      -c random_page_cost=1.1
+      -c effective_io_concurrency=200
+      -c checkpoint_completion_target=0.9
+      -c wal_buffers=16MB
+      -c default_statistics_target=100
+      -c autovacuum_max_workers=2
+      -c autovacuum_naptime=20s
 
   caddy:
     image: caddy:2-alpine
@@ -51,6 +89,15 @@ services:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy_data:/data
       - caddy_config:/config
+      - ./caddy/logs:/var/log/caddy
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+        reservations:
+          cpus: '0.1'
+          memory: 128M
     depends_on:
       web:
         condition: service_healthy
@@ -66,6 +113,8 @@ volumes:
     name: ${COMPOSE_PROJECT_NAME:-codeguy}_caddy_data
   caddy_config:
     name: ${COMPOSE_PROJECT_NAME:-codeguy}_caddy_config
+  caddy_logs:
+    name: ${COMPOSE_PROJECT_NAME:-codeguy}_caddy_logs
 
 networks:
   app-network:
