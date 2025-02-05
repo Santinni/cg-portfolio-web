@@ -18,9 +18,6 @@ jobs:
       contents: read
       packages: write
 
-    # Runs only if CI workflow has been successful
-    needs: [code-check, docker-build]
-
     environment:
       name: production
       url: https://codeguy.cz
