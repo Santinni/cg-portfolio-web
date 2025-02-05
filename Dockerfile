@@ -1,17 +1,18 @@
 # Build stage
 FROM node:22.0.0-alpine AS builder
 
-# Enable corepack for pnpm
-RUN corepack enable pnpm
-
-# Install required dependencies
-RUN apk add --no-cache libc6-compat libvips libvips-dev
+# Install required dependencies and setup environment
+RUN corepack enable pnpm && \
+    apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community \
+    libc6-compat \
+    vips-dev \
+    build-base \
+    python3 \
+    pkgconfig && \
+    pnpm config set store-dir /root/.local/share/pnpm/store
 
 # Create working directory
 WORKDIR /app
-
-# Setup pnpm cache
-RUN pnpm config set store-dir /root/.local/share/pnpm/store
 
 # Copy package.json and pnpm-lock.yaml
 COPY package.json pnpm-lock.yaml ./
@@ -28,21 +29,16 @@ RUN pnpm run build
 # Production stage
 FROM node:22.0.0-alpine AS runner
 
-# Install required dependencies
-RUN apk add --no-cache libc6-compat libvips
-
-# Enable corepack for pnpm
-RUN corepack enable pnpm
-
-# Create non-root user
-RUN addgroup --system --gid 1001 nodejs \
-    && adduser --system --uid 1001 nextjs
+# Install required dependencies and setup environment
+RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community \
+    libc6-compat \
+    vips && \
+    corepack enable pnpm && \
+    addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 nextjs
 
 # Set working directory
 WORKDIR /app
-
-# Switch to non-root user
-USER nextjs
 
 # Copy required files from build stage
 COPY --chown=nextjs:nodejs --from=builder /app/package.json ./
@@ -51,8 +47,12 @@ COPY --chown=nextjs:nodejs --from=builder /app/.next ./.next
 COPY --chown=nextjs:nodejs --from=builder /app/public ./public
 COPY --chown=nextjs:nodejs --from=builder /app/next.config.ts ./
 
-# Install only production dependencies
-RUN pnpm install --frozen-lockfile --prod --ignore-scripts --no-optional
+# Install only production dependencies as root
+RUN pnpm install --frozen-lockfile --prod --ignore-scripts --no-optional && \
+    chown -R nextjs:nodejs /app
+
+# Switch to non-root user
+USER nextjs
 
 # Set environment variables
 ENV NODE_ENV=production \
