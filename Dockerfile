@@ -1,76 +1,93 @@
 # Build stage
 FROM node:22.0.0-alpine AS builder
 
-# Add edge/community repository and base dependencies
-RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community \
-    libc6-compat \
-    vips-dev \
+# 1. Add edge repository
+RUN apk add --no-cache \
+    --repository http://dl-cdn.alpinelinux.org/alpine/edge/community \
+    libc6-compat
+
+# 2. Install build essentials
+RUN apk add --no-cache \
     build-base \
     pkgconfig
 
-# Setup pnpm
-RUN corepack enable pnpm && \
-    pnpm config set store-dir /root/.local/share/pnpm/store
+# 3. Install vips for sharp image processing
+RUN apk add --no-cache \
+    --repository http://dl-cdn.alpinelinux.org/alpine/edge/community \
+    vips-dev
 
-# Create working directory
+# 4. Enable pnpm
+RUN corepack enable pnpm
+
+# 5. Configure pnpm cache
+RUN pnpm config set store-dir /root/.local/share/pnpm/store
+
+# 6. Setup working directory
 WORKDIR /app
 
-# Copy package.json and pnpm-lock.yaml
+# 7. Copy package files
 COPY package.json pnpm-lock.yaml ./
 
-# Install dependencies
+# 8. Install dependencies
 RUN --mount=type=cache,target=/root/.local/share/pnpm/store pnpm install --frozen-lockfile
 
-# Copy source files
+# 9. Copy source files
 COPY . .
 
-# Build application
+# 10. Build application
 RUN pnpm run build
 
 # Production stage
 FROM node:22.0.0-alpine AS runner
 
-# Set environment variables early for potential use in installation
+# 1. Set environment variables
 ENV NODE_ENV=production \
     PORT=3000
 
-# Install production dependencies
-RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community \
-    libc6-compat \
+# 2. Add edge repository
+RUN apk add --no-cache \
+    --repository http://dl-cdn.alpinelinux.org/alpine/edge/community \
+    libc6-compat
+
+# 3. Install vips runtime
+RUN apk add --no-cache \
+    --repository http://dl-cdn.alpinelinux.org/alpine/edge/community \
     vips
 
-# Setup pnpm and create user
-RUN corepack enable pnpm && \
-    addgroup --system --gid 1001 nodejs && \
+# 4. Enable pnpm
+RUN corepack enable pnpm
+
+# 5. Create non-root user
+RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nextjs
 
-# Set working directory and switch ownership
+# 6. Setup working directory
 WORKDIR /app
 RUN chown nextjs:nodejs /app
 
-# Copy required files from build stage
+# 7. Copy package files
 COPY --chown=nextjs:nodejs --from=builder /app/package.json ./
 COPY --chown=nextjs:nodejs --from=builder /app/pnpm-lock.yaml ./
 
-# Install only production dependencies as root
+# 8. Install production dependencies
 RUN pnpm install --frozen-lockfile --prod --ignore-scripts --no-optional
 
-# Copy application files after installing dependencies
+# 9. Copy application files
 COPY --chown=nextjs:nodejs --from=builder /app/.next ./.next
 COPY --chown=nextjs:nodejs --from=builder /app/public ./public
 COPY --chown=nextjs:nodejs --from=builder /app/next.config.ts ./
 
-# Final ownership adjustment and cleanup
+# 10. Final cleanup
 RUN chown -R nextjs:nodejs /app && \
     rm -rf /root/.npm /root/.pnpm-store /root/.local
 
-# Switch to non-root user
+# 11. Switch to non-root user
 USER nextjs
 
-# Expose port
+# 12. Configure runtime
 EXPOSE 3000
 
-# Healthcheck
+# 13. Setup healthcheck
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
     CMD wget --no-verbose --tries=1 --spider http://localhost:3000/api/health || exit 1
 
