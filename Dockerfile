@@ -1,14 +1,15 @@
 # Build stage
 FROM node:22.0.0-alpine AS builder
 
-# Install required dependencies and setup environment
+# Add edge/community repository and base dependencies
 RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community \
     libc6-compat \
     vips-dev \
     build-base \
-    python3 \
-    pkgconfig && \
-    corepack enable pnpm && \
+    pkgconfig
+
+# Setup pnpm
+RUN corepack enable pnpm && \
     pnpm config set store-dir /root/.local/share/pnpm/store
 
 # Create working directory
@@ -33,11 +34,13 @@ FROM node:22.0.0-alpine AS runner
 ENV NODE_ENV=production \
     PORT=3000
 
-# Install required dependencies and setup environment
+# Install production dependencies
 RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community \
     libc6-compat \
-    vips && \
-    corepack enable pnpm && \
+    vips
+
+# Setup pnpm and create user
+RUN corepack enable pnpm && \
     addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nextjs
 
