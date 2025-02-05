@@ -2,13 +2,13 @@
 FROM node:22.0.0-alpine AS builder
 
 # Install required dependencies and setup environment
-RUN corepack enable pnpm && \
-    apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community \
+RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community \
     libc6-compat \
     vips-dev \
     build-base \
     python3 \
     pkgconfig && \
+    corepack enable pnpm && \
     pnpm config set store-dir /root/.local/share/pnpm/store
 
 # Create working directory
@@ -29,6 +29,10 @@ RUN pnpm run build
 # Production stage
 FROM node:22.0.0-alpine AS runner
 
+# Set environment variables early for potential use in installation
+ENV NODE_ENV=production \
+    PORT=3000
+
 # Install required dependencies and setup environment
 RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community \
     libc6-compat \
@@ -37,26 +41,28 @@ RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/co
     addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nextjs
 
-# Set working directory
+# Set working directory and switch ownership
 WORKDIR /app
+RUN chown nextjs:nodejs /app
 
 # Copy required files from build stage
 COPY --chown=nextjs:nodejs --from=builder /app/package.json ./
 COPY --chown=nextjs:nodejs --from=builder /app/pnpm-lock.yaml ./
+
+# Install only production dependencies as root
+RUN pnpm install --frozen-lockfile --prod --ignore-scripts --no-optional
+
+# Copy application files after installing dependencies
 COPY --chown=nextjs:nodejs --from=builder /app/.next ./.next
 COPY --chown=nextjs:nodejs --from=builder /app/public ./public
 COPY --chown=nextjs:nodejs --from=builder /app/next.config.ts ./
 
-# Install only production dependencies as root
-RUN pnpm install --frozen-lockfile --prod --ignore-scripts --no-optional && \
-    chown -R nextjs:nodejs /app
+# Final ownership adjustment and cleanup
+RUN chown -R nextjs:nodejs /app && \
+    rm -rf /root/.npm /root/.pnpm-store /root/.local
 
 # Switch to non-root user
 USER nextjs
-
-# Set environment variables
-ENV NODE_ENV=production \
-    PORT=3000
 
 # Expose port
 EXPOSE 3000
