@@ -1,19 +1,54 @@
 {
   "name": "cg-portfolio-web",
   "version": "0.1.0",
+  "description": "CodeGuy personal website",
+  "author": "CodeGuy <karel@codeguy.cz>",
+  "license": "MIT",
+  "homepage": "https://codeguy.cz",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Santinni/cg-portfolio-web"
+  },
   "type": "module",
   "private": true,
+  "engines": {
+    "node": ">=22.0.0",
+    "pnpm": ">=9.12.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all",
+      "not IE > 0"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "build": "cross-env NODE_OPTIONS=--no-deprecation next build",
+    "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
+    "dev:prod": "cross-env NODE_OPTIONS=--no-deprecation rm -rf .next && pnpm build && pnpm start",
+    "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
+    "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
+    "lint": "cross-env NODE_OPTIONS=--no-deprecation next lint",
+    "lint:fix": "cross-env NODE_OPTIONS=--no-deprecation next lint --fix",
+    "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
+    "reinstall": "cross-env NODE_OPTIONS=--no-deprecation rm -rf node_modules pnpm-lock.yaml && pnpm install",
+    "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
+    "clean": "rm -rf .next node_modules",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "^3.15.0",
     "@payloadcms/next": "^3.15.0",
     "@payloadcms/payload-cloud": "^3.15.0",
     "@payloadcms/richtext-lexical": "^3.15.0",
+    "clsx": "^2.1.1",
+    "cross-env": "^7.0.3",
     "lucide-react": "^0.469.0",
     "next": "15.1.0",
     "payload": "^3.15.0",
@@ -23,6 +58,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@svgr/webpack": "^8.1.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

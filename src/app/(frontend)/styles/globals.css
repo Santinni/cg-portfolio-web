@@ -1,0 +1,57 @@
+@import "./variables.css";
+
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+html {
+  overflow-y: scroll;
+  scrollbar-gutter: stable;
+  height: 100%;
+  height: -webkit-fill-available;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100dvh;
+  overscroll-behavior-y: none;
+  -webkit-overflow-scrolling: touch;
+  background: var(--background);
+  color: var(--text-color-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  color: var(--accent);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
+  text-decoration: none;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: var(--text-color-primary);
+  }
+}
+
+p {
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-md);
+  color: var(--text-color-primary);
+  font-weight: var(--font-weight-light);
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+}

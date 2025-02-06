@@ -1,0 +1,151 @@
+name: CI
+
+on:
+  push:
+    branches: ["*"]
+  pull_request:
+    branches: [main, dev]
+  workflow_dispatch:
+
+jobs:
+  code-check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22.0.0"
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9.12.0
+          run_install: false
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          pnpm --version
+          node --version
+          echo "PNPM_HOME=$HOME/.local/share/pnpm" >> $GITHUB_ENV
+          STORE_PATH=$(pnpm store path)
+          echo "Store path is: $STORE_PATH"
+          echo "STORE_PATH=$STORE_PATH" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ${{ env.STORE_PATH }}
+            ${{ env.PNPM_HOME }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Check for lockfile
+        shell: bash
+        run: |
+          ls -la
+          if [[ ! -f pnpm-lock.yaml ]]; then
+            echo "❌ Error: pnpm-lock.yaml is missing"
+            exit 1
+          else
+            echo "✅ pnpm-lock.yaml found"
+          fi
+
+      - name: Debug file structure
+        shell: bash
+        run: |
+          echo "Current directory:"
+          pwd
+          echo "\nDirectory contents:"
+          ls -la
+          echo "\nParent directory contents:"
+          ls -la ..
+          echo "\nRoot directory contents:"
+          ls -la /
+          echo "\nFind pnpm-lock.yaml:"
+          find / -name pnpm-lock.yaml 2>/dev/null || echo "No pnpm-lock.yaml found"
+
+      - name: Install dependencies
+        shell: bash
+        run: |
+          echo "Using pnpm store at: $STORE_PATH"
+          echo "PNPM_HOME is set to: $PNPM_HOME"
+          pnpm install --frozen-lockfile
+
+      - name: Lint
+        shell: bash
+        run: pnpm lint
+
+      - name: Type check
+        shell: bash
+        run: pnpm tsc --noEmit
+
+  docker-build:
+    needs: [code-check]
+    # Test Docker build only for PRs to main
+    if: github.event_name == 'pull_request' && github.base_ref == 'main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Set repository name
+        run: |
+          echo "REPO_NAME=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # Cache Docker layers for faster builds
+      # Key is based on:
+      # - OS (runner.os) for platform-specific layers
+      # - Dockerfile hash for build changes
+      # - pnpm-lock.yaml hash for dependency changes
+      - name: Set up Docker cache
+        uses: actions/cache@v3
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-docker-${{ hashFiles('Dockerfile', 'pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-docker-
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: |
+            ghcr.io/${{ env.REPO_NAME }}:${{ github.sha }}
+            ghcr.io/${{ env.REPO_NAME }}:latest
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          build-args: |
+            NODE_ENV=production
+            NEXT_PUBLIC_SERVER_URL=https://codeguy.cz
+
+      # Temporary fix for cache
+      - name: Move cache
+        run: |
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache

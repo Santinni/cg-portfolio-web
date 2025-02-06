@@ -1,0 +1,99 @@
+{
+    # Global settings
+    email karel@codeguy.cz
+    auto_https on
+    servers {
+        protocols h1 h2 h2c
+    }
+}
+
+codeguy.cz {
+    reverse_proxy web:3000 {
+        # Health checks
+        health_uri /api/health
+        health_interval 30s
+        health_timeout 5s
+        health_status 200
+
+        # Buffering
+        flush_interval -1
+        transport http {
+            keepalive 30s
+            keepalive_idle_conns 10
+        }
+    }
+
+    # Automatic HTTPS
+    tls {
+        protocols tls1.2 tls1.3
+        curves x25519
+        alpn h2 http/1.1
+    }
+
+    # Basic security headers
+    header {
+        # Allow CORS
+        Access-Control-Allow-Origin *
+        Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+        Access-Control-Allow-Headers "DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization"
+
+        # Security headers
+        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "DENY"
+        Referrer-Policy "strict-origin-when-cross-origin"
+        Content-Security-Policy "upgrade-insecure-requests; default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https:;"
+        Permissions-Policy "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
+
+        # Remove sensitive information
+        -Server
+        -X-Powered-By
+    }
+
+    # Compression and caching
+    encode gzip zstd {
+        minimum_length 1000
+    }
+
+    # Static files
+    @static {
+        file {
+            try_files { path } { path }/index.html
+            ext .ico .css .js .gif .jpg .jpeg .png .svg .woff .woff2
+        }
+        not path /api/* /admin/*
+    }
+
+    header @static {
+        Cache-Control "public, max-age=31536000, immutable"
+        Vary "Accept-Encoding"
+    }
+
+    # API responses
+    @api {
+        path /api/*
+        not path /api/admin/*
+    }
+
+    header @api {
+        Cache-Control "public, max-age=60, stale-while-revalidate=30"
+        Vary "Accept-Encoding, Authorization"
+    }
+
+    # Logs
+    log {
+        output file /var/log/caddy/access.log {
+            roll_size 10MB
+            roll_keep 10
+            roll_keep_for 720h
+        }
+        format json {
+            time_format iso8601
+            time_local
+        }
+        level INFO
+    }
+    errors {
+        log file /var/log/caddy/error.log
+    }
+}

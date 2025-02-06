@@ -225,6 +225,9 @@ export interface Contact {
   title: string;
   description: string;
   email: string;
+  phone?: string | null;
+  linkedin?: string | null;
+  github?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -456,6 +459,9 @@ export interface ContactSelect<T extends boolean = true> {
   title?: T;
   description?: T;
   email?: T;
+  phone?: T;
+  linkedin?: T;
+  github?: T;
   updatedAt?: T;
   createdAt?: T;
 }

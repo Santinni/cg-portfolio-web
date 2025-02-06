@@ -21,5 +21,20 @@ export const Contact: CollectionConfig = {
       type: "email",
       required: true,
     },
+    {
+      name: "phone",
+      type: "text",
+      required: false,
+    },
+    {
+      name: "linkedin",
+      type: "text",
+      required: false,
+    },
+    {
+      name: "github",
+      type: "text",
+      required: false,
+    },
   ],
 };

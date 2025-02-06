@@ -1,3 +1,4 @@
 {
-  "cSpell.words": ["payloadcms", "turbopack"]
+  "cSpell.words": ["payloadcms", "turbopack"],
+  "typescript.tsdk": "node_modules\\typescript\\lib"
 }

@@ -1,0 +1,23 @@
+.whoAmI {
+  width: 100%;
+}
+
+.sectionTitle {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  margin: 0;
+  margin-bottom: var(--spacing-base);
+  font-weight: var(--font-weight-normal);
+}
+
+.textWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.whoAmIText {
+  color: var(--text-color-secondary);
+  line-height: 1.6;
+}
+

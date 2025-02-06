@@ -1,0 +1,54 @@
+.floatingButtonWrapper {
+    position: fixed;
+    bottom: var(--spacing-xl);
+    right: var(--spacing-xl);
+}
+
+.expandingButton {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--accent);
+    color: var(--background);
+    padding-block: var(--spacing-md);
+    border-radius: var(--border-radius-rounded);
+    font-weight: var(--font-weight-medium);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    overflow: hidden;
+    width: 48px;
+    height: 48px;
+}
+
+.expandingButton:hover {
+    background-color: var(--accent-hover);
+    color: var(--background);
+    width: 176px;
+
+
+    & .expandingButtonText {
+        opacity: 1;
+    }
+}
+
+.expandingButtonText {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    white-space: nowrap;
+    transition: opacity 0.3s ease-in-out;
+    line-height: 48px;
+    position: absolute;
+    left: 48px;
+    top: 0;
+}
+
+.expandingButtonIcon {
+    color: var(--background);
+    position: absolute;
+    left: 12px;
+    top: 12px;
+}

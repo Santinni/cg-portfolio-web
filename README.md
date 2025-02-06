@@ -69,18 +69,37 @@ This project follows development guidelines and best practices defined in the [R
 
 ## 🏗 Project Structure
 
-```
+```bash
 cg-portfolio-web/
-├── public/            # Static assets
-├── src/              # Source code
-│   ├── app/          # Next.js 15+ App Router
-│   │   ├── frontend/ # Frontend application
-│   │   └── payload/ # PayloadCMS integration
-│   ├── collections/  # PayloadCMS collections
-│   ├── components/   # Reusable React components
-│   ├── lib/         # Utility functions and shared logic
-│   └── styles/      # Global styles and CSS modules
+├── .next/  # Next.js build outputs and cache
+├── public/ # Static assets (images, fonts, etc.)
+├── src/  # Application source code
+│   ├── access/       # PayloadCMS access control and permissions
+│   ├── app/          # Next.js App Router (v14+)
+│   │   ├── (frontend)/    # Frontend application routes and components
+│   │   │   ├── (pages)/   # Website pages and layouts
+│   │   │   │   ├── (home)/      # Home page sections (hero, about, services, etc.)
+│   │   │   │   └── curriculum-vitae/  # CV page and related components
+│   │   │   ├── components/  # Frontend components
+│   │   │   │   ├── primitives/  # Basic UI components (buttons, inputs, etc.)
+│   │   │   │   └── ui/          # Complex UI components (navigation, cards, etc.)
+│   │   │   ├── styles/         # Global styles and variables
+│   │   ├── (payload)/  # PayloadCMS admin interface and configuration
+│   │   └── routes/            # API routes and endpoints
+│   ├── collections/  # PayloadCMS collections (data models and schemas)
+│   ├── lib/         # Utility functions, hooks, and shared business logic
+│   ├── payload/     # PayloadCMS core configuration and customization
+│   └── types/       # TypeScript type definitions and interfaces
+...
 ```
+
+This structure follows modern Next.js and PayloadCMS best practices with a clear separation of concerns:
+
+- **Frontend**: All client-side code is organized under `src/app/(frontend)`, following Next.js 14+ App Router conventions
+- **Backend**: PayloadCMS admin and API functionality is isolated in `src/app/(payload)`
+- **Components**: UI components are split between basic primitives and complex UI components
+- **Data Layer**: Collections and types provide a robust data modeling system
+- **Configuration**: Environment and build settings are kept at the root level
 
 ## 🔗 PayloadCMS Integration
 
@@ -103,7 +122,3 @@ pnpm start
 ## 📝 License
 
 [License Type] - see the [LICENSE.md](LICENSE.md) file for details
-
-## 👥 Contributing
-
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.

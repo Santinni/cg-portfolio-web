@@ -1,0 +1,201 @@
+name: CD
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ format('{0}/{1}', github.repository_owner, github.event.repository.name) }}
+  COMPOSE_PROJECT_NAME: codeguy
+  DOMAIN: ${{ secrets.DOMAIN }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    environment:
+      name: production
+      url: https://codeguy.cz
+
+    steps:
+      - name: Prepare repository name
+        run: |
+          echo "REPO_NAME=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Cache Docker layers
+        uses: actions/cache@v3
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate image metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}
+          tags: |
+            type=sha,format=long
+            type=ref,event=branch
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            NODE_ENV=production
+            DOMAIN=${{ env.DOMAIN }}
+            NEXT_PUBLIC_SERVER_URL=https://${{ env.DOMAIN }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+
+      - name: Move cache
+        run: |
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+
+      - name: Create .env file on VPS
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_KEY }}
+          script: |
+            cd /opt/codeguy
+            cat > .env << EOL
+            NODE_ENV=production
+            DOMAIN=${{ env.DOMAIN }}
+            PAYLOAD_SECRET=${{ secrets.PAYLOAD_SECRET }}
+            NEXT_PUBLIC_SERVER_URL=https://${{ env.DOMAIN }}
+            DB_USER=${{ secrets.DB_USER }}
+            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+            DB_NAME=${{ secrets.DB_NAME }}
+            COMPOSE_PROJECT_NAME=${{ env.COMPOSE_PROJECT_NAME }}
+            EOL
+
+      - name: Deploy to DigitalOcean
+        id: deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_KEY }}
+          script: |
+            # Create required directories
+            mkdir -p /opt/codeguy/postgres/{backup,logs}
+            mkdir -p /opt/codeguy/caddy/logs
+            chmod 755 /opt/codeguy/postgres/logs
+            chmod 755 /opt/codeguy/caddy/logs
+
+            cd /opt/codeguy
+
+            # Backup database before deployment
+            if [ "$(docker ps -q -f name=db)" ]; then
+              echo "Creating database backup..."
+              docker exec $(docker ps -q -f name=db) pg_dump -U $DB_USER $DB_NAME > ./postgres/backup/backup-$(date +%Y%m%d_%H%M%S).sql
+            fi
+
+            echo "Pulling latest images..."
+            docker-compose pull
+            echo "Stopping and removing old containers..."
+            docker-compose down
+            echo "Starting new containers..."
+            docker-compose up -d
+
+            # Cleanup old backups and logs
+            find ./postgres/backup -name "backup-*.sql" -type f -mtime +7 -delete
+            find ./postgres/logs -name "postgresql-*.log" -type f -mtime +7 -delete
+            find ./caddy/logs -name "*.log" -type f -mtime +7 -delete
+
+            echo "Cleaning up old images..."
+            docker system prune -af
+            echo "Deployment completed successfully!"
+
+      - name: Check deployment
+        id: healthcheck
+        run: |
+          # Počkáme 30 sekund na nastartování služeb
+          sleep 30
+          # Kontrola dostupnosti
+          curl -sSf https://${{ env.DOMAIN }}/api/health || exit 1
+          # Kontrola databáze
+          curl -sSf https://${{ env.DOMAIN }}/api/health/db || exit 1
+
+      - name: Create deployment status
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const deployment = await github.rest.repos.createDeployment({
+              owner,
+              repo,
+              ref: context.sha,
+              environment: 'production',
+              auto_merge: false
+            });
+
+            const status = ${{ job.status == 'success' }} ? 'success' : 'failure';
+            await github.rest.repos.createDeploymentStatus({
+              owner,
+              repo,
+              deployment_id: deployment.data.id,
+              state: status,
+              environment_url: 'https://${{ env.DOMAIN }}',
+              log_url: `https://github.com/${owner}/${repo}/actions/runs/${context.runId}`,
+              description: status == 'success' ? 'Deployment successful' : 'Deployment failed'
+            });
+
+      - name: Notify on success
+        if: success()
+        run: |
+          echo "🎉 Deployment to ${{ env.DOMAIN }} successful!"
+          echo "Version: ${{ github.sha }}"
+          echo "Time: $(date)"
+          echo "Service health check:"
+          echo "- Web: OK"
+          echo "- DB: OK"
+          echo "- Caddy: OK"
+          echo "Logs available at:"
+          echo "- /opt/codeguy/caddy/logs/"
+          echo "- /opt/codeguy/postgres/logs/"
+          echo "- docker logs ${COMPOSE_PROJECT_NAME:-codeguy}_web_1"
+
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "❌ Deployment to ${{ env.DOMAIN }} failed!"
+          echo "Version: ${{ github.sha }}"
+          echo "Time: $(date)"
+          echo "Logs:"
+          echo "GitHub Actions: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          echo "Application logs:"
+          echo "- Next.js: docker logs ${COMPOSE_PROJECT_NAME:-codeguy}_web_1"
+          echo "- Database: /opt/codeguy/postgres/logs/postgresql-*.log"
+          echo "- Caddy: /opt/codeguy/caddy/logs/access.log and error.log"
+          echo "To view logs on server:"
+          echo "1. SSH: ssh ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}"
+          echo "2. View logs: cd /opt/codeguy && docker-compose logs"
