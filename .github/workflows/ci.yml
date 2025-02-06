@@ -122,16 +122,13 @@ jobs:
       # - OS (runner.os) for platform-specific layers
       # - Dockerfile hash for build changes
       # - pnpm-lock.yaml hash for dependency changes
-      - name: Cache Docker layers
+      - name: Set up Docker cache
         uses: actions/cache@v3
         with:
           path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ hashFiles('Dockerfile') }}-${{ hashFiles('pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-docker-${{ hashFiles('Dockerfile', 'pnpm-lock.yaml') }}
           restore-keys: |
-            # Try to reuse cache from builds with same Dockerfile
-            ${{ runner.os }}-buildx-${{ hashFiles('Dockerfile') }}-
-            # Fallback to any cache for this OS
-            ${{ runner.os }}-buildx-
+            ${{ runner.os }}-docker-
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -143,9 +140,12 @@ jobs:
             ghcr.io/${{ env.REPO_NAME }}:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          build-args: |
+            NODE_ENV=production
+            NEXT_PUBLIC_SERVER_URL=https://codeguy.cz
 
+      # Temporary fix for cache
       - name: Move cache
-        shell: bash
         run: |
           rm -rf /tmp/.buildx-cache
           mv /tmp/.buildx-cache-new /tmp/.buildx-cache
