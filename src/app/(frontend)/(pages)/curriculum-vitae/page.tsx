@@ -1,17 +1,15 @@
-import { DownloadCloud } from 'lucide-react';
+import { DownloadCloud } from "lucide-react";
 
-import {
-  ExpandingButton,
-} from '@/app/(frontend)/components/primitives/expandingButton';
+import { ExpandingButton } from "@/app/(frontend)/components/primitives/expandingButton";
 
-import styles from './page.module.css';
-import { Contact } from './sections/contact';
-import { Education } from './sections/education';
-import { Experience } from './sections/experience';
-import { TechnologicalStack } from './sections/tech-stack';
-import { WhoAmI } from './sections/who-am-i';
+import styles from "./page.module.css";
+import { Contact } from "./sections/contact";
+import { Education } from "./sections/education";
+import { Experience } from "./sections/experience";
+import { TechnologicalStack } from "./sections/tech-stack";
+import { WhoAmI } from "./sections/who-am-i";
 
-export const CurriculumPage = () => {
+export default function CurriculumPage() {
   return (
     <>
       <section className={styles.section}>
@@ -38,6 +36,4 @@ export const CurriculumPage = () => {
       />
     </>
   );
-};
-
-export default CurriculumPage;
+}
