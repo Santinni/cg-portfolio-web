@@ -31,7 +31,13 @@ RUN --mount=type=cache,target=/root/.local/share/pnpm/store pnpm install --froze
 # 8. Copy source files
 COPY . .
 
-# 9. Build application
+# 9. Set build-time environment for Next.js
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV NODE_ENV=production
+ENV PAYLOAD_SECRET=dummy-secret-for-build-time-only
+ENV NEXT_PUBLIC_SERVER_URL=https://codeguy.cz
+
+# 10. Build application
 RUN pnpm run build
 
 # Production stage
@@ -39,7 +45,8 @@ FROM node:22.0.0-alpine AS runner
 
 # 1. Set environment variables
 ENV NODE_ENV=production \
-    PORT=3000
+    PORT=3000 \
+    NEXT_TELEMETRY_DISABLED=1
 
 # 2. Install runtime dependencies
 RUN apk add --no-cache \

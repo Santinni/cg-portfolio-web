@@ -1,40 +1,45 @@
 import { MetadataRoute } from 'next';
 
-import { getPayloadClient } from '@/payload/payloadClient';
-
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://codeguy.cz'
+  const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'https://codeguy.cz'
 
-  // Základní statické stránky
+  // Basic static pages
   const staticPages = [
     {
       url: baseUrl,
       lastModified: new Date(),
-      changeFrequency: 'weekly',
+      changeFrequency: 'weekly' as const,
       priority: 1,
     },
     {
       url: `${baseUrl}/curriculum-vitae`,
       lastModified: new Date(),
-      changeFrequency: 'monthly',
+      changeFrequency: 'monthly' as const,
       priority: 0.8,
     },
-  ] as const
+  ]
 
-  // Získání dynamického obsahu z Payload CMS
-  const payload = await getPayloadClient()
+  // Dynamic content only if we are in production
+  // if (process.env.PAYLOAD_SECRET) {
+  //   try {
+  //     const { getPayloadClient } = await import('@/payload/payloadClient')
+  //     const payload = await getPayloadClient()
+  //     const projects = await payload.find({
+  //       collection: 'projects',
+  //     })
 
-  // Získání projektů
-  const projects = await payload.find({
-    collection: 'projects',
-  })
+  //     const projectPages = projects.docs.map((project) => ({
+  //       url: `${baseUrl}/projects/${project.id}`,
+  //       lastModified: new Date(project.updatedAt),
+  //       changeFrequency: 'monthly' as const,
+  //       priority: 0.6,
+  //     }))
 
-  const projectPages = projects.docs.map((project) => ({
-    url: `${baseUrl}/projects/${project.id}`,
-    lastModified: new Date(project.updatedAt),
-    changeFrequency: 'monthly' as const,
-    priority: 0.6,
-  }))
+  //     return [...staticPages, ...projectPages]
+  //   } catch (error) {
+  //     console.error('Failed to fetch dynamic sitemap content:', error)
+  //   }
+  // }
 
-  return [...staticPages, ...projectPages]
+  return staticPages
 }
