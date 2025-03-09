@@ -5,13 +5,13 @@ import {
   MouseEventHandler,
   ReactNode,
   Ref,
-} from 'react';
+} from "react";
 
-import clsx from 'clsx';
-import { Loader } from 'lucide-react';
-import Link, { LinkProps } from 'next/link';
+import clsx from "clsx";
+import { Loader } from "lucide-react";
+import Link, { LinkProps } from "next/link";
 
-import styles from './Button.module.css';
+import styles from "./Button.module.css";
 
 interface BaseButtonProps {
   className?: string;
@@ -74,7 +74,7 @@ export const Button = forwardRef<
       ...(rest["aria-label"] ? { "aria-label": rest["aria-label"] } : {}),
     };
 
-    const classes = clsx(className, styles.button, {
+    const classes = clsx(styles.button, className, {
       [styles[`variant-${variant}`]]: variant,
       [styles[`accent-${accent}`]]: accent,
       [styles[`size-${size}`]]: size,

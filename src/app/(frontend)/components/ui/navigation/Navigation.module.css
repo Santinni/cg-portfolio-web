@@ -41,7 +41,6 @@
     }
 }
 
-
 .navLink {
     color: var(--text-color-primary);
     text-decoration: none;
@@ -50,6 +49,12 @@
 
     &:hover {
         color: var(--accent);
+    }
+}
+
+.menuTrigger {
+    @media screen and (min-width: 850px){
+        display: none;
     }
 }
 
@@ -63,18 +68,17 @@
     &:hover {
         color: var(--accent);
     }
-
-    @media screen and (min-width: 850px) {
-        display: none;
-    }
 }
 
 .menuIcon {
     width: 2rem;
     height: 2rem;
     opacity: 1;
-}
 
+    @media screen and (min-width: 850px) {
+            display: none;
+        }
+}
 
 .menuIcon.open {
     opacity: 0;
