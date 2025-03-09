@@ -19,7 +19,6 @@ export const Services: CollectionConfig = {
     {
       name: "icon",
       type: "text",
-      required: true,
     },
   ],
 };

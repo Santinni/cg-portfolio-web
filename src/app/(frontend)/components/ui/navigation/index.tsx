@@ -1,22 +1,13 @@
 "use client";
 
-import {
-  ReactNode,
-  useId,
-  useRef,
-  useState,
-} from 'react';
+import { ReactNode, useId, useRef, useState } from "react";
 
-import {
-  Home,
-  Menu,
-  X,
-} from 'lucide-react';
-import Image from 'next/image';
-import Link from 'next/link';
+import { Home, Menu, X } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 
-import { Button } from '../../primitives/button';
-import styles from './Navigation.module.css';
+import styles from "./Navigation.module.css";
+import { Button } from "../../primitives/button";
 
 const navItems: { label: string; href: string; icon: ReactNode | null }[] = [
   { label: "Home", href: "/", icon: <Home /> },
@@ -59,19 +50,21 @@ export default function Navigation() {
               </Link>
             ))}
           </div>
-          <Button
-            className={styles.menuButton}
-            onClick={toggleMenu}
-            aria-expanded={isOpen}
-            aria-controls={id}
-            aria-label="Toggle mobile menu"
-            variant="transparent"
-            rounded
-          >
-            <Menu
-              className={`${styles.menuIcon} ${isOpen ? styles.open : ""}`}
-            />
-          </Button>
+          <div className={styles.menuTrigger}>
+            <Button
+              className={styles.menuButton}
+              onClick={toggleMenu}
+              aria-expanded={isOpen}
+              aria-controls={id}
+              aria-label="Toggle mobile menu"
+              variant="transparent"
+              rounded
+            >
+              <Menu
+                className={`${styles.menuIcon} ${isOpen ? styles.open : ""}`}
+              />
+            </Button>
+          </div>
         </div>
       </nav>
       {/* Mobile dialog menu */}
