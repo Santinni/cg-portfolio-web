@@ -112,12 +112,97 @@ pnpm test        # Run unit tests
 pnpm test:e2e    # Run end-to-end tests
 ```
 
-## 🚀 Deployment
+## 🐳 Docker Deployment
+
+This project includes complete Docker support for both development and production environments.
+
+### Prerequisites for Docker
+
+- Docker Engine 20.10+
+- Docker Compose v2.0+
+
+### Production Deployment with Docker
+
+1. Set up environment variables:
+
+```bash
+cp .env.example .env
+# Edit .env with your production settings
+```
+
+2. Build and start all services:
+
+```bash
+docker-compose up -d
+```
+
+This will start:
+- PostgreSQL database on port 5432
+- Next.js application on port 3000
+- Caddy reverse proxy on ports 80/443
+
+3. View logs:
+
+```bash
+docker-compose logs -f web
+```
+
+4. Stop services:
+
+```bash
+docker-compose down
+```
+
+### Development with Docker
+
+For development with hot-reload:
+
+```bash
+docker-compose -f docker-compose.dev.yml up
+```
+
+This will:
+- Mount your local code into the container
+- Enable hot-reload for development
+- Use PostgreSQL for the database
+
+### Docker Commands Reference
+
+```bash
+# Build without cache
+docker-compose build --no-cache
+
+# View running containers
+docker-compose ps
+
+# Access web container shell
+docker-compose exec web sh
+
+# Access database
+docker-compose exec db psql -U postgres -d codeguy
+
+# Remove all containers and volumes
+docker-compose down -v
+
+# View resource usage
+docker stats
+```
+
+### Production Build (without Docker)
 
 ```bash
 pnpm build
 pnpm start
 ```
+
+## 🚀 Deployment
+
+The application can be deployed using:
+- **Docker Compose** (recommended for VPS/dedicated servers)
+- **Traditional Node.js** deployment
+- **Vercel/Netlify** (with external PostgreSQL)
+
+See the Docker section above for containerized deployment instructions.
 
 ## 📝 License
 
