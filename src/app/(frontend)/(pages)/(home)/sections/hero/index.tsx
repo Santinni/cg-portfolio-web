@@ -12,9 +12,11 @@ export default function Hero() {
 			<div className={styles.overlay} />
 			<div className={styles.content}>
 				<h1 id="hero-heading" className={styles.heroTitle}>
-					Crafting Reactive Web Solutions
+					Crafting <span className={styles.heroTitleAccent}>Reactive</span>
+					<br />
+					Web Solutions
 				</h1>
-				<p className={styles.subtitle}>Building modern and reliable web applications</p>
+				<p className={styles.subtitle}>Building modern and reliable web applications with cutting-edge technologies and a passion for clean, maintainable code.</p>
 				<Button href="/#contact" renders="link">
 					Get Started
 				</Button>

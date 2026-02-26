@@ -1,9 +1,9 @@
 'use client'
 
 import { Home, Menu, X } from 'lucide-react'
-import Image from 'next/image'
 import Link from 'next/link'
 import { ReactNode, useId, useRef, useState } from 'react'
+import { CodeguyLogoIconSvg } from '@/components/icons'
 import { Button } from '../../primitives/button'
 import styles from './Navigation.module.css'
 
@@ -41,9 +41,11 @@ export default function Navigation() {
 		<>
 			<nav className={styles.nav}>
 				<div className={styles.menuWrapper}>
-					<Link href="/" className={styles.logo}>
-						<Image src="/kklogo.svg" alt="" width={40} height={40} priority />
-						Karel Kutchan
+					<Link href="/" className={styles.logo} aria-label="CodeGuy.cz - Home">
+						<CodeguyLogoIconSvg className={styles.logoIcon} aria-hidden="true" />
+						<span className={styles.logoText}>
+							CodeGuy<span className={styles.logoAccent}>.cz</span>
+						</span>
 					</Link>
 
 					<div className={styles.desktopMenu}>

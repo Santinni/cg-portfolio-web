@@ -47,7 +47,13 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "format": "biome format --write src",
-    "format:check": "biome format src"
+    "format:check": "biome format src",
+    "icons:scan": "node scripts/iconConverter/icon-processor.cjs",
+    "icons:list": "node scripts/iconConverter/listfiles.cjs ./src/assets/icons \"**/*.svg\" files.json",
+    "icons:convert": "node scripts/iconConverter/icon-converter.cjs",
+    "icons:index": "node scripts/iconConverter/listfiles.cjs ./src/components/icons \"**/*.tsx\" files.json",
+    "icons:generate": "pnpm run icons:scan && pnpm run icons:convert && pnpm run icons:index",
+    "icons:clean": "rimraf \"src/components/icons/*.tsx\" && rimraf icon-scan-report.json"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "^3.15.0",
@@ -68,6 +74,7 @@
     "@biomejs/biome": "^2.4.4",
     "@eslint/eslintrc": "^3",
     "@playwright/test": "^1.58.2",
+    "@svgr/cli": "^8.1.0",
     "@svgr/webpack": "^8.1.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
@@ -78,6 +85,8 @@
     "@vitejs/plugin-react": "^5.1.4",
     "eslint": "^9",
     "eslint-config-next": "15.1.0",
+    "fast-glob": "^3.3.3",
+    "fdir": "^6.5.0",
     "jsdom": "^28.1.0",
     "typescript": "^5",
     "vitest": "^4.0.18"

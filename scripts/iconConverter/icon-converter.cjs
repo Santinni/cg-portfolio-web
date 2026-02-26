@@ -65,7 +65,7 @@ class IconConverter {
 			console.log(`   📝 ${svgFile} -> ${outputFile}`)
 
 			try {
-				const command = `npx @svgr/cli --typescript --icon "${svgPath}"`
+				const command = `pnpm exec svgr --typescript "${svgPath}" --icon`
 				const result = execSync(command, { encoding: "utf8" })
 
 				const originalMatch = result.match(/const (\w+) = /)

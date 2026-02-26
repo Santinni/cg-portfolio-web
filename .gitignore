@@ -50,3 +50,8 @@ caddy_config/
 
 # Logs
 *.log
+
+# Icon converter artifacts
+icon-scan-report.json
+src/assets/**/files.json
+src/components/**/files.json
