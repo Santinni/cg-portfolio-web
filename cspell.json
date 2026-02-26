@@ -1,0 +1,26 @@
+{
+	"version": "0.2",
+	"language": "en",
+	"words": [
+		"addgroup",
+		"adduser",
+		"appleboy",
+		"biomejs",
+		"buildx",
+		"Caddyfile",
+		"codeguy",
+		"healthcheck",
+		"isready",
+		"labelledby",
+		"nextjs",
+		"payloadcms",
+		"Vitest"
+	],
+	"ignorePaths": [
+		"node_modules",
+		"pnpm-lock.yaml",
+		".next",
+		"dist",
+		"public"
+	]
+}

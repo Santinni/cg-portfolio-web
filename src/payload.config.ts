@@ -13,6 +13,7 @@ import { Projects } from './collections/Projects'
 import { Services } from './collections/Services'
 import { About } from './collections/About'
 import { Contact } from './collections/Contact'
+import { serverEnv } from './lib/env'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -26,13 +27,13 @@ export default buildConfig({
   },
   collections: [Users, Projects, Services, Media, About, Contact],
   editor: lexicalEditor(),
-  secret: process.env.PAYLOAD_SECRET || "",
+  secret: serverEnv.PAYLOAD_SECRET,
   typescript: {
-    outputFile: path.resolve(dirname, "payload-types.ts"),
+    outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
   db: postgresAdapter({
     pool: {
-      connectionString: process.env.DATABASE_URI || "",
+      connectionString: serverEnv.DATABASE_URI,
     },
   }),
   sharp,
@@ -40,4 +41,4 @@ export default buildConfig({
     payloadCloudPlugin(),
     // storage-adapter-placeholder
   ],
-});
+})

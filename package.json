@@ -40,7 +40,14 @@
     "reinstall": "rm -rf node_modules pnpm-lock.yaml && pnpm install",
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
     "clean": "rm -rf .next node_modules",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "format": "biome format --write src",
+    "format:check": "biome format src"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "^3.15.0",
@@ -54,16 +61,25 @@
     "payload": "^3.15.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "sharp": "^0.33.5"
+    "sharp": "^0.33.5",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.4.4",
     "@eslint/eslintrc": "^3",
+    "@playwright/test": "^1.58.2",
     "@svgr/webpack": "^8.1.0",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vitejs/plugin-react": "^5.1.4",
     "eslint": "^9",
     "eslint-config-next": "15.1.0",
-    "typescript": "^5"
+    "jsdom": "^28.1.0",
+    "typescript": "^5",
+    "vitest": "^4.0.18"
   }
 }

@@ -1,56 +1,45 @@
-import { Fragment } from 'react';
+import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
 
-import Image from 'next/image';
+import { RichText } from '@payloadcms/richtext-lexical/react'
+import Image from 'next/image'
 
-import type {
-  About as AboutType,
-  Media,
-} from '@/payload-types';
+import type { About as AboutType, Media } from '@/payload-types'
 
-import styles from './About.module.css';
+import styles from './About.module.css'
 
+/** Props for the {@link About} section. */
 interface AboutProps {
-  data: AboutType;
+	data: AboutType
 }
 
+/**
+ * About section — renders the CMS-managed "About" content
+ * with an optional image alongside rich-text copy.
+ */
 export default function About({ data }: AboutProps) {
-  return (
-    <section className={styles.section} id="about">
-      <div className={styles.container}>
-        <h2 className={styles.title}>{data.title}</h2>
-        <div className={styles.content}>
-          <div className={styles.text}>
-            {data.content.root.children.map((node, index) => {
-              if (node.type === "paragraph") {
-                return (
-                  <p key={index} className={styles.paragraph}>
-                    {(node.children as Array<{ text: string }>).map(
-                      (child, i) => (
-                        <Fragment key={i}>{child.text}</Fragment>
-                      )
-                    )}
-                  </p>
-                );
-              }
-              //TODO check if this is the correct way to render the content from rich text
-              // For other types, we currently return null,
-              // support for additional types in the RichText component can be added later.
-              // ideally we would have a component for each type of node maybe in a separate file
-              return null;
-            })}
-          </div>
-          {data.image && (
-            <div className={styles.imageContainer}>
-              <Image
-                src={(data.image as Media).url || ""}
-                alt="About me"
-                fill
-                style={{ objectFit: "cover" }}
-              />
-            </div>
-          )}
-        </div>
-      </div>
-    </section>
-  );
+	return (
+		<section className={styles.section} id="about" aria-labelledby="about-heading">
+			<div className={styles.container}>
+				<h2 id="about-heading" className={styles.title}>
+					{data.title}
+				</h2>
+				<div className={styles.content}>
+					<div className={styles.text}>
+						<RichText data={data.content as unknown as SerializedEditorState} />
+					</div>
+					{data.image && (
+						<div className={styles.imageContainer}>
+							<Image
+								src={(data.image as Media).url || ''}
+								alt={(data.image as Media).alt || data.title}
+								fill
+								className={styles.image}
+								sizes="(max-width: 768px) 100vw, 50vw"
+							/>
+						</div>
+					)}
+				</div>
+			</div>
+		</section>
+	)
 }

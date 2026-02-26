@@ -1,4 +1,4 @@
-This comprehensive guide outlines best practices, conventions, and standards for development with modern web technologies including ReactJS, NextJS, Redux, TypeScript, JavaScript, HTML, CSS, and UI frameworks.
+﻿This guide outlines conventions and standards for cg-portfolio-web: Next.js 15 + Payload CMS 3 + PostgreSQL.
 
     Development Philosophy
     - Write clean, maintainable, and scalable code
@@ -7,65 +7,36 @@ This comprehensive guide outlines best practices, conventions, and standards for
     - Emphasize type safety and static analysis
     - Practice component-driven development
 
-    Code Implementation Guidelines
-    Planning Phase
-    - Begin with step-by-step planning
-    - Write detailed pseudocode before implementation
-    - Document component architecture and data flow
-    - Consider edge cases and error scenarios
-
     Code Style
     - Use tabs for indentation
     - Use single quotes for strings (except to avoid escaping)
     - Omit semicolons (unless required for disambiguation)
     - Eliminate unused variables
-    - Add space after keywords
-    - Add space before function declaration parentheses
     - Always use strict equality (===) instead of loose equality (==)
-    - Space infix operators
-    - Add space after commas
-    - Keep else statements on the same line as closing curly braces
-    - Use curly braces for multi-line if statements
-    - Always handle error parameters in callbacks
-    - Limit line length to 80 characters
+    - Limit line length to 100 characters (Biome enforced)
     - Use trailing commas in multiline object/array literals
 
     Naming Conventions
     General Rules
-    - Use PascalCase for:
-      - Components
-      - Type definitions
-      - Interfaces
-    - Use kebab-case for:
-      - Directory names (e.g., components/auth-wizard)
-      - File names (e.g., user-profile.tsx)
-    - Use camelCase for:
-      - Variables
-      - Functions
-      - Methods
-      - Hooks
-      - Properties
-      - Props
-    - Use UPPERCASE for:
-      - Environment variables
-      - Constants
-      - Global configurations
+    - Use PascalCase for: Components, Type definitions, Interfaces
+    - Use kebab-case for: Directory names (e.g., components/auth-wizard), file names (e.g., user-profile.tsx)
+    - Use camelCase for: Variables, functions, methods, hooks, props
+    - Use UPPERCASE for: Environment variables, constants
 
     Specific Naming Patterns
     - Prefix event handlers with 'handle': handleClick, handleSubmit
     - Prefix boolean variables with verbs: isLoading, hasError, canSubmit
     - Prefix custom hooks with 'use': useAuth, useForm
-    - Use complete words over abbreviations except for:
-      - err (error)
-      - req (request)
-      - res (response)
-      - props (properties)
-      - ref (reference)
+    - Use complete words over abbreviations except for: err, req, res, props, ref
+
+    Exports
+    - Prefer named exports: export const Foo = ... / export function foo() {}
+    - Use function keyword for page and section components; arrow functions for utilities
 
     React Best Practices
     Component Architecture
     - Use functional components with TypeScript interfaces
-    - Define components using the function keyword
+    - Define page/section components using the function keyword
     - Extract reusable logic into custom hooks
     - Implement proper component composition
     - Use React.memo() strategically for performance
@@ -76,112 +47,110 @@ This comprehensive guide outlines best practices, conventions, and standards for
     - Implement useMemo for expensive computations
     - Avoid inline function definitions in JSX
     - Implement code splitting using dynamic imports
-    - Implement proper key props in lists (avoid using index as key)
+    - Use proper key props in lists (avoid using index as key)
 
     Next.js Best Practices
     Core Concepts
-    - Utilize App Router for routing
+    - Use App Router for all routing
     - Implement proper metadata management
-    - Use proper caching strategies
-    - Implement proper error boundaries
+    - Use proper caching strategies (revalidate at segment level)
+    - Implement error boundaries (error.tsx)
 
     Components and Features
     - Use Next.js built-in components:
-      - Image component for optimized images
+      - Image component for optimized images (avif/webp)
       - Link component for client-side navigation
       - Script component for external scripts
-      - Head component for metadata
     - Implement proper loading states
-    - Use proper data fetching methods
+    - Set revalidate at the page/segment level (e.g., export const revalidate = 60)
 
     Server Components
     - Default to Server Components
-    - Use URL query parameters for data fetching and server state management
+    - Use URL query parameters for server state management
     - Use 'use client' directive only when necessary:
-      - Event listeners
-      - Browser APIs
-      - State management
-      - Client-side-only libraries
+      - Event listeners, browser APIs, component-level state, client-side-only libraries
+
+    Data Fetching
+    - Always use the Payload Local API via getPayloadClient() — never fetch() against /api from server code
+    - Wrap data-fetching functions with React's cache() for request-level deduplication
+    - Place data-fetching helpers in src/lib/api/
 
     TypeScript Implementation
-    - Enable strict mode
-    - Define clear interfaces for component props, state, and Redux state structure.
-    - Use type guards to handle potential undefined or null values safely.
-    - Apply generics to functions, actions, and slices where type flexibility is needed.
-    - Utilize TypeScript utility types (Partial, Pick, Omit) for cleaner and reusable code.
-    - Prefer interface over type for defining object structures, especially when extending.
-    - Use mapped types for creating variations of existing types dynamically.
+    - Strict mode is enabled
+    - Define clear interfaces for component props and data structures
+    - Use type guards to handle undefined/null values safely
+    - Apply generics to functions where type flexibility is needed
+    - Utilize TypeScript utility types (Partial, Pick, Omit) for cleaner and reusable code
+    - Prefer interface over type for defining object structures, especially when extending
+    - Use mapped types for creating variations of existing types dynamically
+    - Never edit src/payload-types.ts manually — run pnpm generate:types after changing collections
 
     UI and Styling
-    Component Libraries
-    - Use Shadcn UI for consistent, accessible component design.
-    - Integrate Radix UI primitives for customizable, accessible UI elements.
-    - Apply composition patterns to create modular, reusable components.
-
     Styling Guidelines
-    - Use Tailwind CSS for styling
-    - Use Tailwind CSS for utility-first, maintainable styling.
-    - Design with mobile-first, responsive principles for flexibility across devices.
-    - Implement dark mode using CSS variables or Tailwind’s dark mode features.
-    - Ensure color contrast ratios meet accessibility standards for readability.
-    - Maintain consistent spacing values to establish visual harmony.
-    - Define CSS variables for theme colors and spacing to support easy theming and maintainability.
+    - Use CSS Modules (.module.css co-located with components) for all component styles
+    - Use CSS custom properties defined in src/app/(frontend)/styles/variables.css for theme values
+    - Use clsx for conditional class name merging
+    - Design with mobile-first, responsive principles
+    - Implement dark mode using CSS variables
+    - Ensure color contrast ratios meet accessibility standards
+    - Define CSS variables for theme colors and spacing — do not hard-code theme values
 
     State Management
     Local State
     - Use useState for component-level state
     - Implement useReducer for complex state
     - Use useContext for shared state
-    - Implement proper state initialization
 
     Global State
-    - Use Redux Toolkit for global state
-    - Use createSlice to define state, reducers, and actions together.
-    - Avoid using createReducer and createAction unless necessary.
-    - Normalize state structure to avoid deeply nested data.
-    - Use selectors to encapsulate state access.
-    - Avoid large, all-encompassing slices; separate concerns by feature.
+    - Prefer URL state and Payload server state over client-side global state
 
+    Payload CMS
+    - Collections live in src/collections/; each exports a CollectionConfig
+    - Access control: use anyone (read) and authenticated (create/update/delete) from src/access/
+    - Rich-text fields use the Lexical editor (@payloadcms/richtext-lexical)
+    - Always run pnpm generate:types after modifying collection fields
+
+    Environment Variables
+    - Never access process.env directly in application code
+    - Import serverEnv (server-only) or publicEnv (client-safe) from src/lib/env.ts
+    - All variables are Zod-validated at startup — add new vars to the schemas in env.ts
 
     Error Handling and Validation
     Form Validation
     - Use Zod for schema validation
     - Implement proper error messages
-    - Use proper form libraries (e.g., React Hook Form)
 
     Error Boundaries
-    - Use error boundaries to catch and handle errors in React component trees gracefully.
-    - Log caught errors to an external service (e.g., Sentry) for tracking and debugging.
-    - Design user-friendly fallback UIs to display when errors occur, keeping users informed without breaking the app.
+    - Use error boundaries (error.tsx) to catch and handle errors in React component trees gracefully
+    - Design user-friendly fallback UIs to display when errors occur
 
     Testing
     Unit Testing
-    - Write thorough unit tests to validate individual functions and components.
-    - Use Jest and React Testing Library for reliable and efficient testing of React components.
-    - Follow patterns like Arrange-Act-Assert to ensure clarity and consistency in tests.
-    - Mock external dependencies and API calls to isolate unit tests.
+    - Write thorough unit tests to validate individual functions and components
+    - Use Vitest and React Testing Library for testing React components
+    - Follow the Arrange-Act-Assert pattern
+    - Mock external dependencies and API calls to isolate unit tests
+    - Run a single test file: pnpm test -- path/to/file.test.ts
 
     Integration Testing
-    - Focus on user workflows to ensure app functionality.
-    - Set up and tear down test environments properly to maintain test independence.
-    - Use snapshot testing selectively to catch unintended UI changes without over-relying on it.
-    - Leverage testing utilities (e.g., screen in RTL) for cleaner and more readable tests.
+    - Focus on user workflows to ensure app functionality
+    - E2E tests use Playwright (src/__tests__/e2e/)
 
     Accessibility (a11y)
     Core Requirements
-    - Use semantic HTML for meaningful structure.
-    - Apply accurate ARIA attributes where needed.
-    - Ensure full keyboard navigation support.
-    - Manage focus order and visibility effectively.
-    - Maintain accessible color contrast ratios.
-    - Follow a logical heading hierarchy.
-    - Make all interactive elements accessible.
-    - Provide clear and accessible error feedback.
+    - Use semantic HTML for meaningful structure
+    - Apply accurate ARIA attributes where needed
+    - Ensure full keyboard navigation support
+    - Manage focus order and visibility effectively
+    - Maintain accessible color contrast ratios
+    - Follow a logical heading hierarchy
+    - Make all interactive elements accessible
+    - Provide clear and accessible error feedback
 
     Security
-    - Implement input sanitization to prevent XSS attacks.
-    - Use DOMPurify for sanitizing HTML content.
-    - Use proper authentication methods.
+    - Implement input sanitization to prevent XSS attacks
+    - Use Payload's built-in authentication (Users collection)
+    - Rate limiting is applied to /api and /admin routes via middleware.ts
 
     Internationalization (i18n)
     - Use next-i18next for translations
@@ -191,13 +160,6 @@ This comprehensive guide outlines best practices, conventions, and standards for
     - Use proper currency formatting
 
     Documentation
-    - Use JSDoc for documentation
-    - Document all public functions, classes, methods, and interfaces
-    - Add examples when appropriate
+    - Use JSDoc for public functions, classes, methods, and interfaces
+    - Add @example blocks when usage is non-obvious
     - Use complete sentences with proper punctuation
-    - Keep descriptions clear and concise
-    - Use proper markdown formatting
-    - Use proper code blocks
-    - Use proper links
-    - Use proper headings
-    - Use proper lists

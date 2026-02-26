@@ -1,0 +1,15 @@
+# Docker build artifacts
+.next
+node_modules
+.git
+.gitignore
+*.md
+.env
+.env.*
+!.env.example
+docker/volumes/
+postgres_data/
+caddy_data/
+caddy_config/
+coverage/
+.pnpm-debug.log*

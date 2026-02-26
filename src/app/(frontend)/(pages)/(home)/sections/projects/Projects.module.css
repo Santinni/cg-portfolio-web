@@ -34,6 +34,10 @@
     border-radius: var(--border-radius);
 }
 
+.image {
+    object-fit: cover;
+}
+
 .content {
     margin-top: var(--spacing-lg);
 }
