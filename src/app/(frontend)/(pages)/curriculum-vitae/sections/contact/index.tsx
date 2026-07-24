@@ -1,10 +1,11 @@
 import {
-  Linkedin,
   Mail,
   MapPin,
   Phone,
 } from 'lucide-react';
 import Link from 'next/link';
+
+import { LinkedInIcon } from '@/app/(frontend)/components/icons/BrandIcons';
 
 import styles from './Contact.module.css';
 
@@ -33,7 +34,7 @@ export const Contact = () => {
           rel="noopener noreferrer"
           className={styles.contactLink}
         >
-          <Linkedin className={styles.icon} />
+          <LinkedInIcon className={styles.icon} />
           LinkedIn
         </Link>
       </div>

@@ -11,9 +11,17 @@
   },
   "type": "module",
   "private": true,
+  "packageManager": "pnpm@10.28.0",
   "engines": {
-    "node": ">=22.0.0",
-    "pnpm": ">=9.12.0"
+    "node": ">=24.0.0 <25.0.0",
+    "pnpm": ">=10.28.0 <11.0.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "@esbuild-kit/core-utils>esbuild": "0.25.12",
+      "next>postcss": "8.5.12",
+      "next>sharp": "0.35.3"
+    }
   },
   "browserslist": {
     "production": [
@@ -29,41 +37,41 @@
     ]
   },
   "scripts": {
-    "build": "cross-env NODE_OPTIONS=--no-deprecation next build --experimental-build-mode compile",
+    "build": "cross-env NODE_OPTIONS=--no-deprecation next build",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
-    "dev:prod": "cross-env NODE_OPTIONS=--no-deprecation rm -rf .next && pnpm build && pnpm start",
     "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
     "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
-    "lint": "cross-env NODE_OPTIONS=--no-deprecation next lint",
-    "lint:fix": "cross-env NODE_OPTIONS=--no-deprecation next lint --fix",
+    "lint": "cross-env NODE_OPTIONS=--no-deprecation eslint .",
+    "lint:fix": "cross-env NODE_OPTIONS=--no-deprecation eslint . --fix",
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
     "reinstall": "rm -rf node_modules pnpm-lock.yaml && pnpm install",
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
+    "start:prod": "cross-env NODE_OPTIONS=--no-deprecation rm -rf .next && pnpm build && cross-env HOST=localhost node .next/standalone/server.js",
     "clean": "rm -rf .next node_modules",
-    "typecheck": "tsc --noEmit"
+    "test:unit": "node --test src/lib/content/editorial.test.ts src/lib/content/contentLayer.test.ts src/lib/security/security.test.ts",
+    "typecheck": "tsc --noEmit --incremental false"
   },
   "dependencies": {
-    "@payloadcms/db-postgres": "^3.15.0",
-    "@payloadcms/next": "^3.15.0",
-    "@payloadcms/payload-cloud": "^3.15.0",
-    "@payloadcms/richtext-lexical": "^3.15.0",
+    "@payloadcms/db-postgres": "^3.86.0",
+    "@payloadcms/next": "^3.86.0",
+    "@payloadcms/payload-cloud": "^3.86.0",
+    "@payloadcms/richtext-lexical": "^3.86.0",
     "clsx": "^2.1.1",
-    "cross-env": "^7.0.3",
-    "lucide-react": "^0.469.0",
-    "next": "15.1.0",
-    "payload": "^3.15.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "sharp": "^0.33.5"
+    "cross-env": "^10.1.0",
+    "lucide-react": "^1.26.0",
+    "next": "16.2.11",
+    "payload": "^3.86.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "sharp": "^0.35.3"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3",
     "@svgr/webpack": "^8.1.0",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "15.1.0",
-    "typescript": "^5"
+    "@types/node": "^24.10.1",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "16.2.11",
+    "typescript": "^6.0.3"
   }
 }

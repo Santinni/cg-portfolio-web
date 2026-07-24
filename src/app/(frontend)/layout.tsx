@@ -3,6 +3,8 @@ import "@/app/(frontend)/styles/globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
+import { SkipLink } from "@/app/(frontend)/components/layout/SkipLink";
+import { ThemeScript } from "@/app/(frontend)/components/theme/ThemeScript";
 import Navigation from "@/app/(frontend)/components/ui/navigation";
 
 const inter = Inter({ subsets: ["latin", "latin-ext"] });
@@ -34,10 +36,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="cs">
+    <html lang="cs" suppressHydrationWarning>
+      <head>
+        <ThemeScript />
+      </head>
       <body className={inter.className}>
+        <SkipLink />
         <Navigation />
-        <main>{children}</main>
+        <main id="main-content" tabIndex={-1}>
+          {children}
+        </main>
       </body>
     </html>
   );

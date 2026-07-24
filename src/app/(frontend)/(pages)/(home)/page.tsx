@@ -5,6 +5,8 @@ import Hero from "@/app/(frontend)/(pages)/(home)/sections/hero";
 import Services from "@/app/(frontend)/(pages)/(home)/sections/services";
 import { getHomePageDataCached } from "@/lib/api/getHomePageData";
 
+export const dynamic = "force-dynamic";
+
 export default async function HomePage() {
   const { services, about, contact } = await getHomePageDataCached();
 

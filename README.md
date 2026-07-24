@@ -1,124 +1,61 @@
-# CG Portfolio Web Application
+# CodeGuy portfolio web
 
-Modern web application built with Next.js 15+ and PayloadCMS, designed for scalability and maintainability.
+Technický základ nového webu CodeGuy nad Next.js App Router, TypeScriptem,
+Payload CMS a PostgreSQL. Veřejný frontend je rozpracovaný scaffold; finální
+vizuální implementace musí navázat na Figma soubor
+`Codeguy Portfolio - Final Design`.
 
-## 🛠 Technology Stack
+## Požadavky
 
-- **Node.js**: v20.9.x (required for PayloadCMS and Next.js 15+)
-- **Next.js**: v15.1.x
-- **React**: v19.0.x
-- **TypeScript**: v5.x
-- **Package Manager**: pnpm
-- **CMS**: PayloadCMS (Headless CMS for content management)
+- Node.js 24 LTS (`>=24 <25`)
+- pnpm 10.28
+- PostgreSQL 15 pro stávající prostředí
 
-## 📋 Prerequisites
+Lokální Node 25 není podporovaný runtime projektu. Příkazy na něm mohou
+fungovat, ale vypisují očekávané upozornění na nesplněný engine.
 
-Before you begin, ensure you have the following installed:
+## Lokální spuštění
 
-- Node.js v20.x
-- pnpm (latest version)
+1. Vytvořte `.env` podle interního deployment kontraktu.
+2. Nastavte minimálně `DATABASE_URI`, `PAYLOAD_SECRET` a `DB_PASSWORD`.
+3. Nainstalujte závislosti: `pnpm install --frozen-lockfile`.
+4. Spusťte vývojový server: `pnpm dev`.
 
-## 🚀 Getting Started
+Payload administrace je dostupná pod `/admin`.
 
-1. Clone the repository:
+## Docker
 
 ```bash
-git clone [repository-url]
-cd cg-portfolio-web
+docker compose up --build
 ```
 
-2. Install dependencies:
+Aplikace je dostupná na `http://localhost:3000`. PostgreSQL není publikovaný
+na host port; je dostupný pouze uvnitř Compose sítě. `DB_PASSWORD` je povinný
+a aplikace čeká na úspěšný healthcheck databáze.
+
+Produkční image používá Node 24 LTS, Next standalone výstup a neprivilegovaného
+uživatele `node`. Lokální `.env`, klíče, certifikáty, runtime média a dokumentace
+jsou vyloučené z build contextu.
+
+## Kontroly
 
 ```bash
-pnpm install
-```
-
-3. Set up environment variables:
-
-```bash
-cp .env.example .env
-```
-
-Configure your environment variables accordingly, including PayloadCMS credentials.
-
-4. Run the development server:
-
-```bash
-pnpm dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-## 📚 Development Guidelines
-
-This project follows development guidelines and best practices defined in the [Rules](./.cursorrules) file. These rules serve not only as prompts for [Cursor AI](https://cursor.com) but as standards and conventions for the entire project.
-
-- The rules cover:
-
-  - Development philosophy and principles
-  - Code writing standards
-  - Naming conventions
-  - Best practices for React, Next.js and TypeScript
-  - Application state management
-  - UI and styling
-  - Testing and documentation
-  - Security and accessibility
-
-- When creating new rules, it's important to remember they serve as a comprehensive guide for the entire development team.
-- Additional useful prompts for Cursor AI can be found at [cursor.directory](https://cursor.directory).
-
-## 🏗 Project Structure
-
-```bash
-cg-portfolio-web/
-├── .next/  # Next.js build outputs and cache
-├── public/ # Static assets (images, fonts, etc.)
-├── src/  # Application source code
-│   ├── access/       # PayloadCMS access control and permissions
-│   ├── app/          # Next.js App Router (v14+)
-│   │   ├── (frontend)/    # Frontend application routes and components
-│   │   │   ├── (pages)/   # Website pages and layouts
-│   │   │   │   ├── (home)/      # Home page sections (hero, about, services, etc.)
-│   │   │   │   └── curriculum-vitae/  # CV page and related components
-│   │   │   ├── components/  # Frontend components
-│   │   │   │   ├── primitives/  # Basic UI components (buttons, inputs, etc.)
-│   │   │   │   └── ui/          # Complex UI components (navigation, cards, etc.)
-│   │   │   ├── styles/         # Global styles and variables
-│   │   ├── (payload)/  # PayloadCMS admin interface and configuration
-│   │   └── routes/            # API routes and endpoints
-│   ├── collections/  # PayloadCMS collections (data models and schemas)
-│   ├── lib/         # Utility functions, hooks, and shared business logic
-│   ├── payload/     # PayloadCMS core configuration and customization
-│   └── types/       # TypeScript type definitions and interfaces
-...
-```
-
-This structure follows modern Next.js and PayloadCMS best practices with a clear separation of concerns:
-
-- **Frontend**: All client-side code is organized under `src/app/(frontend)`, following Next.js 14+ App Router conventions
-- **Backend**: PayloadCMS admin and API functionality is isolated in `src/app/(payload)`
-- **Components**: UI components are split between basic primitives and complex UI components
-- **Data Layer**: Collections and types provide a robust data modeling system
-- **Configuration**: Environment and build settings are kept at the root level
-
-## 🔗 PayloadCMS Integration
-
-This project is integrated with PayloadCMS for content management. The CMS configuration and setup details will be available in the PayloadCMS specific documentation.
-
-## 🧪 Testing
-
-```bash
-pnpm test        # Run unit tests
-pnpm test:e2e    # Run end-to-end tests
-```
-
-## 🚀 Deployment
-
-```bash
+pnpm lint
+pnpm test:unit
+pnpm typecheck
+pnpm generate:types
 pnpm build
-pnpm start
 ```
 
-## 📝 License
+Rozhodnutí, slepé cesty, stav implementace a review jsou v:
 
-[License Type] - see the [LICENSE.md](LICENSE.md) file for details
+- `IMPLEMENTATION_NOTES.md`
+- `IMPLEMENTATION_REPORT.md`
+- `CODE_REVIEW.md`
+
+## Rozsah této změny
+
+Hotový je modernizovaný runtime, redakční základ Insights, public content DTO,
+bezpečnostní helpery, základ theme/layout/article komponent a bezpečnější Docker
+kontrakt. Nové Figma routy, finální design tokeny, preview/revalidation endpointy
+a browser/visual/a11y QA zůstávají navazující prací.

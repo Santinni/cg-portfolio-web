@@ -1,9 +1,6 @@
 "use client";
 
-import {
-  GithubIcon,
-  LinkedinIcon,
-} from 'lucide-react';
+import { GitHubIcon, LinkedInIcon } from '@/app/(frontend)/components/icons/BrandIcons';
 
 import BookingModal from '@/app/(frontend)/components/ui/bookingModal';
 // import { Button } from "@/app/(frontend)/components/primitives/button";
@@ -69,7 +66,7 @@ export default function Contact({ data }: ContactProps) {
                 rel="noopener noreferrer"
                 title="LinkedIn"
               >
-                <LinkedinIcon />
+                <LinkedInIcon />
               </a>
             )}
             {data.github && (
@@ -80,7 +77,7 @@ export default function Contact({ data }: ContactProps) {
                 rel="noopener noreferrer"
                 title="GitHub"
               >
-                <GithubIcon />
+                <GitHubIcon />
               </a>
             )}
           </div>

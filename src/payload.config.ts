@@ -13,6 +13,10 @@ import { Projects } from './collections/Projects'
 import { Services } from './collections/Services'
 import { About } from './collections/About'
 import { Contact } from './collections/Contact'
+import { Posts } from './collections/Posts'
+import { Topics } from './collections/Topics'
+import { Authors } from './collections/Authors'
+import { MAX_MEDIA_FILE_SIZE } from './lib/content/mediaGuards'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -24,8 +28,12 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Projects, Services, Media, About, Contact],
+  collections: [Users, Projects, Services, Media, About, Contact, Posts, Topics, Authors],
   editor: lexicalEditor(),
+  upload: {
+    abortOnLimit: true,
+    limits: { fileSize: MAX_MEDIA_FILE_SIZE, files: 10 },
+  },
   secret: process.env.PAYLOAD_SECRET || "",
   typescript: {
     outputFile: path.resolve(dirname, "payload-types.ts"),

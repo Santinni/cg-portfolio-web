@@ -29,13 +29,6 @@ const nextConfig: NextConfig = {
   // Setting output
   output: 'standalone',
 
-  // Setting environment
-  env: {
-    PAYLOAD_SECRET: process.env.PAYLOAD_SECRET,
-    DATABASE_URI: process.env.DATABASE_URI,
-    NEXT_PUBLIC_SERVER_URL: process.env.NEXT_PUBLIC_SERVER_URL,
-  },
-
   // Webpack configuration for Payload
   webpack: (config) => {
     config.module.rules.push({
@@ -44,20 +37,6 @@ const nextConfig: NextConfig = {
     });
 
     return config;
-  },
-
-  // Allowing CORS for API routes
-  async headers() {
-    return [
-      {
-        source: '/api/:path*',
-        headers: [
-          { key: 'Access-Control-Allow-Origin', value: '*' },
-          { key: 'Access-Control-Allow-Methods', value: 'GET,POST,PUT,DELETE,OPTIONS' },
-          { key: 'Access-Control-Allow-Headers', value: 'Content-Type, Authorization' },
-        ],
-      },
-    ];
   },
 
   // Redirects for www

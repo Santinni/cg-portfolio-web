@@ -1,0 +1,45 @@
+# syntax=docker/dockerfile:1
+
+ARG NODE_VERSION=24.18.0
+ARG PNPM_VERSION=10.28.0
+
+FROM node:${NODE_VERSION}-slim AS base
+
+ARG PNPM_VERSION
+ENV PNPM_HOME=/pnpm
+ENV PATH="${PNPM_HOME}:${PATH}"
+
+WORKDIR /app
+
+RUN corepack enable && corepack prepare "pnpm@${PNPM_VERSION}" --activate
+
+FROM base AS dependencies
+
+COPY package.json pnpm-lock.yaml ./
+
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
+    pnpm install --frozen-lockfile --store-dir=/pnpm/store
+
+FROM dependencies AS builder
+
+COPY . .
+
+RUN pnpm run build
+
+FROM node:${NODE_VERSION}-slim AS final
+
+WORKDIR /app
+
+ENV NODE_ENV=production
+ENV HOSTNAME=0.0.0.0
+ENV PORT=3000
+
+COPY --from=builder --chown=node:node /app/.next/standalone ./
+COPY --from=builder --chown=node:node /app/.next/static ./.next/static
+COPY --from=builder --chown=node:node /app/public ./public
+
+USER node
+
+EXPOSE 3000
+
+CMD ["node", "server.js"]
