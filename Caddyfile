@@ -8,7 +8,7 @@
 }
 
 codeguy.cz {
-    reverse_proxy web:3000 {
+    reverse_proxy 127.0.0.1:3000 {
         # Health checks
         health_uri /api/health
         health_interval 30s
@@ -30,23 +30,8 @@ codeguy.cz {
         alpn h2 http/1.1
     }
 
-    # Basic security headers
+    # Application security headers are owned by next.config.ts.
     header {
-        # CORS — restricted to own domain
-        Access-Control-Allow-Origin "https://codeguy.cz"
-        Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
-        Access-Control-Allow-Headers "DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization"
-        Access-Control-Allow-Credentials "true"
-
-        # Security headers
-        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
-        X-Content-Type-Options "nosniff"
-        X-Frame-Options "DENY"
-        Referrer-Policy "strict-origin-when-cross-origin"
-        Content-Security-Policy "upgrade-insecure-requests; default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://calendar.google.com; frame-src 'self' https://calendar.google.com; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
-        Permissions-Policy "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
-
-        # Remove sensitive information
         -Server
         -X-Powered-By
     }

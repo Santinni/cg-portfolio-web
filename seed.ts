@@ -66,6 +66,7 @@ async function seed() {
     collection: 'media',
     data: {
       alt: 'Karel Kutchan — Frontend Developer',
+      decorative: false,
     },
     file: {
       data: mediaFile,

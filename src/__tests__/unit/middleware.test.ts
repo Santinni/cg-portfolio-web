@@ -52,45 +52,45 @@ describe('middleware', () => {
 	})
 
 	it('passes through non-API/admin routes without rate limiting', async () => {
-		const { middleware } = await import('@/middleware')
+		const { proxy } = await import('@/proxy')
 		const request = createMockRequest('/')
-		const response = middleware(request)
+		const response = proxy(request)
 
 		expect(response.status).toBe(200)
 	})
 
 	it('allows API requests within rate limit', async () => {
-		const { middleware } = await import('@/middleware')
+		const { proxy } = await import('@/proxy')
 		const request = createMockRequest('/api/test', '10.0.0.1')
-		const response = middleware(request)
+		const response = proxy(request)
 
 		expect(response.status).toBe(200)
 		expect(response.headers.get('X-RateLimit-Remaining')).toBe('59')
 	})
 
 	it('allows admin routes and applies rate limiting', async () => {
-		const { middleware } = await import('@/middleware')
+		const { proxy } = await import('@/proxy')
 		const request = createMockRequest('/admin/dashboard', '10.0.0.2')
-		const response = middleware(request)
+		const response = proxy(request)
 
 		expect(response.status).toBe(200)
 		expect(response.headers.get('X-RateLimit-Limit')).toBe('60')
 	})
 
 	it('returns 429 after exceeding rate limit', async () => {
-		const { middleware } = await import('@/middleware')
+		const { proxy } = await import('@/proxy')
 		const ip = '10.0.0.3'
 
 		// Make 60 requests (the limit)
 		for (let i = 0; i < 60; i++) {
 			const request = createMockRequest('/api/test', ip)
-			const response = middleware(request)
+			const response = proxy(request)
 			expect(response.status).toBe(200)
 		}
 
 		// 61st request should be rate limited
 		const request = createMockRequest('/api/test', ip)
-		const response = middleware(request)
+		const response = proxy(request)
 
 		expect(response.status).toBe(429)
 		expect(response.headers.get('Retry-After')).toBe('60')
@@ -98,34 +98,34 @@ describe('middleware', () => {
 	})
 
 	it('tracks rate limits per IP independently', async () => {
-		const { middleware } = await import('@/middleware')
+		const { proxy } = await import('@/proxy')
 
 		// Exhaust rate limit for one IP
 		for (let i = 0; i < 61; i++) {
-			middleware(createMockRequest('/api/test', '192.168.1.1'))
+			proxy(createMockRequest('/api/test', '192.168.1.1'))
 		}
 
 		// Different IP should still be allowed
-		const response = middleware(createMockRequest('/api/test', '192.168.1.2'))
+		const response = proxy(createMockRequest('/api/test', '192.168.1.2'))
 		expect(response.status).toBe(200)
 	})
 
 	it('decrements remaining count with each request', async () => {
-		const { middleware } = await import('@/middleware')
+		const { proxy } = await import('@/proxy')
 		const ip = '10.0.0.4'
 
-		const response1 = middleware(createMockRequest('/api/test', ip))
+		const response1 = proxy(createMockRequest('/api/test', ip))
 		expect(response1.headers.get('X-RateLimit-Remaining')).toBe('59')
 
-		const response2 = middleware(createMockRequest('/api/test', ip))
+		const response2 = proxy(createMockRequest('/api/test', ip))
 		expect(response2.headers.get('X-RateLimit-Remaining')).toBe('58')
 
-		const response3 = middleware(createMockRequest('/api/test', ip))
+		const response3 = proxy(createMockRequest('/api/test', ip))
 		expect(response3.headers.get('X-RateLimit-Remaining')).toBe('57')
 	})
 
 	it('exports config with correct matcher', async () => {
-		const { config } = await import('@/middleware')
+		const { config } = await import('@/proxy')
 
 		expect(config.matcher).toEqual(['/api/:path*', '/admin/:path*'])
 	})

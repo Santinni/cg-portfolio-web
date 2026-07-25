@@ -1,38 +1,32 @@
-# ============================================
-# Stage 1: Install dependencies
-# ============================================
-FROM node:22-alpine AS deps
+# syntax=docker/dockerfile:1
 
-RUN corepack enable && corepack prepare pnpm@9.12.0 --activate
+ARG NODE_VERSION=24.18.0
+ARG PNPM_VERSION=10.28.0
+
+FROM node:${NODE_VERSION}-slim AS base
+
+ARG PNPM_VERSION
+ENV PNPM_HOME=/pnpm
+ENV PATH="${PNPM_HOME}:${PATH}"
 
 WORKDIR /app
+
+RUN corepack enable && corepack prepare "pnpm@${PNPM_VERSION}" --activate
+
+FROM base AS dependencies
 
 COPY package.json pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile --ignore-scripts
 
-# ============================================
-# Stage 2: Build the application
-# ============================================
-FROM node:22-alpine AS builder
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
+    pnpm install --frozen-lockfile --store-dir=/pnpm/store
 
-RUN corepack enable && corepack prepare pnpm@9.12.0 --activate
+FROM dependencies AS builder
 
-WORKDIR /app
-
-COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Build arguments for env vars needed at build time
-ARG NEXT_PUBLIC_SERVER_URL
-ENV NEXT_PUBLIC_SERVER_URL=${NEXT_PUBLIC_SERVER_URL}
+RUN pnpm run build
 
-# Generate Payload types and build
-RUN pnpm build
-
-# ============================================
-# Stage 3: Production runner
-# ============================================
-FROM node:22-alpine AS runner
+FROM node:${NODE_VERSION}-slim AS final
 
 WORKDIR /app
 
@@ -40,19 +34,11 @@ ENV NODE_ENV=production
 ENV HOSTNAME=0.0.0.0
 ENV PORT=3000
 
-# Create non-root user for security
-RUN addgroup --system --gid 1001 nodejs && \
-  adduser --system --uid 1001 nextjs
+COPY --from=builder --chown=node:node /app/.next/standalone ./
+COPY --from=builder --chown=node:node /app/.next/static ./.next/static
+COPY --from=builder --chown=node:node /app/public ./public
 
-# Copy standalone output
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
-COPY --from=builder /app/public ./public
-
-# Set ownership
-RUN chown -R nextjs:nodejs /app
-
-USER nextjs
+USER node
 
 EXPOSE 3000
 

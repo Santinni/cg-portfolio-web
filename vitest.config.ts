@@ -13,7 +13,9 @@ export default defineConfig({
 		globals: true,
 		environment: 'jsdom',
 		setupFiles: ['./src/__tests__/setup.ts'],
-		include: ['src/**/*.{test,spec}.{ts,tsx}'],
+		// The editorial/security suites under src/lib use Node's native runner.
+		// Keep Vitest scoped to its own test tree so the runners do not overlap.
+		include: ['src/__tests__/**/*.{test,spec}.{ts,tsx}'],
 		exclude: ['node_modules', '.next', 'src/__tests__/e2e/**'],
 		css: {
 			modules: {

@@ -1,0 +1,40 @@
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  padding: 0;
+  border: 1px solid var(--border-default);
+  border-radius: var(--border-radius-rounded);
+  background: var(--action-secondary);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: background-color 180ms ease, border-color 180ms ease;
+}
+
+.toggle:hover {
+  background: var(--action-secondary-hover);
+  color: var(--text-primary);
+}
+
+.icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.lightIcon {
+  display: none;
+}
+
+.darkIcon {
+  display: block;
+}
+
+:global(:root[data-theme="dark"]) .lightIcon {
+  display: block;
+}
+
+:global(:root[data-theme="dark"]) .darkIcon {
+  display: none;
+}

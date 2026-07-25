@@ -4,22 +4,21 @@ import Hero from '@/app/(frontend)/(pages)/(home)/sections/hero'
 import Services from '@/app/(frontend)/(pages)/(home)/sections/services'
 import { getHomePageData } from '@/lib/api/getHomePageData'
 
-/** Revalidate home page data every 60 seconds */
-export const revalidate = 60
+export const dynamic = 'force-dynamic'
 
 /**
- * Home page — server component that fetches CMS data and
- * composes the Hero, Services, About and Contact sections.
+ * Legacy home page fallback. The final public route will be rebuilt from the
+ * approved Figma design, while this page keeps current CMS content available.
  */
 export default async function HomePage() {
-	const { services, about, contact } = await getHomePageData()
+  const { services, about, contact } = await getHomePageData()
 
-	return (
-		<>
-			<Hero />
-			<Services data={services} />
-			<About data={about} />
-			<Contact data={contact} />
-		</>
-	)
+  return (
+    <>
+      <Hero />
+      <Services data={services} />
+      <About data={about} />
+      <Contact data={contact} />
+    </>
+  )
 }
