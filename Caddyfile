@@ -1,88 +1,52 @@
 {
-    # Global settings
-    email karel@codeguy.cz
-    auto_https on
-    servers {
-        protocols h1 h2 h2c
-    }
+	email karel@codeguy.cz
 }
 
 codeguy.cz, www.codeguy.cz {
-    @www host www.codeguy.cz
-    redir @www https://codeguy.cz{uri} permanent
+	@www host www.codeguy.cz
+	redir @www https://codeguy.cz{uri} permanent
 
-    reverse_proxy 127.0.0.1:3000 {
-        # Health checks
-        health_uri /api/health
-        health_interval 30s
-        health_timeout 5s
-        health_status 200
+	@privateReadiness {
+		path /api/health
+		query deep=1
+	}
+	respond @privateReadiness 404
 
-        # Buffering
-        flush_interval -1
-        transport http {
-            keepalive 30s
-            keepalive_idle_conns 10
-        }
-    }
+	# Keep Payload's first-user bootstrap private until the owner account exists.
+	@cmsBootstrap path /admin* /api/users*
+	respond @cmsBootstrap 404
 
-    # Automatic HTTPS
-    tls {
-        protocols tls1.2 tls1.3
-        curves x25519
-        alpn h2 http/1.1
-    }
+	reverse_proxy app:3000 {
+		health_uri /api/health
+		health_interval 30s
+		health_timeout 5s
+		health_status 200
+	}
 
-    # Application security headers are owned by next.config.ts.
-    header {
-        -Server
-        -X-Powered-By
-    }
+	header {
+		-Server
+		-X-Powered-By
+	}
 
-    # Compression and caching
-    encode gzip zstd {
-        minimum_length 1000
-    }
+	encode gzip zstd {
+		minimum_length 1000
+	}
 
-    # Static files
-    @static {
-        file {
-            try_files { path } { path }/index.html
-            ext .ico .css .js .gif .jpg .jpeg .png .svg .woff .woff2
-        }
-        not path /api/* /admin/*
-    }
+	@immutable path /_next/static/* /web-app-manifest-*.png /favicon.ico
+	header @immutable {
+		Cache-Control "public, max-age=31536000, immutable"
+		Vary "Accept-Encoding"
+	}
 
-    header @static {
-        Cache-Control "public, max-age=31536000, immutable"
-        Vary "Accept-Encoding"
-    }
+	@api path /api/*
+	header @api {
+		Cache-Control "private, no-store"
+		Vary "Accept-Encoding, Authorization, Cookie"
+	}
 
-    # API responses
-    @api {
-        path /api/*
-        not path /api/admin/*
-    }
-
-    header @api {
-        Cache-Control "private, no-store"
-        Vary "Accept-Encoding, Authorization, Cookie"
-    }
-
-    # Logs
-    log {
-        output file /var/log/caddy/access.log {
-            roll_size 10MB
-            roll_keep 10
-            roll_keep_for 720h
-        }
-        format json {
-            time_format iso8601
-            time_local
-        }
-        level INFO
-    }
-    errors {
-        log file /var/log/caddy/error.log
-    }
+	log {
+		output stdout
+		format json
+		level INFO
+	}
 }

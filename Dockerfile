@@ -42,6 +42,8 @@ COPY --from=builder --chown=node:node /app/.next/standalone ./
 COPY --from=builder --chown=node:node /app/.next/static ./.next/static
 COPY --from=builder --chown=node:node /app/public ./public
 
+RUN mkdir -p /app/public/media && chown -R node:node /app/public/media
+
 USER node
 
 EXPOSE 3000

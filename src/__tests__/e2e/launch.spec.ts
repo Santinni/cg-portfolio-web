@@ -32,6 +32,14 @@ test.describe('public launch surface', () => {
 		expect(body.status).toBe('ok')
 		expect(body.revision).toBeTruthy()
 		expect(body.timestamp).toBeTruthy()
+		expect(body.checks.database).toBe('skipped')
+
+		const readinessResponse = await request.get('/api/health?deep=1')
+		const readinessBody = await readinessResponse.json()
+
+		expect(readinessResponse.ok()).toBeTruthy()
+		expect(readinessBody.status).toBe('ok')
+		expect(readinessBody.checks.database).toBe('ok')
 	})
 })
 

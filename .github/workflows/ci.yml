@@ -1,8 +1,8 @@
-name: CI
+name: CI and production delivery
 
 on:
   push:
-    branches: [main, dev]
+    branches: [main]
   pull_request:
     branches: [main, dev]
 
@@ -10,8 +10,8 @@ permissions:
   contents: read
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 env:
   NODE_VERSION: "24"
@@ -24,7 +24,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -32,7 +32,7 @@ jobs:
           version: ${{ env.PNPM_VERSION }}
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
@@ -52,13 +52,13 @@ jobs:
         run: pnpm lint
 
   test:
-    name: Tests
+    name: Unit and integration tests
     runs-on: ubuntu-latest
     needs: quality
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -66,7 +66,7 @@ jobs:
           version: ${{ env.PNPM_VERSION }}
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
@@ -74,17 +74,89 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Run editorial and security unit tests
+      - name: Run editorial and security tests
         run: pnpm test:unit
 
       - name: Run Vitest suite
         run: pnpm test
 
-  build:
-    name: Build and push image
+  e2e:
+    name: Production build and browser smoke
     runs-on: ubuntu-latest
-    needs: [quality, test]
+    needs: quality
+    env:
+      CI: "true"
+      DATABASE_URI: postgresql://postgres:postgres@127.0.0.1:5432/codeguy_test
+      HOSTNAME: 127.0.0.1
+      NEXT_PUBLIC_SERVER_URL: http://127.0.0.1:3000
+      PAYLOAD_SECRET: ci-only-payload-secret-00000000000000000000000000000000
+
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_DB: codeguy_test
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d codeguy_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Chromium
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Build production application
+        run: pnpm build
+
+      - name: Assemble standalone runtime
+        run: |
+          mkdir -p .next/standalone/public .next/standalone/.next/static
+          cp -R public/. .next/standalone/public/
+          cp -R .next/static/. .next/standalone/.next/static/
+
+      - name: Run Chromium launch suite
+        run: pnpm exec playwright test --project=chromium
+
+      - name: Upload browser failure evidence
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-failure-${{ github.run_id }}
+          path: |
+            playwright-report/
+            test-results/
+          if-no-files-found: ignore
+          retention-days: 7
+
+  build:
+    name: Build and publish immutable image
+    runs-on: ubuntu-latest
+    needs: [quality, test, e2e]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    outputs:
+      image_name: ${{ steps.image.outputs.name }}
 
     permissions:
       contents: read
@@ -92,7 +164,13 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
+
+      - name: Normalize GHCR image name
+        id: image
+        run: |
+          repository_lower="$(printf '%s' "$GITHUB_REPOSITORY" | tr '[:upper:]' '[:lower:]')"
+          printf 'name=ghcr.io/%s\n' "$repository_lower" >> "$GITHUB_OUTPUT"
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -108,7 +186,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/${{ github.repository }}
+          images: ${{ steps.image.outputs.name }}
           tags: |
             type=sha,prefix=,format=long
             type=raw,value=latest
@@ -126,50 +204,147 @@ jobs:
           cache-to: type=gha,mode=max
 
   deploy:
-    name: Deploy to production
+    name: Deploy immutable image to production
     runs-on: ubuntu-latest
     needs: build
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    environment: production
+    environment:
+      name: production
+      url: https://codeguy.cz
+    concurrency:
+      group: codeguy-production
+      cancel-in-progress: false
+
     permissions:
       contents: read
       packages: read
 
     steps:
-      - name: Sync compose contract
+      - name: Checkout deployment contract
+        uses: actions/checkout@v6
+
+      - name: Verify production deployment configuration
+        env:
+          VPS_FINGERPRINT: ${{ secrets.VPS_FINGERPRINT }}
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_KEY: ${{ secrets.VPS_KEY }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+        run: |
+          test -n "$VPS_HOST" || { echo "VPS_HOST is not configured" >&2; exit 1; }
+          test -n "$VPS_USER" || { echo "VPS_USER is not configured" >&2; exit 1; }
+          test -n "$VPS_KEY" || { echo "VPS_KEY is not configured" >&2; exit 1; }
+          test -n "$VPS_FINGERPRINT" || { echo "VPS_FINGERPRINT is not configured" >&2; exit 1; }
+
+      - name: Stage deployment contract on VPS
         uses: appleboy/scp-action@v1
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_KEY }}
-          source: compose.yaml
-          target: ${{ vars.DEPLOY_PATH || '/opt/codeguy' }}
+          fingerprint: ${{ secrets.VPS_FINGERPRINT }}
+          source: compose.yaml,Caddyfile
+          target: /tmp/codeguy-${{ github.sha }}
           overwrite: true
 
-      - name: Deploy via SSH
+      - name: Deploy and verify revision
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_KEY }}
+          fingerprint: ${{ secrets.VPS_FINGERPRINT }}
+          script_stop: true
+          command_timeout: 15m
           script: |
-            cd ${{ vars.DEPLOY_PATH || '/opt/codeguy' }}
-            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-            previous_container="$(docker compose ps -q app)"
+            set -eu
+
+            deploy_path="${{ vars.DEPLOY_PATH || '/opt/codeguy' }}"
+            release_path="/tmp/codeguy-${{ github.sha }}"
+            expected_revision="${{ github.sha }}"
+
+            test -d "$deploy_path" || { echo "Deploy directory $deploy_path does not exist" >&2; exit 1; }
+            test -f "$deploy_path/.env" || { echo "Production environment file $deploy_path/.env does not exist" >&2; exit 1; }
+            test -f "$release_path/compose.yaml" || { echo "Staged compose.yaml is missing" >&2; exit 1; }
+            test -f "$release_path/Caddyfile" || { echo "Staged Caddyfile is missing" >&2; exit 1; }
+
+            export APP_ENV_FILE="$deploy_path/.env"
+            docker compose --env-file "$deploy_path/.env" -f "$release_path/compose.yaml" config --quiet
+            docker run --rm \
+              --volume "$release_path/Caddyfile:/etc/caddy/Caddyfile:ro" \
+              caddy:2.11.4-alpine \
+              caddy validate --config /etc/caddy/Caddyfile
+
+            cd "$deploy_path"
+            previous_container="$(docker compose ps -q app 2>/dev/null || true)"
             previous_image=""
             if [ -n "$previous_container" ]; then
               previous_image="$(docker inspect --format '{{.Config.Image}}' "$previous_container")"
             fi
-            export APP_IMAGE=ghcr.io/${{ github.repository }}:${{ github.sha }}
-            docker compose pull app
-            expected_revision="${{ github.sha }}"
-            if ! docker compose up -d --no-deps --wait app \
-              || ! curl --retry 5 --retry-delay 2 --fail --silent "http://localhost:3000/api/health?revision=$expected_revision" | grep --fixed-strings "\"revision\":\"$expected_revision\"" \
-              || ! curl --retry 10 --retry-delay 3 --retry-all-errors --fail --silent "https://codeguy.cz/api/health?revision=$expected_revision" | grep --fixed-strings "\"revision\":\"$expected_revision\""; then
+
+            umask 077
+            mkdir -p backups
+            if docker compose ps --status running -q database | grep --quiet .; then
+              docker compose exec -T database sh -c \
+                'PGPASSWORD="$POSTGRES_PASSWORD" pg_dump --username="$POSTGRES_USER" --dbname="$POSTGRES_DB" --format=custom' \
+                > "backups/predeploy-$expected_revision.dump"
+            fi
+
+            persist_image() {
+              persisted_image="$1"
+              temporary_env=".env.$expected_revision.tmp"
+              umask 077
+              sed '/^APP_IMAGE=/d' .env > "$temporary_env"
+              printf 'APP_IMAGE=%s\n' "$persisted_image" >> "$temporary_env"
+              mv "$temporary_env" .env
+            }
+
+            rollback() {
+              if [ -f compose.yaml.rollback ]; then cp compose.yaml.rollback compose.yaml; fi
+              if [ -f Caddyfile.rollback ]; then cp Caddyfile.rollback Caddyfile; fi
               if [ -n "$previous_image" ]; then
                 export APP_IMAGE="$previous_image"
-                docker compose up -d --no-deps --wait app
+                docker compose up --wait --wait-timeout 180
+                docker compose exec -T caddy caddy reload --config /etc/caddy/Caddyfile --adapter caddyfile
+                persist_image "$previous_image"
+              else
+                docker compose down
+              fi
+            }
+
+            printf '%s' "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+            trap 'docker logout ghcr.io >/dev/null 2>&1 || true' EXIT
+            export APP_IMAGE="${{ needs.build.outputs.image_name }}:${{ github.sha }}"
+            docker compose --env-file .env -f "$release_path/compose.yaml" pull
+
+            if [ -f compose.yaml ]; then cp compose.yaml compose.yaml.rollback; fi
+            if [ -f Caddyfile ]; then cp Caddyfile Caddyfile.rollback; fi
+            install -m 0644 "$release_path/compose.yaml" compose.yaml
+            install -m 0644 "$release_path/Caddyfile" Caddyfile
+
+            check_revision() {
+              check_url="$1"
+              retry_count="$2"
+              retry_delay="$3"
+              response="$(curl --retry "$retry_count" --retry-delay "$retry_delay" --retry-all-errors --fail --silent "$check_url")" || return 1
+              printf '%s' "$response" | grep --quiet --fixed-strings "\"revision\":\"$expected_revision\""
+            }
+
+            if ! docker compose up --wait --wait-timeout 180 \
+              || ! docker compose exec -T caddy caddy reload --config /etc/caddy/Caddyfile --adapter caddyfile \
+              || ! check_revision "http://127.0.0.1:3000/api/health?deep=1&revision=$expected_revision" 5 2; then
+              rollback
+              exit 1
+            fi
+
+            persist_image "$APP_IMAGE"
+
+            if ! check_revision "https://codeguy.cz/api/health?revision=$expected_revision" 20 5; then
+              if [ -n "$previous_image" ]; then
+                rollback
+              else
+                echo "Public HTTPS verification is not ready; leaving the first healthy stack running for DNS/ACME diagnosis" >&2
               fi
               exit 1
             fi
-            docker image prune -f
+
+            docker image prune --force --filter "until=168h"

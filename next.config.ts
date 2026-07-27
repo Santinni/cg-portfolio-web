@@ -24,6 +24,13 @@ const nextConfig: NextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
   output: 'standalone',
+  outputFileTracingIncludes: {
+    '/*': [
+      './node_modules/sharp/**/*',
+      './node_modules/@img/sharp-linux-x64/**/*',
+      './node_modules/@img/sharp-libvips-linux-x64/**/*',
+    ],
+  },
   webpack: (config) => {
     config.module.rules.push({
       test: /\.svg$/,
@@ -56,7 +63,7 @@ const nextConfig: NextConfig = {
               "default-src 'self'",
               "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
               "style-src 'self' 'unsafe-inline'",
-              "img-src 'self' data: https:",
+              "img-src 'self' blob: data: https:",
               "font-src 'self' data:",
               "connect-src 'self' https://calendar.google.com",
               "frame-src 'self' https://calendar.google.com",
