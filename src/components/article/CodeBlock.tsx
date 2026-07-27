@@ -10,7 +10,7 @@ export interface CodeBlockProps {
   label?: string;
 }
 
-export function CodeBlock({ code, label = "Ukázka kódu", language = "text" }: CodeBlockProps) {
+export function CodeBlock({ code, label = "Code example", language = "text" }: CodeBlockProps) {
   const [copied, setCopied] = useState(false);
   const [failed, setFailed] = useState(false);
 
@@ -34,16 +34,16 @@ export function CodeBlock({ code, label = "Ukázka kódu", language = "text" }: 
           type="button"
           onClick={copyCode}
         >
-          {copied ? "Zkopírováno" : "Kopírovat"}
+          {copied ? "Copied" : "Copy"}
         </button>
       </figcaption>
-      <div className={styles.codeScroll} tabIndex={0} aria-label="Posuvná ukázka kódu">
+      <div className={styles.codeScroll} tabIndex={0} aria-label="Scrollable code example">
         <pre>
           <code>{code}</code>
         </pre>
       </div>
       <span className={styles.visuallyHidden} aria-live="polite">
-        {failed ? "Kód se nepodařilo zkopírovat." : copied ? "Kód byl zkopírován." : ""}
+        {failed ? "The code could not be copied." : copied ? "Code copied." : ""}
       </span>
     </figure>
   );

@@ -24,7 +24,7 @@ function TocList({ items }: Pick<TableOfContentsProps, "items">) {
   );
 }
 
-export function TableOfContents({ items, title = "Obsah článku" }: TableOfContentsProps) {
+export function TableOfContents({ items, title = "On this page" }: TableOfContentsProps) {
   if (!items.length) return null;
 
   return (

@@ -1,24 +1,23 @@
-import About from '@/app/(frontend)/(pages)/(home)/sections/about'
-import Contact from '@/app/(frontend)/(pages)/(home)/sections/contact'
-import Hero from '@/app/(frontend)/(pages)/(home)/sections/hero'
-import Services from '@/app/(frontend)/(pages)/(home)/sections/services'
-import { getHomePageData } from '@/lib/api/getHomePageData'
-
-export const dynamic = 'force-dynamic'
+import ExperienceSnapshot from '@/app/(frontend)/(pages)/(home)/blocks/experience-snapshot'
+import FinalCta from '@/app/(frontend)/(pages)/(home)/blocks/final-cta'
+import FlagshipCase from '@/app/(frontend)/(pages)/(home)/blocks/flagship-case'
+import Hero from '@/app/(frontend)/(pages)/(home)/blocks/hero'
+import Principles from '@/app/(frontend)/(pages)/(home)/blocks/principles'
+import SelectedWork from '@/app/(frontend)/(pages)/(home)/blocks/selected-work'
 
 /**
- * Legacy home page fallback. The final public route will be rebuilt from the
- * approved Figma design, while this page keeps current CMS content available.
+ * Home — the public landing page. Renders entirely from typed local content
+ * so it stays available independent of Payload/PostgreSQL.
  */
-export default async function HomePage() {
-  const { services, about, contact } = await getHomePageData()
-
-  return (
-    <>
-      <Hero />
-      <Services data={services} />
-      <About data={about} />
-      <Contact data={contact} />
-    </>
-  )
+export default function HomePage() {
+	return (
+		<>
+			<Hero />
+			<FlagshipCase />
+			<SelectedWork />
+			<Principles />
+			<ExperienceSnapshot />
+			<FinalCta />
+		</>
+	)
 }

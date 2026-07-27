@@ -63,6 +63,7 @@ export type ButtonOrLinkProps = AsButtonProps | AsLinkProps
 export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonOrLinkProps>(
 	(
 		{
+			renders = 'button',
 			className,
 			children,
 			variant,
@@ -97,8 +98,8 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonOr
 			[styles.isLoading]: isLoading,
 		})
 
-		if (rest.renders === 'link') {
-			const { href, ...linkRest } = rest as AsLinkProps
+		if (renders === 'link') {
+			const { href, ...linkRest } = rest as Omit<AsLinkProps, 'renders'>
 
 			return (
 				<Link href={href} ref={ref as Ref<HTMLAnchorElement>} className={classes} {...linkRest}>
@@ -106,10 +107,11 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonOr
 				</Link>
 			)
 		} else {
-			const buttonProps = rest as AsButtonProps
+			const buttonProps = rest as Omit<AsButtonProps, 'renders'>
 
 			return (
 				<button
+					type="button"
 					className={classes}
 					onClick={onClick}
 					disabled={isDisabled || isLoading}

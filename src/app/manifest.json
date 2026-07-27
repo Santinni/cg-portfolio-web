@@ -1,7 +1,7 @@
 {
-  "name": "CodeGuy.cz",
-  "short_name": "CG",
-  "lang": "cs",
+  "name": "Karel Kutchan — Senior Frontend Engineer",
+  "short_name": "Codeguy",
+  "lang": "en",
   "icons": [
     {
       "src": "/favicon.ico",
@@ -39,5 +39,5 @@
   "display": "standalone",
   "orientation": "portrait",
   "scope": "/",
-  "description": "CodeGuy.cz - Profesionální webové aplikace"
+  "description": "Karel Kutchan is a senior frontend engineer based in Prague, building resilient frontend systems with React, TypeScript and Next.js."
 }

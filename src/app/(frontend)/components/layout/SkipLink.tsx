@@ -1,9 +1,9 @@
-import styles from "./SkipLink.module.css";
+import styles from './SkipLink.module.css'
 
 export function SkipLink() {
-  return (
-    <a className={styles.skipLink} href="#main-content">
-      Přeskočit na hlavní obsah
-    </a>
-  );
+	return (
+		<a className={styles.skipLink} href="#main-content">
+			Skip to main content
+		</a>
+	)
 }

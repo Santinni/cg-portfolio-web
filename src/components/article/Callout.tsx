@@ -19,7 +19,7 @@ const toneClasses: Record<CalloutTone, string> = {
 
 export function Callout({ children, title, tone = "info" }: CalloutProps) {
   return (
-    <aside className={`${styles.callout} ${toneClasses[tone]}`} aria-label={title ?? "Poznámka"}>
+    <aside className={`${styles.callout} ${toneClasses[tone]}`} aria-label={title ?? "Note"}>
       <span className={styles.calloutIcon} aria-hidden="true">i</span>
       <div className={styles.calloutContent}>
         {title ? <strong>{title}</strong> : null}

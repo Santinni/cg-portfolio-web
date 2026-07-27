@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
 		rules: {
 			userAgent: '*',
 			allow: '/',
-			disallow: ['/api/', '/admin/', '/_next/', '/static/'],
+			disallow: ['/api/', '/admin/'],
 		},
 		sitemap: `${process.env.NEXT_PUBLIC_SERVER_URL || 'https://codeguy.cz'}/sitemap.xml`,
 	}

@@ -7,7 +7,10 @@
     }
 }
 
-codeguy.cz {
+codeguy.cz, www.codeguy.cz {
+    @www host www.codeguy.cz
+    redir @www https://codeguy.cz{uri} permanent
+
     reverse_proxy 127.0.0.1:3000 {
         # Health checks
         health_uri /api/health
@@ -62,8 +65,8 @@ codeguy.cz {
     }
 
     header @api {
-        Cache-Control "public, max-age=60, stale-while-revalidate=30"
-        Vary "Accept-Encoding, Authorization"
+        Cache-Control "private, no-store"
+        Vary "Accept-Encoding, Authorization, Cookie"
     }
 
     # Logs

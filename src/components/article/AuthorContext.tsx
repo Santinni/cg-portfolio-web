@@ -7,7 +7,7 @@ export interface AuthorContextProps extends AuthorData {
   heading?: string;
 }
 
-export function AuthorContext({ avatar, bio, heading = "O autorovi", href, name, role }: AuthorContextProps) {
+export function AuthorContext({ avatar, bio, heading = "About the author", href, name, role }: AuthorContextProps) {
   return (
     <aside className={styles.author} aria-label={heading}>
       {avatar ? <div className={styles.authorAvatar}>{avatar}</div> : null}

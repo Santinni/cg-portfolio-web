@@ -1,5 +1,10 @@
+import { ArrowLeft } from 'lucide-react'
+
+import { Container } from '@/app/(frontend)/components/layout/Container'
 import { Button } from '@/app/(frontend)/components/primitives/button'
-import styles from '@/app/(frontend)/styles/error.module.css'
+import { Eyebrow } from '@/components/site/Eyebrow'
+
+import styles from './not-found.module.css'
 
 /**
  * Custom 404 Not Found page.
@@ -7,17 +12,18 @@ import styles from '@/app/(frontend)/styles/error.module.css'
  */
 export default function NotFound() {
 	return (
-		<div className={styles.container}>
-			<div className={styles.content}>
-				<h1 className={styles.title}>404</h1>
-				<h2 className={styles.subtitle}>Page not found</h2>
-				<p className={styles.message}>Sorry, but the page you are looking for does not exist.</p>
-				<div className={styles.actions}>
-					<Button renders="link" href="/">
-						Go home
-					</Button>
-				</div>
-			</div>
-		</div>
+		<section className={styles.section} aria-labelledby="not-found-heading">
+			<Container className={styles.content}>
+				<Eyebrow>404 / PAGE NOT FOUND</Eyebrow>
+				<h1 id="not-found-heading" className={styles.title}>
+					This page is not part of the system.
+				</h1>
+				<p className={styles.message}>The link may be outdated, or the page may have moved.</p>
+				<Button renders="link" href="/" variant="primary">
+					<ArrowLeft className={styles.icon} aria-hidden="true" />
+					Return home
+				</Button>
+			</Container>
+		</section>
 	)
 }

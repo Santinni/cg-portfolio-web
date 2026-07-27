@@ -2,6 +2,7 @@
 
 ARG NODE_VERSION=24.18.0
 ARG PNPM_VERSION=10.28.0
+ARG APP_REVISION=development
 
 FROM node:${NODE_VERSION}-slim AS base
 
@@ -28,11 +29,14 @@ RUN pnpm run build
 
 FROM node:${NODE_VERSION}-slim AS final
 
+ARG APP_REVISION
+
 WORKDIR /app
 
 ENV NODE_ENV=production
 ENV HOSTNAME=0.0.0.0
 ENV PORT=3000
+ENV APP_REVISION=${APP_REVISION}
 
 COPY --from=builder --chown=node:node /app/.next/standalone ./
 COPY --from=builder --chown=node:node /app/.next/static ./.next/static

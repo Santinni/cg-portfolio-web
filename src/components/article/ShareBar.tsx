@@ -42,18 +42,18 @@ export function ShareBar({ text, title, url }: ShareBarProps) {
 
   const message =
     status === "copied"
-      ? "Odkaz byl zkopírován."
+      ? "Link copied."
       : status === "error"
-        ? "Sdílení se nepodařilo. Zkuste odkaz zkopírovat ručně."
+        ? "Sharing failed. Try copying the link manually."
         : "";
 
   return (
     <div className={styles.shareBar}>
-      <p className={styles.shareLabel}>Sdílet článek</p>
+      <p className={styles.shareLabel}>Share article</p>
       <ul className={styles.shareActions}>
         <li>
           <button className={styles.action} type="button" onClick={nativeShare}>
-            Sdílet
+            Share
           </button>
         </li>
         <li>
@@ -72,7 +72,7 @@ export function ShareBar({ text, title, url }: ShareBarProps) {
             type="button"
             onClick={copyLink}
           >
-            Kopírovat odkaz
+            Copy link
           </button>
         </li>
       </ul>

@@ -8,8 +8,12 @@ export function GET() {
 	return NextResponse.json(
 		{
 			status: 'ok',
+			revision: process.env.APP_REVISION || 'development',
 			timestamp: new Date().toISOString(),
 		},
-		{ status: 200 }
+		{
+			status: 200,
+			headers: { 'Cache-Control': 'no-store' },
+		}
 	)
 }

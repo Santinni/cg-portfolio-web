@@ -1,0 +1,44 @@
+.layout {
+	display: grid;
+	gap: var(--space-40);
+}
+
+.sectionHeading,
+.expectations {
+	display: grid;
+	gap: var(--space-16);
+}
+
+.sectionHeading,
+.expectations,
+.methods {
+	max-width: 760px;
+}
+
+.heading {
+	margin: 0;
+	font-size: var(--font-size-h2);
+	font-weight: 700;
+	line-height: var(--line-height-h2);
+	letter-spacing: -0.02em;
+	text-wrap: balance;
+}
+
+.methods {
+	border-top: 1px solid var(--border-default);
+}
+
+.expectations p {
+	max-width: 680px;
+	margin: 0;
+	color: var(--text-secondary);
+	font-size: var(--font-size-body-lg);
+	line-height: var(--line-height-body-lg);
+}
+
+@media (min-width: 1024px) {
+	.layout {
+		grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr);
+		gap: var(--space-80);
+	}
+}

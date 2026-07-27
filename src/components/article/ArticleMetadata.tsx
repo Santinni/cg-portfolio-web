@@ -18,23 +18,23 @@ export function ArticleMetadata({
 }: ArticleMetadataProps) {
   return (
     <div>
-      <ul className={styles.metadata} aria-label="Metadata článku">
+      <ul className={styles.metadata} aria-label="Article metadata">
         {publishedAt ? (
           <li className={styles.metadataItem}>
-            <span>Publikováno</span>
+            <span>Published</span>
             <time dateTime={publishedAt.dateTime}>{publishedAt.label}</time>
           </li>
         ) : null}
         {updatedAt ? (
           <li className={styles.metadataItem}>
-            <span>Aktualizováno</span>
+            <span>Updated</span>
             <time dateTime={updatedAt.dateTime}>{updatedAt.label}</time>
           </li>
         ) : null}
         {readingTime ? <li className={styles.metadataItem}>{readingTime}</li> : null}
       </ul>
       {topics.length ? (
-        <ul className={styles.topics} aria-label="Témata článku">
+        <ul className={styles.topics} aria-label="Article topics">
           {topics.map((topic) => (
             <li key={topic.href ?? topic.label}>
               {topic.href ? (

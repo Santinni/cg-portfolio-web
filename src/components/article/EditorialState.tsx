@@ -13,9 +13,9 @@ export interface EditorialStateProps {
 }
 
 const defaultTitles: Record<EditorialStateKind, string> = {
-  empty: "Zatím tu nejsou žádné články",
-  error: "Obsah se nepodařilo načíst",
-  loading: "Načítám články",
+  empty: "No insights published yet",
+  error: "Insights could not be loaded",
+  loading: "Loading insights",
 };
 
 export function EditorialState({

@@ -4,6 +4,7 @@ import { withPayload } from '@payloadcms/next/withPayload'
 
 const nextConfig: NextConfig = {
   experimental: {
+    globalNotFound: true,
     serverActions: {
       allowedOrigins: ['codeguy.cz', 'localhost:3000'],
       bodySizeLimit: '2mb',

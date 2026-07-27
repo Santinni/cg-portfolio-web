@@ -1,97 +1,115 @@
 'use client'
 
-import { Home, Menu, X } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 import Link from 'next/link'
-import { ReactNode, useId, useRef, useState } from 'react'
-import { CodeguyLogoIconSvg } from '@/components/icons'
+import { useEffect, useId, useRef, useState } from 'react'
+
+import { ThemeToggle } from '@/app/(frontend)/components/theme/ThemeToggle'
+import { primaryNav, siteConfig } from '@/content/site'
+
 import { Button } from '../../primitives/button'
 import styles from './Navigation.module.css'
 
-/** Navigation link definitions used in both desktop and mobile menus. */
-const navItems: { label: string; href: string; icon: ReactNode | null }[] = [
-	{ label: 'Home', href: '/', icon: <Home /> },
-	{ label: 'Services', href: '/#services', icon: null },
-	{ label: 'About', href: '/#about', icon: null },
-	{ label: 'Contact', href: '/#contact', icon: null },
-	{ label: 'CV', href: '/curriculum-vitae', icon: null },
-]
-
 /**
- * Responsive site navigation with desktop menu and mobile dialog.
- * Uses the native `<dialog>` element for the mobile menu with
- * proper `aria-expanded` / `aria-controls` attributes.
+ * Responsive site navigation with a desktop menu and a mobile dialog.
+ * Uses the native `<dialog>` element for the mobile menu so Escape closes
+ * it natively; the `close` event keeps React state and focus in sync.
  */
 export default function Navigation() {
 	const [isOpen, setIsOpen] = useState(false)
 	const dialogRef = useRef<HTMLDialogElement>(null)
+	const triggerRef = useRef<HTMLButtonElement>(null)
 	const id = useId()
 
-	const toggleMenu = () => {
-		if (!dialogRef.current) return
-		if (dialogRef.current.open) {
-			dialogRef.current.close()
-			setIsOpen(false)
-		} else {
-			dialogRef.current.showModal()
-			setIsOpen(true)
-		}
+	const openMenu = () => {
+		dialogRef.current?.showModal()
+		setIsOpen(true)
 	}
+
+	const closeMenu = () => {
+		dialogRef.current?.close()
+	}
+
+	useEffect(() => {
+		const dialog = dialogRef.current
+		if (!dialog) return
+
+		const handleClose = () => {
+			setIsOpen(false)
+			triggerRef.current?.focus()
+		}
+
+		dialog.addEventListener('close', handleClose)
+		return () => dialog.removeEventListener('close', handleClose)
+	}, [])
+
+	useEffect(() => {
+		if (!isOpen) return
+
+		const previousOverflow = document.body.style.overflow
+		document.body.style.overflow = 'hidden'
+
+		return () => {
+			document.body.style.overflow = previousOverflow
+		}
+	}, [isOpen])
 
 	return (
 		<>
 			<nav className={styles.nav}>
 				<div className={styles.menuWrapper}>
-					<Link href="/" className={styles.logo} aria-label="CodeGuy.cz - Home">
-						<CodeguyLogoIconSvg className={styles.logoIcon} aria-hidden="true" />
-						<span className={styles.logoText}>
-							CodeGuy<span className={styles.logoAccent}>.cz</span>
-						</span>
+					<Link href="/" className={styles.logo} aria-label={`${siteConfig.brand} - Home`}>
+						<span className={styles.logoText}>{siteConfig.brand}</span>
 					</Link>
 
 					<div className={styles.desktopMenu}>
-						{navItems.map((item) => (
+						{primaryNav.map((item) => (
 							<Link key={item.href} href={item.href} className={styles.navLink}>
-								{item.icon ? item.icon : item.label}
+								{item.label}
 							</Link>
 						))}
+						<ThemeToggle />
 					</div>
 					<div className={styles.menuTrigger}>
+						<ThemeToggle />
 						<Button
+							ref={triggerRef}
 							className={styles.menuButton}
-							onClick={toggleMenu}
+							onClick={openMenu}
 							aria-expanded={isOpen}
 							aria-controls={id}
-							aria-label="Toggle mobile menu"
+							aria-haspopup="dialog"
+							aria-label="Open menu"
 							variant="transparent"
 							rounded
 						>
-							<Menu className={`${styles.menuIcon} ${isOpen ? styles.open : ''}`} />
+							<Menu className={styles.menuIcon} aria-hidden="true" />
 						</Button>
 					</div>
 				</div>
 			</nav>
 			{/* Mobile dialog menu */}
-			<dialog ref={dialogRef} className={styles.mobileMenu} id={id}>
+			<dialog ref={dialogRef} className={styles.mobileMenu} id={id} aria-label="Site menu">
 				<div className={styles.mobileMenuHeader}>
 					<Button
 						className={styles.menuButton}
-						onClick={toggleMenu}
+						onClick={closeMenu}
 						variant="transparent"
 						rounded
-						aria-label="Close mobile menu"
+						aria-label="Close menu"
 					>
-						<X className={styles.menuIcon} />
+						<X className={styles.menuIcon} aria-hidden="true" />
 					</Button>
 				</div>
 				<div className={styles.mobileMenuContent}>
-					{navItems.map((item) => (
+					{primaryNav.map((item) => (
 						<Link
 							key={item.href}
 							href={item.href}
 							className={styles.mobileNavLink}
-							onClick={toggleMenu}
+							onClick={closeMenu}
 						>
-							{item.icon ? item.icon : item.label}
+							{item.label}
 						</Link>
 					))}
 				</div>
