@@ -2,8 +2,19 @@ import { expect, test } from '@playwright/test'
 
 test.describe('language switcher', () => {
 	test('preserves the current route, query and hash in both directions', async ({ page }) => {
+		const scriptRenderErrors: string[] = []
+		page.on('console', (message) => {
+			if (
+				message.type() === 'error' &&
+				message.text().includes('Encountered a script tag while rendering React component')
+			) {
+				scriptRenderErrors.push(message.text())
+			}
+		})
+
 		await page.setViewportSize({ width: 1440, height: 900 })
 		await page.goto('/work?topic=performance#case-studies')
+		await expect(page.locator('html')).toHaveAttribute('data-scroll-behavior', 'smooth')
 
 		await page.getByRole('button', { name: 'Switch to Czech' }).click()
 		await expect(page).toHaveURL(/\/cs\/work\?topic=performance#case-studies$/)
@@ -14,6 +25,7 @@ test.describe('language switcher', () => {
 		await expect(page).toHaveURL(/\/work\?topic=performance#case-studies$/)
 		await expect(page.locator('html')).toHaveAttribute('lang', 'en')
 		await expect(page.getByRole('navigation').getByRole('link', { name: 'Work' })).toBeVisible()
+		expect(scriptRenderErrors).toEqual([])
 	})
 
 	test('marks the active locale for assistive technology', async ({ page }) => {

@@ -7,11 +7,14 @@ import LanguageSwitcher from '@/app/(frontend)/components/ui/languageSwitcher'
 import csMessages from '../../../messages/cs.json'
 import enMessages from '../../../messages/en.json'
 
-const { replace } = vi.hoisted(() => ({ replace: vi.fn() }))
+const { replaceDocument } = vi.hoisted(() => ({ replaceDocument: vi.fn() }))
+
+vi.mock('@/i18n/documentNavigation', () => ({ replaceDocument }))
 
 vi.mock('@/i18n/navigation', () => ({
+	getPathname: ({ href, locale }: { href: string; locale: 'cs' | 'en' }) =>
+		locale === 'cs' ? `/cs${href}` : href,
 	usePathname: () => '/work',
-	useRouter: () => ({ replace }),
 }))
 
 vi.mock('next/navigation', () => ({
@@ -30,7 +33,7 @@ function renderSwitcher(locale: keyof typeof catalogs) {
 
 describe('LanguageSwitcher', () => {
 	beforeEach(() => {
-		replace.mockReset()
+		replaceDocument.mockReset()
 		window.location.hash = '#details'
 	})
 
@@ -41,7 +44,7 @@ describe('LanguageSwitcher', () => {
 		expect(screen.getByRole('group', { name: 'Choose language' })).toBeInTheDocument()
 		await user.click(screen.getByRole('button', { name: 'Switch to Czech' }))
 
-		expect(replace).toHaveBeenCalledWith('/work?topic=performance#details', { locale: 'cs' })
+		expect(replaceDocument).toHaveBeenCalledWith('/cs/work?topic=performance#details')
 	})
 
 	it('renders Czech accessibility copy and switches back to unprefixed English', async () => {
@@ -51,6 +54,6 @@ describe('LanguageSwitcher', () => {
 		expect(screen.getByRole('group', { name: 'Vyberte jazyk' })).toBeInTheDocument()
 		await user.click(screen.getByRole('button', { name: 'Přepnout do jazyka: Angličtina' }))
 
-		expect(replace).toHaveBeenCalledWith('/work?topic=performance#details', { locale: 'en' })
+		expect(replaceDocument).toHaveBeenCalledWith('/work?topic=performance#details')
 	})
 })

@@ -24,7 +24,7 @@ export default async function GlobalNotFound() {
 	const homeHref = locale === 'cs' ? '/cs' : '/'
 
 	return (
-		<html lang={locale} suppressHydrationWarning>
+		<html lang={locale} suppressHydrationWarning data-scroll-behavior="smooth">
 			<head>
 				<title>{`${messages.errors.notFound.eyebrow} | Codeguy`}</title>
 				<meta name="description" content={messages.errors.notFound.description} />
