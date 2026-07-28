@@ -1,0 +1,590 @@
+{
+	"navigation": {
+		"homeLabel": "{brand} – Domů",
+		"openMenu": "Otevřít nabídku",
+		"closeMenu": "Zavřít nabídku",
+		"siteMenu": "Hlavní nabídka",
+		"items": {
+			"work": "Projekty",
+			"experience": "Zkušenosti",
+			"about": "O mně",
+			"contact": "Kontakt",
+			"insights": "Články"
+		},
+		"languages": {
+			"label": "Vyberte jazyk",
+			"switchTo": "Přepnout do jazyka: {language}",
+			"english": "Angličtina",
+			"czech": "Čeština"
+		}
+	},
+	"accessibility": {
+		"skipToMain": "Přeskočit na hlavní obsah",
+		"toggleTheme": "Přepnout barevný motiv",
+		"showMore": "Zobrazit více",
+		"showLess": "Zobrazit méně"
+	},
+	"home": {
+		"metadata": {
+			"title": "Karel Kutchan — Senior frontend vývojář",
+			"description": "Karel Kutchan je senior frontend vývojář z Prahy. V Reactu, TypeScriptu a Next.js staví odolné frontendové systémy."
+		},
+		"hero": {
+			"eyebrow": "SENIOR FRONTEND VÝVOJÁŘ / PRAHA",
+			"headline": "Stavím frontendové systémy pro produkty, které musí vydržet.",
+			"paragraphs": {
+				"experience": "Webům se věnuji přes deset let a dnes působím jako vedoucí frontend vývoje. S Reactem, TypeScriptem a Next.js pracuji na zákaznických portálech, interních podnikových aplikacích i komponentových knihovnách, na kterých stojí.",
+				"quality": "Architektura, přístupnost a dlouhodobá udržitelnost jsou součástí dodávky, ne práce odložená na později."
+			},
+			"primaryCta": "Přečíst hlavní případovou studii",
+			"secondaryCta": "Zobrazit zkušenosti"
+		},
+		"flagship": {
+			"eyebrow": "HLAVNÍ PŘÍPADOVÁ STUDIE / ENERGETIKA",
+			"titleDesktop": "Zákaznický portál postavený jako systém, ne jako sbírka obrazovek.",
+			"titleCompact": "Zákaznický portál postavený jako systém.",
+			"summary": "Vedení frontend vývoje zákaznického produktu pro energetiku: architektura, komponentové základy, kvalita dodávky a přístupnost v rostoucí aplikaci.",
+			"cta": "Přečíst studii",
+			"systemMap": {
+				"productUi": {
+					"label": "PRODUKTOVÉ ROZHRANÍ",
+					"description": "Zákaznické scénáře"
+				},
+				"sharedComponents": {
+					"label": "SDÍLENÉ KOMPONENTY",
+					"description": "Přístupné základy · Testy · Dodávka"
+				}
+			}
+		},
+		"selectedWork": {
+			"title": "Vybrané projekty"
+		},
+		"principles": {
+			"eyebrow": "JAK PRACUJI",
+			"titleDesktop": "Seniorní práce je hlavně o tom, aby se dobrá rozhodnutí dala opakovat.",
+			"titleCompact": "Dobrá rozhodnutí se musí dát opakovat.",
+			"items": {
+				"architecture": {
+					"title": "Architektura s důvodem",
+					"description": "Volím hranice a vzory, které snižují produktová rizika."
+				},
+				"accessibility": {
+					"title": "Přístupnost od začátku",
+					"description": "Přístupné chování začleňuji přímo do komponent a revizí."
+				},
+				"quality": {
+					"title": "Kvalita podporující dodávku",
+					"description": "Testy, nástroje a zpětnou vazbu používám tam, kde chrání změnu."
+				},
+				"leadership": {
+					"title": "Vedení skrze srozumitelnost",
+					"description": "Zviditelňuji kompromisy a pomáhám týmům postupovat s jistotou."
+				}
+			}
+		},
+		"experience": {
+			"eyebrow": "ZKUŠENOSTI",
+			"title": "Od implementace k vedení frontend vývoje.",
+			"description": "Webovému vývoji se věnuji od roku 2014. Dnes vedu frontendovou práci v oblasti architektury, komponentových systémů, přístupnosti, testování a code review.",
+			"cta": "Zobrazit všechny zkušenosti"
+		},
+		"finalCta": {
+			"heading": "Hledáte senior frontend vývojáře, který převezme odpovědnost za systém pod rozhraním?",
+			"supporting": "Nejdůležitější je pro mě správný produkt a tým. Rád proberu i vybrané možnosti konzultací.",
+			"cta": "Začít konverzaci"
+		}
+	},
+	"work": {
+		"metadata": {
+			"title": "Projekty",
+			"description": "Vybrané projekty Karla Kutchana z oblasti frontendové architektury, produktového vývoje a přístupnosti.",
+			"openGraphTitle": "Vybrané projekty — Karel Kutchan",
+			"notFoundTitle": "Případová studie nebyla nalezena"
+		},
+		"hero": {
+			"eyebrow": "VYBRANÉ PROJEKTY",
+			"title": "Frontendové systémy pro produkty, které musí vydržet.",
+			"intro": "Výběr práce na architektuře, komponentových základech a dodávce produktů v energetice a podnikovém prostředí.",
+			"listHeading": "Případové studie"
+		},
+		"actions": {
+			"readCase": "Přečíst studii",
+			"pending": "Případová studie se připravuje"
+		},
+		"facts": {
+			"role": "Role",
+			"focus": "Zaměření",
+			"stack": "Technologie"
+		},
+		"navigation": {
+			"label": "Navigace případových studií",
+			"allWork": "Všechny projekty",
+			"backTo": "Zpět na",
+			"nextCase": "Další studie"
+		},
+		"cards": {
+			"energyCustomerPortal": {
+				"eyebrow": "HLAVNÍ PŘÍPADOVÁ STUDIE / ENERGETIKA",
+				"title": "Zákaznický portál postavený jako systém, ne jako sbírka obrazovek.",
+				"summary": "Vedení frontend vývoje zákaznického produktu pro energetiku: architektura, komponentové základy, kvalita dodávky a přístupnost v rostoucí aplikaci."
+			},
+			"maintenanceApplications": {
+				"eyebrow": "PODNIKOVÉ APLIKACE",
+				"title": "Aplikace pro údržbu",
+				"summary": "Znovupoužitelná frontendová architektura pro podnikové procesy údržby."
+			},
+			"distributedEnergyPlatform": {
+				"eyebrow": "ENERGETICKÁ PLATFORMA",
+				"title": "Platforma pro distribuovanou energetiku",
+				"summary": "Frontendové základy komplexního produktu pro distribuovanou energetiku."
+			},
+			"accessibilityRefactoring": {
+				"eyebrow": "PŘÍSTUPNOST",
+				"title": "Refaktoring přístupnosti",
+				"summary": "Praktická zlepšení přístupnosti v zavedeném produktu."
+			}
+		},
+		"cases": {
+			"energyCustomerPortal": {
+				"eyebrow": "HLAVNÍ PŘÍPADOVÁ STUDIE / ENERGETIKA",
+				"title": "Zákaznický portál postavený jako systém, ne jako sbírka obrazovek.",
+				"description": "Zákaznický portál pro energetiku s rostoucím rozsahem produktu, několika uživatelskými scénáři a potřebou spolehlivé dodávky.",
+				"role": "Vedení frontend vývoje",
+				"focus": "Frontendová architektura, komponentové základy, přístupnost, strategie testování, kvalita revizí a vedení týmu.",
+				"sections": {
+					"context": {
+						"eyebrow": "01 / KONTEXT",
+						"heading": "Kontext produktu",
+						"body": "Zákaznický portál pro energetiku s rostoucím rozsahem produktu, několika uživatelskými scénáři a potřebou spolehlivé dodávky."
+					},
+					"responsibility": {
+						"eyebrow": "02 / ODPOVĚDNOST",
+						"heading": "Za co jsem odpovídal",
+						"body": "Za frontendovou architekturu, komponentové základy, přístupnost, strategii testování, kvalitu revizí a vedení týmu."
+					},
+					"decisions": {
+						"eyebrow": "03 / ROZHODNUTÍ",
+						"heading": "Rozhodnutí, na kterých záleželo",
+						"body": "Nastavit znovupoužitelné hranice, udržet chování komponent přístupné a používat Storybook a prohlížečové testy tam, kde snižují riziko regresí."
+					},
+					"outcome": {
+						"eyebrow": "04 / VÝSLEDEK",
+						"heading": "Co se změnilo",
+						"body": "Vznikl soudržnější frontendový základ pro další rozvoj produktu. Neuvádím žádné smyšlené výkonnostní ani obchodní metriky."
+					},
+					"reflection": {
+						"eyebrow": "05 / ZKUŠENOST",
+						"heading": "Co bych využil příště",
+						"body": "Kvalitní frontendová práce usnadní uvažování nad další změnou. Trvalým výsledkem je přehlednější systém, ne jen dodaná obrazovka."
+					}
+				}
+			},
+			"maintenanceApplications": {
+				"eyebrow": "PODNIKOVÉ APLIKACE",
+				"title": "Znovupoužitelná architektura pro podnikové procesy údržby.",
+				"description": "Interní produkty pro údržbu kombinují velké množství dat, odborné pracovní postupy a dlouhodobé provozní potřeby.",
+				"role": "Frontend vývoj",
+				"focus": "Frontendová implementace, architektura, znovupoužitelné vzory a spolupráce napříč produktovými omezeními.",
+				"sections": {
+					"context": {
+						"eyebrow": "01 / KONTEXT",
+						"heading": "Kontext produktu",
+						"body": "Interní produkty pro údržbu kombinují velké množství dat, odborné pracovní postupy a dlouhodobé provozní potřeby."
+					},
+					"responsibility": {
+						"eyebrow": "02 / ODPOVĚDNOST",
+						"heading": "Za co jsem odpovídal",
+						"body": "Za frontendovou implementaci, architekturu, znovupoužitelné vzory a spolupráci napříč produktovými omezeními."
+					},
+					"decisions": {
+						"eyebrow": "03 / ROZHODNUTÍ",
+						"heading": "Rozhodnutí, na kterých záleželo",
+						"body": "Oddělit opakovatelné vzory pracovních postupů od detailů konkrétního produktu a udržet složitá rozhraní přehledná a předvídatelná."
+					},
+					"outcome": {
+						"eyebrow": "04 / VÝSLEDEK",
+						"heading": "Co se změnilo",
+						"body": "Vznikl přehlednější znovupoužitelný základ pro další práci na aplikacích údržby."
+					},
+					"reflection": {
+						"eyebrow": "05 / ZKUŠENOST",
+						"heading": "Co bych využil příště",
+						"body": "Užitečným výsledkem je frontendová struktura, díky které je další týmové rozhodnutí srozumitelnější a méně nákladné."
+					}
+				}
+			},
+			"distributedEnergyPlatform": {
+				"eyebrow": "ENERGETICKÁ PLATFORMA",
+				"title": "Frontendové základy platformy pro distribuovanou energetiku.",
+				"description": "Komplexní energetická platforma propojovala provozní data, ovládací rozhraní a vyvíjející se produktové požadavky.",
+				"role": "Frontend vývoj",
+				"focus": "Frontend vývoj napříč produktovým rozhraním, sdílenými základy a kvalitou dodávky.",
+				"sections": {
+					"context": {
+						"eyebrow": "01 / KONTEXT",
+						"heading": "Kontext produktu",
+						"body": "Komplexní energetická platforma propojovala provozní data, ovládací rozhraní a vyvíjející se produktové požadavky."
+					},
+					"responsibility": {
+						"eyebrow": "02 / ODPOVĚDNOST",
+						"heading": "Za co jsem odpovídal",
+						"body": "Za frontend vývoj napříč produktovým rozhraním, sdílenými základy a kvalitou dodávky."
+					},
+					"decisions": {
+						"eyebrow": "03 / ROZHODNUTÍ",
+						"heading": "Rozhodnutí, na kterých záleželo",
+						"body": "Dávat přednost explicitnímu stavu a jasným hranicím komponent a zobrazit provozní informace tak, aby se daly rychle projít a jen těžko špatně vyložit."
+					},
+					"outcome": {
+						"eyebrow": "04 / VÝSLEDEK",
+						"heading": "Co se změnilo",
+						"body": "Vznikl udržitelný frontendový základ podporující další vývoj energetického produktu."
+					},
+					"reflection": {
+						"eyebrow": "05 / ZKUŠENOST",
+						"heading": "Co bych využil příště",
+						"body": "Užitečným výsledkem je frontendová struktura, díky které je další týmové rozhodnutí srozumitelnější a méně nákladné."
+					}
+				}
+			}
+		}
+	},
+	"about": {
+		"metadata": {
+			"title": "O mně",
+			"description": "Karel Kutchan je senior frontend vývojář z Prahy zaměřený na dodávku produktů, architekturu a srozumitelnou spolupráci v týmu."
+		},
+		"hero": {
+			"eyebrow": "O MNĚ",
+			"title": "Záleží mi na systému pod rozhraním.",
+			"intro": "Jsem senior frontend vývojář z Prahy a webům se věnuji přes deset let. Dnes působím jako vedoucí frontend vývoje a pomáhám týmům převádět produktové požadavky do udržitelných systémů."
+		},
+		"workingStyle": {
+			"eyebrow": "PRACOVNÍ STYL",
+			"title": "Prakticky, přímo a s ohledem na produkt.",
+			"body": "Největší přínos mám tam, kde se potkává dodávka produktu, frontendová architektura a srozumitelná týmová spolupráce. Ptám se, co musí zůstat flexibilní, co má být konzistentní a kde je složitost skutečně oprávněná."
+		},
+		"values": {
+			"eyebrow": "HODNOTY",
+			"title": "Jak k práci přistupuji.",
+			"ownership": {
+				"title": "Odpovědnost",
+				"description": "Přebírám odpovědnost za rozhodnutí i jejich následné náklady."
+			},
+			"clarity": {
+				"title": "Srozumitelnost",
+				"description": "Kompromisy mají být viditelné pro vývojáře i produktové partnery."
+			},
+			"craft": {
+				"title": "Řemeslo",
+				"description": "Přístupnost, testy a udržitelnost patří do běžné dodávky."
+			}
+		},
+		"cta": {
+			"title": "Podívejte se na práci za tímto profilem.",
+			"label": "Zobrazit vybrané projekty"
+		}
+	},
+	"experience": {
+		"metadata": {
+			"title": "Zkušenosti",
+			"description": "Přes deset let frontendového vývoje zákaznických portálů, podnikových aplikací, energetických produktů a komponentových systémů."
+		},
+		"hero": {
+			"eyebrow": "ZKUŠENOSTI / CV",
+			"title": "Přes deset let tvorby pro web.",
+			"intro": "Seniorní frontendový vývoj zákaznických portálů, podnikových aplikací, energetických produktů a komponentových systémů."
+		},
+		"progression": {
+			"eyebrow": "PROFESNÍ VÝVOJ",
+			"title": "Rostoucí odpovědnost napříč produkty a týmy.",
+			"entries": {
+				"leadFrontendEngineer": {
+					"role": "Vedoucí frontend vývoje",
+					"description": "Vedení frontendové architektury, způsobu dodávky a technických rozhodnutí napříč produktovými týmy."
+				},
+				"seniorFrontendEngineer": {
+					"role": "Senior frontend vývojář",
+					"description": "Tvorba odolných produktových rozhraní a znovupoužitelných komponentových základů pro komplexní aplikace."
+				},
+				"frontendEngineer": {
+					"role": "Frontend vývojář",
+					"description": "Dodávka zákaznických a interních webových aplikací v úzké spolupráci s designéry a backendovými týmy."
+				},
+				"webDeveloper": {
+					"role": "Webový vývojář",
+					"description": "Tvorba responzivních webů a budování praktických technických základů pro dlouhodobou práci na produktech."
+				}
+			}
+		},
+		"capabilities": {
+			"eyebrow": "HLAVNÍ KOMPETENCE",
+			"title": "Nástroje a postupy používané při dodávce.",
+			"list": "React · TypeScript · Next.js · Storybook · React Aria · Playwright · Vitest/Jest · frontendová architektura · přístupnost · komponentové systémy · code review · vedení týmu",
+			"viewCv": "Zobrazit životopis",
+			"downloadPdf": "Stáhnout PDF v angličtině"
+		}
+	},
+	"contact": {
+		"metadata": {
+			"title": "Kontakt",
+			"description": "Kontaktujte Karla Kutchana ohledně seniorních či vedoucích frontendových rolí a vybraných konzultací."
+		},
+		"hero": {
+			"eyebrow": "KONTAKT",
+			"title": "Pojďme probrat produkt, tým a frontendové problémy, které stojí za řešení.",
+			"intro": "Hledám především správnou seniorní nebo vedoucí frontendovou roli. Rád proberu i vybrané možnosti konzultací, pokud si konkrétně sedneme."
+		},
+		"methods": {
+			"eyebrow": "KONTAKTNÍ ÚDAJE",
+			"title": "Vyberte nejvhodnější způsob kontaktu.",
+			"email": { "label": "E-mail" },
+			"location": { "label": "Lokalita", "value": "Praha, Česká republika" },
+			"linkedin": { "label": "LinkedIn" },
+			"github": { "label": "GitHub" }
+		},
+		"expectations": {
+			"eyebrow": "NEŽ SI PROMLUVÍME",
+			"title": "Užitečný úvodní kontext",
+			"body": "Co stavíte, kde dnes leží odpovědnost za frontend a jak by měl vypadat úspěch během prvních měsíců."
+		}
+	},
+	"curriculumVitae": {
+		"metadata": {
+			"title": "Životopis",
+			"description": "Karel Kutchan — frontend vývojář. Životopis s pracovními zkušenostmi, vzděláním a technologickým přehledem."
+		},
+		"header": {
+			"headline": "curriculum vitæ",
+			"profession": "Frontend vývojář"
+		},
+		"downloadPdf": "Stáhnout CV (PDF v angličtině)",
+		"contact": {
+			"linkedin": "LinkedIn",
+			"location": "Praha, Česká republika"
+		},
+		"biography": {
+			"title": "Kdo jsem?",
+			"paragraphs": {
+				"focus": "Frontend vývojář na středně pokročilé úrovni se zaměřením na použitelnost, výkon a škálovatelnost. Webové aplikace oživuji pomocí Reactu, Next.js a HTMX.",
+				"experience": "Mám více než osm let zkušeností a v současnosti se specializuji na vývoj v Reactu a Next.js.",
+				"quality": "Zaměřuji se na tvorbu kvalitních webových aplikací s moderními technologiemi a dodávám škálovatelná, přístupná a výkonná řešení.",
+				"systems": "V posledních rolích jsem navrhoval a dokumentoval znovupoužitelné UI komponenty a design systémy s nástroji jako Storybook a RadixUI. Pracoval jsem na komplexních frontendových architekturách, zejména v oblastech, jako je B2C energetika, kde jsou zásadní přizpůsobivost, výkon a udržitelnost.",
+				"collaboration": "Daří se mi ve spolupráci založené na srozumitelné komunikaci a spolehlivých výsledcích. Plynně mluvím anglicky, mám začátečnickou znalost švédštiny a průběžně se profesně rozvíjím. Do každého projektu přináším technickou odbornost, schopnost řešit problémy a týmový přístup."
+			}
+		},
+		"technology": {
+			"title": "Technologický stack",
+			"javascript": "JS frameworky, knihovny a nástroje",
+			"styling": "Styling a design systémy"
+		},
+		"experience": {
+			"title": "Pracovní zkušenosti",
+			"presentPeriod": "6/2024 – současnost",
+			"freelancerAt": "Externista pro {company}",
+			"entries": {
+				"kontentAi": {
+					"title": "Frontend vývojář",
+					"descriptions": {
+						"accessibilityProject": "Pracoval jsem jako součást týmu na smluvním projektu zaměřeném na zlepšení přístupnosti a refaktoring kódu s cílem nabídnout uživatelům lepší a přístupnější prostředí.",
+						"reactAria": "Náš tým využíval React Aria, zejména její hooky, a vyvíjel vlastní řešení pro konkrétní požadavky na přístupnost.",
+						"responsibilities": "Odpovídal jsem za dodržení standardů přístupnosti v aplikaci, spolupracoval s týmem na optimalizaci kódu a uplatňoval osvědčené postupy frontendového vývoje.",
+						"outcome": "Vytvořili jsme intuitivní a efektivní uživatelské rozhraní a zároveň v daném časovém rámci splnili přísné požadavky na přístupnost."
+					}
+				},
+				"tldrit": {
+					"title": "Vedoucí frontend vývoje",
+					"descriptions": {
+						"leadership": "V časově omezené roli vedoucího frontend vývoje jsem navrhoval a implementoval řešení pro webové a mobilní aplikace a zároveň vedl frontendový tým.",
+						"delivery": "Navrhoval jsem technické postupy, vyvíjel škálovatelné aplikace s ReactJS, Next.js a Storybookem a v krátkých termínech zajišťoval kvalitní a uživatelsky přívětivé výsledky."
+					}
+				},
+				"eman": {
+					"title": "Frontend vývojář",
+					"descriptions": {
+						"clients": "Vyvíjel a implementoval jsem uživatelská rozhraní pro klíčové klienty, jako jsou EON, MND, ČEZ a Bohemia Energy.",
+						"optimization": "Optimalizoval jsem webové aplikace s cílem zlepšit jejich výkon a přístupnost, což vedlo k vyšší spokojenosti uživatelů.",
+						"refactoring": "Refaktoroval a modernizoval jsem starší kód pomocí Reactu, NextJS a TypeScriptu.",
+						"collaboration": "Úzce jsem spolupracoval s UX designéry a backendovými vývojáři na naplnění očekávání klientů."
+					}
+				},
+				"lmc": {
+					"title": "Frontend vývojář",
+					"descriptions": {
+						"solutions": "Zaměřoval jsem se na tvorbu webových řešení na míru pro firemní klienty, včetně řešení pro platformy, jako je jobs.cz.",
+						"discovery": "Spolupracoval jsem s designéry a klienty na analýze požadavků a návrhu funkčních, vizuálně přitažlivých řešení.",
+						"technology": "Používal jsem moderní frontendové technologie, jako jsou HTML, CSS, JavaScript a React, a zajišťoval responzivní design i vysoký výkon.",
+						"accessibility": "Upřednostňoval jsem standardy přístupnosti a optimalizoval uživatelský prožitek napříč zařízeními a prohlížeči."
+					}
+				},
+				"ampX": {
+					"title": "Frontend vývojář",
+					"descriptions": {
+						"platform": "Pracoval jsem na frontendu nové digitální energetické platformy umožňující zapojení do distribuované energetiky.",
+						"quality": "Dodával jsem kvalitní, přístupné a responzivní uživatelské rozhraní a udržoval čistý a čitelný kód.",
+						"technology": "K vývoji a implementaci frontendových řešení jsem používal ReactJS, Material-UI, Vanilla JavaScript, HTML5 a CSS-in-JS (JSS)."
+					}
+				},
+				"skype": {
+					"title": "Frontend vývojář",
+					"descriptions": {
+						"scale": "Podílel jsem se na platformě, kterou denně používalo více než 400 000 uživatelů z více než 30 zemí.",
+						"quality": "Zaměřoval jsem se na přístupnost, responzivitu a výkon hlavního webu.",
+						"components": "Vyvíjel a optimalizoval jsem komponenty, zlepšoval použitelnost a udržoval čistý a udržitelný kód.",
+						"cms": "Úzce jsem pracoval s Kentico CMS při správě a integraci obsahu."
+					}
+				},
+				"foxconn": {
+					"title": "Frontend kodér",
+					"descriptions": {
+						"gui": "Vyvíjel jsem grafické uživatelské rozhraní se silným důrazem na HTML architekturu a responzivní design.",
+						"collaboration": "Spolupracoval jsem s designéry a vývojáři na implementaci moderních řešení v CSS a JavaScriptu.",
+						"technology": "Pracoval jsem s Reactem, Vanilla JS a příležitostně s jQuery.",
+						"designSystem": "Vyvinul jsem vlastní design systém založený na metodice BEM."
+					}
+				},
+				"mountfield": {
+					"title": "Frontend kodér",
+					"descriptions": {
+						"website": "Spravoval a udržoval jsem hlavní firemní web postavený na platformě Kentico.",
+						"microsites": "Vytvářel jsem microsites, podporoval marketingové weby a vyvíjel responzivní HTML newslettery.",
+						"internalApps": "Podílel jsem se na vývoji interních aplikací, které zlepšovaly pracovní postupy zaměstnanců a přístup zákazníků."
+					}
+				},
+				"bitware": {
+					"title": "Webový administrátor, grafik a junior frontend kodér",
+					"descriptions": {
+						"scope": "Spravoval jsem weby, věnoval se grafickému designu a frontendovému vývoji.",
+						"presentations": "Vytvářel jsem responzivní webové prezentace pomocí HTML5/CSS3.",
+						"wordpress": "Pracoval jsem na projektech ve WordPressu, navrhoval šablony a připravoval tiskové materiály."
+					}
+				}
+			}
+		},
+		"education": {
+			"title": "Vzdělání",
+			"degree": "Elektrotechnika, telekomunikace a výpočetní technika",
+			"coursesTitle": "Kurzy a semináře",
+			"courses": {
+				"vzhuruDolu": "Optimalizace rychlosti načítání, CSS kód: organizace a údržba, SVG do hloubky, principy JavaScriptu",
+				"learn2code": "CSS preprocesory: Sass",
+				"webrebel": "Webrebel – online kurz webdesignu",
+				"freeCodeCamp": "Certifikace Full Stack Web Development, softwarové inženýrství",
+				"codecademy": "Základy HTML a CSS - www.codecademy.com",
+				"scomp": "Programátor webových aplikací, pracovník grafického studia"
+			}
+		}
+	},
+	"insights": {
+		"metadata": {
+			"title": "Články",
+			"description": "Praktické texty o frontendové architektuře, výkonu, přístupnosti a udržitelných systémech rozhraní.",
+			"openGraphTitle": "Články o frontendovém vývoji — Karel Kutchan"
+		},
+		"hero": {
+			"eyebrow": "ČLÁNKY",
+			"title": "Poznámky z frontendového vývoje",
+			"intro": "Praktické texty o architektuře rozhraní, výkonu, přístupnosti a systémech, které zůstávají udržitelné i po spuštění."
+		},
+		"filters": {
+			"label": "Filtrovat články podle tématu",
+			"all": "Vše",
+			"architecture": "Architektura",
+			"performance": "Výkon",
+			"designSystems": "Design systémy",
+			"accessibility": "Přístupnost"
+		},
+		"content": {
+			"label": "Publikované články",
+			"englishOnlyNotice": "Redakční články jsou nyní dostupné pouze v angličtině."
+		},
+		"states": {
+			"contactMe": "Kontaktovat mě",
+			"startConversation": "Začít konverzaci",
+			"serviceUnavailable": "Redakční služba je dočasně nedostupná. Zbytek portfolia zůstává k dispozici.",
+			"noTopicMatch": "Tomuto tématu momentálně neodpovídá žádný publikovaný článek.",
+			"noPosts": "Nové poznámky z frontendového vývoje se zde objeví po publikování."
+		},
+		"featured": {
+			"eyebrow": "DOPORUČENÝ ČLÁNEK",
+			"title": "Doporučený článek"
+		},
+		"latest": {
+			"title": "Nejnovější články"
+		},
+		"cta": {
+			"eyebrow": "ŘEŠÍTE PODOBNÝ PROBLÉM?",
+			"title": "Proměňte frontendové omezení v produktové rozhodnutí.",
+			"description": "Pomáhám týmům zjednodušit frontendovou architekturu, zlepšit výkon produktu a stavět rozhraní, na která je spoleh.",
+			"label": "Začít konverzaci"
+		}
+	},
+	"article": {
+		"readingTime": "{minutes, plural, one {# minuta čtení} few {# minuty čtení} other {# minut čtení}}",
+		"metadata": {
+			"label": "Metadata článku",
+			"published": "Publikováno",
+			"updated": "Aktualizováno",
+			"topics": "Témata článku"
+		},
+		"author": {
+			"heading": "O autorovi"
+		},
+		"callout": {
+			"note": "Poznámka"
+		},
+		"code": {
+			"label": "Ukázka kódu",
+			"copy": "Kopírovat",
+			"copied": "Zkopírováno",
+			"scrollLabel": "Posouvatelná ukázka kódu",
+			"copyFailure": "Kód se nepodařilo zkopírovat.",
+			"copySuccess": "Kód byl zkopírován."
+		},
+		"states": {
+			"empty": "Zatím nebyly publikovány žádné články",
+			"error": "Články se nepodařilo načíst",
+			"loading": "Načítání článků"
+		},
+		"share": {
+			"controlsLabel": "Ovládání sdílení článku",
+			"label": "Sdílet článek",
+			"share": "Sdílet",
+			"copyLink": "Kopírovat odkaz",
+			"copied": "Odkaz byl zkopírován.",
+			"error": "Sdílení se nezdařilo. Zkuste odkaz zkopírovat ručně."
+		},
+		"tableOfContents": {
+			"title": "Na této stránce"
+		},
+		"detail": {
+			"notFoundTitle": "Článek nebyl nalezen",
+			"unavailableTitle": "Článek je dočasně nedostupný",
+			"unavailableLabel": "Článek není dostupný",
+			"returnToInsights": "Vrátit se na články",
+			"unavailableDescription": "Redakční služba je dočasně nedostupná. Zkuste to prosím později.",
+			"eyebrow": "ČLÁNEK"
+		},
+		"cta": {
+			"eyebrow": "ŘEŠÍTE PODOBNÝ FRONTENDOVÝ PROBLÉM?",
+			"title": "Pojďme usnadnit změny v systému pod rozhraním.",
+			"description": "S produktovými týmy řeším architekturu, přístupnost, výkon a dlouhodobou kvalitu frontendu.",
+			"label": "Začít konverzaci"
+		}
+	},
+	"errors": {
+		"loading": "Načítání…",
+		"runtime": {
+			"title": "Něco se nepovedlo",
+			"description": "Došlo k neočekávané chybě. Zkuste to prosím znovu.",
+			"tryAgain": "Zkusit znovu",
+			"goHome": "Přejít domů"
+		},
+		"notFound": {
+			"eyebrow": "404 / STRÁNKA NENALEZENA",
+			"title": "Tato stránka není součástí webu.",
+			"description": "Odkaz může být zastaralý nebo byla stránka přesunuta.",
+			"returnHome": "Vrátit se domů"
+		}
+	}
+}

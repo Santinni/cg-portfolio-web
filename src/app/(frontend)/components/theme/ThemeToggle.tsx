@@ -1,12 +1,15 @@
 'use client'
 
 import { Moon, Sun } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 
 import styles from './ThemeToggle.module.css'
 
 type Theme = 'light' | 'dark'
 
 export function ThemeToggle() {
+	const t = useTranslations('accessibility')
+
 	const toggleTheme = () => {
 		const currentTheme = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light'
 		const nextTheme: Theme = currentTheme === 'dark' ? 'light' : 'dark'
@@ -20,7 +23,7 @@ export function ThemeToggle() {
 			className={styles.toggle}
 			type="button"
 			onClick={toggleTheme}
-			aria-label="Toggle color theme"
+			aria-label={t('toggleTheme')}
 		>
 			<Sun className={`${styles.icon} ${styles.lightIcon}`} aria-hidden="true" />
 			<Moon className={`${styles.icon} ${styles.darkIcon}`} aria-hidden="true" />

@@ -1,8 +1,13 @@
 import { ArrowUpRight } from 'lucide-react'
 
-import type { ContactMethod } from '@/content/contact'
-
 import styles from './ContactLink.module.css'
+
+interface ContactMethod {
+	label: string
+	value: string
+	href?: string
+	external?: boolean
+}
 
 interface ContactLinkProps {
 	method: ContactMethod

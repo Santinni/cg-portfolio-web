@@ -1,15 +1,41 @@
-import { render, screen } from '@testing-library/react'
+import { NextIntlClientProvider } from 'next-intl'
+import type { ComponentProps, ReactElement, ReactNode } from 'react'
+import { render as testingRender, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 
 import ExpandableText from '@/app/(frontend)/components/primitives/expandableText'
+import csMessages from '../../../messages/cs.json'
+import enMessages from '../../../messages/en.json'
+
+vi.mock('@/i18n/navigation', () => ({
+	Link: ({
+		children,
+		href,
+		...props
+	}: { children?: ReactNode; href: string } & Omit<ComponentProps<'a'>, 'href'>) => (
+		<a href={href} {...props}>
+			{children}
+		</a>
+	),
+}))
+
+const catalogs = { cs: csMessages, en: enMessages }
+
+function render(ui: ReactElement, locale: keyof typeof catalogs = 'en') {
+	return testingRender(
+		<NextIntlClientProvider locale={locale} messages={catalogs[locale]}>
+			{ui}
+		</NextIntlClientProvider>,
+	)
+}
 
 describe('ExpandableText', () => {
 	it('renders children content', () => {
 		render(
 			<ExpandableText>
 				<p>Test content</p>
-			</ExpandableText>
+			</ExpandableText>,
 		)
 
 		expect(screen.getByText('Test content')).toBeInTheDocument()
@@ -19,7 +45,7 @@ describe('ExpandableText', () => {
 		render(
 			<ExpandableText>
 				<p>Content</p>
-			</ExpandableText>
+			</ExpandableText>,
 		)
 
 		const toggle = screen.getByRole('button')
@@ -30,7 +56,7 @@ describe('ExpandableText', () => {
 		render(
 			<ExpandableText>
 				<p>Content</p>
-			</ExpandableText>
+			</ExpandableText>,
 		)
 
 		const region = screen.getByRole('region', { hidden: true })
@@ -43,7 +69,7 @@ describe('ExpandableText', () => {
 		render(
 			<ExpandableText>
 				<p>Content</p>
-			</ExpandableText>
+			</ExpandableText>,
 		)
 
 		const toggle = screen.getByRole('button')
@@ -58,7 +84,7 @@ describe('ExpandableText', () => {
 		render(
 			<ExpandableText>
 				<p>Content</p>
-			</ExpandableText>
+			</ExpandableText>,
 		)
 
 		await user.click(screen.getByRole('button'))
@@ -73,7 +99,7 @@ describe('ExpandableText', () => {
 		render(
 			<ExpandableText>
 				<p>Content</p>
-			</ExpandableText>
+			</ExpandableText>,
 		)
 
 		const toggle = screen.getByRole('button')
@@ -87,7 +113,7 @@ describe('ExpandableText', () => {
 		render(
 			<ExpandableText>
 				<p>Content</p>
-			</ExpandableText>
+			</ExpandableText>,
 		)
 
 		const toggle = screen.getByRole('button')
@@ -105,7 +131,7 @@ describe('ExpandableText', () => {
 		render(
 			<ExpandableText>
 				<p>Content</p>
-			</ExpandableText>
+			</ExpandableText>,
 		)
 
 		const toggle = screen.getByRole('button')
@@ -113,5 +139,20 @@ describe('ExpandableText', () => {
 
 		await user.click(toggle)
 		expect(toggle).toHaveAttribute('aria-label', 'Show less')
+	})
+
+	it('renders Czech accessibility labels', async () => {
+		const user = userEvent.setup()
+
+		render(
+			<ExpandableText>
+				<p>Obsah</p>
+			</ExpandableText>,
+			'cs',
+		)
+
+		const toggle = screen.getByRole('button', { name: 'Zobrazit více' })
+		await user.click(toggle)
+		expect(toggle).toHaveAccessibleName('Zobrazit méně')
 	})
 })

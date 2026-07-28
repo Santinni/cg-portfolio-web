@@ -1,9 +1,9 @@
 import clsx from 'clsx'
 import { Loader } from 'lucide-react'
-import Link, { LinkProps } from 'next/link'
 import {
 	AnchorHTMLAttributes,
 	ButtonHTMLAttributes,
+	ComponentProps,
 	forwardRef,
 	MouseEventHandler,
 	ReactNode,
@@ -11,6 +11,7 @@ import {
 } from 'react'
 
 import styles from './Button.module.css'
+import { Link } from '@/i18n/navigation'
 
 /** Shared style props for both button and link renders. */
 interface BaseButtonProps {
@@ -37,7 +38,7 @@ interface AsButtonProps extends BaseButtonProps, ButtonHTMLAttributes<HTMLButton
 interface AsLinkProps
 	extends BaseButtonProps,
 		Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'href'>,
-		LinkProps {
+		Omit<ComponentProps<typeof Link>, 'children' | 'className'> {
 	renders: 'link'
 	isLoading?: never
 	isDisabled?: never

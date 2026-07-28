@@ -1,14 +1,24 @@
 'use client'
 
 import { Menu, X } from 'lucide-react'
-import Link from 'next/link'
-import { useEffect, useId, useRef, useState } from 'react'
+import { useTranslations } from 'next-intl'
+import { Suspense, useEffect, useId, useRef, useState } from 'react'
 
 import { ThemeToggle } from '@/app/(frontend)/components/theme/ThemeToggle'
-import { primaryNav, siteConfig } from '@/content/site'
+import LanguageSwitcher from '@/app/(frontend)/components/ui/languageSwitcher'
+import { siteConfig } from '@/content/site'
+import { Link } from '@/i18n/navigation'
 
 import { Button } from '../../primitives/button'
 import styles from './Navigation.module.css'
+
+const navItems = [
+	{ key: 'work', href: '/work' },
+	{ key: 'experience', href: '/experience' },
+	{ key: 'about', href: '/about' },
+	{ key: 'contact', href: '/contact' },
+	{ key: 'insights', href: '/insights' },
+] as const
 
 /**
  * Responsive site navigation with a desktop menu and a mobile dialog.
@@ -16,6 +26,7 @@ import styles from './Navigation.module.css'
  * it natively; the `close` event keeps React state and focus in sync.
  */
 export default function Navigation() {
+	const t = useTranslations('navigation')
 	const [isOpen, setIsOpen] = useState(false)
 	const dialogRef = useRef<HTMLDialogElement>(null)
 	const triggerRef = useRef<HTMLButtonElement>(null)
@@ -58,16 +69,23 @@ export default function Navigation() {
 		<>
 			<nav className={styles.nav}>
 				<div className={styles.menuWrapper}>
-					<Link href="/" className={styles.logo} aria-label={`${siteConfig.brand} - Home`}>
+					<Link
+						href="/"
+						className={styles.logo}
+						aria-label={t('homeLabel', { brand: siteConfig.brand })}
+					>
 						<span className={styles.logoText}>{siteConfig.brand}</span>
 					</Link>
 
 					<div className={styles.desktopMenu}>
-						{primaryNav.map((item) => (
+						{navItems.map((item) => (
 							<Link key={item.href} href={item.href} className={styles.navLink}>
-								{item.label}
+								{t(`items.${item.key}`)}
 							</Link>
 						))}
+						<Suspense fallback={null}>
+							<LanguageSwitcher />
+						</Suspense>
 						<ThemeToggle />
 					</div>
 					<div className={styles.menuTrigger}>
@@ -79,7 +97,7 @@ export default function Navigation() {
 							aria-expanded={isOpen}
 							aria-controls={id}
 							aria-haspopup="dialog"
-							aria-label="Open menu"
+							aria-label={t('openMenu')}
 							variant="transparent"
 							rounded
 						>
@@ -89,29 +107,32 @@ export default function Navigation() {
 				</div>
 			</nav>
 			{/* Mobile dialog menu */}
-			<dialog ref={dialogRef} className={styles.mobileMenu} id={id} aria-label="Site menu">
+			<dialog ref={dialogRef} className={styles.mobileMenu} id={id} aria-label={t('siteMenu')}>
 				<div className={styles.mobileMenuHeader}>
 					<Button
 						className={styles.menuButton}
 						onClick={closeMenu}
 						variant="transparent"
 						rounded
-						aria-label="Close menu"
+						aria-label={t('closeMenu')}
 					>
 						<X className={styles.menuIcon} aria-hidden="true" />
 					</Button>
 				</div>
 				<div className={styles.mobileMenuContent}>
-					{primaryNav.map((item) => (
+					{navItems.map((item) => (
 						<Link
 							key={item.href}
 							href={item.href}
 							className={styles.mobileNavLink}
 							onClick={closeMenu}
 						>
-							{item.label}
+							{t(`items.${item.key}`)}
 						</Link>
 					))}
+					<Suspense fallback={null}>
+						<LanguageSwitcher />
+					</Suspense>
 				</div>
 			</dialog>
 		</>

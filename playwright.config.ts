@@ -32,10 +32,13 @@ export default defineConfig({
 			use: { ...devices['Pixel 5'] },
 		},
 	],
-	webServer: {
-		command: process.env.CI ? 'node .next/standalone/server.js' : 'pnpm dev',
-		url: baseURL,
-		reuseExistingServer: !process.env.CI,
-		timeout: 120_000,
-	},
+	webServer:
+		process.env.PLAYWRIGHT_EXTERNAL_SERVER === 'true'
+			? undefined
+			: {
+					command: process.env.CI ? 'node .next/standalone/server.js' : 'pnpm dev',
+					url: baseURL,
+					reuseExistingServer: !process.env.CI,
+					timeout: 120_000,
+				},
 })

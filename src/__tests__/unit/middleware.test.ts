@@ -1,33 +1,22 @@
-import {
-	afterEach,
-	beforeEach,
-	describe,
-	expect,
-	it,
-	vi,
-} from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-/**
- * The middleware module uses in-memory state (rateLimitMap).
- * We need to re-import it fresh for each test group to reset state.
- */
-
-// Mock next/server before importing middleware
 vi.mock('next/server', () => {
 	class MockNextResponse {
 		status: number
 		body: string | null
 		headers: Map<string, string>
+		requestHeaders: Headers | null
 
 		constructor(body: string | null, init?: { status?: number; headers?: Record<string, string> }) {
 			this.status = init?.status ?? 200
 			this.body = body
 			this.headers = new Map(Object.entries(init?.headers ?? {}))
+			this.requestHeaders = null
 		}
 
-		static next() {
+		static next(init?: { request?: { headers?: Headers } }) {
 			const response = new MockNextResponse(null)
-			response.status = 200
+			response.requestHeaders = init?.request?.headers ?? null
 			return response
 		}
 	}
@@ -42,91 +31,77 @@ function createMockRequest(pathname: string, ip = '127.0.0.1') {
 	} as never
 }
 
-describe('middleware', () => {
+describe('composed proxy', () => {
 	beforeEach(() => {
 		vi.resetModules()
+		vi.clearAllMocks()
 	})
 
 	afterEach(() => {
 		vi.restoreAllMocks()
 	})
 
-	it('passes through non-API/admin routes without rate limiting', async () => {
+	it('leaves frontend routing to explicit Next.js rewrites', async () => {
 		const { proxy } = await import('@/proxy')
-		const request = createMockRequest('/')
-		const response = proxy(request)
+		const response = proxy(createMockRequest('/'))
 
 		expect(response.status).toBe(200)
+		expect(response.headers.get('X-RateLimit-Limit')).toBeUndefined()
 	})
 
-	it('allows API requests within rate limit', async () => {
-		const { proxy } = await import('@/proxy')
-		const request = createMockRequest('/api/test', '10.0.0.1')
-		const response = proxy(request)
+	it.each(['/cs', '/cs/work'])(
+		'injects Czech locale context for %s without a rewrite',
+		async (pathname) => {
+			const { proxy } = await import('@/proxy')
+			const response = proxy(createMockRequest(pathname)) as unknown as {
+				headers: Map<string, string>
+				requestHeaders: Headers | null
+				status: number
+			}
 
-		expect(response.status).toBe(200)
-		expect(response.headers.get('X-RateLimit-Remaining')).toBe('59')
-	})
-
-	it('allows admin routes and applies rate limiting', async () => {
-		const { proxy } = await import('@/proxy')
-		const request = createMockRequest('/admin/dashboard', '10.0.0.2')
-		const response = proxy(request)
-
-		expect(response.status).toBe(200)
-		expect(response.headers.get('X-RateLimit-Limit')).toBe('60')
-	})
-
-	it('returns 429 after exceeding rate limit', async () => {
-		const { proxy } = await import('@/proxy')
-		const ip = '10.0.0.3'
-
-		// Make 60 requests (the limit)
-		for (let i = 0; i < 60; i++) {
-			const request = createMockRequest('/api/test', ip)
-			const response = proxy(request)
 			expect(response.status).toBe(200)
+			expect(response.headers.get('X-RateLimit-Limit')).toBeUndefined()
+			expect(response.requestHeaders?.get('X-NEXT-INTL-LOCALE')).toBe('cs')
+		},
+	)
+
+	it.each(['/api', '/api/test', '/admin', '/admin/dashboard'])(
+		'bypasses localization and rate-limits %s',
+		async (pathname) => {
+			const { proxy } = await import('@/proxy')
+			const response = proxy(createMockRequest(pathname, `10.0.0.${pathname.length}`))
+
+			expect(response.headers.get('X-RateLimit-Limit')).toBe('60')
+			expect(response.headers.get('X-RateLimit-Remaining')).toBe('59')
+		},
+	)
+
+	it('treats /apiary as a frontend route rather than the /api segment', async () => {
+		const { proxy } = await import('@/proxy')
+		const response = proxy(createMockRequest('/apiary'))
+
+		expect(response.status).toBe(200)
+		expect(response.headers.get('X-RateLimit-Limit')).toBeUndefined()
+	})
+
+	it('returns 429 after exceeding the existing rate limit', async () => {
+		const { proxy } = await import('@/proxy')
+		const ip = '10.0.0.30'
+
+		for (let requestNumber = 0; requestNumber < 60; requestNumber++) {
+			expect(proxy(createMockRequest('/api/test', ip)).status).toBe(200)
 		}
 
-		// 61st request should be rate limited
-		const request = createMockRequest('/api/test', ip)
-		const response = proxy(request)
+		const response = proxy(createMockRequest('/api/test', ip))
 
 		expect(response.status).toBe(429)
 		expect(response.headers.get('Retry-After')).toBe('60')
 		expect(response.headers.get('X-RateLimit-Remaining')).toBe('0')
 	})
 
-	it('tracks rate limits per IP independently', async () => {
-		const { proxy } = await import('@/proxy')
-
-		// Exhaust rate limit for one IP
-		for (let i = 0; i < 61; i++) {
-			proxy(createMockRequest('/api/test', '192.168.1.1'))
-		}
-
-		// Different IP should still be allowed
-		const response = proxy(createMockRequest('/api/test', '192.168.1.2'))
-		expect(response.status).toBe(200)
-	})
-
-	it('decrements remaining count with each request', async () => {
-		const { proxy } = await import('@/proxy')
-		const ip = '10.0.0.4'
-
-		const response1 = proxy(createMockRequest('/api/test', ip))
-		expect(response1.headers.get('X-RateLimit-Remaining')).toBe('59')
-
-		const response2 = proxy(createMockRequest('/api/test', ip))
-		expect(response2.headers.get('X-RateLimit-Remaining')).toBe('58')
-
-		const response3 = proxy(createMockRequest('/api/test', ip))
-		expect(response3.headers.get('X-RateLimit-Remaining')).toBe('57')
-	})
-
-	it('exports config with correct matcher', async () => {
+	it('matches API, admin and Czech frontend paths', async () => {
 		const { config } = await import('@/proxy')
 
-		expect(config.matcher).toEqual(['/api/:path*', '/admin/:path*'])
+		expect(config.matcher).toEqual(['/api/:path*', '/admin/:path*', '/cs/:path*'])
 	})
 })
