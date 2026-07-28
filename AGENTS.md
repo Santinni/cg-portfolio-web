@@ -19,6 +19,28 @@ When Context7 applies:
 - Public application code lives primarily in `src/app/[locale]/(frontend)`, shared frontend components in `src/app/(frontend)/components` and `src/components`, and translation catalogs in `messages`.
 - Treat `docs/plans/2026-07-28-i18n-implementation-plan.md` as the implementation and validation source of truth for the initial Czech/English rollout.
 
+## Git Flow And Pull Requests
+
+- `dev` is the integration branch. Create feature, fix, and documentation branches from an up-to-date `dev` and return them through a PR targeting `dev`.
+- `main` is the production branch. Promote accumulated, verified work through a release PR from `dev` to `main`; do not develop directly on `main`.
+- Do not rewrite shared `dev` or `main` history. Keep unrelated user changes out of task commits and verify the staged file list before every commit.
+- Before creating a PR, push the branch, confirm its remote SHA, and check whether an open PR for the same head/base pair already exists.
+- Preferred PR creation order:
+  1. Use an authenticated GitHub connector when one is available.
+  2. Otherwise use authenticated GitHub CLI, for example `gh pr create --base dev --head <branch>`.
+  3. Otherwise use the GitHub PR form at `https://github.com/Santinni/cg-portfolio-web/pull/new/<branch>` when the available browser is authenticated.
+  4. If Git push authentication works but neither CLI nor browser authentication is available, use the configured Git credential helper and GitHub REST API as the approved fallback.
+- For the REST fallback:
+  - call `git credential fill` for `protocol=https` and `host=github.com` inside the short-lived process;
+  - capture the credential in memory and never print, log, persist, interpolate into a command line, or place it in a file;
+  - first query open pulls for the exact `owner:head` and `base` pair to avoid duplicates;
+  - if no PR exists, send only the intended title, body, head, and base to `POST /repos/Santinni/cg-portfolio-web/pulls`;
+  - clear credential variables after the request and report only non-sensitive response fields such as PR number, URL, state, base, head, and head SHA.
+- A missing `gh` executable or signed-out browser is not by itself a blocker when the configured Git credential helper can authenticate the approved GitHub API operation.
+- After creation, independently verify the PR number, URL, base, head, and head SHA against the local branch. Never claim that a PR exists solely because `git push` printed a `/pull/new/` suggestion.
+- When the user explicitly asks to add a change to an already published commit, amend that exact commit and update only its branch with `git push --force-with-lease`; then verify that the existing PR points to the amended SHA. Otherwise prefer an additional commit.
+- Never merge a PR, enable auto-merge, delete a branch, or trigger deployment unless the user explicitly requests that action.
+
 ## Figma Source Of Truth
 
 The approved portfolio design is the Figma file:
@@ -84,6 +106,30 @@ For redesign audits or implementation work:
 5. Collect computed browser values for dimensions, padding, gap, radius, border, colors, typography, focus, hover, active, disabled, and responsive behavior.
 6. Report exact differences in a Figma-versus-web table. Separate confirmed mismatches from subjective visual judgments.
 7. After implementation, repeat the comparison and run repository-native validation. Never mark parity complete from code review alone.
+
+## Figma Audit Evidence And Reporting
+
+- Record the inspected Git commit, website URL or local build, Figma file and node IDs, inspection date, viewport, theme, locale, and any CMS or fixture state needed to reproduce the result.
+- Every parity finding must identify:
+  - the affected route, component, or selector;
+  - the corresponding Figma node;
+  - the tested viewport, theme, locale, and interaction state;
+  - the expected and actual values or behavior;
+  - whether the evidence is a measured mismatch, missing implementation, unavailable content/data, design ambiguity, or subjective visual concern;
+  - severity, user impact, and the smallest appropriate fix location.
+- Use screenshots to establish visual context and measured/computed values to support exact claims. Do not infer spacing, typography, color, or component state from a screenshot when the value can be inspected directly.
+- Label untested combinations as unverified. Passing one breakpoint, theme, locale, or component instance does not establish parity for the others.
+- Do not publish an overall parity percentage unless the audit defines its coverage, weighting, and calculation. Prefer a coverage matrix and a severity-ordered finding list.
+- Preserve before-and-after evidence for changed findings and distinguish fixed, accepted, deferred, and blocked items. A code change alone does not close a visual finding.
+
+## Figma-To-Web Implementation Rules
+
+- Before changing a screen, locate the shared component, token, variable, or layout primitive responsible for the mismatch. Prefer the narrowest shared correction that matches every approved instance over a one-page override.
+- Check canonical Figma components and representative instances together. A component-level fix must not improve one screen while breaking another variant or breakpoint.
+- Treat text wrapping and content height as part of responsive behavior. Validate both English and Czech where translated text is rendered, even when Figma contains only one language.
+- Verify real interaction and accessibility behavior in the browser, including keyboard focus, hover, active, disabled, reduced-motion behavior where relevant, and sufficient contrast. Static Figma frames do not prove runtime behavior.
+- Separate visual parity work from content/data availability. When CMS content, media, fonts, or external assets are missing, document the precondition instead of compensating with unrelated layout changes.
+- If the approved Figma design changes, record the newer inspected node or version and update any repository-specific measurements in this file in the same change. Do not silently reinterpret an existing specification.
 
 For buttons specifically, start from component set `21:110`. The approved large button instances in the current design are 52 px high with a 4 px corner radius; do not replace those properties with pill styling unless a newer approved Figma variant explicitly requires it.
 
