@@ -1,0 +1,42 @@
+.hero {
+  background: var(--surface-page);
+  color: var(--text-primary);
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+  padding-top: calc(var(--header-height) + var(--space-32));
+  padding-bottom: var(--section-block);
+  max-width: 760px;
+}
+
+.headline {
+  font-size: var(--font-size-display);
+  line-height: var(--line-height-display);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  text-wrap: balance;
+}
+
+.paragraph {
+  font-size: var(--font-size-body-lg);
+  line-height: var(--line-height-body-lg);
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.ctaRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-16);
+  margin-top: var(--space-8);
+}
+
+.ctaIcon {
+  width: var(--icon-16);
+  height: var(--icon-16);
+}

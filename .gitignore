@@ -12,6 +12,8 @@
 
 # testing
 /coverage
+/playwright-report
+/test-results
 
 # next.js
 /.next/
@@ -30,8 +32,11 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
+# env files
+.env
+.env.*
+!.env.example
+!.env.production.example
 
 # vercel
 .vercel
@@ -39,3 +44,17 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Docker volumes
+docker/volumes/
+postgres_data/
+caddy_data/
+caddy_config/
+
+# Logs
+*.log
+
+# Icon converter artifacts
+icon-scan-report.json
+src/assets/**/files.json
+src/components/**/files.json

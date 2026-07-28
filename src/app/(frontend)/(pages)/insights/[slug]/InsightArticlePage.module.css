@@ -1,0 +1,220 @@
+.hero {
+	--text-primary: var(--text-on-contrast);
+	--text-secondary: var(--text-on-contrast-muted);
+	--surface-muted: transparent;
+
+	padding-block: var(--space-64);
+	color: var(--text-on-contrast);
+	background: var(--surface-contrast);
+}
+
+.heroInner,
+.ctaInner {
+	display: grid;
+	justify-items: start;
+	gap: var(--space-20);
+}
+
+.heroInner > p:first-child,
+.ctaInner > p:first-child {
+	color: var(--accent-on-contrast);
+}
+
+.title,
+.ctaTitle {
+	margin: 0;
+	font-weight: 700;
+	text-wrap: balance;
+}
+
+.title {
+	max-width: 21ch;
+	color: var(--text-on-contrast);
+	font-size: var(--font-size-h1);
+	line-height: var(--line-height-h1);
+}
+
+.excerpt,
+.ctaCopy {
+	max-width: 66ch;
+	margin: 0;
+	font-size: var(--font-size-body-lg);
+	line-height: var(--line-height-body-lg);
+}
+
+.excerpt {
+	color: var(--text-on-contrast-muted);
+}
+
+.hero :global([aria-label='Article metadata']) {
+	color: var(--text-on-contrast-muted);
+}
+
+.hero :global([aria-label='Article topics']) a,
+.hero :global([aria-label='Article topics']) span {
+	color: var(--text-on-contrast);
+	background: transparent;
+	border: 1px solid var(--border-strong);
+}
+
+.mediaContainer {
+	position: relative;
+	z-index: 1;
+}
+
+.featuredMedia {
+	overflow: hidden;
+	margin: var(--space-32) 0 0;
+	background: var(--surface-raised);
+	border: 1px solid var(--border-default);
+	border-radius: var(--radius-8);
+}
+
+.featuredMedia img {
+	display: block;
+	width: 100%;
+	height: auto;
+}
+
+.featuredMedia figcaption {
+	padding: var(--space-12) var(--space-16);
+	color: var(--text-secondary);
+	font-size: var(--font-size-label);
+	line-height: var(--line-height-label);
+}
+
+.articleSection,
+.unavailable {
+	padding-block: var(--section-block);
+	background: var(--surface-page);
+}
+
+.articleLayout,
+.articleMain {
+	display: grid;
+	gap: var(--space-40);
+}
+
+.articleMain {
+	min-width: 0;
+}
+
+.prose {
+	color: var(--text-primary);
+	font-size: var(--font-size-body-lg);
+	line-height: var(--line-height-body-lg);
+}
+
+.prose > div {
+	display: grid;
+	gap: var(--space-20);
+}
+
+.prose :global(h2),
+.prose :global(h3),
+.prose :global(h4) {
+	margin-top: var(--space-32);
+	color: var(--text-primary);
+	font-weight: 700;
+	text-wrap: balance;
+}
+
+.prose :global(h2) {
+	font-size: var(--font-size-h2);
+	line-height: var(--line-height-h2);
+}
+
+.prose :global(h3),
+.prose :global(h4) {
+	font-size: var(--font-size-h3);
+	line-height: var(--line-height-h3);
+}
+
+.prose :global(p),
+.prose :global(ul),
+.prose :global(ol),
+.prose :global(blockquote) {
+	max-width: 72ch;
+}
+
+.prose :global(ul),
+.prose :global(ol) {
+	display: grid;
+	gap: var(--space-8);
+	padding-left: var(--space-24);
+}
+
+.prose :global(a) {
+	color: var(--action-primary);
+	text-decoration: underline;
+	text-decoration-thickness: 0.08em;
+	text-underline-offset: 0.18em;
+}
+
+.prose :global(blockquote) {
+	padding: var(--space-16) var(--space-24);
+	color: var(--text-secondary);
+	border-left: 3px solid var(--action-primary);
+}
+
+.prose :global(hr) {
+	width: 100%;
+	margin-block: var(--space-24);
+	border: 0;
+	border-top: 1px solid var(--border-default);
+}
+
+.prose :global(code) {
+	font-family: ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', monospace;
+}
+
+.share {
+	min-width: 0;
+}
+
+.cta {
+	padding-block: var(--section-block);
+	color: var(--text-on-contrast);
+	background: var(--surface-contrast);
+}
+
+.ctaTitle {
+	max-width: 26ch;
+	color: var(--text-on-contrast);
+	font-size: var(--font-size-h2);
+	line-height: var(--line-height-h2);
+}
+
+.ctaCopy {
+	color: var(--text-on-contrast-muted);
+}
+
+@media (min-width: 768px) {
+	.hero {
+		padding-block: var(--space-96);
+	}
+
+	.featuredMedia {
+		margin-top: calc(var(--space-48) * -1);
+	}
+}
+
+@media (min-width: 1024px) {
+	.articleLayout {
+		grid-template-columns: minmax(180px, 0.32fr) minmax(0, 760px);
+		justify-content: center;
+		gap: var(--space-64);
+	}
+
+	.share {
+		position: sticky;
+		top: calc(var(--header-height) + var(--space-24));
+		align-self: start;
+	}
+}
+
+@media (min-width: 1280px) {
+	.hero {
+		padding-block: var(--space-128);
+	}
+}

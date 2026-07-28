@@ -16,6 +16,12 @@ if (!cached) {
   };
 }
 
+/**
+ * Returns a cached Payload CMS client singleton.
+ * Uses Node.js `global` to persist the instance across hot-reloads in development.
+ *
+ * @throws {Error} If `PAYLOAD_SECRET` is not set.
+ */
 export const getPayloadClient = async () => {
   if (!process.env.PAYLOAD_SECRET) {
     throw new Error("PAYLOAD_SECRET is required");

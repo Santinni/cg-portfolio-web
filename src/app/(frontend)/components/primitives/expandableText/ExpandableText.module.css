@@ -1,0 +1,42 @@
+.expandableText {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-base);
+    align-items: center;
+}
+
+.expandableTextBody {
+    max-height: 55px;
+    overflow: hidden;
+    transition: max-height 2s ease-in-out;
+    opacity: 1;
+
+    & + .trigger {
+        transform: rotate(0deg);
+        transition: transform 1.5s ease-in-out;
+    }
+
+    &.open {
+        max-height: 1000px;
+        transition: max-height 2s ease-in-out;
+
+        & + .trigger {
+            transform: rotate(180deg);
+            transition: transform 1.5s ease-in-out;
+        }
+    }
+}
+
+.trigger {
+    transform: translateX(50%);
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--accent);
+    transition: color 0.2s ease;
+
+    &:hover {
+        color: var(--text-color-primary);
+    }
+}

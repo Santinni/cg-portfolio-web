@@ -1,0 +1,18 @@
+.section {
+  padding-block: var(--section-block);
+}
+
+.tone-page {
+  background: var(--surface-page);
+  color: var(--text-primary);
+}
+
+.tone-raised {
+  background: var(--surface-raised);
+  color: var(--text-primary);
+}
+
+.tone-contrast {
+  background: var(--surface-contrast);
+  color: var(--text-on-contrast);
+}

@@ -1,0 +1,49 @@
+# Dependencies and generated output
+node_modules/
+.next/
+dist/
+build/
+out/
+coverage/
+playwright-report/
+test-results/
+
+# Local runtime data
+public/media/
+tmp/
+temp/
+
+# Environment files and credentials
+.env
+.env.*
+*.env
+*.env.*
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+id_rsa*
+id_ed25519*
+
+# Version control and editor state
+.git/
+.gitignore
+.idea/
+.vscode/
+.cursor/
+.cursorrules
+*.swp
+*.swo
+
+# Logs and temporary files
+*.log
+*.tmp
+debug/
+
+# Files that are not needed by the image build
+Dockerfile*
+compose*.yaml
+docker-compose*
+*.md
+README*

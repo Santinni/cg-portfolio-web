@@ -1,0 +1,76 @@
+@import "./variables.css";
+
+
+html {
+  scrollbar-gutter: stable;
+  scroll-behavior: smooth;
+  overscroll-behavior-y: none;
+}
+
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  min-height: 100dvh;
+  -webkit-overflow-scrolling: touch;
+  background: var(--surface-page);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  text-decoration: none;
+  transition: color 0.16s ease;
+}
+
+p {
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+  font-weight: inherit;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme='light']):not([data-theme='dark']) {
+    color-scheme: dark;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--action-focus, #0a6e80);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

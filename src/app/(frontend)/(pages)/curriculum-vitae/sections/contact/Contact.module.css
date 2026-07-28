@@ -1,0 +1,29 @@
+.contact {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  margin: var(--spacing-lg) 0;
+}
+
+.contactItem {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  color: var(--accent);
+}
+
+.contactLink {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  transition: color 0.2s ease;
+
+  & :hover {
+    color: var(--text-color-primary);
+  }
+}
+
+.icon {
+  width: 1.2rem;
+  height: 1.2rem;
+}

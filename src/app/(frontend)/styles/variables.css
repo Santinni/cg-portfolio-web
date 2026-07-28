@@ -1,0 +1,260 @@
+:root {
+    /* Spacing variables */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 12px;
+	--spacing-base: 16px;
+	--spacing-lg: 24px;
+    --spacing-xl: 32px;
+    --spacing-2xl: 48px;
+    --spacing-3xl: 64px;
+
+    /* Colors */
+    --color-midnight-blue: #0a0f1c;
+    --color-dark-gray: #0a0a0a;
+    --color-charcoal: #171717;
+    --color-navy: #0d1225;
+    --color-slate: #1a1f2c;
+    --color-slate-dark: #252a37;
+    --color-white: #ffffff;
+    --color-gray: #9ca3af;
+    --color-yellow: #facc15;
+    --color-yellow-dark: #fbbf24;
+    --color-blue-gray: #1e293b;
+    --color-light-gray: #ededed;
+
+    /* Backgrounds */
+    --background: var(--color-midnight-blue);
+    --foreground: var(--color-charcoal);
+    --background-secondary: var(--color-navy);
+    --card-background: var(--color-slate);
+    --card-background-hover: var(--color-slate-dark);
+
+    /* Text colors */
+    --text-color-primary: var(--color-white);
+    --text-color-secondary: var(--color-gray);
+    /* --text-color-secondary: var(--color-white); */
+    --text-color-tertiary: var(--color-midnight-blue);
+    --accent: var(--color-yellow);
+    --accent-hover: var(--color-yellow-dark);
+
+    /* Shadows */
+    --shadow: var(--color-blue-gray);
+    --box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+
+    /* Border radius */
+    --border-radius-sm: 0.25rem;
+    --border-radius-md: 0.375rem;
+    --border-radius: 0.5rem;
+    --border-radius-lg: 0.75rem;
+    --border-radius-xl: 1rem;
+    --border-radius-2xl: 1.5rem;
+    --border-radius-rounded: 9999px;
+
+    /* Font weights */
+    --font-weight-light: 300;
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-bold: 700;
+
+    /* Font sizes */
+    --font-size-sm: 0.875rem;
+    --font-size-md: 1rem;
+    --font-size-lg: 1.25rem;
+    --font-size-xl: 1.5rem;
+    --font-size-2xl: 1.875rem;
+    --font-size-3xl: 2.25rem;
+	--font-size-4xl: 3rem;
+	--font-size-5xl: 3.75rem;
+
+    /* Line heights */
+	--line-height-xs: 1;
+    --line-height-sm: 1.25;
+    --line-height-md: 1.5;
+    --line-height-lg: 1.75;
+    --line-height-xl: 2;
+    --line-height-2xl: 2.25;
+    --line-height-3xl: 2.5;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background: var(--color-dark-gray);
+        --foreground: var(--color-light-gray);
+    }
+}
+
+/*
+ * Semantic design tokens (Figma "cs38WzlXKY9xfDYBinoKel").
+ * Additive to the legacy tokens above so untouched routes keep rendering.
+ * Light values live on :root; dark values are applied via [data-theme="dark"],
+ * with prefers-color-scheme acting only as the no-JS/default fallback.
+ */
+:root {
+    /* Breakpoints (reference only; used inline in media queries below):
+       compact <768, medium 768-1023, large 1024-1279, wide >=1280 */
+
+    /* Surface */
+    --surface-page: #ffffff;
+    --surface-raised: #f8faff;
+    --surface-subtle: #f1f4f8;
+    --surface-contrast: #08090c;
+
+    /* Text */
+    --text-primary: #08090c;
+    --text-secondary: #4a5963;
+    --text-inverse: #ffffff;
+    --text-on-contrast: #ffffff;
+    --text-on-contrast-muted: #9aa6b2;
+    --accent-on-contrast: #22d3ee;
+
+    /* Border */
+    --border-default: #d8dee8;
+    --border-strong: #7c8d99;
+    --border-control: #7c8d99;
+
+    /* Action */
+    --action-primary: #0a6e80;
+    --action-focus: #0a6e80;
+    --action-primary-hover: #085a6a;
+    --action-primary-pressed: #064854;
+    --action-on-primary: #ffffff;
+    --action-secondary: var(--surface-raised);
+    --action-secondary-hover: var(--surface-subtle);
+
+    /* Spacing scale */
+    --space-0: 0px;
+    --space-4: 4px;
+    --space-8: 8px;
+    --space-12: 12px;
+    --space-16: 16px;
+    --space-20: 20px;
+    --space-24: 24px;
+    --space-32: 32px;
+    --space-40: 40px;
+    --space-48: 48px;
+    --space-64: 64px;
+    --space-80: 80px;
+    --space-96: 96px;
+    --space-128: 128px;
+
+    /* Radius */
+    --radius-0: 0px;
+    --radius-4: 4px;
+    --radius-8: 8px;
+    --radius-pill: 9999px;
+
+    /* Icons and touch targets */
+    --icon-16: 16px;
+    --icon-20: 20px;
+    --icon-24: 24px;
+    --touch-target-min: 44px;
+
+    /* Shell layout */
+    --container-max: 1200px;
+    --container-gutter: 20px;
+    --section-block: 64px;
+    --header-height: 64px;
+
+    /* Typography (compact tier, <1280px) */
+    --font-size-display: 40px;
+    --line-height-display: 48px;
+    --font-size-h1: 36px;
+    --line-height-h1: 44px;
+    --font-size-h2: 30px;
+    --line-height-h2: 38px;
+    --font-size-h3: 24px;
+    --line-height-h3: 32px;
+    --font-size-title: 20px;
+    --line-height-title: 28px;
+    --font-size-body-lg: 17px;
+    --line-height-body-lg: 27px;
+    --font-size-body: 16px;
+    --line-height-body: 24px;
+    --font-size-label: 11px;
+    --line-height-label: 16px;
+}
+
+/* Tablet: container gutter widens */
+@media (min-width: 768px) {
+    :root {
+        --container-gutter: 48px;
+        --section-block: 72px;
+    }
+}
+
+/* Large desktop: container gutter reaches shell max, section block grows */
+@media (min-width: 1024px) {
+    :root {
+        --container-gutter: 64px;
+        --section-block: 88px;
+    }
+}
+
+/* Wide desktop: typography steps up to its wide tier, section block max */
+@media (min-width: 1280px) {
+    :root {
+        --container-gutter: 120px;
+        --section-block: 96px;
+        --font-size-display: 64px;
+        --line-height-display: 68px;
+        --font-size-h1: 48px;
+        --line-height-h1: 56px;
+        --font-size-h2: 36px;
+        --line-height-h2: 44px;
+        --font-size-title: 24px;
+        --line-height-title: 32px;
+        --font-size-body-lg: 18px;
+        --line-height-body-lg: 28px;
+        --font-size-label: 12px;
+        --line-height-label: 16px;
+    }
+}
+
+:root[data-theme='dark'] {
+    --surface-page: #08090c;
+    --surface-raised: #151a22;
+    --surface-subtle: #0c2d38;
+    --surface-contrast: #151a22;
+
+    --text-primary: #ffffff;
+    --text-secondary: #9aa6b2;
+    --text-inverse: #08090c;
+
+    --border-default: #29313d;
+    --border-strong: #5f6975;
+    --border-control: #5f6975;
+
+    --action-primary: #22d3ee;
+    --action-focus: #22d3ee;
+    --action-primary-hover: #67e8f9;
+    --action-primary-pressed: #06b6d4;
+    --action-on-primary: #08090c;
+    --action-secondary: var(--surface-raised);
+    --action-secondary-hover: var(--surface-subtle);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']):not([data-theme='dark']) {
+        --surface-page: #08090c;
+        --surface-raised: #151a22;
+        --surface-subtle: #0c2d38;
+        --surface-contrast: #151a22;
+
+        --text-primary: #ffffff;
+        --text-secondary: #9aa6b2;
+        --text-inverse: #08090c;
+
+        --border-default: #29313d;
+        --border-strong: #5f6975;
+        --border-control: #5f6975;
+
+        --action-primary: #22d3ee;
+        --action-focus: #22d3ee;
+        --action-primary-hover: #67e8f9;
+        --action-primary-pressed: #06b6d4;
+        --action-on-primary: #08090c;
+        --action-secondary: var(--surface-raised);
+        --action-secondary-hover: var(--surface-subtle);
+    }
+}
