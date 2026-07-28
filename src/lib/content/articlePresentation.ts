@@ -1,27 +1,43 @@
+import type { Locale } from 'next-intl'
+
 import type { ArticleDate, ArticleSummary, ArticleTopic } from '@/components/article'
 
 import type { PublicPost, PublicTopic } from './publicContent'
 
+export type InsightFilterKey =
+	| 'all'
+	| 'architecture'
+	| 'performance'
+	| 'designSystems'
+	| 'accessibility'
+
 export interface InsightFilter {
-	label: string
+	key: InsightFilterKey
 	slug?: string
 }
 
+interface ArticlePresentationOptions {
+	locale: Locale
+	formatReadingTime: (minutes: number) => string
+}
+
 const requestedFilters = [
-	{ label: 'All' },
-	{ label: 'Architecture', slug: 'architecture' },
-	{ label: 'Performance', slug: 'performance' },
-	{ label: 'Design systems', slug: 'design-systems' },
-	{ label: 'Accessibility', slug: 'accessibility' },
-] satisfies InsightFilter[]
+	{ key: 'all' },
+	{ key: 'architecture', label: 'Architecture', slug: 'architecture' },
+	{ key: 'performance', label: 'Performance', slug: 'performance' },
+	{ key: 'designSystems', label: 'Design systems', slug: 'design-systems' },
+	{ key: 'accessibility', label: 'Accessibility', slug: 'accessibility' },
+] as const
 
-const dateFormatter = new Intl.DateTimeFormat('en', {
-	day: 'numeric',
-	month: 'short',
-	year: 'numeric',
-})
+const localeTags: Record<Locale, string> = {
+	en: 'en-US',
+	cs: 'cs-CZ',
+}
 
-export const formatArticleDate = (value?: null | string): ArticleDate | undefined => {
+export const formatArticleDate = (
+	value: null | string | undefined,
+	locale: Locale,
+): ArticleDate | undefined => {
 	if (!value) return undefined
 
 	const date = new Date(value)
@@ -29,21 +45,26 @@ export const formatArticleDate = (value?: null | string): ArticleDate | undefine
 
 	return {
 		dateTime: value,
-		label: dateFormatter.format(date),
+		label: new Intl.DateTimeFormat(localeTags[locale], {
+			day: 'numeric',
+			month: 'short',
+			timeZone: 'Europe/Prague',
+			year: 'numeric',
+		}).format(date),
 	}
 }
 
 export const getInsightFilters = (topics: PublicTopic[]): InsightFilter[] =>
 	requestedFilters.map((filter) => {
-		if (!filter.slug) return filter
+		if (!('slug' in filter)) return { key: filter.key }
 
 		const matchingTopic = topics.find(
 			(topic) =>
 				topic.slug === filter.slug ||
-				topic.label.toLocaleLowerCase('en') === filter.label.toLowerCase(),
+				topic.label.toLocaleLowerCase('en-US') === filter.label.toLocaleLowerCase('en-US'),
 		)
 
-		return matchingTopic ? { label: filter.label, slug: matchingTopic.slug } : filter
+		return { key: filter.key, slug: matchingTopic?.slug ?? filter.slug }
 	})
 
 export const getPostTopics = (post: PublicPost): ArticleTopic[] =>
@@ -52,21 +73,28 @@ export const getPostTopics = (post: PublicPost): ArticleTopic[] =>
 		label: topic.label,
 	}))
 
-export const getReadingTime = (minutes?: null | number): string | undefined =>
-	minutes && minutes > 0 ? `${minutes} min read` : undefined
+export const getReadingTime = (
+	minutes: null | number | undefined,
+	format: (minutes: number) => string,
+): string | undefined => (minutes && minutes > 0 ? format(minutes) : undefined)
 
-export const toArticleSummary = (post: PublicPost): ArticleSummary => ({
+export const getArticleHref = (slug: string): `/insights/${string}` => `/insights/${slug}`
+
+export const toArticleSummary = (
+	post: PublicPost,
+	{ locale, formatReadingTime }: ArticlePresentationOptions,
+): ArticleSummary => ({
 	excerpt: post.excerpt,
-	href: `/insights/${post.slug}`,
-	publishedAt: formatArticleDate(post.publishedAt),
-	readingTime: getReadingTime(post.readingTime),
+	href: getArticleHref(post.slug),
+	publishedAt: formatArticleDate(post.publishedAt, locale),
+	readingTime: getReadingTime(post.readingTime, formatReadingTime),
 	title: post.title,
 	topics: getPostTopics(post),
 	updatedAt:
 		post.publishedAt && post.updatedAt !== post.publishedAt
-			? formatArticleDate(post.updatedAt)
+			? formatArticleDate(post.updatedAt, locale)
 			: undefined,
 })
 
 export const getPostCanonical = (post: PublicPost): string =>
-	post.canonicalURL || `/insights/${post.slug}`
+	post.canonicalURL || getArticleHref(post.slug)

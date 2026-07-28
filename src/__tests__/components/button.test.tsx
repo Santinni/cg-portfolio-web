@@ -4,9 +4,9 @@ import { describe, expect, it, vi } from 'vitest'
 
 import { Button } from '@/app/(frontend)/components/primitives/button'
 
-// Mock next/link
-vi.mock('next/link', () => ({
-	default: ({
+// Keep the component test focused on Button behavior rather than next-intl routing.
+vi.mock('@/i18n/navigation', () => ({
+	Link: ({
 		children,
 		href,
 		...props
@@ -64,7 +64,7 @@ describe('Button', () => {
 			render(
 				<Button onClick={handleClick} isDisabled>
 					Click me
-				</Button>
+				</Button>,
 			)
 			await user.click(screen.getByRole('button'))
 
@@ -119,7 +119,7 @@ describe('Button', () => {
 			render(
 				<Button renders="link" href="/about">
 					Go to About
-				</Button>
+				</Button>,
 			)
 			const link = screen.getByRole('link', { name: 'Go to About' })
 
@@ -132,7 +132,7 @@ describe('Button', () => {
 			render(
 				<Button renders="link" href="/test" ref={ref}>
 					Link
-				</Button>
+				</Button>,
 			)
 
 			expect(ref).toHaveBeenCalledWith(expect.any(HTMLAnchorElement))
@@ -142,7 +142,7 @@ describe('Button', () => {
 			render(
 				<Button renders="link" href="/test" variant="secondary">
 					Styled Link
-				</Button>
+				</Button>,
 			)
 			const link = screen.getByRole('link')
 

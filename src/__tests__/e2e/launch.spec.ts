@@ -44,7 +44,9 @@ test.describe('public launch surface', () => {
 })
 
 test.describe('work case studies', () => {
-	test('publishes exactly three finished cases and keeps Accessibility pending', async ({ page }) => {
+	test('publishes exactly three finished cases and keeps Accessibility pending', async ({
+		page,
+	}) => {
 		await page.goto('/work')
 
 		const caseLinks = page.locator('main a[href^="/work/"]')
@@ -68,7 +70,9 @@ test.describe('work case studies', () => {
 
 		const missingResponse = await page.goto('/work/not-a-real-case')
 		expect(missingResponse?.status()).toBe(404)
-		await expect(page.getByRole('heading', { name: 'This page is not part of the system.' })).toBeVisible()
+		await expect(
+			page.getByRole('heading', { name: 'This page is not part of the system.' }),
+		).toBeVisible()
 	})
 })
 
@@ -83,7 +87,9 @@ test.describe('responsive shell interactions', () => {
 		}
 	})
 
-	test('mobile menu closes with Escape, restores focus and releases scroll lock', async ({ page }) => {
+	test('mobile menu closes with Escape, restores focus and releases scroll lock', async ({
+		page,
+	}) => {
 		await page.setViewportSize({ width: 390, height: 844 })
 		await page.goto('/')
 
@@ -126,9 +132,10 @@ test.describe('responsive shell interactions', () => {
 					clientWidth: document.documentElement.clientWidth,
 					scrollWidth: document.documentElement.scrollWidth,
 				}))
-				expect(dimensions.scrollWidth, `${route} overflows at ${viewport.width}px`).toBeLessThanOrEqual(
-					dimensions.clientWidth,
-				)
+				expect(
+					dimensions.scrollWidth,
+					`${route} overflows at ${viewport.width}px`,
+				).toBeLessThanOrEqual(dimensions.clientWidth)
 			}
 		})
 	}

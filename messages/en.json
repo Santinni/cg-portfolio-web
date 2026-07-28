@@ -1,0 +1,590 @@
+{
+	"navigation": {
+		"homeLabel": "{brand} – Home",
+		"openMenu": "Open menu",
+		"closeMenu": "Close menu",
+		"siteMenu": "Site menu",
+		"items": {
+			"work": "Work",
+			"experience": "Experience",
+			"about": "About",
+			"contact": "Contact",
+			"insights": "Insights"
+		},
+		"languages": {
+			"label": "Choose language",
+			"switchTo": "Switch to {language}",
+			"english": "English",
+			"czech": "Czech"
+		}
+	},
+	"accessibility": {
+		"skipToMain": "Skip to main content",
+		"toggleTheme": "Toggle color theme",
+		"showMore": "Show more",
+		"showLess": "Show less"
+	},
+	"home": {
+		"metadata": {
+			"title": "Karel Kutchan — Senior Frontend Engineer",
+			"description": "Karel Kutchan is a senior frontend engineer based in Prague, building resilient frontend systems with React, TypeScript and Next.js."
+		},
+		"hero": {
+			"eyebrow": "SENIOR FRONTEND ENGINEER / PRAGUE",
+			"headline": "I build frontend systems for products that have to last.",
+			"paragraphs": {
+				"experience": "More than ten years in web development, currently in a lead frontend role. I work with React, TypeScript and Next.js across customer portals, internal enterprise applications and the component libraries underneath them.",
+				"quality": "Architecture, accessibility and long-term maintainability are part of the delivery, not follow-up work."
+			},
+			"primaryCta": "Read flagship case",
+			"secondaryCta": "View experience"
+		},
+		"flagship": {
+			"eyebrow": "FLAGSHIP CASE / ENERGY",
+			"titleDesktop": "A customer portal built as a system, not a collection of screens.",
+			"titleCompact": "A customer portal built as a system.",
+			"summary": "Frontend leadership for a customer-facing energy product: architecture, component foundations, delivery quality and accessibility across a growing application.",
+			"cta": "Read the case",
+			"systemMap": {
+				"productUi": {
+					"label": "PRODUCT UI",
+					"description": "Customer journeys"
+				},
+				"sharedComponents": {
+					"label": "SHARED COMPONENTS",
+					"description": "Accessible foundations · Tests · Delivery"
+				}
+			}
+		},
+		"selectedWork": {
+			"title": "Selected work"
+		},
+		"principles": {
+			"eyebrow": "HOW I WORK",
+			"titleDesktop": "Senior engineering is mostly about making good decisions repeatable.",
+			"titleCompact": "Good decisions should be repeatable.",
+			"items": {
+				"architecture": {
+					"title": "Architecture with a reason",
+					"description": "Choose boundaries and patterns that reduce product risk."
+				},
+				"accessibility": {
+					"title": "Accessibility by default",
+					"description": "Build inclusive behavior into components and reviews."
+				},
+				"quality": {
+					"title": "Quality that supports delivery",
+					"description": "Use tests, tooling and feedback where they protect change."
+				},
+				"leadership": {
+					"title": "Leadership through clarity",
+					"description": "Make trade-offs visible and help teams move with confidence."
+				}
+			}
+		},
+		"experience": {
+			"eyebrow": "EXPERIENCE",
+			"title": "From implementation to frontend leadership.",
+			"description": "Web development since 2014. Today I lead frontend work across architecture, component systems, accessibility, testing and code review.",
+			"cta": "View full experience"
+		},
+		"finalCta": {
+			"heading": "Looking for a senior frontend engineer who can own the system behind the interface?",
+			"supporting": "I am primarily interested in the right product and team. Selected consulting conversations are welcome.",
+			"cta": "Start a conversation"
+		}
+	},
+	"work": {
+		"metadata": {
+			"title": "Work",
+			"description": "Selected frontend architecture, product engineering and accessibility work by Karel Kutchan.",
+			"openGraphTitle": "Selected work — Karel Kutchan",
+			"notFoundTitle": "Case study not found"
+		},
+		"hero": {
+			"eyebrow": "SELECTED WORK",
+			"title": "Frontend systems built for products that have to last.",
+			"intro": "A selection of architecture, component foundations and delivery work across energy and enterprise products.",
+			"listHeading": "Case studies"
+		},
+		"actions": {
+			"readCase": "Read case",
+			"pending": "Case study coming soon"
+		},
+		"facts": {
+			"role": "Role",
+			"focus": "Focus",
+			"stack": "Stack"
+		},
+		"navigation": {
+			"label": "Case study navigation",
+			"allWork": "All work",
+			"backTo": "Back to",
+			"nextCase": "Next case"
+		},
+		"cards": {
+			"energyCustomerPortal": {
+				"eyebrow": "FLAGSHIP CASE / ENERGY",
+				"title": "A customer portal built as a system, not a collection of screens.",
+				"summary": "Frontend leadership for a customer-facing energy product: architecture, component foundations, delivery quality and accessibility across a growing application."
+			},
+			"maintenanceApplications": {
+				"eyebrow": "ENTERPRISE",
+				"title": "Maintenance applications",
+				"summary": "Reusable frontend architecture for enterprise maintenance workflows."
+			},
+			"distributedEnergyPlatform": {
+				"eyebrow": "ENERGY PLATFORM",
+				"title": "Distributed energy platform",
+				"summary": "Frontend foundations for a complex distributed-energy product."
+			},
+			"accessibilityRefactoring": {
+				"eyebrow": "ACCESSIBILITY",
+				"title": "Accessibility refactoring",
+				"summary": "Practical accessibility improvements inside an established product."
+			}
+		},
+		"cases": {
+			"energyCustomerPortal": {
+				"eyebrow": "FLAGSHIP CASE / ENERGY",
+				"title": "A customer portal built as a system, not a collection of screens.",
+				"description": "A customer-facing energy portal with growing product scope, multiple journeys and a need for reliable delivery.",
+				"role": "Lead frontend engineering",
+				"focus": "Frontend architecture, component foundations, accessibility, testing strategy, review quality and team guidance.",
+				"sections": {
+					"context": {
+						"eyebrow": "01 / CONTEXT",
+						"heading": "The product context",
+						"body": "A customer-facing energy portal with growing product scope, multiple journeys and a need for reliable delivery."
+					},
+					"responsibility": {
+						"eyebrow": "02 / RESPONSIBILITY",
+						"heading": "What I owned",
+						"body": "Frontend architecture, component foundations, accessibility, testing strategy, review quality and team guidance."
+					},
+					"decisions": {
+						"eyebrow": "03 / DECISIONS",
+						"heading": "The decisions that mattered",
+						"body": "Establish reusable boundaries, keep component behavior accessible, and use Storybook and browser tests where they reduce regression risk."
+					},
+					"outcome": {
+						"eyebrow": "04 / OUTCOME",
+						"heading": "What changed",
+						"body": "A more coherent frontend foundation for continued product delivery. No invented performance or business metrics are claimed."
+					},
+					"reflection": {
+						"eyebrow": "05 / REFLECTION",
+						"heading": "What I would carry forward",
+						"body": "Strong frontend work leaves the next change easier to reason about. The durable result is a clearer system, not only a shipped screen."
+					}
+				}
+			},
+			"maintenanceApplications": {
+				"eyebrow": "ENTERPRISE",
+				"title": "Reusable architecture for enterprise maintenance workflows.",
+				"description": "Internal maintenance products combine dense data, specialist workflows and long-lived operational needs.",
+				"role": "Frontend engineering",
+				"focus": "Frontend implementation, architecture, reusable patterns and collaboration across product constraints.",
+				"sections": {
+					"context": {
+						"eyebrow": "01 / CONTEXT",
+						"heading": "The product context",
+						"body": "Internal maintenance products combine dense data, specialist workflows and long-lived operational needs."
+					},
+					"responsibility": {
+						"eyebrow": "02 / RESPONSIBILITY",
+						"heading": "What I owned",
+						"body": "Frontend implementation, architecture, reusable patterns and collaboration across product constraints."
+					},
+					"decisions": {
+						"eyebrow": "03 / DECISIONS",
+						"heading": "The decisions that mattered",
+						"body": "Separate repeatable workflow patterns from product-specific detail; keep complex interfaces scannable and predictable."
+					},
+					"outcome": {
+						"eyebrow": "04 / OUTCOME",
+						"heading": "What changed",
+						"body": "A clearer reusable base for continued work across maintenance applications."
+					},
+					"reflection": {
+						"eyebrow": "05 / REFLECTION",
+						"heading": "What I would carry forward",
+						"body": "The useful outcome is a frontend structure that helps the next team decision become clearer and less expensive."
+					}
+				}
+			},
+			"distributedEnergyPlatform": {
+				"eyebrow": "ENERGY PLATFORM",
+				"title": "Frontend foundations for a distributed-energy platform.",
+				"description": "A complex energy platform connected operational data, control surfaces and evolving product requirements.",
+				"role": "Frontend engineering",
+				"focus": "Frontend engineering across product UI, shared foundations and delivery quality.",
+				"sections": {
+					"context": {
+						"eyebrow": "01 / CONTEXT",
+						"heading": "The product context",
+						"body": "A complex energy platform connected operational data, control surfaces and evolving product requirements."
+					},
+					"responsibility": {
+						"eyebrow": "02 / RESPONSIBILITY",
+						"heading": "What I owned",
+						"body": "Frontend engineering across product UI, shared foundations and delivery quality."
+					},
+					"decisions": {
+						"eyebrow": "03 / DECISIONS",
+						"heading": "The decisions that mattered",
+						"body": "Prefer explicit state and component boundaries; make operational information easy to scan and hard to misread."
+					},
+					"outcome": {
+						"eyebrow": "04 / OUTCOME",
+						"heading": "What changed",
+						"body": "A maintainable frontend base supporting an evolving energy product."
+					},
+					"reflection": {
+						"eyebrow": "05 / REFLECTION",
+						"heading": "What I would carry forward",
+						"body": "The useful outcome is a frontend structure that helps the next team decision become clearer and less expensive."
+					}
+				}
+			}
+		}
+	},
+	"about": {
+		"metadata": {
+			"title": "About",
+			"description": "About Karel Kutchan, a Prague-based senior frontend engineer focused on product delivery, architecture and team clarity."
+		},
+		"hero": {
+			"eyebrow": "ABOUT",
+			"title": "I care about the system behind the interface.",
+			"intro": "I am a Prague-based senior frontend engineer with more than ten years in web development. I currently work in a lead frontend role, helping teams turn product requirements into maintainable systems."
+		},
+		"workingStyle": {
+			"eyebrow": "WORKING STYLE",
+			"title": "Practical, direct and product-minded.",
+			"body": "My strongest work sits where product delivery, frontend architecture and team clarity meet. I ask what must stay flexible, what must be consistent and where complexity is actually justified."
+		},
+		"values": {
+			"eyebrow": "VALUES",
+			"title": "How I approach the work.",
+			"ownership": {
+				"title": "Ownership",
+				"description": "I take responsibility for decisions and their downstream cost."
+			},
+			"clarity": {
+				"title": "Clarity",
+				"description": "Trade-offs should be visible to engineers and product partners."
+			},
+			"craft": {
+				"title": "Craft",
+				"description": "Accessibility, tests and maintainability belong in normal delivery."
+			}
+		},
+		"cta": {
+			"title": "See the work behind the profile.",
+			"label": "View selected work"
+		}
+	},
+	"experience": {
+		"metadata": {
+			"title": "Experience",
+			"description": "More than ten years of frontend engineering across customer portals, enterprise applications, energy products and component systems."
+		},
+		"hero": {
+			"eyebrow": "EXPERIENCE / CV",
+			"title": "More than ten years building for the web.",
+			"intro": "Senior frontend engineering across customer portals, enterprise applications, energy products and component systems."
+		},
+		"progression": {
+			"eyebrow": "PROGRESSION",
+			"title": "Increasing ownership across products and teams.",
+			"entries": {
+				"leadFrontendEngineer": {
+					"role": "Lead Frontend Engineer",
+					"description": "Leading frontend architecture, delivery practices and technical decisions across product teams."
+				},
+				"seniorFrontendEngineer": {
+					"role": "Senior Frontend Engineer",
+					"description": "Building resilient product interfaces and reusable component foundations for complex applications."
+				},
+				"frontendEngineer": {
+					"role": "Frontend Engineer",
+					"description": "Delivering customer-facing and internal web applications in close collaboration with design and backend teams."
+				},
+				"webDeveloper": {
+					"role": "Web Developer",
+					"description": "Creating responsive websites and developing the practical engineering foundation for long-term product work."
+				}
+			}
+		},
+		"capabilities": {
+			"eyebrow": "CORE CAPABILITIES",
+			"title": "Tools and practices used in delivery.",
+			"list": "React · TypeScript · Next.js · Storybook · React Aria · Playwright · Vitest/Jest · frontend architecture · accessibility · component systems · code review · team leadership",
+			"viewCv": "View curriculum vitae",
+			"downloadPdf": "Download English PDF"
+		}
+	},
+	"contact": {
+		"metadata": {
+			"title": "Contact",
+			"description": "Contact Karel Kutchan about senior or lead frontend roles and selected consulting conversations."
+		},
+		"hero": {
+			"eyebrow": "CONTACT",
+			"title": "Let’s discuss the product, the team and the frontend problems worth solving.",
+			"intro": "I am primarily looking for the right senior or lead frontend role. Selected consulting conversations are welcome when the fit is specific."
+		},
+		"methods": {
+			"eyebrow": "CONTACT DETAILS",
+			"title": "Choose the most useful channel.",
+			"email": { "label": "Email" },
+			"location": { "label": "Location", "value": "Prague, Czech Republic" },
+			"linkedin": { "label": "LinkedIn" },
+			"github": { "label": "GitHub" }
+		},
+		"expectations": {
+			"eyebrow": "BEFORE WE TALK",
+			"title": "Useful first context",
+			"body": "What you are building, where frontend ownership currently sits, and what success would look like in the first months."
+		}
+	},
+	"curriculumVitae": {
+		"metadata": {
+			"title": "Curriculum Vitae",
+			"description": "Karel Kutchan — Frontend Developer. Curriculum Vitae with experience, education, and tech stack."
+		},
+		"header": {
+			"headline": "curriculum vitæ",
+			"profession": "Frontend Developer"
+		},
+		"downloadPdf": "Download CV (English PDF)",
+		"contact": {
+			"linkedin": "LinkedIn",
+			"location": "Prague, Czech Republic"
+		},
+		"biography": {
+			"title": "Who am I?",
+			"paragraphs": {
+				"focus": "Mid-level frontend developer focused on usability, performance and scalability. Bringing web applications to life with React, Next.js and HTMX.",
+				"experience": "With over eight years of experience, currently I am specializing in React and Next.js development.",
+				"quality": "I focus on building high-quality web applications with modern technologies, delivering scalable, accessible, and high-performance solutions.",
+				"systems": "In recent roles, I've designed and documented reusable UI components and design systems using tools like Storybook and RadixUI. My work spans complex frontend architectures, particularly in industries like B2C energy, where adaptability, performance, and sustainability are critical.",
+				"collaboration": "I thrive on collaboration, clear communication, and delivering reliable solutions. Fluent in English and with beginner-level Swedish, I am committed to continuous learning and professional growth. I bring a combination of technical excellence, problem-solving skills, and a dedication to teamwork to every project."
+			}
+		},
+		"technology": {
+			"title": "Technological Stack",
+			"javascript": "JS Frameworks, Libraries and tools",
+			"styling": "Styling & Design Systems"
+		},
+		"experience": {
+			"title": "Experience",
+			"presentPeriod": "6/2024 – Present",
+			"freelancerAt": "Freelancer at {company}",
+			"entries": {
+				"kontentAi": {
+					"title": "Frontend Engineer",
+					"descriptions": {
+						"accessibilityProject": "I worked as part of a team on a contract-based project focused on improving accessibility and refactoring code to provide users with a better and more accessible user experience.",
+						"reactAria": "Our team utilized React Aria, specifically its hooks, and developed custom solutions to address specific accessibility requirements.",
+						"responsibilities": "My responsibilities included ensuring the application complied with all accessibility standards, collaborating with team members to optimize code, and applying best practices for frontend development.",
+						"outcome": "We created an intuitive and efficient user interface while meeting strict accessibility guidelines within the project’s defined timeframe."
+					}
+				},
+				"tldrit": {
+					"title": "Lead Frontend Engineer",
+					"descriptions": {
+						"leadership": "As a Lead Frontend Engineer in a time-framed role, I designed and implemented solutions for web and mobile applications while leading the frontend team.",
+						"delivery": "I proposed technical approaches, developed scalable applications using ReactJS, Next.js, and Storybook, and ensured high-quality, user-friendly results within tight deadlines."
+					}
+				},
+				"eman": {
+					"title": "Frontend Developer",
+					"descriptions": {
+						"clients": "Developed and implemented user interfaces for key clients such as EON, MND, ČEZ, and Bohemia Energy.",
+						"optimization": "Optimized web applications to improve their performance and accessibility, resulting in higher user satisfaction.",
+						"refactoring": "Refactored and modernized legacy code using React, NextJS, and TypeScript.",
+						"collaboration": "Collaborated closely with UX designers and backend developers to meet client expectations."
+					}
+				},
+				"lmc": {
+					"title": "Frontend Developer",
+					"descriptions": {
+						"solutions": "Focused on creating bespoke web solutions for corporate clients, delivering tailored solutions for platforms like jobs.cz.",
+						"discovery": "Collaborated with designers and clients to analyze requirements and design functional, visually appealing solutions.",
+						"technology": "Used modern frontend technologies such as HTML, CSS, JavaScript, and React, ensuring responsive design and high performance.",
+						"accessibility": "Prioritized accessibility standards and optimized user experience across devices and browsers."
+					}
+				},
+				"ampX": {
+					"title": "Frontend Developer",
+					"descriptions": {
+						"platform": "Worked on the frontend of a new digital energy platform enabling distributed energy participation.",
+						"quality": "Delivered high-quality, accessible, and responsive UI while maintaining clean and readable code.",
+						"technology": "Used technologies such as ReactJS, Material-UI, Vanilla JavaScript, HTML5, and CSS-in-JS (JSS) to develop and implement frontend solutions."
+					}
+				},
+				"skype": {
+					"title": "Frontend Developer",
+					"descriptions": {
+						"scale": "Contributed to a platform serving over 400,000 daily users from more than 30 countries.",
+						"quality": "Focused on ensuring accessibility, responsiveness, and performance of the main website.",
+						"components": "Developed and optimized components, improved usability, and maintained clean, maintainable code.",
+						"cms": "Worked closely with Kentico CMS to manage and integrate content."
+					}
+				},
+				"foxconn": {
+					"title": "Frontend Coder",
+					"descriptions": {
+						"gui": "Developed the GUI with a strong focus on HTML architecture and responsive design.",
+						"collaboration": "Collaborated with designers and developers to implement modern CSS and JavaScript solutions.",
+						"technology": "Worked with React, Vanilla JS, and occasionally jQuery.",
+						"designSystem": "Developed a custom design system based on the BEM framework."
+					}
+				},
+				"mountfield": {
+					"title": "Frontend Coder",
+					"descriptions": {
+						"website": "Managed and maintained the company's main website built on the Kentico platform.",
+						"microsites": "Created microsites and supported marketing websites, and developed responsive HTML newsletters.",
+						"internalApps": "Contributed to internal application development to improve employee workflows and customer access."
+					}
+				},
+				"bitware": {
+					"title": "Web Administrator, Graphic Designer, and Junior Frontend Coder",
+					"descriptions": {
+						"scope": "Managed website administration, graphic design, and frontend development.",
+						"presentations": "Created responsive web presentations using HTML5/CSS3.",
+						"wordpress": "Worked on WordPress-based projects, designed templates, and produced print materials."
+					}
+				}
+			}
+		},
+		"education": {
+			"title": "Education",
+			"degree": "Electrical engineering, telecommunications and computer technologies",
+			"coursesTitle": "Courses and Seminars",
+			"courses": {
+				"vzhuruDolu": "Loading speed optimization, CSS code organization and maintenance, in-depth SVG, JavaScript principles",
+				"learn2code": "CSS preprocessors: Sass",
+				"webrebel": "Webrebel – online web design course",
+				"freeCodeCamp": "Full Stack Web Development Certification, Computer Software Engineering",
+				"codecademy": "Basics of HTML & CSS - www.codecademy.com",
+				"scomp": "Web Application Programmer, Graphic studio worker"
+			}
+		}
+	},
+	"insights": {
+		"metadata": {
+			"title": "Insights",
+			"description": "Practical writing about frontend architecture, performance, accessibility and maintainable interface systems.",
+			"openGraphTitle": "Frontend engineering insights — Karel Kutchan"
+		},
+		"hero": {
+			"eyebrow": "INSIGHTS",
+			"title": "Notes from frontend engineering",
+			"intro": "Practical writing about interface architecture, performance, accessibility and systems that remain maintainable after launch."
+		},
+		"filters": {
+			"label": "Filter insights by topic",
+			"all": "All",
+			"architecture": "Architecture",
+			"performance": "Performance",
+			"designSystems": "Design systems",
+			"accessibility": "Accessibility"
+		},
+		"content": {
+			"label": "Published insights",
+			"englishOnlyNotice": "Editorial articles are currently available in English only."
+		},
+		"states": {
+			"contactMe": "Contact me",
+			"startConversation": "Start a conversation",
+			"serviceUnavailable": "The editorial service is temporarily unavailable. The rest of the portfolio is still available.",
+			"noTopicMatch": "No published insight currently matches this topic.",
+			"noPosts": "New notes on frontend engineering will appear here after publication."
+		},
+		"featured": {
+			"eyebrow": "FEATURED",
+			"title": "Featured insight"
+		},
+		"latest": {
+			"title": "Latest insights"
+		},
+		"cta": {
+			"eyebrow": "WORKING ON A SIMILAR PROBLEM?",
+			"title": "Turn a frontend constraint into a product decision.",
+			"description": "I help teams simplify frontend architecture, improve product performance and build interfaces that remain dependable.",
+			"label": "Start a conversation"
+		}
+	},
+	"article": {
+		"readingTime": "{minutes, plural, one {# min read} other {# min read}}",
+		"metadata": {
+			"label": "Article metadata",
+			"published": "Published",
+			"updated": "Updated",
+			"topics": "Article topics"
+		},
+		"author": {
+			"heading": "About the author"
+		},
+		"callout": {
+			"note": "Note"
+		},
+		"code": {
+			"label": "Code example",
+			"copy": "Copy",
+			"copied": "Copied",
+			"scrollLabel": "Scrollable code example",
+			"copyFailure": "The code could not be copied.",
+			"copySuccess": "Code copied."
+		},
+		"states": {
+			"empty": "No insights published yet",
+			"error": "Insights could not be loaded",
+			"loading": "Loading insights"
+		},
+		"share": {
+			"controlsLabel": "Article sharing controls",
+			"label": "Share article",
+			"share": "Share",
+			"copyLink": "Copy link",
+			"copied": "Link copied.",
+			"error": "Sharing failed. Try copying the link manually."
+		},
+		"tableOfContents": {
+			"title": "On this page"
+		},
+		"detail": {
+			"notFoundTitle": "Insight not found",
+			"unavailableTitle": "Insight temporarily unavailable",
+			"unavailableLabel": "Insight unavailable",
+			"returnToInsights": "Return to insights",
+			"unavailableDescription": "The editorial service is temporarily unavailable. Please try again later.",
+			"eyebrow": "INSIGHT"
+		},
+		"cta": {
+			"eyebrow": "HAVE A SIMILAR FRONTEND PROBLEM?",
+			"title": "Let’s make the system behind the interface easier to change.",
+			"description": "I work with product teams on architecture, accessibility, performance and long-term frontend quality.",
+			"label": "Start a conversation"
+		}
+	},
+	"errors": {
+		"loading": "Loading…",
+		"runtime": {
+			"title": "Something went wrong",
+			"description": "An unexpected error occurred. Please try again.",
+			"tryAgain": "Try again",
+			"goHome": "Go home"
+		},
+		"notFound": {
+			"eyebrow": "404 / PAGE NOT FOUND",
+			"title": "This page is not part of the system.",
+			"description": "The link may be outdated, or the page may have moved.",
+			"returnHome": "Return home"
+		}
+	}
+}

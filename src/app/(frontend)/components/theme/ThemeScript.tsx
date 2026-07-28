@@ -6,8 +6,8 @@ const themeScript = `(() => {
       : (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
     document.documentElement.dataset.theme = theme;
   } catch (_) {}
-})();`;
+})();`
 
 export function ThemeScript() {
-  return <script dangerouslySetInnerHTML={{ __html: themeScript }} />;
+	return <script dangerouslySetInnerHTML={{ __html: themeScript }} />
 }
