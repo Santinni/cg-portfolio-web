@@ -42,6 +42,10 @@
 				"experience": "More than ten years in web development, currently in a lead frontend role. I work with React, TypeScript and Next.js across customer portals, internal enterprise applications and the component libraries underneath them.",
 				"quality": "Architecture, accessibility and long-term maintainability are part of the delivery, not follow-up work."
 			},
+			"paragraphsCompact": {
+				"experience": "More than ten years in web development, currently in a lead frontend role. I work with React, TypeScript and Next.js across customer portals, enterprise applications and component systems.",
+				"quality": "Architecture, accessibility and maintainability are part of the delivery."
+			},
 			"primaryCta": "Read flagship case",
 			"secondaryCta": "View experience"
 		},

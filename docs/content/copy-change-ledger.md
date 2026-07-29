@@ -449,3 +449,152 @@ Praha · React · TypeScript · Přístupnost
 - Related entries: none
 - Notes: append a new entry rather than rewriting this record if the role,
   location, technology focus, or accessibility positioning changes.
+
+## COPY-20260729-002 — Add compact Home Hero supporting copy
+
+- Status: implemented
+- Change type: responsive-variant
+- Surface: visitor-visible
+- Proposed date: 2026-07-29
+- Implemented date: 2026-07-29
+- Owner: Karel Kutchan
+- Author: Codeguy portfolio implementation team
+- Reviewer: Codex controller and independent Hero parity review
+- Pull request: Pending
+- Commit: Planned as `fix(home): align Hero responsive contract`
+- Routes and locales: `/` and `/cs`; compact presentation below 1024 CSS pixels
+- Source boundary: Figma-reference, next-intl, owner-approved-brief
+- Message keys or public CMS fields: `home.hero.paragraphsCompact.experience`,
+  `home.hero.paragraphsCompact.quality`
+- Rendering location:
+  `src/app/[locale]/(frontend)/(pages)/(home)/blocks/hero/index.tsx`, Hero
+  supporting paragraphs
+- Figma file and node: `cs38WzlXKY9xfDYBinoKel`; tablet `7:377`, mobile
+  `8:87`, responsive QA `8:140` and `8:193`
+- Original source: existing approved desktop catalog copy remains the factual
+  source; the compact English alternatives are supplied by the approved
+  2026-07-29 Home parity implementation packet; Czech is a natural professional
+  localization authored by the implementation team
+- Original purpose: explain current lead-level experience, relevant product
+  contexts, and the engineering qualities included in delivery without forcing
+  compact layouts to carry desktop-length presentation detail
+- Audience and user intent: prospective employers, collaborators, and clients
+  scanning the Home introduction on tablet and mobile
+
+### Original (verbatim)
+
+#### English
+
+```text
+More than ten years in web development, currently in a lead frontend role. I work with React, TypeScript and Next.js across customer portals, internal enterprise applications and the component libraries underneath them.
+Architecture, accessibility and long-term maintainability are part of the delivery, not follow-up work.
+```
+
+#### Czech
+
+```text
+Webům se věnuji přes deset let a dnes působím jako vedoucí frontend vývoje. S Reactem, TypeScriptem a Next.js pracuji na zákaznických portálech, interních podnikových aplikacích i komponentových knihovnách, na kterých stojí.
+Architektura, přístupnost a dlouhodobá udržitelnost jsou součástí dodávky, ne práce odložená na později.
+```
+
+### Replacement (verbatim)
+
+The original strings remain the desktop presentation. The following responsive
+variants are added for compact layouts.
+
+#### English
+
+```text
+More than ten years in web development, currently in a lead frontend role. I work with React, TypeScript and Next.js across customer portals, enterprise applications and component systems.
+Architecture, accessibility and maintainability are part of the delivery.
+```
+
+#### Czech
+
+```text
+Webům se věnuji přes deset let a nyní působím ve vedoucí frontendové roli. S Reactem, TypeScriptem a Next.js pracuji na zákaznických portálech, podnikových aplikacích a komponentových systémech.
+Architektura, přístupnost a udržovatelnost jsou součástí dodávky.
+```
+
+### Rationale
+
+- Problem being solved: desktop supporting copy makes the approved compact Hero
+  taller and denser than Figma nodes `7:377`, `8:87`, `8:140`, and `8:193`.
+- Why this wording was selected: the supplied English removes only desktop-level
+  qualifiers while preserving the role, tenure, technologies, product contexts,
+  architecture, accessibility, and maintainability claims; Czech expresses the
+  same facts naturally rather than translating word for word.
+- Alternatives rejected: truncation would hide meaning and harm accessibility;
+  client-side viewport branching would make rendering fragile; replacing the
+  desktop catalog values would discard approved wide-screen copy.
+- Meaning intentionally preserved: more than ten years in web development,
+  current lead frontend responsibility, React/TypeScript/Next.js experience,
+  portal/enterprise/component-system work, and delivery-level architecture,
+  accessibility, and maintainability.
+- Meaning intentionally changed: compact copy omits the internal qualifier,
+  component-library dependency detail, long-term qualifier, and the contrast
+  with follow-up work solely to reduce presentation length.
+
+### Fact And Claim Controls
+
+- Claims affected: tenure, current lead role, technologies, product contexts,
+  and engineering-quality responsibilities.
+- Evidence source and checked date: existing owner-approved Home copy and the
+  approved Home parity packet, checked 2026-07-29.
+- Time-sensitive review: the current lead-role claim must be reconfirmed if the
+  owner's position changes; the experience duration must remain accurate.
+- NDA or client review: not applicable; no employer, client, product, metric, or
+  confidential implementation is named.
+- Owner approval: Karel Kutchan explicitly authorized implementation of the
+  redesign parity plan on 2026-07-29; separate approval of the Czech phrasing is
+  not recorded.
+
+### Impact Review
+
+- Internationalization: matching semantic keys and non-empty values are added
+  to both catalogs; desktop keys and locale-neutral technology names remain
+  unchanged.
+- Accessibility: both variants remain semantic paragraph text; CSS exposes one
+  complete variant at a time without truncation or client viewport logic.
+- Responsive layout: desktop copy remains active at 1440; compact alternatives
+  are validated at 768, 430, 390, and 320 CSS pixels against the cited nodes.
+- SEO and metadata: no metadata, canonical, hreflang, Open Graph, robots,
+  structured-data, or sitemap change.
+- CMS or data boundary: static portfolio presentation copy remains in next-intl;
+  no Payload field, schema, or migration changes.
+- Privacy and confidentiality: only existing public professional positioning is
+  restated.
+
+### Verification
+
+- Automated tests: the expanded focused Hero Chromium contract passed 10/10;
+  the nearby Home CTA regression contract passed 7/7; catalog parity/non-empty
+  validation passed 3/3; TypeScript and targeted Biome checks passed.
+- Routes and locales: verified English `/` and Czech `/cs`, including correct
+  Czech document language and visible locale-specific supporting copy.
+- Themes, viewports, and interaction states: deterministic light-theme checks
+  prove both active strings visible and both inactive strings attached and
+  hidden for English and Czech at 1440, 768, 430, 390, and 320 CSS pixels. Czech
+  non-overlap, CTA containment, and visible-descendant overflow pass at all five
+  widths. English headline wrapping and normalized Hero section heights match
+  the cited Figma frames. The comparison accounts for the documented topology
+  difference: Figma places Hero after an in-flow 72/64 px header, while the web
+  header is fixed and Hero carries the equivalent offset in its top padding.
+- Manual content review: exact supplied English compact copy preserved; Czech
+  was reviewed for meaning and professional phrasing by the implementation team.
+- Result: compact Hero copy selection, containment, typography, wrapping, and
+  node-backed vertical-size parity are green on the targeted Chromium contract.
+- Residual risk: the raw browser Hero box includes the intentional fixed-header
+  offset described above; comparisons must continue to normalize it. The 320 px
+  headline differs from the integer Figma frame by 1.25 px because its 36 px ×
+  112% line height produces fractional CSS pixels. Czech has no canonical Figma
+  text frame and therefore targets semantic fidelity and containment rather
+  than matching English element height.
+
+### Lifecycle
+
+- Supersedes: none; desktop strings remain active at wide viewports.
+- Reverted by: none
+- Related entries: `COPY-20260729-001`
+- Notes: append a new entry rather than rewriting this record if any factual
+  claim or breakpoint-specific presentation changes.

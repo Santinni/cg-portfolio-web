@@ -42,6 +42,10 @@
 				"experience": "Webům se věnuji přes deset let a dnes působím jako vedoucí frontend vývoje. S Reactem, TypeScriptem a Next.js pracuji na zákaznických portálech, interních podnikových aplikacích i komponentových knihovnách, na kterých stojí.",
 				"quality": "Architektura, přístupnost a dlouhodobá udržitelnost jsou součástí dodávky, ne práce odložená na později."
 			},
+			"paragraphsCompact": {
+				"experience": "Webům se věnuji přes deset let a nyní působím ve vedoucí frontendové roli. S Reactem, TypeScriptem a Next.js pracuji na zákaznických portálech, podnikových aplikacích a komponentových systémech.",
+				"quality": "Architektura, přístupnost a udržovatelnost jsou součástí dodávky."
+			},
 			"primaryCta": "Přečíst hlavní případovou studii",
 			"secondaryCta": "Zobrazit zkušenosti"
 		},

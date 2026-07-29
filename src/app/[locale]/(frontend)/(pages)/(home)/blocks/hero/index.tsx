@@ -20,7 +20,8 @@ export default async function Hero() {
 				</h1>
 				{(['experience', 'quality'] as const).map((key) => (
 					<p key={key} className={styles.paragraph}>
-						{t(`paragraphs.${key}`)}
+						<span className={styles.desktopCopy}>{t(`paragraphs.${key}`)}</span>
+						<span className={styles.compactCopy}>{t(`paragraphsCompact.${key}`)}</span>
 					</p>
 				))}
 				<div className={styles.ctaRow}>
