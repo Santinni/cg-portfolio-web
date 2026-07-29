@@ -117,6 +117,90 @@ async function expectLargeButtonContract(link: Locator) {
 	})
 }
 
+interface HeroActionLayoutExpectation {
+	direction: 'column' | 'row'
+	gap: number
+	paragraphGap: number
+}
+
+async function expectHeroActionLayout(
+	primary: Locator,
+	secondary: Locator,
+	expectation: HeroActionLayoutExpectation,
+) {
+	const actions = primary.locator('..')
+
+	const layout = await actions.evaluate((element) => {
+		const links = Array.from(element.children).filter(
+			(child): child is HTMLAnchorElement => child instanceof HTMLAnchorElement,
+		)
+		const previousContent = element.previousElementSibling
+
+		if (links.length !== 2 || !(previousContent instanceof HTMLElement)) {
+			throw new Error('Expected two Hero actions after the final supporting paragraph')
+		}
+
+		const styles = getComputedStyle(element)
+		const row = element.getBoundingClientRect()
+		const [primaryAction, secondaryAction] = links.map((link) => link.getBoundingClientRect())
+		const previous = previousContent.getBoundingClientRect()
+
+		return {
+			alignItems: styles.alignItems,
+			columnGap: Number.parseFloat(styles.columnGap),
+			direction: styles.flexDirection,
+			paragraphGap: primaryAction.top - previous.bottom,
+			primary: primaryAction.toJSON(),
+			row: row.toJSON(),
+			rowGap: Number.parseFloat(styles.rowGap),
+			secondary: secondaryAction.toJSON(),
+		}
+	})
+
+	expect.soft(layout.alignItems).toBe('flex-start')
+	expect.soft(layout.direction).toBe(expectation.direction)
+	expect.soft(layout.paragraphGap).toBeCloseTo(expectation.paragraphGap, 5)
+	expect.soft(layout.primary.width).toBeLessThan(layout.row.width)
+	expect.soft(layout.secondary.width).toBeLessThan(layout.row.width)
+
+	if (expectation.direction === 'row') {
+		expect.soft(layout.columnGap).toBe(expectation.gap)
+		expect.soft(layout.primary.y).toBeCloseTo(layout.secondary.y, 5)
+		expect
+			.soft(layout.secondary.x - (layout.primary.x + layout.primary.width))
+			.toBeCloseTo(expectation.gap, 5)
+	} else {
+		expect.soft(layout.rowGap).toBe(expectation.gap)
+		expect.soft(layout.primary.x).toBeCloseTo(layout.row.x, 5)
+		expect.soft(layout.secondary.x).toBeCloseTo(layout.row.x, 5)
+		expect
+			.soft(layout.secondary.y - (layout.primary.y + layout.primary.height))
+			.toBeCloseTo(expectation.gap, 5)
+	}
+
+	await expect(secondary).toBeVisible()
+}
+
+async function expectHugLeftAlignedButton(link: Locator) {
+	await expect(link).toBeVisible()
+
+	const layout = await link.evaluate((element) => {
+		const parent = element.parentElement
+		if (!parent) throw new Error('Expected CTA layout parent')
+
+		return {
+			button: element.getBoundingClientRect().toJSON(),
+			parent: parent.getBoundingClientRect().toJSON(),
+		}
+	})
+
+	expect.soft(layout.button.x).toBeCloseTo(layout.parent.x, 5)
+	expect.soft(layout.button.width).toBeLessThan(layout.parent.width)
+	expect
+		.soft(layout.button.x + layout.button.width)
+		.toBeLessThanOrEqual(layout.parent.x + layout.parent.width)
+}
+
 for (const locale of localeExpectations) {
 	test.describe(`Home CTA contract at ${locale.path}`, () => {
 		test('uses approved large CTAs on desktop with localized destinations', async ({ page }) => {
@@ -135,6 +219,15 @@ for (const locale of localeExpectations) {
 			for (const cta of Object.values(ctas)) {
 				await expectLargeButtonContract(cta)
 			}
+
+			await expectHeroActionLayout(ctas.heroPrimary, ctas.heroSecondary, {
+				direction: 'row',
+				gap: 16,
+				paragraphGap: 32,
+			})
+			await expectHugLeftAlignedButton(ctas.flagship)
+			await expectHugLeftAlignedButton(ctas.experience)
+			await expectHugLeftAlignedButton(ctas.final)
 		})
 
 		for (const viewport of [
@@ -156,8 +249,62 @@ for (const locale of localeExpectations) {
 					await expectLargeButtonContract(cta)
 				}
 
+				await expectHeroActionLayout(ctas.heroPrimary, ctas.heroSecondary, {
+					direction: 'column',
+					gap: 24,
+					paragraphGap: 24,
+				})
+				await expectHugLeftAlignedButton(ctas.flagship)
+				await expectHugLeftAlignedButton(ctas.final)
 				await expect(ctas.experience).toBeHidden()
 			})
 		}
 	})
 }
+
+test('keeps the long Czech Hero actions inside a 320px reflow viewport', async ({ page }) => {
+	await page.setViewportSize({ width: 320, height: 900 })
+	const response = await page.goto('/cs')
+	expect(response?.status()).toBe(200)
+
+	const expectation = localeExpectations[1]
+	const ctas = getHomeCtas(page, expectation)
+
+	await expect(ctas.heroPrimary).toBeVisible()
+	await expect(ctas.heroSecondary).toBeVisible()
+	await expect(ctas.heroPrimary).toHaveAttribute('href', expectation.hrefs.flagship)
+	await expect(ctas.heroSecondary).toHaveAttribute('href', expectation.hrefs.experience)
+
+	const reflow = await ctas.heroPrimary.locator('..').evaluate((element) => {
+		const links = Array.from(element.children).filter(
+			(child): child is HTMLAnchorElement => child instanceof HTMLAnchorElement,
+		)
+		if (links.length !== 2) throw new Error('Expected two Czech Hero actions')
+
+		const styles = getComputedStyle(element)
+		const viewportWidth = document.documentElement.clientWidth
+
+		return {
+			alignItems: styles.alignItems,
+			direction: styles.flexDirection,
+			documentScrollWidth: document.documentElement.scrollWidth,
+			links: links.map((link) => link.getBoundingClientRect().toJSON()),
+			row: element.getBoundingClientRect().toJSON(),
+			rowGap: Number.parseFloat(styles.rowGap),
+			viewportWidth,
+		}
+	})
+
+	expect(reflow.alignItems).toBe('flex-start')
+	expect(reflow.direction).toBe('column')
+	expect(reflow.rowGap).toBe(24)
+	expect(reflow.documentScrollWidth).toBeLessThanOrEqual(reflow.viewportWidth)
+	expect(reflow.links[0].y).toBeLessThan(reflow.links[1].y)
+
+	for (const link of reflow.links) {
+		expect(link.height).toBeGreaterThanOrEqual(52)
+		expect(link.x).toBeGreaterThanOrEqual(reflow.row.x)
+		expect(link.x + link.width).toBeLessThanOrEqual(reflow.row.x + reflow.row.width)
+		expect(link.x + link.width).toBeLessThanOrEqual(reflow.viewportWidth)
+	}
+})

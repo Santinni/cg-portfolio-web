@@ -29,6 +29,10 @@
   margin: 0;
 }
 
+.cta {
+  align-self: flex-start;
+}
+
 .highlights {
   list-style: none;
   display: flex;
