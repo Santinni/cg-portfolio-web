@@ -24,7 +24,7 @@ export default async function FlagshipCase() {
 					</h2>
 					<p className={styles.summary}>{t('summary')}</p>
 					<p className={styles.stack}>{flagshipWork.stack.join(' · ')}</p>
-					<Button renders="link" href={flagshipWork.href} variant="primary">
+					<Button renders="link" href={flagshipWork.href} variant="primary" size="large">
 						{t('cta')}
 						<ArrowRight className={styles.ctaIcon} aria-hidden="true" />
 					</Button>

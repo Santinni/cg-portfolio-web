@@ -25,11 +25,11 @@ export default async function Hero() {
 					</p>
 				))}
 				<div className={styles.ctaRow}>
-					<Button renders="link" href={homeLinks.flagshipCase} variant="primary">
+					<Button renders="link" href={homeLinks.flagshipCase} variant="primary" size="large">
 						{t('primaryCta')}
 						<ArrowRight className={styles.ctaIcon} aria-hidden="true" />
 					</Button>
-					<Button renders="link" href={homeLinks.experience} variant="secondary">
+					<Button renders="link" href={homeLinks.experience} variant="secondary" size="large">
 						{t('secondaryCta')}
 					</Button>
 				</div>

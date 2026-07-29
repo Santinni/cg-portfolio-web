@@ -17,7 +17,7 @@ export default async function FinalCta() {
 					{t('heading')}
 				</h2>
 				<p className={styles.supporting}>{t('supporting')}</p>
-				<Button renders="link" href={homeLinks.contact} variant="primary">
+				<Button renders="link" href={homeLinks.contact} variant="primary" size="large">
 					{t('cta')}
 				</Button>
 			</Container>

@@ -26,7 +26,7 @@ export default async function ExperienceSnapshot() {
 					{t('title')}
 				</h2>
 				<p className={styles.description}>{t('description')}</p>
-				<Button renders="link" href={homeLinks.experience} variant="secondary">
+				<Button renders="link" href={homeLinks.experience} variant="secondary" size="large">
 					{t('cta')}
 					<ArrowRight className={styles.ctaIcon} aria-hidden="true" />
 				</Button>
