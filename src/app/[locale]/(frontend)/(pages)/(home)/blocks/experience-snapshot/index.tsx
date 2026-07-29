@@ -1,4 +1,3 @@
-import { ArrowRight } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
 import { Container } from '@/app/(frontend)/components/layout/Container'
 import { Button } from '@/app/(frontend)/components/primitives/button'
@@ -19,7 +18,7 @@ export default async function ExperienceSnapshot() {
 			tone="page"
 			className={styles.section}
 		>
-			<Container className={styles.inner}>
+			<Container id="experience-snapshot-inner" className={styles.inner}>
 				<Eyebrow className={styles.eyebrow}>{t('eyebrow')}</Eyebrow>
 				<h2 id="experience-snapshot-heading" className={styles.title}>
 					{t('title')}
@@ -33,7 +32,6 @@ export default async function ExperienceSnapshot() {
 					className={styles.cta}
 				>
 					{t('cta')}
-					<ArrowRight className={styles.ctaIcon} aria-hidden="true" />
 				</Button>
 			</Container>
 		</Section>
