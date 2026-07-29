@@ -20,6 +20,21 @@ const matrixViewports = [
 	HOME_PARITY_VIEWPORTS.responsive320,
 ] as const
 
+const LOCAL_WORKING_TREE_REVISION = 'local-working-tree-uncommitted'
+
+interface RevisionEnvironment {
+	APP_REVISION?: string
+	GITHUB_SHA?: string
+}
+
+function resolveEvidenceRevision(environment: RevisionEnvironment = process.env) {
+	return (
+		environment.APP_REVISION ||
+		environment.GITHUB_SHA ||
+		LOCAL_WORKING_TREE_REVISION
+	)
+}
+
 const FIGMA_EN_INTEGRATED_GEOMETRY = {
 	1440: {
 		mainHeight: 3725,
@@ -79,7 +94,7 @@ function annotateEvidence(viewport: (typeof matrixViewports)[number]) {
 		{ type: 'figma-node', description: viewport.figmaNode },
 		{
 			type: 'app-revision',
-			description: process.env.APP_REVISION ?? 'local-working-tree-uncommitted',
+			description: resolveEvidenceRevision(),
 		},
 	)
 }
@@ -165,6 +180,22 @@ function expectRectInvariant(before: HomeGeometryRect, after: HomeGeometryRect) 
 		expectPx(after[key], before[key])
 	}
 }
+
+test('records immutable browser evidence revision with explicit fallback precedence', () => {
+	expect(
+		resolveEvidenceRevision({ APP_REVISION: 'app-revision', GITHUB_SHA: 'github-sha' }),
+	).toBe('app-revision')
+	expect(resolveEvidenceRevision({ GITHUB_SHA: 'github-sha' })).toBe('github-sha')
+	expect(resolveEvidenceRevision({ APP_REVISION: '', GITHUB_SHA: 'github-sha' })).toBe(
+		'github-sha',
+	)
+	expect(resolveEvidenceRevision({})).toBe(LOCAL_WORKING_TREE_REVISION)
+
+	test.info().annotations.push({
+		type: 'app-revision',
+		description: resolveEvidenceRevision(),
+	})
+})
 
 for (const locale of HOME_PARITY_LOCALES) {
 	for (const viewport of matrixViewports) {
