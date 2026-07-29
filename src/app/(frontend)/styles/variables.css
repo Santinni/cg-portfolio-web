@@ -121,6 +121,7 @@
     --action-on-primary: #ffffff;
     --action-secondary: var(--surface-raised);
     --action-secondary-hover: var(--surface-subtle);
+    --action-icon-hover: #e8f6f2;
 
     /* Spacing scale */
     --space-0: 0px;
@@ -242,6 +243,7 @@
     --action-on-primary: #08090c;
     --action-secondary: var(--surface-raised);
     --action-secondary-hover: var(--surface-subtle);
+    --action-icon-hover: var(--surface-subtle);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -266,5 +268,6 @@
         --action-on-primary: #08090c;
         --action-secondary: var(--surface-raised);
         --action-secondary-hover: var(--surface-subtle);
+        --action-icon-hover: var(--surface-subtle);
     }
 }
