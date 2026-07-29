@@ -25,12 +25,17 @@ test.describe('public launch surface', () => {
 	})
 
 	test('health endpoint exposes the running revision contract', async ({ request }) => {
+		const expectedRevision = process.env.APP_REVISION?.trim()
 		const response = await request.get('/api/health')
 		const body = await response.json()
 
 		expect(response.ok()).toBeTruthy()
 		expect(body.status).toBe('ok')
-		expect(body.revision).toBeTruthy()
+		if (expectedRevision) {
+			expect(body.revision).toBe(expectedRevision)
+		} else {
+			expect(body.revision).toBeTruthy()
+		}
 		expect(body.timestamp).toBeTruthy()
 		expect(body.checks.database).toBe('skipped')
 
@@ -39,6 +44,10 @@ test.describe('public launch surface', () => {
 
 		expect(readinessResponse.ok()).toBeTruthy()
 		expect(readinessBody.status).toBe('ok')
+		expect(readinessBody.revision).toBe(body.revision)
+		if (expectedRevision) {
+			expect(readinessBody.revision).toBe(expectedRevision)
+		}
 		expect(readinessBody.checks.database).toBe('ok')
 	})
 })
