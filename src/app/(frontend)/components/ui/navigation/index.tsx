@@ -9,7 +9,7 @@ import LanguageSwitcher from '@/app/(frontend)/components/ui/languageSwitcher'
 import { siteConfig } from '@/content/site'
 import { Link } from '@/i18n/navigation'
 
-import { Button } from '../../primitives/button'
+import { IconButton } from '../../primitives/iconButton'
 import styles from './Navigation.module.css'
 
 const navItems = [
@@ -90,34 +90,27 @@ export default function Navigation() {
 					</div>
 					<div className={styles.menuTrigger}>
 						<ThemeToggle />
-						<Button
+						<IconButton
 							ref={triggerRef}
-							className={styles.menuButton}
 							onClick={openMenu}
 							aria-expanded={isOpen}
 							aria-controls={id}
 							aria-haspopup="dialog"
 							aria-label={t('openMenu')}
-							variant="transparent"
-							rounded
+							variant="quiet"
+							size="medium"
 						>
-							<Menu className={styles.menuIcon} aria-hidden="true" />
-						</Button>
+							<Menu aria-hidden="true" />
+						</IconButton>
 					</div>
 				</div>
 			</nav>
 			{/* Mobile dialog menu */}
 			<dialog ref={dialogRef} className={styles.mobileMenu} id={id} aria-label={t('siteMenu')}>
 				<div className={styles.mobileMenuHeader}>
-					<Button
-						className={styles.menuButton}
-						onClick={closeMenu}
-						variant="transparent"
-						rounded
-						aria-label={t('closeMenu')}
-					>
-						<X className={styles.menuIcon} aria-hidden="true" />
-					</Button>
+					<IconButton onClick={closeMenu} variant="quiet" size="medium" aria-label={t('closeMenu')}>
+						<X aria-hidden="true" />
+					</IconButton>
 				</div>
 				<div className={styles.mobileMenuContent}>
 					{navItems.map((item) => (

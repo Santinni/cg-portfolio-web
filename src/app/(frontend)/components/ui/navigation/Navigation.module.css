@@ -71,16 +71,6 @@
     }
 }
 
-.menuButton {
-    background: transparent;
-    color: var(--text-primary);
-}
-
-.menuIcon {
-    width: var(--icon-24);
-    height: var(--icon-24);
-}
-
 .mobileMenuHeader {
     display: flex;
     justify-content: flex-end;
