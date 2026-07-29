@@ -185,7 +185,7 @@ function contrastRatio(foreground: string, background: string): number {
 async function gotoHome(
 	page: Page,
 	locale: LocaleExpectation,
-	viewport: Pick<ViewportContract, 'height' | 'width'>,
+	viewport: { height: number; width: number },
 	theme: HomeTheme = 'light',
 ) {
 	await page.setViewportSize(viewport)

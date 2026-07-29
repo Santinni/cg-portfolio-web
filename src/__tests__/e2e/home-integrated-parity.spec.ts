@@ -27,12 +27,13 @@ interface RevisionEnvironment {
 	GITHUB_SHA?: string
 }
 
-function resolveEvidenceRevision(environment: RevisionEnvironment = process.env) {
-	return (
-		environment.APP_REVISION ||
-		environment.GITHUB_SHA ||
-		LOCAL_WORKING_TREE_REVISION
-	)
+function resolveEvidenceRevision(
+	environment: RevisionEnvironment = {
+		APP_REVISION: process.env.APP_REVISION,
+		GITHUB_SHA: process.env.GITHUB_SHA,
+	},
+) {
+	return environment.APP_REVISION || environment.GITHUB_SHA || LOCAL_WORKING_TREE_REVISION
 }
 
 const FIGMA_EN_INTEGRATED_GEOMETRY = {
@@ -107,15 +108,13 @@ function annotateBrowserTopology(geometry: HomeGeometry, viewportWidth: number) 
 }
 
 function expectEnglishFigmaGeometry(geometry: HomeGeometry, viewportWidth: number) {
-	const target = FIGMA_EN_INTEGRATED_GEOMETRY[
-		viewportWidth as keyof typeof FIGMA_EN_INTEGRATED_GEOMETRY
-	]
+	const target =
+		FIGMA_EN_INTEGRATED_GEOMETRY[viewportWidth as keyof typeof FIGMA_EN_INTEGRATED_GEOMETRY]
 	const visible = geometry.children.filter((child) => child.visible)
 	const scrollbarDelta = geometry.document.clientWidth - geometry.document.bodyClientWidth
 	expect([0, 15]).toContain(scrollbarDelta)
 
-	const roundingTolerance =
-		viewportWidth === 1440 ? 0.5 : viewportWidth === 768 ? 1.5 : 2.5
+	const roundingTolerance = viewportWidth === 1440 ? 0.5 : viewportWidth === 768 ? 1.5 : 2.5
 	const expectedGrowthByIndex = new Map<number, { amount: number; tolerance: number }>()
 	if (scrollbarDelta === 15) {
 		if (viewportWidth === 430) expectedGrowthByIndex.set(2, { amount: 46.4, tolerance: 1 })
@@ -129,10 +128,7 @@ function expectEnglishFigmaGeometry(geometry: HomeGeometry, viewportWidth: numbe
 	let cumulativeMeasuredDelta = 0
 	for (const [index, section] of visible.entries()) {
 		const expected = target.sections[index]
-		expectPx(
-			section.rect.top - geometry.main.top,
-			expected.top + cumulativeMeasuredDelta,
-		)
+		expectPx(section.rect.top - geometry.main.top, expected.top + cumulativeMeasuredDelta)
 
 		const measuredDelta = section.rect.height - expected.height
 		const expectedGrowth = expectedGrowthByIndex.get(index)
@@ -170,9 +166,7 @@ function expectContained(rect: HomeGeometryRect, container: HomeGeometryRect) {
 
 function expectNoDocumentOverflow(geometry: HomeGeometry) {
 	expect(geometry.document.scrollWidth).toBeLessThanOrEqual(geometry.document.clientWidth)
-	expect(geometry.document.bodyScrollWidth).toBeLessThanOrEqual(
-		geometry.document.bodyClientWidth,
-	)
+	expect(geometry.document.bodyScrollWidth).toBeLessThanOrEqual(geometry.document.bodyClientWidth)
 }
 
 function expectRectInvariant(before: HomeGeometryRect, after: HomeGeometryRect) {
@@ -182,13 +176,11 @@ function expectRectInvariant(before: HomeGeometryRect, after: HomeGeometryRect) 
 }
 
 test('records immutable browser evidence revision with explicit fallback precedence', () => {
-	expect(
-		resolveEvidenceRevision({ APP_REVISION: 'app-revision', GITHUB_SHA: 'github-sha' }),
-	).toBe('app-revision')
-	expect(resolveEvidenceRevision({ GITHUB_SHA: 'github-sha' })).toBe('github-sha')
-	expect(resolveEvidenceRevision({ APP_REVISION: '', GITHUB_SHA: 'github-sha' })).toBe(
-		'github-sha',
+	expect(resolveEvidenceRevision({ APP_REVISION: 'app-revision', GITHUB_SHA: 'github-sha' })).toBe(
+		'app-revision',
 	)
+	expect(resolveEvidenceRevision({ GITHUB_SHA: 'github-sha' })).toBe('github-sha')
+	expect(resolveEvidenceRevision({ APP_REVISION: '', GITHUB_SHA: 'github-sha' })).toBe('github-sha')
 	expect(resolveEvidenceRevision({})).toBe(LOCAL_WORKING_TREE_REVISION)
 
 	test.info().annotations.push({
