@@ -108,21 +108,52 @@ test.describe('responsive shell interactions', () => {
 		}
 	})
 
-	test('mobile menu closes with Escape, restores focus and releases scroll lock', async ({
+	test('mobile menu preserves native close behavior across close, Escape, resize and navigation', async ({
 		page,
 	}) => {
 		await page.setViewportSize({ width: 390, height: 844 })
 		await page.goto('/')
 
 		const trigger = page.getByRole('button', { name: 'Open menu' })
+		const dialog = page.getByRole('dialog', { name: 'Site menu' })
+		const nativeDialog = page.locator('dialog[aria-label="Site menu"]')
+		const nativeTrigger = page.locator('button[aria-label="Open menu"]')
+
 		await trigger.click()
-		await expect(page.getByRole('dialog', { name: 'Site menu' })).toBeVisible()
+		await expect(dialog).toBeVisible()
+		await expect(page.getByRole('button', { name: 'Close menu' })).toBeFocused()
 		expect(await page.locator('body').evaluate((body) => body.style.overflow)).toBe('hidden')
 
-		await page.keyboard.press('Escape')
-		await expect(page.getByRole('dialog', { name: 'Site menu' })).not.toBeVisible()
+		await page.getByRole('button', { name: 'Close menu' }).click()
+		await expect(dialog).not.toBeVisible()
 		await expect(trigger).toBeFocused()
 		expect(await page.locator('body').evaluate((body) => body.style.overflow)).toBe('')
+
+		await trigger.click()
+		await page.keyboard.press('Escape')
+		await expect(dialog).not.toBeVisible()
+		await expect(trigger).toBeFocused()
+		expect(await page.locator('body').evaluate((body) => body.style.overflow)).toBe('')
+
+		await trigger.click()
+		await page.setViewportSize({ width: 1440, height: 900 })
+		await expect
+			.poll(() => nativeDialog.evaluate((element: HTMLDialogElement) => element.open))
+			.toBe(false)
+		await expect(nativeTrigger).not.toBeFocused()
+		expect(await page.locator('body').evaluate((body) => body.style.overflow)).toBe('')
+
+		await page.setViewportSize({ width: 390, height: 844 })
+		await trigger.click()
+		await dialog.getByRole('link', { name: 'Work', exact: true }).click()
+		await page.waitForURL('**/work')
+		await expect
+			.poll(() => nativeDialog.evaluate((element: HTMLDialogElement) => element.open))
+			.toBe(false)
+		expect(await page.locator('body').evaluate((body) => body.style.overflow)).toBe('')
+		await expect
+			.poll(() => nativeDialog.evaluate((element) => !element.contains(document.activeElement)))
+			.toBe(true)
 	})
 
 	test('theme choice changes and persists across reloads', async ({ page }) => {

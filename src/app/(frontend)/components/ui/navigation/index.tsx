@@ -34,16 +34,22 @@ export default function Navigation() {
 	const pathname = usePathname()
 	const [isOpen, setIsOpen] = useState(false)
 	const dialogRef = useRef<HTMLDialogElement>(null)
-	const triggerRef = useRef<HTMLButtonElement>(null)
 	const id = useId()
 
 	const openMenu = () => {
-		dialogRef.current?.showModal()
-		setIsOpen(true)
+		const dialog = dialogRef.current
+		if (!dialog || dialog.open) return
+
+		dialog.showModal()
+		setIsOpen(dialog.open)
 	}
 
 	const closeMenu = () => {
-		dialogRef.current?.close()
+		const dialog = dialogRef.current
+		if (!dialog?.open) return
+
+		dialog.close()
+		setIsOpen(dialog.open)
 	}
 
 	useEffect(() => {
@@ -51,12 +57,25 @@ export default function Navigation() {
 		if (!dialog) return
 
 		const handleClose = () => {
-			setIsOpen(false)
-			triggerRef.current?.focus()
+			setIsOpen(dialog.open)
 		}
 
 		dialog.addEventListener('close', handleClose)
 		return () => dialog.removeEventListener('close', handleClose)
+	}, [])
+
+	useEffect(() => {
+		const desktopMedia = window.matchMedia('(min-width: 1024px)')
+		const handleDesktopBreakpoint = (event: MediaQueryListEvent) => {
+			const dialog = dialogRef.current
+			if (!event.matches || !dialog?.open) return
+
+			dialog.close()
+			setIsOpen(dialog.open)
+		}
+
+		desktopMedia.addEventListener('change', handleDesktopBreakpoint)
+		return () => desktopMedia.removeEventListener('change', handleDesktopBreakpoint)
 	}, [])
 
 	useEffect(() => {
@@ -102,7 +121,6 @@ export default function Navigation() {
 					<div className={styles.menuTrigger}>
 						<ThemeToggle />
 						<IconButton
-							ref={triggerRef}
 							onClick={openMenu}
 							aria-expanded={isOpen}
 							aria-controls={id}
@@ -119,7 +137,13 @@ export default function Navigation() {
 			{/* Mobile dialog menu */}
 			<dialog ref={dialogRef} className={styles.mobileMenu} id={id} aria-label={t('siteMenu')}>
 				<div className={styles.mobileMenuHeader}>
-					<IconButton onClick={closeMenu} variant="quiet" size="medium" aria-label={t('closeMenu')}>
+					<IconButton
+						autoFocus
+						onClick={closeMenu}
+						variant="quiet"
+						size="medium"
+						aria-label={t('closeMenu')}
+					>
 						<X aria-hidden="true" />
 					</IconButton>
 				</div>

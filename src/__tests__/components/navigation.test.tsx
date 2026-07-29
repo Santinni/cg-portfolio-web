@@ -1,7 +1,8 @@
-import { render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { NextIntlClientProvider } from 'next-intl'
 import type { AnchorHTMLAttributes, ReactNode } from 'react'
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import Navigation from '@/app/(frontend)/components/ui/navigation'
 import csMessages from '../../../messages/cs.json'
@@ -45,6 +46,10 @@ const controls = {
 	en: ['Open menu', 'Close menu'],
 } as const
 
+let desktopMedia: MediaQueryList
+let closeDialog: ReturnType<typeof vi.fn>
+let showModal: ReturnType<typeof vi.fn>
+
 const navLabels = {
 	cs: {
 		about: 'O mně',
@@ -73,6 +78,66 @@ function renderNavigation(locale: keyof typeof catalogs, pathname = '/') {
 	)
 }
 
+function createMediaQueryList(query: string): MediaQueryList {
+	const eventTarget = new EventTarget()
+	const addEventListener = eventTarget.addEventListener.bind(
+		eventTarget,
+	) as MediaQueryList['addEventListener']
+	const removeEventListener = eventTarget.removeEventListener.bind(
+		eventTarget,
+	) as MediaQueryList['removeEventListener']
+
+	return {
+		addEventListener,
+		addListener: (listener) => {
+			if (listener) addEventListener('change', listener)
+		},
+		dispatchEvent: eventTarget.dispatchEvent.bind(eventTarget),
+		matches: false,
+		media: query,
+		onchange: null,
+		removeEventListener,
+		removeListener: (listener) => {
+			if (listener) removeEventListener('change', listener)
+		},
+	}
+}
+
+beforeEach(() => {
+	Object.defineProperty(window, 'matchMedia', {
+		configurable: true,
+		value: vi.fn((query: string) => {
+			desktopMedia = createMediaQueryList(query)
+			return desktopMedia
+		}),
+	})
+
+	showModal = vi.fn(function (this: HTMLDialogElement) {
+		if (this.open) return
+
+		this.setAttribute('open', '')
+		this.querySelector<HTMLElement>('button')?.focus()
+	})
+	closeDialog = vi.fn(function (this: HTMLDialogElement) {
+		if (!this.open) return
+
+		this.removeAttribute('open')
+	})
+
+	Object.defineProperty(HTMLDialogElement.prototype, 'showModal', {
+		configurable: true,
+		value: showModal,
+	})
+	Object.defineProperty(HTMLDialogElement.prototype, 'close', {
+		configurable: true,
+		value: closeDialog,
+	})
+})
+
+afterEach(() => {
+	document.body.style.overflow = ''
+})
+
 describe('Navigation icon controls', () => {
 	it.each(['en', 'cs'] as const)(
 		'renders the %s menu controls as canonical accessible icon buttons',
@@ -88,6 +153,72 @@ describe('Navigation icon controls', () => {
 			}
 		},
 	)
+})
+
+describe('Navigation dialog lifecycle', () => {
+	it('guards native open and close calls and restores the previous body overflow', async () => {
+		const user = userEvent.setup()
+		document.body.style.overflow = 'clip'
+		renderNavigation('en')
+
+		const trigger = screen.getByRole('button', { name: 'Open menu' })
+		const close = screen.getByRole('button', { name: 'Close menu', hidden: true })
+
+		await user.click(trigger)
+		fireEvent.click(trigger)
+		await waitFor(() => expect(document.body.style.overflow).toBe('hidden'))
+		expect(showModal).toHaveBeenCalledTimes(1)
+
+		await user.click(close)
+		fireEvent.click(close)
+		await waitFor(() => expect(document.body.style.overflow).toBe('clip'))
+		expect(closeDialog).toHaveBeenCalledTimes(1)
+		expect(trigger).toHaveAttribute('aria-expanded', 'false')
+	})
+
+	it('closes an open menu at the desktop breakpoint without focusing the hidden trigger', async () => {
+		const user = userEvent.setup()
+		renderNavigation('en')
+
+		const trigger = screen.getByRole('button', { name: 'Open menu' })
+		await user.click(trigger)
+		expect(screen.getByRole('button', { name: 'Close menu', hidden: true })).toHaveFocus()
+
+		act(() => {
+			const event = Object.assign(new Event('change'), {
+				matches: true,
+				media: desktopMedia.media,
+			}) as MediaQueryListEvent
+			desktopMedia.dispatchEvent(event)
+		})
+
+		expect(closeDialog).toHaveBeenCalledTimes(1)
+		expect(trigger).not.toHaveFocus()
+		expect(trigger).toHaveAttribute('aria-expanded', 'false')
+		await waitFor(() => expect(document.body.style.overflow).toBe(''))
+	})
+
+	it('ignores a stale close event after the dialog has reopened', async () => {
+		const user = userEvent.setup()
+		const { container } = renderNavigation('en')
+
+		const trigger = screen.getByRole('button', { name: 'Open menu' })
+		const close = screen.getByRole('button', { name: 'Close menu', hidden: true })
+		const dialog = container.querySelector('dialog')
+
+		expect(dialog).not.toBeNull()
+		if (!dialog) return
+
+		await user.click(trigger)
+		await user.click(close)
+		await user.click(trigger)
+
+		fireEvent(dialog, new Event('close'))
+
+		expect(dialog).toHaveAttribute('open')
+		expect(trigger).toHaveAttribute('aria-expanded', 'true')
+		expect(document.body.style.overflow).toBe('hidden')
+	})
 })
 
 describe('Navigation current-page semantics', () => {
