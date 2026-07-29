@@ -2,12 +2,17 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 100vw;
     height: var(--header-height);
     z-index: 50;
-    background-color: color-mix(in srgb, var(--surface-page) 85%, transparent);
-    backdrop-filter: blur(8px);
-    border-bottom: 1px solid var(--border-default);
+    background-color: transparent;
+    border-bottom: 0 solid transparent;
+}
+
+.nav[data-scrolled='true'] {
+    background-color: var(--surface-page);
+    border-bottom-color: var(--border-default);
+    border-bottom-width: 1px;
 }
 
 .menuWrapper {
@@ -18,6 +23,21 @@
     width: min(100% - (2 * var(--container-gutter)), var(--container-max));
     margin-inline: auto;
     gap: var(--space-16);
+    background-color: transparent;
+    border-bottom: 0 solid transparent;
+}
+
+@media screen and (min-width: 1024px) {
+    .nav[data-scrolled='true'] {
+        background-color: transparent;
+        border-bottom-width: 0;
+    }
+
+    .nav[data-scrolled='true'] .menuWrapper {
+        background-color: var(--surface-page);
+        border-bottom-color: var(--border-default);
+        border-bottom-width: 1px;
+    }
 }
 
 .logo {

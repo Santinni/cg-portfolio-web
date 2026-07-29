@@ -136,6 +136,8 @@ beforeEach(() => {
 
 afterEach(() => {
 	document.body.style.overflow = ''
+	Object.defineProperty(window, 'scrollY', { configurable: true, value: 0 })
+	vi.restoreAllMocks()
 })
 
 describe('Navigation icon controls', () => {
@@ -218,6 +220,32 @@ describe('Navigation dialog lifecycle', () => {
 		expect(dialog).toHaveAttribute('open')
 		expect(trigger).toHaveAttribute('aria-expanded', 'true')
 		expect(document.body.style.overflow).toBe('hidden')
+	})
+})
+
+describe('Navigation scroll surface', () => {
+	it('initializes from restored scroll, updates passively and removes its listener', async () => {
+		const addEventListener = vi.spyOn(window, 'addEventListener')
+		const removeEventListener = vi.spyOn(window, 'removeEventListener')
+		Object.defineProperty(window, 'scrollY', { configurable: true, value: 120 })
+
+		const { unmount } = renderNavigation('en')
+		const navigation = screen.getByRole('navigation')
+
+		await waitFor(() => expect(navigation).toHaveAttribute('data-scrolled', 'true'))
+		expect(addEventListener).toHaveBeenCalledWith('scroll', expect.any(Function), {
+			passive: true,
+		})
+
+		Object.defineProperty(window, 'scrollY', { configurable: true, value: 0 })
+		fireEvent.scroll(window)
+		expect(navigation).toHaveAttribute('data-scrolled', 'false')
+
+		const scrollRegistration = addEventListener.mock.calls.find(([type]) => type === 'scroll')
+		expect(scrollRegistration).toBeDefined()
+
+		unmount()
+		expect(removeEventListener).toHaveBeenCalledWith('scroll', scrollRegistration?.[1])
 	})
 })
 

@@ -108,6 +108,102 @@ test.describe('responsive shell interactions', () => {
 		}
 	})
 
+	test('navigation surface transitions without changing responsive geometry', async ({ page }) => {
+		for (const theme of ['light', 'dark'] as const) {
+			for (const viewport of [
+				{ width: 390, height: 844 },
+				{ width: 768, height: 900 },
+				{ width: 1440, height: 900 },
+			]) {
+				await page.setViewportSize(viewport)
+				await page.goto('/')
+				await page.evaluate((selectedTheme) => {
+					document.documentElement.dataset.theme = selectedTheme
+					document.documentElement.style.scrollBehavior = 'auto'
+					window.scrollTo(0, 0)
+				}, theme)
+
+				const navigation = page.getByRole('navigation')
+				const readSurface = () =>
+					navigation.evaluate((element) => {
+						const wrapper = element.firstElementChild as HTMLElement
+						const navStyle = getComputedStyle(element)
+						const wrapperStyle = getComputedStyle(wrapper)
+						const resolveTokenColor = (token: string) => {
+							const probe = document.createElement('div')
+							probe.style.backgroundColor = `var(${token})`
+							document.body.append(probe)
+							const color = getComputedStyle(probe).backgroundColor
+							probe.remove()
+							return color
+						}
+
+						return {
+							borderColor: resolveTokenColor('--border-default'),
+							navBackdrop: navStyle.backdropFilter,
+							navBackground: navStyle.backgroundColor,
+							navBorderColor: navStyle.borderBottomColor,
+							navBorderWidth: Number.parseFloat(navStyle.borderBottomWidth),
+							navBoxShadow: navStyle.boxShadow,
+							navHeight: element.getBoundingClientRect().height,
+							scrolled: element.getAttribute('data-scrolled'),
+							surfaceColor: resolveTokenColor('--surface-page'),
+							wrapperBackground: wrapperStyle.backgroundColor,
+							wrapperBorderColor: wrapperStyle.borderBottomColor,
+							wrapperBorderWidth: Number.parseFloat(wrapperStyle.borderBottomWidth),
+							wrapperHeight: wrapper.getBoundingClientRect().height,
+							wrapperWidth: wrapper.getBoundingClientRect().width,
+						}
+					})
+
+				await expect(navigation).toHaveAttribute('data-scrolled', 'false')
+				const top = await readSurface()
+				const expectedHeight = viewport.width >= 1024 ? 72 : 64
+
+				expect(top.navHeight).toBe(expectedHeight)
+				expect(top.wrapperHeight).toBe(expectedHeight)
+				expect(top.navBackground).toBe('rgba(0, 0, 0, 0)')
+				expect(top.wrapperBackground).toBe('rgba(0, 0, 0, 0)')
+				expect(top.navBorderWidth).toBe(0)
+				expect(top.wrapperBorderWidth).toBe(0)
+				expect(top.navBackdrop).toBe('none')
+				expect(top.navBoxShadow).toBe('none')
+
+				await page.evaluate(() => window.scrollTo(0, 320))
+				await expect(navigation).toHaveAttribute('data-scrolled', 'true')
+				const scrolled = await readSurface()
+
+				expect(scrolled.navHeight).toBe(top.navHeight)
+				expect(scrolled.wrapperHeight).toBe(top.wrapperHeight)
+				if (viewport.width >= 1024) {
+					expect(scrolled.navBackground).toBe('rgba(0, 0, 0, 0)')
+					expect(scrolled.navBorderWidth).toBe(0)
+					expect(scrolled.wrapperBackground).toBe(scrolled.surfaceColor)
+					expect(scrolled.wrapperBorderWidth).toBe(1)
+					expect(scrolled.wrapperBorderColor).toBe(scrolled.borderColor)
+					expect(scrolled.wrapperWidth).toBe(1200)
+				} else {
+					expect(scrolled.navBackground).toBe(scrolled.surfaceColor)
+					expect(scrolled.navBorderWidth).toBe(1)
+					expect(scrolled.navBorderColor).toBe(scrolled.borderColor)
+					expect(scrolled.wrapperBackground).toBe('rgba(0, 0, 0, 0)')
+					expect(scrolled.wrapperBorderWidth).toBe(0)
+				}
+
+				await page.evaluate(() => window.scrollTo(0, 0))
+				await expect(navigation).toHaveAttribute('data-scrolled', 'false')
+				const returned = await readSurface()
+
+				expect(returned.navHeight).toBe(top.navHeight)
+				expect(returned.wrapperHeight).toBe(top.wrapperHeight)
+				expect(returned.navBackground).toBe(top.navBackground)
+				expect(returned.wrapperBackground).toBe(top.wrapperBackground)
+				expect(returned.navBorderWidth).toBe(0)
+				expect(returned.wrapperBorderWidth).toBe(0)
+			}
+		}
+	})
+
 	test('mobile menu preserves native close behavior across close, Escape, resize and navigation', async ({
 		page,
 	}) => {

@@ -33,6 +33,7 @@ export default function Navigation() {
 	const t = useTranslations('navigation')
 	const pathname = usePathname()
 	const [isOpen, setIsOpen] = useState(false)
+	const [isScrolled, setIsScrolled] = useState(false)
 	const dialogRef = useRef<HTMLDialogElement>(null)
 	const id = useId()
 
@@ -79,6 +80,14 @@ export default function Navigation() {
 	}, [])
 
 	useEffect(() => {
+		const handleScroll = () => setIsScrolled(window.scrollY > 0)
+
+		handleScroll()
+		window.addEventListener('scroll', handleScroll, { passive: true })
+		return () => window.removeEventListener('scroll', handleScroll)
+	}, [])
+
+	useEffect(() => {
 		if (!isOpen) return
 
 		const previousOverflow = document.body.style.overflow
@@ -91,7 +100,7 @@ export default function Navigation() {
 
 	return (
 		<>
-			<nav className={styles.nav}>
+			<nav className={styles.nav} data-scrolled={isScrolled}>
 				<div className={styles.menuWrapper}>
 					<Link
 						href="/"
