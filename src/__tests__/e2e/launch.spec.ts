@@ -87,6 +87,27 @@ test.describe('responsive shell interactions', () => {
 		}
 	})
 
+	test('navigation exposes the current static route across locales, queries and fragments', async ({
+		page,
+	}) => {
+		await page.setViewportSize({ width: 1440, height: 900 })
+
+		for (const route of [
+			{ href: '/?source=navigation#main-content', label: 'Codeguy – Home' },
+			{ href: '/cs/work?source=navigation#main-content', label: 'Projekty' },
+		]) {
+			await page.goto(route.href)
+
+			const navigation = page.getByRole('navigation')
+			await expect(navigation.getByRole('link', { name: route.label })).toHaveAttribute(
+				'aria-current',
+				'page',
+			)
+			await expect(navigation.locator('a[aria-current="page"]')).toHaveCount(1)
+			expect(page.url()).toContain('?source=navigation#main-content')
+		}
+	})
+
 	test('mobile menu closes with Escape, restores focus and releases scroll lock', async ({
 		page,
 	}) => {

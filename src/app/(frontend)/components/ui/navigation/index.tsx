@@ -7,7 +7,7 @@ import { Suspense, useEffect, useId, useRef, useState } from 'react'
 import { ThemeToggle } from '@/app/(frontend)/components/theme/ThemeToggle'
 import LanguageSwitcher from '@/app/(frontend)/components/ui/languageSwitcher'
 import { siteConfig } from '@/content/site'
-import { Link } from '@/i18n/navigation'
+import { Link, usePathname } from '@/i18n/navigation'
 
 import { IconButton } from '../../primitives/iconButton'
 import styles from './Navigation.module.css'
@@ -20,6 +20,10 @@ const navItems = [
 	{ key: 'insights', href: '/insights' },
 ] as const
 
+function isCurrentPath(pathname: string, href: string) {
+	return pathname === href || pathname.startsWith(`${href}/`)
+}
+
 /**
  * Responsive site navigation with a desktop menu and a mobile dialog.
  * Uses the native `<dialog>` element for the mobile menu so Escape closes
@@ -27,6 +31,7 @@ const navItems = [
  */
 export default function Navigation() {
 	const t = useTranslations('navigation')
+	const pathname = usePathname()
 	const [isOpen, setIsOpen] = useState(false)
 	const dialogRef = useRef<HTMLDialogElement>(null)
 	const triggerRef = useRef<HTMLButtonElement>(null)
@@ -73,13 +78,19 @@ export default function Navigation() {
 						href="/"
 						className={styles.logo}
 						aria-label={t('homeLabel', { brand: siteConfig.brand })}
+						aria-current={pathname === '/' ? 'page' : undefined}
 					>
 						<span className={styles.logoText}>{siteConfig.brand}</span>
 					</Link>
 
 					<div className={styles.desktopMenu}>
 						{navItems.map((item) => (
-							<Link key={item.href} href={item.href} className={styles.navLink}>
+							<Link
+								key={item.href}
+								href={item.href}
+								className={styles.navLink}
+								aria-current={isCurrentPath(pathname, item.href) ? 'page' : undefined}
+							>
 								{t(`items.${item.key}`)}
 							</Link>
 						))}
@@ -119,6 +130,7 @@ export default function Navigation() {
 							href={item.href}
 							className={styles.mobileNavLink}
 							onClick={closeMenu}
+							aria-current={isCurrentPath(pathname, item.href) ? 'page' : undefined}
 						>
 							{t(`items.${item.key}`)}
 						</Link>

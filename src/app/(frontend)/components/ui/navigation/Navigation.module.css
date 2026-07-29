@@ -57,7 +57,8 @@
     padding-block: var(--space-8);
 }
 
-.navLink:hover {
+.navLink:hover,
+.navLink[aria-current='page'] {
     color: var(--action-primary);
 }
 
@@ -118,6 +119,7 @@
     font-weight: 500;
 }
 
-.mobileNavLink:hover {
+.mobileNavLink:hover,
+.mobileNavLink[aria-current='page'] {
     color: var(--action-primary);
 }
