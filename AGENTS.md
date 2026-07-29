@@ -19,6 +19,18 @@ When Context7 applies:
 - Public application code lives primarily in `src/app/[locale]/(frontend)`, shared frontend components in `src/app/(frontend)/components` and `src/components`, and translation catalogs in `messages`.
 - Treat `docs/plans/2026-07-28-i18n-implementation-plan.md` as the implementation and validation source of truth for the initial Czech/English rollout.
 
+## External AI Agent Efficiency
+
+- Treat long-context agent sessions as an expensive resource. Target less than 100k context; at 100k, write a compact handoff and start a clean session. Do not continue past 150k unless unreproducible state makes a clean handoff riskier.
+- Separate discovery, mutation and verification when a task uses heavy MCP output. Reuse a factual handoff containing only constraints, measured findings, stable file or node IDs, completed work and remaining acceptance criteria.
+- Use `/compact` after a discovery phase or a burst of large MCP responses. Use `/clear` or a new non-resumed CLI session when switching tasks or when the remaining work can be described from a handoff.
+- Do not resume a large session merely to preserve conversation history. Resume only when the agent holds essential state that cannot be represented safely in the handoff.
+- Enable only the MCP servers and tools needed for the current phase. Once browser evidence has been collected, exclude Playwright from Figma-only work. Once Figma node IDs are known, scope reads and writes to those nodes and avoid repeating file-wide discovery.
+- Invoke heavy generative skills at most once per design phase. For targeted corrections to known Figma nodes, use the narrow `figma-use` workflow rather than rerunning `figma-generate-design`.
+- Keep MCP returns compact: IDs, counts, small property summaries and errors. Capture representative screenshots only; do not retain redundant full-page screenshots or raw traversal output in the same session.
+- For external agents, define an explicit output contract, forbidden operations, stop conditions and verification requirements. The controller must independently verify artifacts and repository state.
+- Record material agent-efficiency incidents and corrective actions in `docs/agent-efficiency-log.md`.
+
 ## Git Flow And Pull Requests
 
 - `dev` is the integration branch. Create feature, fix, and documentation branches from an up-to-date `dev` and return them through a PR targeting `dev`.
@@ -56,6 +68,52 @@ The approved portfolio design is the Figma file:
 - Button component set: `21:110`
 
 Treat this file as the visual source of truth for redesign work. Do not claim that an implementation matches the redesign without comparing it with the relevant Figma nodes.
+
+## Brand Identity Source Of Truth
+
+The Codeguy brand system is governed by these coordinated sources:
+
+- `docs/brand/brand-guidelines.md` defines brand intent, naming, voice, permitted usage, accessibility expectations and application guidance.
+- `docs/brand/brand-decision-log.md` records whether each identity decision is `locked`, `provisional`, `open` or `deprecated` and what is required to change it.
+- Figma page `146:2`, `11 - Brand Identity`, is the visual working reference inside the approved portfolio file. Its six chapter frames are `146:3`, `147:2`, `149:2`, `150:2`, `151:2` and `153:15`.
+- The approved Figma variables, styles and canonical components determine exact design values. Repository semantic CSS tokens determine exact implementation values. If those exact values disagree, treat the mismatch as a defect and reconcile it explicitly rather than choosing silently.
+
+Apply the identity as follows:
+
+- Write `Codeguy` as the prose and product name, `CODEGUY` only as the approved live-text wordmark treatment, and `codeguy.cz` as the domain. Do not reintroduce `CodeGuy` or `CodeGuy.cz`.
+- Keep the primary wordmark as live Inter Semi Bold 600 text at its approved size for the relevant surface. Do not export it as an image or invent a combined lockup.
+- Use canonical brand teal `#0A6E80` for single-value/light contexts and adaptive cyan `#22D3EE` through the approved dark semantic mode. Consume semantic tokens in product code rather than hardcoding either value at call sites.
+- Inter is the product and brand typeface. Reuse the existing responsive text styles, spacing scale, radii and component system.
+- Legacy yellow `#FACC15` / `#FBBF24`, the old yellow CG mark and related favicon/PWA/logo assets are deprecated. Do not use them in new work or present them as current identity.
+- The secondary CG mark remains open. Do not invent, trace, redraw or approve one during ordinary UI work. Interim favicon, PWA and avatar treatments must remain explicitly provisional until BD-20 and BD-21 are resolved.
+- Imagery direction remains provisional. Do not create hard dependencies on it or describe it as final until BD-24 is reviewed against real portfolio, document and social applications.
+- Reuse the existing design system before creating any new color, type style, effect, component or layout primitive. A brand application must not become a parallel component library.
+
+When a change affects naming, voice, color, typography, logo status or brand governance, update the applicable guideline and decision-log entry in the same change. When an approved visual node changes, record the new node/version here as required by the Figma implementation rules.
+
+## Curriculum Vitae Design Source Of Truth
+
+The CV implementation plan is `docs/plans/2026-07-30-cv-page-implementation-plan.md`. Keep the direct public route `/curriculum-vitae` and its localized Czech route `/cs/curriculum-vitae`.
+
+Use these approved Figma nodes for CV work:
+
+- Desktop light: `124:369`
+- Tablet light: `132:399`
+- Mobile light: `131:593`
+- Desktop dark: `136:190`
+- Mobile dark: `136:283`
+- Download Action component set: `122:181` (10 variants with approved prototype reactions)
+
+For CV implementation:
+
+- Compare the route against every relevant light/dark and responsive node above; passing one frame does not establish CV parity.
+- Preserve the recognizable expanding download interaction, but implement it from `122:181` with semantic tokens, a 4 px system radius, accessible focus/keyboard behavior and a continuously understandable label on touch devices. Do not reuse the legacy pill styling in `ExpandingButton.module.css` as the visual contract.
+- Use the existing Button system `21:110` and semantic control tokens where the Download Action shares properties with ordinary buttons. Keep CV-specific expansion behavior in a narrow component rather than altering unrelated buttons.
+- Treat `docs/Karel_Kutchan_CV.pdf` and `docs/Karel_Kutchan_CV_Frontend_React_Engineer_2026.pdf` as the current factual PDF inputs. The existing public `public/curriculum-vitae/CV_Karel_Kutchan.pdf` is legacy content until replaced through the implementation plan.
+- Static HTML CV copy belongs in the `curriculumVitae` namespace in both translation catalogs, while locale-neutral periods, company identifiers, URLs and other structured facts should live in a shared content model. Do not move CV content into Payload as part of this work.
+- A download label must state the actual PDF language or profile variant. Do not label a file as Czech unless the linked asset is genuinely Czech.
+- Do not expose private or unnecessary personal data merely because it appears in an older PDF. Resolve the public email identity centrally and keep contact facts consistent with the rest of the portfolio.
+- Validate English and Czech at 1440, 768 and 390 px in light and dark mode, including text wrapping, download behavior, focus, hover, reduced motion, real PDF responses, metadata and locale switching.
 
 ## Available Ways To Work With Figma
 
