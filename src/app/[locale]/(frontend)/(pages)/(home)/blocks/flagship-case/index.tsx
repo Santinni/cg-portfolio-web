@@ -1,8 +1,7 @@
 import { ArrowRight } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
-
-import { Button } from '@/app/(frontend)/components/primitives/button'
 import { Container } from '@/app/(frontend)/components/layout/Container'
+import { Button } from '@/app/(frontend)/components/primitives/button'
 import { Eyebrow } from '@/components/site/Eyebrow'
 import { Section } from '@/components/site/Section'
 import { flagshipWork } from '@/content/work'
@@ -14,7 +13,7 @@ export default async function FlagshipCase() {
 	const t = await getTranslations('home.flagship')
 
 	return (
-		<Section id="flagship-case" aria-labelledby="flagship-case-heading" tone="raised">
+		<Section id="flagship-case" aria-labelledby="flagship-case-heading" tone="subtle">
 			<Container className={styles.inner}>
 				<div className={styles.content}>
 					<Eyebrow>{t('eyebrow')}</Eyebrow>

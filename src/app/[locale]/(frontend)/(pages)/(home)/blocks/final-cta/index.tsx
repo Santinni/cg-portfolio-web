@@ -1,6 +1,6 @@
-import { Button } from '@/app/(frontend)/components/primitives/button'
 import { getTranslations } from 'next-intl/server'
 import { Container } from '@/app/(frontend)/components/layout/Container'
+import { Button } from '@/app/(frontend)/components/primitives/button'
 import { Section } from '@/components/site/Section'
 import { homeLinks } from '@/content/profile'
 
@@ -11,7 +11,7 @@ export default async function FinalCta() {
 	const t = await getTranslations('home.finalCta')
 
 	return (
-		<Section id="contact-cta" aria-labelledby="final-cta-heading" tone="raised">
+		<Section id="contact-cta" aria-labelledby="final-cta-heading" tone="page" desktopTone="subtle">
 			<Container className={styles.inner}>
 				<h2 id="final-cta-heading" className={styles.heading}>
 					{t('heading')}
