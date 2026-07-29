@@ -27,7 +27,7 @@ export function WorkCard({ item, compactSummary, density = 'standard' }: WorkCar
 
 	return (
 		<article className={cardClassName} data-work-key={item.key}>
-			<div className={styles.content}>
+			<div className={styles.content} data-work-card-content>
 				<p className={styles.eyebrow}>{t(`cards.${item.key}.eyebrow`)}</p>
 				<h3 className={styles.title}>{t(`cards.${item.key}.title`)}</h3>
 				<p className={styles.summary}>
@@ -43,12 +43,14 @@ export function WorkCard({ item, compactSummary, density = 'standard' }: WorkCar
 				{item.stack.length > 0 && <p className={styles.stack}>{item.stack.join(' · ')}</p>}
 			</div>
 			{isAvailable ? (
-				<Link href={item.href as string} className={styles.link}>
+				<Link href={item.href as string} className={styles.link} data-work-card-action>
 					{t('actions.readCase')}
 					<ArrowRight className={styles.linkIcon} aria-hidden="true" />
 				</Link>
 			) : (
-				<span className={styles.pending}>{t('actions.pending')}</span>
+				<span className={styles.pending} data-work-card-pending>
+					{t('actions.pending')}
+				</span>
 			)}
 		</article>
 	)
