@@ -87,21 +87,199 @@ test.describe('responsive shell interactions', () => {
 		}
 	})
 
-	test('mobile menu closes with Escape, restores focus and releases scroll lock', async ({
+	test('navigation exposes the current static route across locales, queries and fragments', async ({
+		page,
+	}) => {
+		await page.setViewportSize({ width: 1440, height: 900 })
+
+		for (const route of [
+			{ href: '/?source=navigation#main-content', label: 'Codeguy – Home' },
+			{ href: '/cs/work?source=navigation#main-content', label: 'Projekty' },
+		]) {
+			await page.goto(route.href)
+
+			const navigation = page.getByRole('navigation')
+			await expect(navigation.getByRole('link', { name: route.label })).toHaveAttribute(
+				'aria-current',
+				'page',
+			)
+			await expect(navigation.locator('a[aria-current="page"]')).toHaveCount(1)
+			expect(page.url()).toContain('?source=navigation#main-content')
+		}
+	})
+
+	test('navigation surface transitions without changing responsive geometry', async ({ page }) => {
+		for (const theme of ['light', 'dark'] as const) {
+			for (const viewport of [
+				{ width: 390, height: 844 },
+				{ width: 768, height: 900 },
+				{ width: 1440, height: 900 },
+			]) {
+				await page.setViewportSize(viewport)
+				await page.goto('/')
+				await page.evaluate((selectedTheme) => {
+					document.documentElement.dataset.theme = selectedTheme
+					document.documentElement.style.scrollBehavior = 'auto'
+					window.scrollTo(0, 0)
+				}, theme)
+
+				const navigation = page.getByRole('navigation')
+				const readSurface = () =>
+					navigation.evaluate((element) => {
+						const wrapper = element.firstElementChild as HTMLElement
+						const navStyle = getComputedStyle(element)
+						const wrapperStyle = getComputedStyle(wrapper)
+						const resolveTokenColor = (token: string) => {
+							const probe = document.createElement('div')
+							probe.style.backgroundColor = `var(${token})`
+							document.body.append(probe)
+							const color = getComputedStyle(probe).backgroundColor
+							probe.remove()
+							return color
+						}
+
+						return {
+							borderColor: resolveTokenColor('--border-default'),
+							navBackdrop: navStyle.backdropFilter,
+							navBackground: navStyle.backgroundColor,
+							navBorderColor: navStyle.borderBottomColor,
+							navBorderWidth: Number.parseFloat(navStyle.borderBottomWidth),
+							navBoxShadow: navStyle.boxShadow,
+							navHeight: element.getBoundingClientRect().height,
+							scrolled: element.getAttribute('data-scrolled'),
+							surfaceColor: resolveTokenColor('--surface-page'),
+							wrapperBackground: wrapperStyle.backgroundColor,
+							wrapperBorderColor: wrapperStyle.borderBottomColor,
+							wrapperBorderWidth: Number.parseFloat(wrapperStyle.borderBottomWidth),
+							wrapperHeight: wrapper.getBoundingClientRect().height,
+							wrapperWidth: wrapper.getBoundingClientRect().width,
+						}
+					})
+
+				await expect(navigation).toHaveAttribute('data-scrolled', 'false')
+				const top = await readSurface()
+				const expectedHeight = viewport.width >= 1024 ? 72 : 64
+
+				expect(top.navHeight).toBe(expectedHeight)
+				expect(top.wrapperHeight).toBe(expectedHeight)
+				expect(top.navBackground).toBe('rgba(0, 0, 0, 0)')
+				expect(top.wrapperBackground).toBe('rgba(0, 0, 0, 0)')
+				expect(top.navBorderWidth).toBe(0)
+				expect(top.wrapperBorderWidth).toBe(0)
+				expect(top.navBackdrop).toBe('none')
+				expect(top.navBoxShadow).toBe('none')
+
+				await page.evaluate(() => window.scrollTo(0, 320))
+				await expect(navigation).toHaveAttribute('data-scrolled', 'true')
+				const scrolled = await readSurface()
+
+				expect(scrolled.navHeight).toBe(top.navHeight)
+				expect(scrolled.wrapperHeight).toBe(top.wrapperHeight)
+				if (viewport.width >= 1024) {
+					expect(scrolled.navBackground).toBe('rgba(0, 0, 0, 0)')
+					expect(scrolled.navBorderWidth).toBe(0)
+					expect(scrolled.wrapperBackground).toBe(scrolled.surfaceColor)
+					expect(scrolled.wrapperBorderWidth).toBe(1)
+					expect(scrolled.wrapperBorderColor).toBe(scrolled.borderColor)
+					expect(scrolled.wrapperWidth).toBe(1200)
+				} else {
+					expect(scrolled.navBackground).toBe(scrolled.surfaceColor)
+					expect(scrolled.navBorderWidth).toBe(1)
+					expect(scrolled.navBorderColor).toBe(scrolled.borderColor)
+					expect(scrolled.wrapperBackground).toBe('rgba(0, 0, 0, 0)')
+					expect(scrolled.wrapperBorderWidth).toBe(0)
+				}
+
+				await page.evaluate(() => window.scrollTo(0, 0))
+				await expect(navigation).toHaveAttribute('data-scrolled', 'false')
+				const returned = await readSurface()
+
+				expect(returned.navHeight).toBe(top.navHeight)
+				expect(returned.wrapperHeight).toBe(top.wrapperHeight)
+				expect(returned.navBackground).toBe(top.navBackground)
+				expect(returned.wrapperBackground).toBe(top.wrapperBackground)
+				expect(returned.navBorderWidth).toBe(0)
+				expect(returned.wrapperBorderWidth).toBe(0)
+			}
+		}
+	})
+
+	test('mobile menu preserves native close behavior across close, Escape, resize and navigation', async ({
 		page,
 	}) => {
 		await page.setViewportSize({ width: 390, height: 844 })
 		await page.goto('/')
 
 		const trigger = page.getByRole('button', { name: 'Open menu' })
+		const dialog = page.getByRole('dialog', { name: 'Site menu' })
+		const nativeDialog = page.locator('dialog[aria-label="Site menu"]')
+		const nativeTrigger = page.locator('button[aria-label="Open menu"]')
+
 		await trigger.click()
-		await expect(page.getByRole('dialog', { name: 'Site menu' })).toBeVisible()
+		await expect(dialog).toBeVisible()
+		await expect(page.getByRole('button', { name: 'Close menu' })).toBeFocused()
+		await expect(dialog.getByRole('link', { name: 'Codeguy – Home' })).toBeVisible()
+		await expect(dialog.getByRole('navigation', { name: 'Site menu' })).toBeVisible()
+		await expect(dialog.getByRole('button', { name: 'Toggle color theme' })).toBeVisible()
+		await expect(dialog.getByRole('group', { name: 'Choose language' })).toBeVisible()
+		await expect(dialog.locator('[data-mobile-menu-footer]')).toContainText(
+			'Senior / Lead Frontend Engineer',
+		)
 		expect(await page.locator('body').evaluate((body) => body.style.overflow)).toBe('hidden')
 
-		await page.keyboard.press('Escape')
-		await expect(page.getByRole('dialog', { name: 'Site menu' })).not.toBeVisible()
+		await page.getByRole('button', { name: 'Close menu' }).click()
+		await expect(dialog).not.toBeVisible()
 		await expect(trigger).toBeFocused()
 		expect(await page.locator('body').evaluate((body) => body.style.overflow)).toBe('')
+
+		await trigger.click()
+		await page.keyboard.press('Escape')
+		await expect(dialog).not.toBeVisible()
+		await expect(trigger).toBeFocused()
+		expect(await page.locator('body').evaluate((body) => body.style.overflow)).toBe('')
+
+		await page.setViewportSize({ width: 768, height: 900 })
+		await trigger.click()
+		await page.setViewportSize({ width: 1024, height: 900 })
+		await expect
+			.poll(() => nativeDialog.evaluate((element: HTMLDialogElement) => element.open))
+			.toBe(false)
+		await expect(nativeTrigger).not.toBeFocused()
+		expect(await page.locator('body').evaluate((body) => body.style.overflow)).toBe('')
+
+		await page.setViewportSize({ width: 390, height: 844 })
+		await trigger.click()
+		await dialog.getByRole('link', { name: 'Work', exact: true }).click()
+		await page.waitForURL('**/work')
+		await expect
+			.poll(() => nativeDialog.evaluate((element: HTMLDialogElement) => element.open))
+			.toBe(false)
+		expect(await page.locator('body').evaluate((body) => body.style.overflow)).toBe('')
+		await expect
+			.poll(() => nativeDialog.evaluate((element) => !element.contains(document.activeElement)))
+			.toBe(true)
+	})
+
+	test('mobile menu keeps theme and language utilities functional inside the dialog', async ({
+		page,
+	}) => {
+		await page.setViewportSize({ width: 390, height: 844 })
+		await page.goto('/work?source=mobile-menu#case-studies')
+
+		const dialog = page.getByRole('dialog', { name: 'Site menu' })
+		await page.getByRole('button', { name: 'Open menu' }).click()
+
+		const initialTheme = await page.locator('html').getAttribute('data-theme')
+		await dialog.getByRole('button', { name: 'Toggle color theme' }).click()
+		const selectedTheme = await page.locator('html').getAttribute('data-theme')
+
+		expect(selectedTheme).not.toBe(initialTheme)
+		await expect(dialog).toBeVisible()
+
+		await dialog.getByRole('button', { name: 'Switch to Czech' }).click()
+		await expect(page).toHaveURL(/\/cs\/work\?source=mobile-menu#case-studies$/)
+		await expect(page.locator('html')).toHaveAttribute('lang', 'cs')
+		await expect(page.locator('html')).toHaveAttribute('data-theme', selectedTheme || 'dark')
 	})
 
 	test('theme choice changes and persists across reloads', async ({ page }) => {

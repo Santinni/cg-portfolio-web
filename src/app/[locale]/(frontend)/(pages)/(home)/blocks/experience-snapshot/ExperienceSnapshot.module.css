@@ -11,6 +11,14 @@
   flex-direction: column;
   gap: var(--space-16);
   max-width: 720px;
+
+  @media (min-width: 1024px) {
+    max-width: none;
+  }
+}
+
+.eyebrow {
+  max-width: 600px;
 }
 
 .title {
@@ -20,6 +28,7 @@
   color: var(--text-primary);
   margin: 0;
   text-wrap: balance;
+  max-width: 850px;
 }
 
 .description {
@@ -27,6 +36,11 @@
   line-height: var(--line-height-body);
   color: var(--text-secondary);
   margin: 0;
+  max-width: 760px;
+}
+
+.cta {
+  align-self: flex-start;
 }
 
 .highlights {

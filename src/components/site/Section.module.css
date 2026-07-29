@@ -1,18 +1,47 @@
 .section {
   padding-block: var(--section-block);
+  background: var(--section-background);
+  color: var(--section-color);
 }
 
 .tone-page {
-  background: var(--surface-page);
-  color: var(--text-primary);
+  --section-background: var(--surface-page);
+  --section-color: var(--text-primary);
 }
 
 .tone-raised {
-  background: var(--surface-raised);
-  color: var(--text-primary);
+  --section-background: var(--surface-raised);
+  --section-color: var(--text-primary);
+}
+
+.tone-subtle {
+  --section-background: var(--surface-subtle);
+  --section-color: var(--text-primary);
 }
 
 .tone-contrast {
-  background: var(--surface-contrast);
-  color: var(--text-on-contrast);
+  --section-background: var(--surface-contrast);
+  --section-color: var(--text-on-contrast);
+}
+
+@media (min-width: 1024px) {
+  .desktop-tone-page {
+    --section-background: var(--surface-page);
+    --section-color: var(--text-primary);
+  }
+
+  .desktop-tone-raised {
+    --section-background: var(--surface-raised);
+    --section-color: var(--text-primary);
+  }
+
+  .desktop-tone-subtle {
+    --section-background: var(--surface-subtle);
+    --section-color: var(--text-primary);
+  }
+
+  .desktop-tone-contrast {
+    --section-background: var(--surface-contrast);
+    --section-color: var(--text-on-contrast);
+  }
 }

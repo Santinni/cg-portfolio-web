@@ -58,6 +58,10 @@
   margin: 0;
 }
 
+.cta {
+  align-self: flex-start;
+}
+
 .ctaIcon {
   width: var(--icon-16);
   height: var(--icon-16);

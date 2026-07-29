@@ -40,17 +40,23 @@
 
 .link {
   display: inline-flex;
+  align-self: flex-start;
   align-items: center;
-  gap: var(--space-8);
+  gap: var(--space-4);
   margin-top: auto;
-  padding-top: var(--space-8);
+  min-block-size: var(--touch-target-min);
+  padding-inline: var(--space-8);
+  border-radius: var(--radius-4);
   color: var(--action-primary);
-  font-weight: 600;
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-body);
   text-decoration: none;
 }
 
 .link:hover {
-  color: var(--action-primary-hover);
+  color: var(--action-primary);
+  text-decoration: underline;
 }
 
 .linkIcon {
