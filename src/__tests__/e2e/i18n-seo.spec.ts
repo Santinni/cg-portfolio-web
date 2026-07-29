@@ -13,7 +13,10 @@ interface SeoExpectation {
 async function expectLocalizedSeo(page: Page, expectation: SeoExpectation) {
 	const configuredOrigin = new URL(process.env.NEXT_PUBLIC_SERVER_URL ?? 'https://codeguy.cz')
 		.origin
-	const absoluteUrl = (path: string) => new URL(path, `${configuredOrigin}/`).href
+	const absoluteUrl = (path: string) => {
+		const url = new URL(path, `${configuredOrigin}/`)
+		return path === '/' ? url.origin : url.href
+	}
 	const canonical = await page.locator('link[rel="canonical"]').getAttribute('href')
 	const englishAlternate = await page
 		.locator('link[rel="alternate"][hreflang="en"]')
