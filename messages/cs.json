@@ -54,6 +54,7 @@
 			"titleDesktop": "Zákaznický portál postavený jako systém, ne jako sbírka obrazovek.",
 			"titleCompact": "Zákaznický portál postavený jako systém.",
 			"summary": "Vedení frontend vývoje zákaznického produktu pro energetiku: architektura, komponentové základy, kvalita dodávky a přístupnost v rostoucí aplikaci.",
+			"summaryCompact": "Vedení frontendového vývoje produktu pro zákazníky a komponentových základů, na kterých stojí.",
 			"cta": "Přečíst studii",
 			"systemMap": {
 				"productUi": {
@@ -61,7 +62,7 @@
 					"description": "Zákaznické scénáře"
 				},
 				"sharedComponents": {
-					"label": "SDÍLENÉ KOMPONENTY",
+					"label": "Sdílené komponenty",
 					"description": "Přístupné základy · Testy · Dodávka"
 				}
 			}

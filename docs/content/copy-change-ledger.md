@@ -598,3 +598,168 @@ Architektura, přístupnost a udržovatelnost jsou součástí dodávky.
 - Related entries: `COPY-20260729-001`
 - Notes: append a new entry rather than rewriting this record if any factual
   claim or breakpoint-specific presentation changes.
+
+## COPY-20260729-003 — Add compact Flagship summary and restore system-map presentation
+
+- Status: implemented
+- Change type: responsive-variant and presentation-format
+- Surface: visitor-visible
+- Proposed date: 2026-07-29
+- Implemented date: 2026-07-29
+- Owner: Karel Kutchan
+- Author: Codeguy portfolio implementation team
+- Reviewer: Codex controller and independent Flagship parity review
+- Pull request: Pending
+- Commit: Planned as `fix(home): rebuild Flagship case composition`
+- Routes and locales: `/` and `/cs`; compact summary below 1024 CSS pixels;
+  desktop system-map presentation from 1024 CSS pixels
+- Source boundary: Figma-reference, next-intl, owner-approved-brief
+- Message keys or public CMS fields: `home.flagship.summaryCompact`,
+  `home.flagship.systemMap.sharedComponents.label`
+- Rendering location:
+  `src/app/[locale]/(frontend)/(pages)/(home)/blocks/flagship-case/index.tsx`
+- Figma file and nodes: `cs38WzlXKY9xfDYBinoKel`; desktop `6:21`, tablet
+  `7:391`, mobile `8:101`, 320 px `8:154`, 430 px `8:207`, dark desktop
+  `8:265`
+- Original source: existing approved desktop catalog summary remains the
+  factual source; the compact English summary and system-map presentation are
+  supplied by the approved Figma nodes; Czech is a natural professional
+  localization authored by the implementation team
+- Original purpose: summarize frontend leadership across architecture,
+  components, delivery quality and accessibility, then show the relationship
+  between product UI, shared components and engineering foundations
+- Audience and user intent: prospective employers, collaborators and clients
+  scanning the flagship case on Home before deciding whether to open the full
+  case study
+
+### Original (verbatim)
+
+The desktop summaries remain active and unchanged.
+
+#### English
+
+```text
+Frontend leadership for a customer-facing energy product: architecture, component foundations, delivery quality and accessibility across a growing application.
+```
+
+#### Czech
+
+```text
+Vedení frontend vývoje zákaznického produktu pro energetiku: architektura, komponentové základy, kvalita dodávky a přístupnost v rostoucí aplikaci.
+```
+
+The existing system-map shared-component labels used uppercase presentation in
+the catalog:
+
+```text
+SHARED COMPONENTS
+SDÍLENÉ KOMPONENTY
+```
+
+### Replacement (verbatim)
+
+The original summary strings remain the desktop presentation. The following
+responsive variants are added for compact layouts.
+
+#### English
+
+```text
+Frontend leadership for a customer-facing product and the component foundations beneath it.
+```
+
+#### Czech
+
+```text
+Vedení frontendového vývoje produktu pro zákazníky a komponentových základů, na kterých stojí.
+```
+
+The system-map label keeps the same fact but moves casing into its intended
+sentence-style visual presentation and adds decorative bidirectional arrows in
+the component:
+
+```text
+Shared components
+Sdílené komponenty
+```
+
+### Rationale
+
+- Problem being solved: the desktop paragraph, technology stack and two neutral
+  cards remained visible or structurally dominant at compact widths and did not
+  match the approved Flagship frames. The previous `aria-hidden` map also hid
+  unique relationship details from assistive technology.
+- Why this wording was selected: the English compact sentence is exact Figma
+  copy. The Czech sentence preserves frontend leadership, the customer-facing
+  product context and the component-foundation relationship without adding a
+  client, metric, technology or delivery claim.
+- Alternatives rejected: truncation would hide meaning; client-side viewport
+  branching would make server rendering fragile; replacing the desktop summary
+  would remove approved detail; leaving the map `aria-hidden` would keep unique
+  content unavailable to screen-reader users.
+- Meaning intentionally preserved: frontend leadership, a customer-facing
+  product and component foundations underneath it. Desktop continues to carry
+  the energy, architecture, delivery-quality, accessibility and growing-product
+  details.
+- Meaning intentionally changed: compact presentation omits the energy domain
+  and the detailed responsibility list solely to match the shorter approved
+  responsive design. System-map label casing changes presentation, not meaning.
+
+### Fact And Claim Controls
+
+- Claims affected: frontend leadership, customer-facing product work,
+  component foundations and the detailed desktop responsibility areas.
+- Evidence source and checked date: approved Figma nodes and existing
+  owner-approved Home copy, checked 2026-07-29.
+- Time-sensitive review: the leadership-positioning claim must be reconfirmed if
+  the owner's role changes.
+- NDA or client review: not applicable; no employer, client, product name,
+  metric or confidential implementation is introduced.
+- Owner approval: Karel Kutchan explicitly authorized implementation of the
+  redesign parity plan on 2026-07-29; separate approval of the Czech phrasing is
+  not recorded.
+
+### Impact Review
+
+- Internationalization: matching non-empty `summaryCompact` keys are added to
+  both catalogs; locale-neutral stack facts and route identifiers stay outside
+  the catalogs.
+- Accessibility: CSS exposes one complete summary at a time. The visible
+  desktop system map becomes semantic list content; decorative arrows are
+  hidden from assistive technology.
+- Responsive layout: desktop summary remains active with stack and map; compact
+  layouts use the shorter summary and hide stack and map.
+- SEO and metadata: both semantically equivalent responsive summaries are in
+  server-rendered HTML, with one hidden by CSS; no metadata, canonical,
+  hreflang, Open Graph, robots, structured-data or sitemap change.
+- CMS or data boundary: static portfolio presentation copy remains in next-intl;
+  no Payload field, schema or migration changes.
+- Privacy and confidentiality: only existing public professional positioning is
+  restated.
+
+### Verification
+
+- Automated tests: the focused Flagship Chromium contract passed 11/11; nearby
+  Home CTA and section-tone regressions passed 19/19; catalog parity/non-empty
+  validation passed 3/3; TypeScript and targeted Biome checks passed.
+- Routes and locales: verified English `/` and Czech `/cs`, including correct
+  document language, locale-specific compact copy and localized case-study
+  destinations.
+- Themes, viewports and interaction states: verified the exact desktop geometry,
+  typography, semantic map and light/dark tokens at 1440 CSS pixels; verified
+  compact type, copy, visibility, focus, containment and visible-descendant
+  overflow at 768, 430, 390 and 320 CSS pixels in both locales.
+- Manual content review: exact English Figma compact copy preserved; Czech was
+  reviewed for semantic fidelity and professional phrasing by the
+  implementation team.
+- Result: implementation is green on the focused browser, catalog, type,
+  formatting and nearby CTA/tone regression checks described above.
+- Residual risk: Czech has no canonical Figma text frame and therefore targets
+  semantic fidelity and containment rather than exact English line count.
+
+### Lifecycle
+
+- Supersedes: none; desktop strings remain active at wide viewports.
+- Reverted by: none
+- Related entries: `COPY-20260729-002`
+- Notes: append a new entry rather than rewriting this record if any factual
+  claim, compact wording or breakpoint-specific presentation changes.

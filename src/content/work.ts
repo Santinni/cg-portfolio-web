@@ -32,7 +32,6 @@ export const flagshipWork = {
 	slug: 'energy-customer-portal',
 	stack: ['React', 'TypeScript', 'Next.js', 'Storybook', 'Playwright'],
 	href: '/work/energy-customer-portal',
-	systemNodeKeys: ['productUi', 'sharedComponents'],
 } as const
 
 /** Selected work cards shown beneath the flagship case. */

@@ -54,6 +54,7 @@
 			"titleDesktop": "A customer portal built as a system, not a collection of screens.",
 			"titleCompact": "A customer portal built as a system.",
 			"summary": "Frontend leadership for a customer-facing energy product: architecture, component foundations, delivery quality and accessibility across a growing application.",
+			"summaryCompact": "Frontend leadership for a customer-facing product and the component foundations beneath it.",
 			"cta": "Read the case",
 			"systemMap": {
 				"productUi": {
@@ -61,7 +62,7 @@
 					"description": "Customer journeys"
 				},
 				"sharedComponents": {
-					"label": "SHARED COMPONENTS",
+					"label": "Shared components",
 					"description": "Accessible foundations · Tests · Delivery"
 				}
 			}
