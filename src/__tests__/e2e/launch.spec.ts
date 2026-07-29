@@ -218,6 +218,13 @@ test.describe('responsive shell interactions', () => {
 		await trigger.click()
 		await expect(dialog).toBeVisible()
 		await expect(page.getByRole('button', { name: 'Close menu' })).toBeFocused()
+		await expect(dialog.getByRole('link', { name: 'Codeguy – Home' })).toBeVisible()
+		await expect(dialog.getByRole('navigation', { name: 'Site menu' })).toBeVisible()
+		await expect(dialog.getByRole('button', { name: 'Toggle color theme' })).toBeVisible()
+		await expect(dialog.getByRole('group', { name: 'Choose language' })).toBeVisible()
+		await expect(dialog.locator('[data-mobile-menu-footer]')).toContainText(
+			'Senior / Lead Frontend Engineer',
+		)
 		expect(await page.locator('body').evaluate((body) => body.style.overflow)).toBe('hidden')
 
 		await page.getByRole('button', { name: 'Close menu' }).click()
@@ -231,8 +238,9 @@ test.describe('responsive shell interactions', () => {
 		await expect(trigger).toBeFocused()
 		expect(await page.locator('body').evaluate((body) => body.style.overflow)).toBe('')
 
+		await page.setViewportSize({ width: 768, height: 900 })
 		await trigger.click()
-		await page.setViewportSize({ width: 1440, height: 900 })
+		await page.setViewportSize({ width: 1024, height: 900 })
 		await expect
 			.poll(() => nativeDialog.evaluate((element: HTMLDialogElement) => element.open))
 			.toBe(false)
@@ -250,6 +258,28 @@ test.describe('responsive shell interactions', () => {
 		await expect
 			.poll(() => nativeDialog.evaluate((element) => !element.contains(document.activeElement)))
 			.toBe(true)
+	})
+
+	test('mobile menu keeps theme and language utilities functional inside the dialog', async ({
+		page,
+	}) => {
+		await page.setViewportSize({ width: 390, height: 844 })
+		await page.goto('/work?source=mobile-menu#case-studies')
+
+		const dialog = page.getByRole('dialog', { name: 'Site menu' })
+		await page.getByRole('button', { name: 'Open menu' }).click()
+
+		const initialTheme = await page.locator('html').getAttribute('data-theme')
+		await dialog.getByRole('button', { name: 'Toggle color theme' }).click()
+		const selectedTheme = await page.locator('html').getAttribute('data-theme')
+
+		expect(selectedTheme).not.toBe(initialTheme)
+		await expect(dialog).toBeVisible()
+
+		await dialog.getByRole('button', { name: 'Switch to Czech' }).click()
+		await expect(page).toHaveURL(/\/cs\/work\?source=mobile-menu#case-studies$/)
+		await expect(page.locator('html')).toHaveAttribute('lang', 'cs')
+		await expect(page.locator('html')).toHaveAttribute('data-theme', selectedTheme || 'dark')
 	})
 
 	test('theme choice changes and persists across reloads', async ({ page }) => {

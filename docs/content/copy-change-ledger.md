@@ -309,3 +309,143 @@ with a short reason when a field genuinely does not apply.
 - For a public CMS claim edit, quote only the changed public fragment and
   reference its public slug, field, and revision timestamp. Keep private draft
   history in Payload.
+
+## COPY-20260729-001 — Add professional context to the mobile menu
+
+- Status: implemented
+- Change type: add
+- Surface: visitor-visible
+- Proposed date: 2026-07-29
+- Implemented date: 2026-07-29
+- Owner: Karel Kutchan
+- Author: Codeguy portfolio implementation team
+- Reviewer: Codex controller plus independent read-only agent review
+- Pull request: Pending
+- Commit: Same commit as this entry:
+  `feat(navigation): compose localized mobile menu`
+- Routes and locales: all public routes; English and Czech; compact navigation
+  below 1024 CSS pixels
+- Source boundary: Figma-reference, next-intl, owner-approved-brief
+- Message keys or public CMS fields:
+  `navigation.mobileMenu.profile.role`,
+  `navigation.mobileMenu.profile.specialties`
+- Rendering location:
+  `src/app/(frontend)/components/ui/navigation/index.tsx`, mobile dialog footer
+- Figma file and node:
+  `cs38WzlXKY9xfDYBinoKel`, `27:49` (`Prototype / Menu / 390×844`)
+- Original source: approved Figma redesign for the exact English copy plus the
+  owner's explicit 2026-07-29 instruction to implement the redesign; the Czech
+  localization was authored by the implementation team
+- Original purpose: no previous footer copy existed; the new text gives visitors
+  concise professional and technical context while the primary navigation is open
+- Audience and user intent: prospective employers, collaborators, and clients
+  scanning the mobile navigation before choosing a destination
+
+### Original (verbatim)
+
+#### English
+
+```text
+<none>
+```
+
+#### Czech
+
+```text
+<none>
+```
+
+### Replacement (verbatim)
+
+#### English
+
+```text
+Senior / Lead Frontend Engineer
+Prague · React · TypeScript · Accessibility
+```
+
+#### Czech
+
+```text
+Seniorní frontend vývojář / vedoucí frontendu
+Praha · React · TypeScript · Přístupnost
+```
+
+### Rationale
+
+- Problem being solved: the previously implemented mobile dialog lacked the
+  approved professional-context footer from Figma node `27:49`.
+- Why this wording was selected: English preserves the approved Figma copy
+  exactly; Czech communicates the same role, location, technologies, and
+  accessibility focus in concise professional Czech.
+- Alternatives rejected: leaving English copy in Czech UI would violate the
+  localization contract; a literal mixed-language Czech job title would be less
+  natural; omitting the footer would leave a confirmed redesign mismatch.
+- Meaning intentionally preserved: seniority, frontend leadership, Prague,
+  React, TypeScript, and accessibility.
+- Meaning intentionally changed: none; the Czech wording is a localization of
+  the English professional positioning.
+
+### Fact And Claim Controls
+
+- Claims affected: current senior/lead frontend positioning, Prague location,
+  React and TypeScript experience, and accessibility focus.
+- Evidence source and checked date: owner-approved Figma redesign and existing
+  public lead-positioning copy in the portfolio, checked 2026-07-29.
+- Time-sensitive review: the Lead claim must be reconfirmed if reused after the
+  owner's current professional position changes.
+- NDA or client review: not applicable; no client, employer, product, outcome, or
+  confidential work is named.
+- Owner approval: Karel Kutchan's explicit 2026-07-29 instruction authorizes the
+  redesign implementation and the underlying public senior/lead positioning.
+  The exact Czech localization was not supplied or separately language-approved
+  by the owner.
+
+### Impact Review
+
+- Internationalization: matching semantic keys and non-empty values are added to
+  both catalogs; locale-neutral technology names remain unchanged.
+- Accessibility: the profile is informational text, not an interactive label;
+  its role and specialties are separate paragraphs, and English and Czech are
+  rendered under the correct document language.
+- Responsive layout: English is measured against the approved 390×844 node;
+  Czech wrapping is verified at 390; 768 behavior uses the repository's 48px
+  inferred compact gutter and is not claimed as exact Figma parity.
+- SEO and metadata: no title, description, canonical, hreflang, Open Graph,
+  structured-data, robots, or sitemap change.
+- CMS or data boundary: static navigation copy remains in next-intl catalogs; no
+  Payload field or schema change.
+- Privacy and confidentiality: the text contains only already public
+  professional positioning.
+
+### Verification
+
+- Automated tests: 20/20 targeted component and catalog tests passed; targeted
+  Chromium checks passed 4/4 for composition, geometry, short-height scrolling,
+  and states plus 2/2 for dialog lifecycle and utility behavior; TypeScript and
+  the repository lint command passed. The repository-wide format check still
+  reports unrelated baseline deviations; all files in this packet that are
+  covered by Biome pass its targeted format check.
+- Routes and locales: verified English `/`, Czech `/cs`, English `/work`, and
+  locale switching from `/work?source=mobile-menu#case-studies` to the equivalent
+  Czech route while preserving the query and fragment.
+- Themes, viewports, and interaction states: verified light 390×844 geometry,
+  Czech wrapping and scroll reachability at 390×568, inferred Czech 768×900
+  composition, dark and forced-colors presentation, explicit close, Escape,
+  route close, 768→1024 breakpoint close, focus return, theme persistence, and
+  language switching.
+- Manual content review: exact English Figma copy confirmed; the Czech value was
+  authored and semantically reviewed by the implementation team, but separate
+  owner language approval is not recorded.
+- Result: implemented and green on the targeted component, catalog, Chromium,
+  type, lint, and packet-format validation described above.
+- Residual risk: the role claim is time-sensitive; utility controls retained in
+  the dialog are an intentional product deviation from Figma node `27:49`.
+
+### Lifecycle
+
+- Supersedes: none
+- Reverted by: none
+- Related entries: none
+- Notes: append a new entry rather than rewriting this record if the role,
+  location, technology focus, or accessibility positioning changes.

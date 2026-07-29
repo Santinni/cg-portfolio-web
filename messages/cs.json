@@ -4,6 +4,12 @@
 		"openMenu": "Otevřít nabídku",
 		"closeMenu": "Zavřít nabídku",
 		"siteMenu": "Hlavní nabídka",
+		"mobileMenu": {
+			"profile": {
+				"role": "Seniorní frontend vývojář / vedoucí frontendu",
+				"specialties": "Praha · React · TypeScript · Přístupnost"
+			}
+		},
 		"items": {
 			"work": "Projekty",
 			"experience": "Zkušenosti",

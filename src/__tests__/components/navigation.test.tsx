@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { NextIntlClientProvider } from 'next-intl'
 import type { AnchorHTMLAttributes, ReactNode } from 'react'
@@ -67,6 +67,17 @@ const navLabels = {
 	},
 } as const
 
+const mobileMenuProfiles = {
+	cs: {
+		role: 'Seniorní frontend vývojář / vedoucí frontendu',
+		specialties: 'Praha · React · TypeScript · Přístupnost',
+	},
+	en: {
+		role: 'Senior / Lead Frontend Engineer',
+		specialties: 'Prague · React · TypeScript · Accessibility',
+	},
+} as const
+
 function renderNavigation(locale: keyof typeof catalogs, pathname = '/') {
 	navigationState.locale = locale
 	navigationState.pathname = pathname
@@ -116,7 +127,11 @@ beforeEach(() => {
 		if (this.open) return
 
 		this.setAttribute('open', '')
-		this.querySelector<HTMLElement>('button')?.focus()
+		const autofocusTarget =
+			this.querySelector<HTMLElement>('[autofocus]') ??
+			this.querySelector<HTMLElement>('[data-mobile-menu-header] button.iconButton')
+		const firstFocusable = this.querySelector<HTMLElement>('a[href], button:not(:disabled)')
+		;(autofocusTarget ?? firstFocusable)?.focus()
 	})
 	closeDialog = vi.fn(function (this: HTMLDialogElement) {
 		if (!this.open) return
@@ -223,6 +238,52 @@ describe('Navigation dialog lifecycle', () => {
 	})
 })
 
+describe('Navigation mobile-menu composition', () => {
+	it.each(['en', 'cs'] as const)(
+		'composes the %s dialog from a home affordance, primary navigation, utilities and profile',
+		async (locale) => {
+			const user = userEvent.setup()
+			const { container } = renderNavigation(locale)
+
+			await user.click(screen.getByRole('button', { name: controls[locale][0] }))
+
+			const dialog = screen.getByRole('dialog', {
+				name: locale === 'en' ? 'Site menu' : 'Hlavní nabídka',
+			})
+			const dialogQueries = within(dialog)
+			const header = dialog.querySelector('[data-mobile-menu-header]')
+			const navigation = dialog.querySelector('nav')
+			const footer = dialog.querySelector('[data-mobile-menu-footer]')
+			const profile = dialog.querySelector('[data-mobile-menu-profile]')
+
+			expect(header).not.toBeNull()
+			expect(navigation).not.toBeNull()
+			expect(footer).not.toBeNull()
+			expect(profile).not.toBeNull()
+			expect(
+				dialogQueries.getByRole('link', {
+					name: locale === 'en' ? 'Codeguy – Home' : 'Codeguy – Domů',
+				}),
+			).toHaveAttribute('href', locale === 'en' ? '/' : '/cs')
+			expect(dialogQueries.getAllByRole('listitem')).toHaveLength(5)
+			expect(
+				dialogQueries.getAllByRole('link').filter((link) => link.textContent !== 'Codeguy'),
+			).toHaveLength(5)
+			expect(dialogQueries.getByRole('button', { name: 'Theme' })).toBeInTheDocument()
+			expect(dialogQueries.getByText('Language switcher')).toBeInTheDocument()
+			expect(footer).toHaveTextContent(mobileMenuProfiles[locale].role)
+			expect(footer).toHaveTextContent(mobileMenuProfiles[locale].specialties)
+			expect(Array.from(profile?.querySelectorAll('p') ?? [], (item) => item.textContent)).toEqual([
+				mobileMenuProfiles[locale].role,
+				mobileMenuProfiles[locale].specialties,
+			])
+
+			const responsiveCurrentLinks = container.querySelectorAll('a[aria-current="page"]')
+			expect(responsiveCurrentLinks).toHaveLength(2)
+		},
+	)
+})
+
 describe('Navigation scroll surface', () => {
 	it('initializes from restored scroll, updates passively and removes its listener', async () => {
 		const addEventListener = vi.spyOn(window, 'addEventListener')
@@ -253,13 +314,14 @@ describe('Navigation current-page semantics', () => {
 	it.each([
 		['en', 'Codeguy – Home', '/'],
 		['cs', 'Codeguy – Domů', '/cs'],
-	] as const)('marks only the %s homepage logo as current', (locale, homeLabel, href) => {
+	] as const)('marks both responsive %s homepage logos as current', (locale, homeLabel, href) => {
 		const { container } = renderNavigation(locale)
-		const homeLink = screen.getByRole('link', { name: homeLabel })
+		const homeLinks = screen.getAllByRole('link', { name: homeLabel, hidden: true })
 
-		expect(homeLink).toHaveAttribute('aria-current', 'page')
-		expect(homeLink).toHaveAttribute('href', href)
-		expect(container.querySelectorAll('a[aria-current="page"]')).toHaveLength(1)
+		expect(homeLinks).toHaveLength(2)
+		expect(homeLinks.every((link) => link.getAttribute('aria-current') === 'page')).toBe(true)
+		expect(homeLinks.every((link) => link.getAttribute('href') === href)).toBe(true)
+		expect(container.querySelectorAll('a[aria-current="page"]')).toHaveLength(2)
 	})
 
 	it.each(['en', 'cs'] as const)(

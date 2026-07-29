@@ -128,7 +128,6 @@ export default function Navigation() {
 						<ThemeToggle />
 					</div>
 					<div className={styles.menuTrigger}>
-						<ThemeToggle />
 						<IconButton
 							onClick={openMenu}
 							aria-expanded={isOpen}
@@ -145,32 +144,57 @@ export default function Navigation() {
 			</nav>
 			{/* Mobile dialog menu */}
 			<dialog ref={dialogRef} className={styles.mobileMenu} id={id} aria-label={t('siteMenu')}>
-				<div className={styles.mobileMenuHeader}>
-					<IconButton
-						autoFocus
-						onClick={closeMenu}
-						variant="quiet"
-						size="medium"
-						aria-label={t('closeMenu')}
-					>
-						<X aria-hidden="true" />
-					</IconButton>
-				</div>
-				<div className={styles.mobileMenuContent}>
-					{navItems.map((item) => (
+				<div className={styles.mobileMenuSurface}>
+					<div className={styles.mobileMenuHeader} data-mobile-menu-header="">
 						<Link
-							key={item.href}
-							href={item.href}
-							className={styles.mobileNavLink}
+							href="/"
+							className={styles.mobileMenuBrand}
 							onClick={closeMenu}
-							aria-current={isCurrentPath(pathname, item.href) ? 'page' : undefined}
+							aria-label={t('homeLabel', { brand: siteConfig.brand })}
+							aria-current={pathname === '/' ? 'page' : undefined}
 						>
-							{t(`items.${item.key}`)}
+							{siteConfig.brand}
 						</Link>
-					))}
-					<Suspense fallback={null}>
-						<LanguageSwitcher />
-					</Suspense>
+						<div className={styles.mobileMenuActions}>
+							<ThemeToggle />
+							<IconButton
+								autoFocus
+								onClick={closeMenu}
+								variant="quiet"
+								size="medium"
+								aria-label={t('closeMenu')}
+							>
+								<X aria-hidden="true" />
+							</IconButton>
+						</div>
+					</div>
+					<nav className={styles.mobileMenuNavigation} aria-label={t('siteMenu')}>
+						<ul className={styles.mobileMenuLinks}>
+							{navItems.map((item) => (
+								<li key={item.href}>
+									<Link
+										href={item.href}
+										className={styles.mobileNavLink}
+										onClick={closeMenu}
+										aria-current={isCurrentPath(pathname, item.href) ? 'page' : undefined}
+									>
+										{t(`items.${item.key}`)}
+									</Link>
+								</li>
+							))}
+						</ul>
+					</nav>
+					<div className={styles.mobileMenuFooter} data-mobile-menu-footer="">
+						<div className={styles.mobileMenuUtilities}>
+							<Suspense fallback={null}>
+								<LanguageSwitcher />
+							</Suspense>
+						</div>
+						<div className={styles.mobileMenuProfile} data-mobile-menu-profile="">
+							<p>{t('mobileMenu.profile.role')}</p>
+							<p>{t('mobileMenu.profile.specialties')}</p>
+						</div>
+					</div>
 				</div>
 			</dialog>
 		</>

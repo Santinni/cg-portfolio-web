@@ -4,6 +4,12 @@
 		"openMenu": "Open menu",
 		"closeMenu": "Close menu",
 		"siteMenu": "Site menu",
+		"mobileMenu": {
+			"profile": {
+				"role": "Senior / Lead Frontend Engineer",
+				"specialties": "Prague · React · TypeScript · Accessibility"
+			}
+		},
 		"items": {
 			"work": "Work",
 			"experience": "Experience",
