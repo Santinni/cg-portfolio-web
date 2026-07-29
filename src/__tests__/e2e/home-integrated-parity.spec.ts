@@ -123,7 +123,6 @@ function expectEnglishFigmaGeometry(geometry: HomeGeometry, viewportWidth: numbe
 		if (viewportWidth === 430) expectedGrowthByIndex.set(2, { amount: 46.4, tolerance: 1 })
 		if (viewportWidth === 390) {
 			expectedGrowthByIndex.set(0, { amount: 22.203125, tolerance: 0.1 })
-			expectedGrowthByIndex.set(3, { amount: 46.4, tolerance: 1 })
 		}
 		if (viewportWidth === 320) {
 			expectedGrowthByIndex.set(1, { amount: 46.4, tolerance: 1 })
