@@ -68,7 +68,19 @@
 			}
 		},
 		"selectedWork": {
-			"title": "Selected work"
+			"eyebrow": "SELECTED WORK",
+			"title": "Complex products. Clear frontend decisions.",
+			"cards": {
+				"maintenanceApplications": {
+					"summaryCompact": "Reusable architecture for specialist workflows."
+				},
+				"distributedEnergyPlatform": {
+					"summaryCompact": "Frontend foundations for an evolving energy product."
+				},
+				"accessibilityRefactoring": {
+					"summaryCompact": "Inclusive behavior inside an established product."
+				}
+			}
 		},
 		"principles": {
 			"eyebrow": "HOW I WORK",

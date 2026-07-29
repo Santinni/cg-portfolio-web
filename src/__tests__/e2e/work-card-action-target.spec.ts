@@ -13,7 +13,9 @@ const workLocales = [
 const homeViewports = [
 	{ height: 900, width: 1440 },
 	{ height: 1024, width: 768 },
+	{ height: 932, width: 430 },
 	{ height: 844, width: 390 },
+	{ height: 900, width: 320 },
 ] as const
 
 async function expectWorkCardActionContract(link: Locator) {

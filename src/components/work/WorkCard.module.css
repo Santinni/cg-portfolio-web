@@ -1,12 +1,20 @@
 .card {
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  gap: var(--space-12);
-  padding: var(--space-24);
+  justify-content: space-between;
+  /* Figma's 1px inside stroke is part of its 24px auto-layout inset. */
+  padding: calc(var(--space-24) - 1px);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-8);
   background: var(--surface-raised);
   height: 100%;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
 }
 
 .eyebrow {
@@ -31,6 +39,59 @@
   margin: 0;
 }
 
+.compactSummary {
+  display: none;
+}
+
+.responsive .eyebrow,
+.responsive .stack {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.responsive .title {
+  font-size: 24px;
+  line-height: 32px;
+}
+
+.responsive {
+  height: auto;
+}
+
+@media (max-width: 1023px) {
+  .responsive .wideSummary {
+    display: none;
+  }
+
+  .responsive .compactSummary {
+    display: inline;
+  }
+}
+
+@media (max-width: 359px) {
+  .responsive {
+    justify-content: flex-start;
+    gap: var(--space-12);
+    /* Figma's 1px inside stroke is part of its 16px auto-layout inset. */
+    padding: calc(var(--space-16) - 1px);
+  }
+
+  .responsive .content {
+    display: contents;
+  }
+
+  .responsive .title {
+    font-size: 20px;
+    line-height: 28px;
+  }
+
+  .responsive .pending {
+    padding-top: 0;
+    font-size: 12px;
+    line-height: 16px;
+  }
+}
+
 .stack {
   font-size: var(--font-size-label);
   line-height: var(--line-height-label);
@@ -43,7 +104,6 @@
   align-self: flex-start;
   align-items: center;
   gap: var(--space-4);
-  margin-top: auto;
   min-block-size: var(--touch-target-min);
   padding-inline: var(--space-8);
   border-radius: var(--radius-4);
@@ -65,7 +125,6 @@
 }
 
 .pending {
-  margin-top: auto;
   padding-top: var(--space-8);
   color: var(--text-secondary);
   font-size: var(--font-size-body);

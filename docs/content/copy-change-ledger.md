@@ -763,3 +763,180 @@ Sdílené komponenty
 - Related entries: `COPY-20260729-002`
 - Notes: append a new entry rather than rewriting this record if any factual
   claim, compact wording or breakpoint-specific presentation changes.
+
+## COPY-20260729-004 — Restore Selected Work hierarchy and compact Home summaries
+
+- Status: implemented
+- Change type: hierarchy-restoration and responsive-variant
+- Surface: visitor-visible
+- Proposed date: 2026-07-29
+- Implemented date: 2026-07-29
+- Owner: Karel Kutchan
+- Author: Codeguy portfolio implementation team
+- Reviewer: Codex controller and independent Selected Work parity review
+- Pull request: Pending
+- Commit: Planned as `fix(home): restore Selected Work responsive composition`
+- Routes and locales: `/` and `/cs`; compact summaries below 1024 CSS pixels
+- Source boundary: Figma-reference, next-intl, owner-approved-brief
+- Message keys or public CMS fields: `home.selectedWork.eyebrow`,
+  `home.selectedWork.title`,
+  `home.selectedWork.cards.<key>.summaryCompact`
+- Rendering location:
+  `src/app/[locale]/(frontend)/(pages)/(home)/blocks/selected-work/index.tsx`
+- Figma file and nodes: `cs38WzlXKY9xfDYBinoKel`; desktop `6:35`, tablet
+  `7:397`, mobile `8:107`, 320 px `8:160`, 430 px `8:213`, dark desktop
+  `8:279`, dark mobile `8:345`; compact cards `44:314`, `44:323`, `44:332`
+- Original source: existing catalog copy remains the factual source for the
+  shared Work cards; the section hierarchy and compact English summaries are
+  supplied by the approved Figma nodes; Czech compact variants are natural
+  professional localizations authored by the implementation team
+- Original purpose: identify the selected-work section and summarize each case
+  study consistently on Home and the full Work index
+- Audience and user intent: prospective employers, collaborators and clients
+  scanning representative work before opening an available case study
+
+### Original (verbatim)
+
+The former Home section headings are retained as eyebrow labels:
+
+```text
+Selected work
+Vybrané projekty
+```
+
+The shared Work-card summaries remain active on `/work`, `/cs/work` and the
+wide Home presentation.
+
+#### English
+
+```text
+Reusable frontend architecture for enterprise maintenance workflows.
+Frontend foundations for a complex distributed-energy product.
+Practical accessibility improvements inside an established product.
+```
+
+#### Czech
+
+```text
+Znovupoužitelná frontendová architektura pro podnikové procesy údržby.
+Frontendové základy komplexního produktu pro distribuovanou energetiku.
+Praktická zlepšení přístupnosti v zavedeném produktu.
+```
+
+### Replacement (verbatim)
+
+The original Home labels move to the eyebrow role and gain the approved
+headline hierarchy.
+
+#### English
+
+```text
+SELECTED WORK
+Complex products. Clear frontend decisions.
+```
+
+#### Czech
+
+```text
+VYBRANÉ PROJEKTY
+Komplexní produkty. Jasná frontendová rozhodnutí.
+```
+
+The original shared summaries remain unchanged. Home adds these compact
+presentation alternatives below 1024 CSS pixels.
+
+#### English compact summaries
+
+```text
+Reusable architecture for specialist workflows.
+Frontend foundations for an evolving energy product.
+Inclusive behavior inside an established product.
+```
+
+#### Czech compact summaries
+
+```text
+Znovupoužitelná architektura pro odborné pracovní postupy.
+Frontendové základy pro vyvíjející se energetický produkt.
+Přístupné chování v zavedeném produktu.
+```
+
+### Rationale
+
+- Problem being solved: Home rendered the section label as its only heading,
+  omitted the approved explanatory headline and reused wide card summaries at
+  every viewport. At 320 CSS pixels the cards also kept the Standard density
+  instead of the approved Compact, content-driven presentation.
+- Why this wording was selected: the English hierarchy and compact summaries
+  are exact Figma copy. Czech preserves the same project scope and professional
+  tone without literal constructions that would sound unnatural.
+- Alternatives rejected: overwriting `work.cards` would silently alter the
+  full Work index; truncation would remove meaning; client-side viewport logic
+  would make server rendering fragile; linking the pending accessibility card
+  would claim a case-study route that does not exist.
+- Meaning intentionally preserved: reusable architecture, specialist or
+  enterprise workflows, frontend foundations for an energy product and
+  accessibility work in an established product.
+- Meaning intentionally changed: compact presentation omits detail solely to
+  match the approved responsive design. It introduces no employer, client,
+  product, metric, outcome or technology claim.
+
+### Fact And Claim Controls
+
+- Claims affected: professional experience across enterprise workflows, an
+  energy product and accessibility improvement work.
+- Evidence source and checked date: approved Figma nodes and existing
+  owner-approved public portfolio copy, checked 2026-07-29.
+- Time-sensitive review: review if the represented project set or availability
+  of the pending accessibility case study changes.
+- NDA or client review: not applicable; no employer, client, confidential
+  product name, metric or implementation detail is introduced.
+- Owner approval: Karel Kutchan explicitly authorized implementation of the
+  redesign parity plan on 2026-07-29; separate approval of the Czech phrasing is
+  not recorded.
+
+### Impact Review
+
+- Internationalization: matching, non-empty semantic keys are added to both
+  catalogs; the original shared facts remain under `work.cards`.
+- Accessibility: the eyebrow remains a paragraph, the explanatory headline is
+  the section H2 and card titles remain H3. CSS exposes one complete summary at
+  a time. The pending card remains static localized status text with no link.
+- Responsive layout: Standard cards remain 284 px high with 24 px padding at
+  1440, 768, 430 and 390 CSS pixels. Only the Home responsive density switches
+  to 16 px padding and content-driven Compact height at 320 CSS pixels.
+- SEO and metadata: no metadata, canonical, hreflang, Open Graph, robots,
+  structured-data or sitemap change.
+- CMS or data boundary: static Home presentation copy remains in next-intl; no
+  Payload field, schema, migration or `src/content/work.ts` change.
+- Privacy and confidentiality: only existing public professional positioning is
+  restated.
+
+### Verification
+
+- Automated tests: the focused Selected Work Chromium contract passed 12/12;
+  WorkCard action, hover, focus, forced-colors and unchanged Work-index
+  regressions passed 14/14; WorkCard component and catalog parity/non-empty
+  validation passed 8/8; TypeScript and targeted Biome checks passed.
+- Routes and locales: verified English `/` and Czech `/cs`, plus unchanged
+  default WorkCard behavior and localized destinations on `/work` and
+  `/cs/work`.
+- Themes, viewports and interaction states: verified light geometry, type,
+  responsive copy, pending semantics and containment at 1440, 768, 430, 390
+  and 320 CSS pixels; verified dark semantic card tokens at 1440 and 390 CSS
+  pixels; verified link hover, keyboard focus and forced-colors focus.
+- Manual content review: English is exact Figma copy; Czech was reviewed for
+  semantic fidelity and professional phrasing by the implementation team.
+- Result: the implementation is green on the focused browser, component,
+  catalog, type, formatting and diff checks described above.
+- Residual risk: Czech has no canonical Figma text frame and therefore targets
+  semantic fidelity and containment rather than exact English line count.
+
+### Lifecycle
+
+- Supersedes: none; shared Work-page strings remain active and unchanged.
+- Reverted by: none
+- Related entries: `COPY-20260729-003`
+- Notes: append a new entry rather than rewriting this record if the pending
+  case-study status, compact wording or breakpoint-specific presentation
+  changes.

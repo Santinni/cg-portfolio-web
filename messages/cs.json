@@ -68,7 +68,19 @@
 			}
 		},
 		"selectedWork": {
-			"title": "Vybrané projekty"
+			"eyebrow": "VYBRANÉ PROJEKTY",
+			"title": "Komplexní produkty. Jasná frontendová rozhodnutí.",
+			"cards": {
+				"maintenanceApplications": {
+					"summaryCompact": "Znovupoužitelná architektura pro odborné pracovní postupy."
+				},
+				"distributedEnergyPlatform": {
+					"summaryCompact": "Frontendové základy pro vyvíjející se energetický produkt."
+				},
+				"accessibilityRefactoring": {
+					"summaryCompact": "Přístupné chování v zavedeném produktu."
+				}
+			}
 		},
 		"principles": {
 			"eyebrow": "JAK PRACUJI",
