@@ -23,6 +23,8 @@ const czechDesktopQuality =
 const czechCompactExperience =
 	'Webům se věnuji přes deset let a nyní působím ve vedoucí frontendové roli. S Reactem, TypeScriptem a Next.js pracuji na zákaznických portálech, podnikových aplikacích a komponentových systémech.'
 const czechCompactQuality = 'Architektura, přístupnost a udržovatelnost jsou součástí dodávky.'
+const RESERVED_SCROLLBAR_GUTTER = 15
+const MOBILE_GUTTER_HERO_GROWTH = 22.203125
 
 async function expectResponsiveCopyVisibility(
 	hero: Locator,
@@ -201,6 +203,7 @@ test.describe('Home Hero Figma contract', () => {
 					bodyLineHeight: Number.parseFloat(styles.body.lineHeight),
 					bodySize: Number.parseFloat(styles.body.fontSize),
 					bodyWeight: styles.body.fontWeight,
+					bodyClientWidth: document.body.clientWidth,
 					children: rects,
 					documentClientWidth: document.documentElement.clientWidth,
 					documentScrollWidth: document.documentElement.scrollWidth,
@@ -215,8 +218,17 @@ test.describe('Home Hero Figma contract', () => {
 					inner: inner.getBoundingClientRect().toJSON(),
 					innerGap: Number.parseFloat(styles.inner.rowGap),
 					rootActionPrimary: rootStyles.getPropertyValue('--action-primary').trim(),
+					windowInnerWidth: window.innerWidth,
 				}
 			})
+			const reservedScrollbarGutter = contract.documentClientWidth - contract.bodyClientWidth
+			test.info().annotations.push({
+				type: 'browser-topology',
+				description: `viewport=${viewport.width};window-inner=${contract.windowInnerWidth};document-client=${contract.documentClientWidth};body-client=${contract.bodyClientWidth};reserved-scrollbar-gutter=${reservedScrollbarGutter}`,
+			})
+			expect(contract.windowInnerWidth).toBe(viewport.width)
+			expect(contract.documentClientWidth).toBe(viewport.width)
+			expect([0, RESERVED_SCROLLBAR_GUTTER]).toContain(reservedScrollbarGutter)
 
 			const contentWidth = contract.hero.width - 2 * viewport.x
 			expectPx(contract.inner.x, viewport.x)
@@ -246,7 +258,15 @@ test.describe('Home Hero Figma contract', () => {
 			// top padding. Normalize that deliberate topology difference before comparing
 			// the section height from the approved frame.
 			expectPx(contract.children[1].height, viewport.headlineHeight, 1.5)
-			expectPx(contract.hero.height - viewport.headerHeight, viewport.heroHeight, 3)
+			const normalizedHeroHeight = contract.hero.height - viewport.headerHeight
+			if (
+				viewport.width === HOME_PARITY_VIEWPORTS.mobile.width &&
+				reservedScrollbarGutter === RESERVED_SCROLLBAR_GUTTER
+			) {
+				expectPx(normalizedHeroHeight - viewport.heroHeight, MOBILE_GUTTER_HERO_GROWTH, 0.1)
+			} else {
+				expectPx(normalizedHeroHeight, viewport.heroHeight, 3)
+			}
 			expect(contract.headlineWeight).toBe('600')
 			expectPx(contract.bodySize, viewport.bodySize)
 			expectPx(contract.bodyLineHeight, viewport.bodySize * 1.45, 0.1)

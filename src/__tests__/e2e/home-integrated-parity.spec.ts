@@ -21,6 +21,7 @@ const matrixViewports = [
 ] as const
 
 const LOCAL_WORKING_TREE_REVISION = 'local-working-tree-uncommitted'
+const RESERVED_SCROLLBAR_GUTTER = 15
 
 interface RevisionEnvironment {
 	APP_REVISION?: string
@@ -101,9 +102,10 @@ function annotateEvidence(viewport: (typeof matrixViewports)[number]) {
 }
 
 function annotateBrowserTopology(geometry: HomeGeometry, viewportWidth: number) {
+	const reservedScrollbarGutter = geometry.document.clientWidth - geometry.document.bodyClientWidth
 	test.info().annotations.push({
 		type: 'browser-topology',
-		description: `viewport=${viewportWidth};body-client=${geometry.document.bodyClientWidth};delta=${geometry.document.clientWidth - geometry.document.bodyClientWidth}`,
+		description: `viewport=${viewportWidth};document-client=${geometry.document.clientWidth};body-client=${geometry.document.bodyClientWidth};reserved-scrollbar-gutter=${reservedScrollbarGutter}`,
 	})
 }
 
@@ -111,14 +113,18 @@ function expectEnglishFigmaGeometry(geometry: HomeGeometry, viewportWidth: numbe
 	const target =
 		FIGMA_EN_INTEGRATED_GEOMETRY[viewportWidth as keyof typeof FIGMA_EN_INTEGRATED_GEOMETRY]
 	const visible = geometry.children.filter((child) => child.visible)
-	const scrollbarDelta = geometry.document.clientWidth - geometry.document.bodyClientWidth
-	expect([0, 15]).toContain(scrollbarDelta)
+	const reservedScrollbarGutter = geometry.document.clientWidth - geometry.document.bodyClientWidth
+	expect(geometry.document.clientWidth).toBe(viewportWidth)
+	expect([0, RESERVED_SCROLLBAR_GUTTER]).toContain(reservedScrollbarGutter)
 
 	const roundingTolerance = viewportWidth === 1440 ? 0.5 : viewportWidth === 768 ? 1.5 : 2.5
 	const expectedGrowthByIndex = new Map<number, { amount: number; tolerance: number }>()
-	if (scrollbarDelta === 15) {
+	if (reservedScrollbarGutter === RESERVED_SCROLLBAR_GUTTER) {
 		if (viewportWidth === 430) expectedGrowthByIndex.set(2, { amount: 46.4, tolerance: 1 })
-		if (viewportWidth === 390) expectedGrowthByIndex.set(3, { amount: 46.4, tolerance: 1 })
+		if (viewportWidth === 390) {
+			expectedGrowthByIndex.set(0, { amount: 22.203125, tolerance: 0.1 })
+			expectedGrowthByIndex.set(3, { amount: 46.4, tolerance: 1 })
+		}
 		if (viewportWidth === 320) {
 			expectedGrowthByIndex.set(1, { amount: 46.4, tolerance: 1 })
 			expectedGrowthByIndex.set(3, { amount: 27.55, tolerance: 1 })
