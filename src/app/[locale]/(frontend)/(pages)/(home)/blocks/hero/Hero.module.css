@@ -10,6 +10,16 @@
   padding-top: calc(var(--header-height) + var(--space-32));
   padding-bottom: var(--section-block);
   max-width: 760px;
+
+  @media (min-width: 1024px) {
+    max-width: none;
+  }
+}
+
+.eyebrow {
+  @media (min-width: 1024px) {
+    max-width: 600px;
+  }
 }
 
 .headline {
@@ -19,6 +29,10 @@
   color: var(--text-primary);
   margin: 0;
   text-wrap: balance;
+
+  @media (min-width: 1024px) {
+    max-width: 1000px;
+  }
 }
 
 .paragraph {
@@ -26,6 +40,10 @@
   line-height: var(--line-height-body-lg);
   color: var(--text-secondary);
   margin: 0;
+
+  @media (min-width: 1024px) {
+    max-width: 780px;
+  }
 }
 
 .ctaRow {

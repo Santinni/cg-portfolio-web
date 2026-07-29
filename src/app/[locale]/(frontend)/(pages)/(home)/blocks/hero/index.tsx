@@ -1,8 +1,7 @@
 import { ArrowRight } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
-
-import { Button } from '@/app/(frontend)/components/primitives/button'
 import { Container } from '@/app/(frontend)/components/layout/Container'
+import { Button } from '@/app/(frontend)/components/primitives/button'
 import { Eyebrow } from '@/components/site/Eyebrow'
 import { homeLinks } from '@/content/profile'
 
@@ -15,7 +14,7 @@ export default async function Hero() {
 	return (
 		<section className={styles.hero} aria-labelledby="hero-heading">
 			<Container className={styles.inner}>
-				<Eyebrow>{t('eyebrow')}</Eyebrow>
+				<Eyebrow className={styles.eyebrow}>{t('eyebrow')}</Eyebrow>
 				<h1 id="hero-heading" className={styles.headline}>
 					{t('headline')}
 				</h1>
