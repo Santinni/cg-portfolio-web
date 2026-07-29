@@ -45,6 +45,138 @@ export const HOME_PARITY_VIEWPORTS = {
 	},
 } as const
 
+export const HOME_PARITY_LOCALES = [
+	{
+		closeMenuName: 'Close menu',
+		id: 'en',
+		lang: 'en',
+		openMenuName: 'Open menu',
+		path: '/',
+		themeToggleName: 'Toggle color theme',
+	},
+	{
+		closeMenuName: 'Zavřít nabídku',
+		id: 'cs',
+		lang: 'cs',
+		openMenuName: 'Otevřít nabídku',
+		path: '/cs',
+		themeToggleName: 'Přepnout barevný motiv',
+	},
+] as const
+
+export const HOME_ORDERED_SECTION_CONTRACTS = [
+	{ id: null, key: 'hero', labelledBy: 'hero-heading', visibility: 'always' },
+	{
+		id: 'flagship-case',
+		key: 'flagship',
+		labelledBy: 'flagship-case-heading',
+		visibility: 'always',
+	},
+	{
+		id: 'selected-work',
+		key: 'selectedWork',
+		labelledBy: 'selected-work-heading',
+		visibility: 'always',
+	},
+	{
+		id: 'principles',
+		key: 'principles',
+		labelledBy: 'principles-heading',
+		visibility: 'always',
+	},
+	{
+		id: 'experience-snapshot',
+		key: 'experience',
+		labelledBy: 'experience-snapshot-heading',
+		visibility: 'desktop',
+	},
+	{
+		id: 'contact-cta',
+		key: 'finalCta',
+		labelledBy: 'final-cta-heading',
+		visibility: 'always',
+	},
+] as const
+
+export interface HomeGeometryRect {
+	bottom: number
+	height: number
+	left: number
+	right: number
+	top: number
+	width: number
+	x: number
+	y: number
+}
+
+export interface HomeDirectChildGeometry {
+	ariaLabelledBy: string | null
+	id: string | null
+	labelResolvesInside: boolean
+	rect: HomeGeometryRect
+	tagName: string
+	visible: boolean
+}
+
+export interface HomeGeometry {
+	document: {
+		bodyClientWidth: number
+		bodyScrollWidth: number
+		clientWidth: number
+		scrollWidth: number
+	}
+	children: HomeDirectChildGeometry[]
+	main: HomeGeometryRect
+}
+
+/** Pure DOM reader: it reports Home topology and geometry without knowing copy or CSS selectors. */
+export function readHomeGeometry(main: HTMLElement): HomeGeometry {
+	const readRect = (element: Element): HomeGeometryRect => {
+		const rect = element.getBoundingClientRect()
+		return {
+			bottom: rect.bottom,
+			height: rect.height,
+			left: rect.left,
+			right: rect.right,
+			top: rect.top,
+			width: rect.width,
+			x: rect.x,
+			y: rect.y,
+		}
+	}
+
+	const children = Array.from(main.children).map((element) => {
+		const rect = readRect(element)
+		const styles = getComputedStyle(element)
+		const ariaLabelledBy = element.getAttribute('aria-labelledby')
+		const label = ariaLabelledBy ? document.getElementById(ariaLabelledBy) : null
+		return {
+			ariaLabelledBy,
+			id: element.id || null,
+			labelResolvesInside: label !== null && element.contains(label),
+			rect,
+			tagName: element.tagName,
+			visible:
+				styles.display !== 'none' &&
+				styles.visibility !== 'hidden' &&
+				Number.parseFloat(styles.opacity) !== 0 &&
+				rect.width > 0 &&
+				rect.height > 0,
+		}
+	})
+
+	return {
+		children,
+		document: {
+			bodyClientWidth: document.body.clientWidth,
+			bodyScrollWidth: document.body.scrollWidth,
+			clientWidth: document.documentElement.clientWidth,
+			scrollWidth: document.documentElement.scrollWidth,
+		},
+		main: readRect(main),
+	}
+}
+
 export const HOME_SELECTORS = {
 	experience: '#experience-snapshot',
 	experienceHeading: '#experience-snapshot-heading',
