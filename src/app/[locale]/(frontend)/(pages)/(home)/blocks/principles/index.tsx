@@ -11,7 +11,12 @@ export default async function Principles() {
 	const t = await getTranslations('home.principles')
 
 	return (
-		<Section id="principles" aria-labelledby="principles-heading" tone="contrast">
+		<Section
+			id="principles"
+			aria-labelledby="principles-heading"
+			tone="contrast"
+			className={styles.section}
+		>
 			<Container>
 				<Eyebrow className={styles.eyebrow}>{t('eyebrow')}</Eyebrow>
 				<h2 id="principles-heading" className={styles.title}>
