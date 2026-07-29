@@ -1,5 +1,5 @@
-import { Container } from '@/app/(frontend)/components/layout/Container'
 import { getTranslations } from 'next-intl/server'
+import { Container } from '@/app/(frontend)/components/layout/Container'
 import { Eyebrow } from '@/components/site/Eyebrow'
 import { Section } from '@/components/site/Section'
 import { principleKeys } from '@/content/profile'
@@ -27,7 +27,12 @@ export default async function Principles() {
 					{principleKeys.map((key) => (
 						<li key={key} className={styles.item}>
 							<h3 className={styles.itemTitle}>{t(`items.${key}.title`)}</h3>
-							<p className={styles.itemDescription}>{t(`items.${key}.description`)}</p>
+							<p className={styles.itemDescription}>
+								<span className={styles.descriptionWide}>{t(`items.${key}.description`)}</span>
+								<span className={styles.descriptionCompact}>
+									{t(`items.${key}.descriptionCompact`)}
+								</span>
+							</p>
 						</li>
 					))}
 				</ul>

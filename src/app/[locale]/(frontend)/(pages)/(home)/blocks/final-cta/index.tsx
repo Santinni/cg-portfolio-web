@@ -11,13 +11,27 @@ export default async function FinalCta() {
 	const t = await getTranslations('home.finalCta')
 
 	return (
-		<Section id="contact-cta" aria-labelledby="final-cta-heading" tone="page" desktopTone="subtle">
-			<Container className={styles.inner}>
+		<Section
+			id="contact-cta"
+			aria-labelledby="final-cta-heading"
+			tone="page"
+			desktopTone="subtle"
+			className={styles.section}
+		>
+			<Container id="final-cta-inner" className={styles.inner}>
 				<h2 id="final-cta-heading" className={styles.heading}>
 					{t('heading')}
 				</h2>
-				<p className={styles.supporting}>{t('supporting')}</p>
-				<Button renders="link" href={homeLinks.contact} variant="primary" size="large">
+				<p id="final-cta-supporting" className={styles.supporting}>
+					{t('supporting')}
+				</p>
+				<Button
+					id="final-cta-action"
+					renders="link"
+					href={homeLinks.contact}
+					variant="primary"
+					size="large"
+				>
 					{t('cta')}
 				</Button>
 			</Container>

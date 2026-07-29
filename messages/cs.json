@@ -42,6 +42,10 @@
 				"experience": "Webům se věnuji přes deset let a dnes působím jako vedoucí frontend vývoje. S Reactem, TypeScriptem a Next.js pracuji na zákaznických portálech, interních podnikových aplikacích i komponentových knihovnách, na kterých stojí.",
 				"quality": "Architektura, přístupnost a dlouhodobá udržitelnost jsou součástí dodávky, ne práce odložená na později."
 			},
+			"paragraphsCompact": {
+				"experience": "Webům se věnuji přes deset let a nyní působím ve vedoucí frontendové roli. S Reactem, TypeScriptem a Next.js pracuji na zákaznických portálech, podnikových aplikacích a komponentových systémech.",
+				"quality": "Architektura, přístupnost a udržovatelnost jsou součástí dodávky."
+			},
 			"primaryCta": "Přečíst hlavní případovou studii",
 			"secondaryCta": "Zobrazit zkušenosti"
 		},
@@ -50,6 +54,7 @@
 			"titleDesktop": "Zákaznický portál postavený jako systém, ne jako sbírka obrazovek.",
 			"titleCompact": "Zákaznický portál postavený jako systém.",
 			"summary": "Vedení frontend vývoje zákaznického produktu pro energetiku: architektura, komponentové základy, kvalita dodávky a přístupnost v rostoucí aplikaci.",
+			"summaryCompact": "Vedení frontendového vývoje produktu pro zákazníky a komponentových základů, na kterých stojí.",
 			"cta": "Přečíst studii",
 			"systemMap": {
 				"productUi": {
@@ -57,13 +62,25 @@
 					"description": "Zákaznické scénáře"
 				},
 				"sharedComponents": {
-					"label": "SDÍLENÉ KOMPONENTY",
+					"label": "Sdílené komponenty",
 					"description": "Přístupné základy · Testy · Dodávka"
 				}
 			}
 		},
 		"selectedWork": {
-			"title": "Vybrané projekty"
+			"eyebrow": "VYBRANÉ PROJEKTY",
+			"title": "Komplexní produkty. Jasná frontendová rozhodnutí.",
+			"cards": {
+				"maintenanceApplications": {
+					"summaryCompact": "Znovupoužitelná architektura pro odborné pracovní postupy."
+				},
+				"distributedEnergyPlatform": {
+					"summaryCompact": "Frontendové základy pro vyvíjející se energetický produkt."
+				},
+				"accessibilityRefactoring": {
+					"summaryCompact": "Přístupné chování v zavedeném produktu."
+				}
+			}
 		},
 		"principles": {
 			"eyebrow": "JAK PRACUJI",
@@ -72,19 +89,23 @@
 			"items": {
 				"architecture": {
 					"title": "Architektura s důvodem",
-					"description": "Volím hranice a vzory, které snižují produktová rizika."
+					"description": "Volím hranice a vzory, které snižují produktová rizika.",
+					"descriptionCompact": "Snižuji produktová rizika."
 				},
 				"accessibility": {
 					"title": "Přístupnost od začátku",
-					"description": "Přístupné chování začleňuji přímo do komponent a revizí."
+					"description": "Přístupné chování začleňuji přímo do komponent a revizí.",
+					"descriptionCompact": "Přístupnost začleňuji do komponent."
 				},
 				"quality": {
 					"title": "Kvalita podporující dodávku",
-					"description": "Testy, nástroje a zpětnou vazbu používám tam, kde chrání změnu."
+					"description": "Testy, nástroje a zpětnou vazbu používám tam, kde chrání změnu.",
+					"descriptionCompact": "Chráním změny, na kterých záleží."
 				},
 				"leadership": {
 					"title": "Vedení skrze srozumitelnost",
-					"description": "Zviditelňuji kompromisy a pomáhám týmům postupovat s jistotou."
+					"description": "Zviditelňuji kompromisy a pomáhám týmům postupovat s jistotou.",
+					"descriptionCompact": "Zviditelňuji kompromisy."
 				}
 			}
 		},

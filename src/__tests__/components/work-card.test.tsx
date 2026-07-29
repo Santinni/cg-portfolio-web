@@ -40,6 +40,38 @@ const pendingItem: WorkItem = {
 }
 
 describe('WorkCard localization', () => {
+	it('keeps the shared summary as the default presentation', () => {
+		render(
+			<NextIntlClientProvider locale="en" messages={enMessages}>
+				<WorkCard item={availableItem} />
+			</NextIntlClientProvider>,
+		)
+
+		expect(
+			screen.getByText('Reusable frontend architecture for enterprise maintenance workflows.'),
+		).toBeVisible()
+		expect(
+			screen.queryByText('Reusable architecture for specialist workflows.'),
+		).not.toBeInTheDocument()
+	})
+
+	it('renders both responsive summary variants for browser-controlled visibility', () => {
+		render(
+			<NextIntlClientProvider locale="en" messages={enMessages}>
+				<WorkCard
+					item={availableItem}
+					compactSummary="Reusable architecture for specialist workflows."
+					density="responsive"
+				/>
+			</NextIntlClientProvider>,
+		)
+
+		expect(
+			screen.getByText('Reusable frontend architecture for enterprise maintenance workflows.'),
+		).toBeInTheDocument()
+		expect(screen.getByText('Reusable architecture for specialist workflows.')).toBeInTheDocument()
+	})
+
 	it('keeps the English case-study URL unprefixed', () => {
 		render(
 			<NextIntlClientProvider locale="en" messages={enMessages}>

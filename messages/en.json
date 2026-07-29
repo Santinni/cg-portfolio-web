@@ -42,6 +42,10 @@
 				"experience": "More than ten years in web development, currently in a lead frontend role. I work with React, TypeScript and Next.js across customer portals, internal enterprise applications and the component libraries underneath them.",
 				"quality": "Architecture, accessibility and long-term maintainability are part of the delivery, not follow-up work."
 			},
+			"paragraphsCompact": {
+				"experience": "More than ten years in web development, currently in a lead frontend role. I work with React, TypeScript and Next.js across customer portals, enterprise applications and component systems.",
+				"quality": "Architecture, accessibility and maintainability are part of the delivery."
+			},
 			"primaryCta": "Read flagship case",
 			"secondaryCta": "View experience"
 		},
@@ -50,6 +54,7 @@
 			"titleDesktop": "A customer portal built as a system, not a collection of screens.",
 			"titleCompact": "A customer portal built as a system.",
 			"summary": "Frontend leadership for a customer-facing energy product: architecture, component foundations, delivery quality and accessibility across a growing application.",
+			"summaryCompact": "Frontend leadership for a customer-facing product and the component foundations beneath it.",
 			"cta": "Read the case",
 			"systemMap": {
 				"productUi": {
@@ -57,13 +62,25 @@
 					"description": "Customer journeys"
 				},
 				"sharedComponents": {
-					"label": "SHARED COMPONENTS",
+					"label": "Shared components",
 					"description": "Accessible foundations · Tests · Delivery"
 				}
 			}
 		},
 		"selectedWork": {
-			"title": "Selected work"
+			"eyebrow": "SELECTED WORK",
+			"title": "Complex products. Clear frontend decisions.",
+			"cards": {
+				"maintenanceApplications": {
+					"summaryCompact": "Reusable architecture for specialist workflows."
+				},
+				"distributedEnergyPlatform": {
+					"summaryCompact": "Frontend foundations for an evolving energy product."
+				},
+				"accessibilityRefactoring": {
+					"summaryCompact": "Inclusive behavior inside an established product."
+				}
+			}
 		},
 		"principles": {
 			"eyebrow": "HOW I WORK",
@@ -72,19 +89,23 @@
 			"items": {
 				"architecture": {
 					"title": "Architecture with a reason",
-					"description": "Choose boundaries and patterns that reduce product risk."
+					"description": "Choose boundaries and patterns that reduce product risk.",
+					"descriptionCompact": "Reduce product risk."
 				},
 				"accessibility": {
 					"title": "Accessibility by default",
-					"description": "Build inclusive behavior into components and reviews."
+					"description": "Build inclusive behavior into components and reviews.",
+					"descriptionCompact": "Build inclusion into components."
 				},
 				"quality": {
 					"title": "Quality that supports delivery",
-					"description": "Use tests, tooling and feedback where they protect change."
+					"description": "Use tests, tooling and feedback where they protect change.",
+					"descriptionCompact": "Protect the changes that matter."
 				},
 				"leadership": {
 					"title": "Leadership through clarity",
-					"description": "Make trade-offs visible and help teams move with confidence."
+					"description": "Make trade-offs visible and help teams move with confidence.",
+					"descriptionCompact": "Make trade-offs visible."
 				}
 			}
 		},

@@ -1,5 +1,7 @@
 import { expect, type Locator, type Page, test } from '@playwright/test'
 
+import { expectPx } from './support/home-parity'
+
 const homeLocales = [
 	{ actionLabel: 'Read case', path: '/' },
 	{ actionLabel: 'Přečíst studii', path: '/cs' },
@@ -13,7 +15,9 @@ const workLocales = [
 const homeViewports = [
 	{ height: 900, width: 1440 },
 	{ height: 1024, width: 768 },
+	{ height: 932, width: 430 },
 	{ height: 844, width: 390 },
+	{ height: 900, width: 320 },
 ] as const
 
 async function expectWorkCardActionContract(link: Locator) {
@@ -69,7 +73,7 @@ async function expectWorkCardActionContract(link: Locator) {
 	expect(contract.action.height).toBe(44)
 	expect(Math.abs(contract.action.width - contract.expectedHugWidth)).toBeLessThanOrEqual(1)
 	expect(contract.action.width).toBeLessThan(contract.parent.width)
-	expect(contract.action.x).toBeCloseTo(contract.parentContentStart, 5)
+	expectPx(contract.action.x, contract.parentContentStart)
 	expect(contract.action.x + contract.action.width).toBeLessThanOrEqual(
 		contract.parent.x + contract.parent.width,
 	)
@@ -82,6 +86,75 @@ async function expectWorkCardActionContract(link: Locator) {
 	expect(contract.lineHeight).toBe('24px')
 	expect(contract.fontWeight).toBe('500')
 	expect(contract.icon).toMatchObject({ height: 16, width: 16 })
+}
+
+async function expectStandardWorkCardLayoutContract(
+	card: Locator,
+	flow: 'equal-height-grid' | 'natural',
+) {
+	await expect(card).toBeVisible()
+
+	const contract = await card.evaluate((element) => {
+		const content = element.querySelector('[data-work-card-content]')
+		const action = element.querySelector('[data-work-card-action], [data-work-card-pending]')
+
+		if (!(content instanceof HTMLElement) || !(action instanceof HTMLElement)) {
+			throw new Error('Expected a standard WorkCard with content and an action or pending state')
+		}
+
+		const cardRect = element.getBoundingClientRect()
+		const cardStyles = getComputedStyle(element)
+		const contentChildren = Array.from(content.children).filter(
+			(child): child is HTMLElement =>
+				child instanceof HTMLElement && getComputedStyle(child).display !== 'none',
+		)
+		const contentGaps = contentChildren.slice(1).map((child, index) => {
+			const previousRect = contentChildren[index].getBoundingClientRect()
+			return child.getBoundingClientRect().top - previousRect.bottom
+		})
+		const contentRect = content.getBoundingClientRect()
+		const actionRect = action.getBoundingClientRect()
+		const paddingBottom = Number.parseFloat(cardStyles.paddingBottom)
+		const borderBottom = Number.parseFloat(cardStyles.borderBottomWidth)
+
+		return {
+			actionBottom: actionRect.bottom,
+			actionGap: actionRect.top - contentRect.bottom,
+			cardInnerBottom: cardRect.bottom - borderBottom - paddingBottom,
+			contentGaps,
+			overflow: {
+				clientHeight: element.clientHeight,
+				clientWidth: element.clientWidth,
+				scrollHeight: element.scrollHeight,
+				scrollWidth: element.scrollWidth,
+			},
+			padding: {
+				bottom: paddingBottom,
+				left: Number.parseFloat(cardStyles.paddingLeft),
+				right: Number.parseFloat(cardStyles.paddingRight),
+				top: Number.parseFloat(cardStyles.paddingTop),
+			},
+		}
+	})
+
+	expect(contract.padding).toEqual({ bottom: 24, left: 24, right: 24, top: 24 })
+	expect(contract.contentGaps.length).toBeGreaterThan(0)
+	for (const gap of contract.contentGaps) {
+		if (flow === 'natural') expectPx(gap, 12)
+		else expect(gap).toBeGreaterThanOrEqual(12)
+	}
+	if (flow === 'natural') expectPx(contract.actionGap, 12)
+	else {
+		expect(contract.actionGap).toBeGreaterThanOrEqual(12)
+		expectPx(contract.actionBottom, contract.cardInnerBottom)
+	}
+	expect(contract.overflow.scrollWidth).toBeLessThanOrEqual(contract.overflow.clientWidth)
+	expect(contract.overflow.scrollHeight).toBeLessThanOrEqual(contract.overflow.clientHeight)
+}
+
+async function expectStandardWorkCardParts(page: Page) {
+	await expect(page.locator('main [data-work-card-action]')).toHaveCount(3)
+	await expect(page.locator('main [data-work-card-pending]')).toHaveCount(1)
 }
 
 async function focusByKeyboard(page: Page, target: Locator) {
@@ -131,6 +204,34 @@ for (const locale of workLocales) {
 
 		for (const action of await actions.all()) {
 			await expectWorkCardActionContract(action)
+		}
+	})
+
+	test(`keeps the standard WorkCard layout contract on ${locale.path}`, async ({ page }) => {
+		await page.setViewportSize({ height: 900, width: 1440 })
+		const response = await page.goto(locale.path)
+		expect(response?.status()).toBe(200)
+
+		const cards = page.locator('main article[data-work-key]')
+		await expect(cards).toHaveCount(4)
+		await expectStandardWorkCardParts(page)
+
+		for (const card of await cards.all()) {
+			await expectStandardWorkCardLayoutContract(card, 'equal-height-grid')
+		}
+	})
+
+	test(`keeps natural standard WorkCard gaps on ${locale.path} at 390px`, async ({ page }) => {
+		await page.setViewportSize({ height: 844, width: 390 })
+		const response = await page.goto(locale.path)
+		expect(response?.status()).toBe(200)
+
+		const cards = page.locator('main article[data-work-key]')
+		await expect(cards).toHaveCount(4)
+		await expectStandardWorkCardParts(page)
+
+		for (const card of await cards.all()) {
+			await expectStandardWorkCardLayoutContract(card, 'natural')
 		}
 	})
 }
