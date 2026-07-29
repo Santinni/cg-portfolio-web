@@ -57,8 +57,12 @@ const semanticColors = {
 } as const
 
 function parseRgb(color: string): [number, number, number] {
-	const channels = color.match(/[\d.]+/g)?.slice(0, 3).map(Number)
-	if (!channels || channels.length !== 3) throw new Error(`Expected an RGB color, received ${color}`)
+	const channels = color
+		.match(/[\d.]+/g)
+		?.slice(0, 3)
+		.map(Number)
+	if (!channels || channels.length !== 3)
+		throw new Error(`Expected an RGB color, received ${color}`)
 	return channels as [number, number, number]
 }
 
@@ -66,9 +70,7 @@ function contrastRatio(foreground: string, background: string): number {
 	const luminance = (color: string) => {
 		const channels = parseRgb(color).map((value) => {
 			const normalized = value / 255
-			return normalized <= 0.04045
-				? normalized / 12.92
-				: ((normalized + 0.055) / 1.055) ** 2.4
+			return normalized <= 0.04045 ? normalized / 12.92 : ((normalized + 0.055) / 1.055) ** 2.4
 		})
 		return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2]
 	}
@@ -315,10 +317,7 @@ for (const locale of locales) {
 				contract.cta.height +
 				contract.section.paddingBlockEnd
 			expectPx(contract.section.height, naturalSectionHeight)
-			expectPx(
-				contract.cta.bottom + contract.section.paddingBlockEnd,
-				contract.section.bottom,
-			)
+			expectPx(contract.cta.bottom + contract.section.paddingBlockEnd, contract.section.bottom)
 			if (locale.path === '/') expectPx(contract.section.height, 565)
 			expect(await findVisibleDescendantOverflow(page, { root: '#experience-snapshot' })).toEqual(
 				[],
@@ -340,9 +339,9 @@ for (const locale of locales) {
 			expect(
 				contrastRatio(contract.description.color, contract.section.background),
 			).toBeGreaterThanOrEqual(4.5)
-			expect(
-				contrastRatio(contract.cta.color, contract.section.background),
-			).toBeGreaterThanOrEqual(4.5)
+			expect(contrastRatio(contract.cta.color, contract.section.background)).toBeGreaterThanOrEqual(
+				4.5,
+			)
 			expect(
 				contrastRatio(contract.cta.borderColor, contract.section.background),
 			).toBeGreaterThanOrEqual(3)

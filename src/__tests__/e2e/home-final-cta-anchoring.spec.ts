@@ -158,8 +158,12 @@ const semanticColors = {
 } as const
 
 function parseRgb(color: string): [number, number, number] {
-	const channels = color.match(/[\d.]+/g)?.slice(0, 3).map(Number)
-	if (!channels || channels.length !== 3) throw new Error(`Expected an RGB color, received ${color}`)
+	const channels = color
+		.match(/[\d.]+/g)
+		?.slice(0, 3)
+		.map(Number)
+	if (!channels || channels.length !== 3)
+		throw new Error(`Expected an RGB color, received ${color}`)
 	return channels as [number, number, number]
 }
 
@@ -167,9 +171,7 @@ function contrastRatio(foreground: string, background: string): number {
 	const luminance = (color: string) => {
 		const channels = parseRgb(color).map((value) => {
 			const normalized = value / 255
-			return normalized <= 0.04045
-				? normalized / 12.92
-				: ((normalized + 0.055) / 1.055) ** 2.4
+			return normalized <= 0.04045 ? normalized / 12.92 : ((normalized + 0.055) / 1.055) ** 2.4
 		})
 		return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2]
 	}
@@ -310,9 +312,8 @@ async function readContract(elements: FinalCtaLocators) {
 				scrollHeight: element.scrollHeight,
 				scrollWidth: element.scrollWidth,
 				textLeft,
-				textLineCount: new Set(
-					textRects.map((textRect) => Math.round(textRect.top * 100) / 100),
-				).size,
+				textLineCount: new Set(textRects.map((textRect) => Math.round(textRect.top * 100) / 100))
+					.size,
 				textRight,
 				textWidth: textRight - textLeft,
 				top: rect.top,
@@ -569,5 +570,7 @@ test('keeps the Final CTA focus visible in forced-colors mode', async ({ page })
 	expect(forcedColors.outlineStyle).toBe('solid')
 	expectPx(forcedColors.outlineWidth, 2)
 	expectPx(forcedColors.outlineOffset, 2)
-	expect(contrastRatio(forcedColors.outlineColor, forcedColors.background)).toBeGreaterThanOrEqual(3)
+	expect(contrastRatio(forcedColors.outlineColor, forcedColors.background)).toBeGreaterThanOrEqual(
+		3,
+	)
 })

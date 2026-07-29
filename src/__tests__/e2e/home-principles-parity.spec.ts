@@ -368,10 +368,9 @@ for (const contract of viewportContracts) {
 
 		const czechLayout = await readPrinciplesLayout(page)
 		expectPx(czechLayout.section.width, czechLayout.documentClientWidth)
-		const czechViewportClientWidthDelta = czechLayout.viewportWidth - czechLayout.documentClientWidth
-		expect(KNOWN_VIEWPORT_CLIENT_WIDTH_DELTAS).toContain(
-			Math.round(czechViewportClientWidthDelta),
-		)
+		const czechViewportClientWidthDelta =
+			czechLayout.viewportWidth - czechLayout.documentClientWidth
+		expect(KNOWN_VIEWPORT_CLIENT_WIDTH_DELTAS).toContain(Math.round(czechViewportClientWidthDelta))
 		expectNaturalSectionHeight(czechLayout)
 		expectPx(czechLayout.paddingBlockStart, contract.padding)
 		expectPx(czechLayout.paddingBlockEnd, contract.padding)
