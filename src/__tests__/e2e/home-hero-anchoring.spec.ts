@@ -1,30 +1,38 @@
 import { expect, test } from '@playwright/test'
 
+import {
+	expectPx,
+	HOME_PARITY_VIEWPORTS,
+	HOME_SELECTORS,
+	prepareHomeRender,
+	waitForHomeRender,
+} from './support/home-parity'
+
 const locales = ['/', '/cs'] as const
 
 const viewports = [
 	{
 		eyebrowWidth: 600,
 		headlineWidth: 1000,
-		height: 900,
+		height: HOME_PARITY_VIEWPORTS.desktop.height,
 		paragraphWidth: 780,
-		width: 1440,
+		width: HOME_PARITY_VIEWPORTS.desktop.width,
 		x: 120,
 	},
 	{
 		eyebrowWidth: null,
 		headlineWidth: null,
-		height: 1024,
+		height: HOME_PARITY_VIEWPORTS.tablet.height,
 		paragraphWidth: null,
-		width: 768,
+		width: HOME_PARITY_VIEWPORTS.tablet.width,
 		x: 48,
 	},
 	{
 		eyebrowWidth: null,
 		headlineWidth: null,
-		height: 844,
+		height: HOME_PARITY_VIEWPORTS.mobile.height,
 		paragraphWidth: null,
-		width: 390,
+		width: HOME_PARITY_VIEWPORTS.mobile.width,
 		x: 20,
 	},
 ] as const
@@ -34,25 +42,34 @@ for (const path of locales) {
 		for (const viewport of viewports) {
 			test(`uses approved content widths at ${viewport.width}px`, async ({ page }) => {
 				await page.setViewportSize(viewport)
+				await prepareHomeRender(page)
 				const response = await page.goto(path)
 				expect(response?.status()).toBe(200)
+				await waitForHomeRender(page)
 
-				const hero = page.locator('section[aria-labelledby="hero-heading"]')
+				const hero = page.locator(HOME_SELECTORS.hero)
 				await expect(hero).toBeVisible()
 
 				const layout = await hero.evaluate((element) => {
-					const inner = element.firstElementChild
-					const eyebrow = inner?.querySelector(':scope > p:first-child')
-					const headline = inner?.querySelector('#hero-heading')
-					const paragraphs = inner?.querySelectorAll(':scope > p:not(:first-child)')
-					const actions = inner?.querySelector(':scope > div')
+					const headline = element.querySelector('#hero-heading')
+					const inner = headline?.parentElement
+					const paragraphs = inner
+						? Array.from(inner.children).filter(
+								(child): child is HTMLParagraphElement => child instanceof HTMLParagraphElement,
+							)
+						: []
+					const [eyebrow, ...supportingParagraphs] = paragraphs
+					const actions = inner
+						? Array.from(inner.children).find(
+								(child) => child.querySelectorAll(':scope > a').length === 2,
+							)
+						: null
 
 					if (
 						!(inner instanceof HTMLElement) ||
 						!(eyebrow instanceof HTMLElement) ||
 						!(headline instanceof HTMLElement) ||
-						!paragraphs ||
-						paragraphs.length !== 2 ||
+						supportingParagraphs.length !== 2 ||
 						!(actions instanceof HTMLElement)
 					) {
 						throw new Error('Expected the complete Hero content structure')
@@ -66,7 +83,7 @@ for (const path of locales) {
 						hero: element.getBoundingClientRect().toJSON(),
 						headline: headline.getBoundingClientRect().toJSON(),
 						inner: inner.getBoundingClientRect().toJSON(),
-						paragraphs: Array.from(paragraphs, (paragraph) =>
+						paragraphs: supportingParagraphs.map((paragraph) =>
 							paragraph.getBoundingClientRect().toJSON(),
 						),
 					}
@@ -74,17 +91,17 @@ for (const path of locales) {
 
 				const fluidContentWidth = layout.hero.width - 2 * viewport.x
 
-				expect(layout.inner.x).toBeCloseTo(viewport.x, 5)
-				expect(layout.inner.width).toBeCloseTo(fluidContentWidth, 5)
-				expect(layout.eyebrow.x).toBeCloseTo(viewport.x, 5)
-				expect(layout.eyebrow.width).toBeCloseTo(viewport.eyebrowWidth ?? fluidContentWidth, 5)
-				expect(layout.headline.x).toBeCloseTo(viewport.x, 5)
-				expect(layout.headline.width).toBeCloseTo(viewport.headlineWidth ?? fluidContentWidth, 5)
-				expect(layout.actions.x).toBeCloseTo(viewport.x, 5)
+				expectPx(layout.inner.x, viewport.x, 5)
+				expectPx(layout.inner.width, fluidContentWidth, 5)
+				expectPx(layout.eyebrow.x, viewport.x, 5)
+				expectPx(layout.eyebrow.width, viewport.eyebrowWidth ?? fluidContentWidth, 5)
+				expectPx(layout.headline.x, viewport.x, 5)
+				expectPx(layout.headline.width, viewport.headlineWidth ?? fluidContentWidth, 5)
+				expectPx(layout.actions.x, viewport.x, 5)
 
 				for (const paragraph of layout.paragraphs) {
-					expect(paragraph.x).toBeCloseTo(viewport.x, 5)
-					expect(paragraph.width).toBeCloseTo(viewport.paragraphWidth ?? fluidContentWidth, 5)
+					expectPx(paragraph.x, viewport.x, 5)
+					expectPx(paragraph.width, viewport.paragraphWidth ?? fluidContentWidth, 5)
 				}
 
 				expect(layout.documentScrollWidth).toBeLessThanOrEqual(layout.documentClientWidth)
