@@ -16,7 +16,7 @@ import { Link } from '@/i18n/navigation'
 /** Shared style props for both button and link renders. */
 interface BaseButtonProps {
 	className?: string
-	variant?: 'primary' | 'secondary' | 'transparent' | 'text'
+	variant?: 'primary' | 'secondary' | 'quiet' | 'transparent' | 'text'
 	accent?: 'light' | 'dark'
 	rounded?: boolean
 	size?: 'small' | 'medium' | 'large'
@@ -67,10 +67,10 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonOr
 			renders = 'button',
 			className,
 			children,
-			variant,
+			variant = 'primary',
 			accent,
 			rounded,
-			size,
+			size = 'medium',
 			textWeight,
 			fullWidth,
 			textSize,
@@ -81,23 +81,19 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonOr
 		},
 		ref,
 	) => {
-		const ariaAttrs = {
-			'aria-busy': isLoading ? true : undefined,
-			'aria-disabled': isDisabled ? true : undefined,
-			...(rest['aria-label'] ? { 'aria-label': rest['aria-label'] } : {}),
-		}
-
-		const classes = clsx(styles.button, className, {
-			[styles[`variant-${variant}`]]: variant,
-			[styles[`accent-${accent}`]]: accent,
-			[styles[`size-${size}`]]: size,
-			[styles.disabled]: isDisabled,
-			[styles[`text-weight-${textWeight}`]]: textWeight,
-			[styles.fullWidth]: fullWidth,
-			[styles[`text-size-${textSize}`]]: textSize,
-			[styles.rounded]: rounded,
-			[styles.isLoading]: isLoading,
-		})
+		const classes = clsx(
+			styles.button,
+			styles[`variant-${variant}`],
+			styles[`size-${size}`],
+			className,
+			{
+				[styles[`accent-${accent}`]]: accent,
+				[styles[`text-weight-${textWeight}`]]: textWeight,
+				[styles.fullWidth]: fullWidth,
+				[styles[`text-size-${textSize}`]]: textSize,
+				[styles.rounded]: rounded,
+			},
+		)
 
 		if (renders === 'link') {
 			const { href, ...linkRest } = rest as Omit<AsLinkProps, 'renders'>
@@ -108,24 +104,37 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonOr
 				</Link>
 			)
 		} else {
-			const buttonProps = rest as Omit<AsButtonProps, 'renders'>
+			const {
+				disabled,
+				type = 'button',
+				'aria-busy': ariaBusy,
+				'aria-disabled': ariaDisabled,
+				...buttonProps
+			} = rest as Omit<AsButtonProps, 'renders'>
+			const effectiveDisabled = Boolean(disabled || isDisabled || isLoading)
+			const buttonClasses = clsx(classes, {
+				[styles.disabled]: effectiveDisabled && !isLoading,
+				[styles.loadingState]: isLoading,
+			})
 
 			return (
 				<button
-					type="button"
-					className={classes}
-					onClick={onClick}
-					disabled={isDisabled || isLoading}
-					ref={ref as React.Ref<HTMLButtonElement>}
 					{...buttonProps}
-					{...ariaAttrs}
+					type={type}
+					className={buttonClasses}
+					onClick={onClick}
+					disabled={effectiveDisabled}
+					ref={ref as React.Ref<HTMLButtonElement>}
+					aria-busy={isLoading ? true : ariaBusy}
+					aria-disabled={effectiveDisabled ? true : ariaDisabled}
+					data-loading={isLoading ? true : undefined}
 				>
 					{isLoading && (
-						<span className={styles.loading}>
-							<Loader className={styles.loadingIcon} />
+						<span className={styles.loading} aria-hidden="true">
+							<Loader className={styles.loadingIcon} aria-hidden="true" />
 						</span>
 					)}
-					<span className={clsx(isLoading && styles.isLoading, styles.buttonContent)}>
+					<span className={clsx(styles.buttonContent, isLoading && styles.loadingContent)}>
 						{children}
 					</span>
 				</button>
