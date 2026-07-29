@@ -3,6 +3,7 @@
     top: 0;
     left: 0;
     width: 100%;
+    height: var(--header-height);
     z-index: 50;
     background-color: color-mix(in srgb, var(--surface-page) 85%, transparent);
     backdrop-filter: blur(8px);
@@ -27,9 +28,10 @@
 }
 
 .logoText {
-    font-weight: 700;
-    font-size: var(--font-size-title);
-    letter-spacing: 0.06em;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 24px;
+    letter-spacing: 0px;
     text-transform: uppercase;
 }
 

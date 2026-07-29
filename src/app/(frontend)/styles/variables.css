@@ -198,6 +198,7 @@
 @media (min-width: 1024px) {
     :root {
         --container-gutter: 64px;
+        --header-height: 72px;
         --section-block: 88px;
     }
 }
