@@ -100,10 +100,7 @@
     display: grid;
     grid-template-columns: minmax(0, 29fr) minmax(0, 28fr);
     gap: clamp(var(--space-32), 3.8889vw, 56px);
-    width: min(
-      calc(100vw - var(--container-gutter) - var(--container-gutter) - 4px),
-      1196px
-    );
+    width: min(100%, 1196px);
     align-items: start;
   }
 

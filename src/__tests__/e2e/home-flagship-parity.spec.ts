@@ -131,6 +131,7 @@ test.describe('Home Flagship Figma contract', () => {
 			}
 
 			const headingBox = headingElement.getBoundingClientRect()
+			const innerBox = inner.getBoundingClientRect()
 			const rowBox = rowElement.getBoundingClientRect()
 			const contentBox = contentElement.getBoundingClientRect()
 			const mapBox = mapElement.getBoundingClientRect()
@@ -142,6 +143,9 @@ test.describe('Home Flagship Figma contract', () => {
 				heading: textContract(headingElement),
 				headingBeforeRow: headingBox.bottom < rowBox.top,
 				innerGap: Number.parseFloat(innerStyles.rowGap),
+				innerLeft: innerBox.left,
+				innerRight: innerBox.right,
+				innerWidth: innerBox.width,
 				map: {
 					background: mapStyles.backgroundColor,
 					color: mapStyles.color,
@@ -158,7 +162,10 @@ test.describe('Home Flagship Figma contract', () => {
 				rootActionOnPrimary: actionOnPrimary,
 				rootActionPrimary: actionPrimary,
 				rowGap: Number.parseFloat(rowStyles.columnGap),
+				rowLeft: rowBox.left,
+				rowRight: rowBox.right,
 				rowWidth: rowBox.width,
+				scrollbarGutter: document.documentElement.clientWidth - document.body.clientWidth,
 				sectionPaddingBottom: Number.parseFloat(sectionStyles.paddingBottom),
 				sectionPaddingTop: Number.parseFloat(sectionStyles.paddingTop),
 				stack: textContract(stackElement),
@@ -174,16 +181,21 @@ test.describe('Home Flagship Figma contract', () => {
 		expectPx(contract.heading.fontSize, 48)
 		expectPx(contract.heading.lineHeight, 69.6, 0.15)
 		expect(contract.heading.fontWeight).toBe(600)
-		expectPx(contract.rowWidth, 1196)
+		expect([0, 15]).toContain(contract.scrollbarGutter)
+		expectPx(contract.rowLeft, contract.innerLeft)
+		expect(contract.rowRight).toBeLessThanOrEqual(contract.innerRight + 0.5)
+		expect(contract.rowWidth).toBeLessThanOrEqual(1196.5)
+		expectPx(contract.rowWidth, Math.min(contract.innerWidth, 1196))
 		expectPx(contract.rowGap, 56)
-		expectPx(contract.contentWidth, 580)
+		const availableColumnWidth = contract.rowWidth - contract.rowGap
+		expectPx(contract.contentWidth, (availableColumnWidth * 29) / 57)
 		expectPx(contract.contentGap, 20)
 		expectPx(contract.summary.fontSize, 18)
 		expectPx(contract.summary.lineHeight, 26.1, 0.15)
 		expectPx(contract.stack.fontSize, 14)
 		expectPx(contract.stack.lineHeight, 20.3, 0.15)
 		expect(contract.stack.fontWeight).toBe(600)
-		expectPx(contract.map.width, 560)
+		expectPx(contract.map.width, Math.min((availableColumnWidth * 28) / 57, 560))
 		expectPx(contract.map.paddingTop, 32)
 		expectPx(contract.map.paddingRight, 32)
 		expectPx(contract.map.paddingBottom, 32)
