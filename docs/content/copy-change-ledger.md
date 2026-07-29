@@ -940,3 +940,165 @@ Přístupné chování v zavedeném produktu.
 - Notes: append a new entry rather than rewriting this record if the pending
   case-study status, compact wording or breakpoint-specific presentation
   changes.
+
+## COPY-20260729-005 — Add compact Home Principles descriptions
+
+- Status: implemented
+- Change type: responsive-variant
+- Surface: visitor-visible
+- Proposed date: 2026-07-29
+- Implemented date: 2026-07-29
+- Owner: Karel Kutchan
+- Author: Codeguy portfolio implementation team
+- Reviewer: Codex controller and independent Principles parity review
+- Pull request: Pending
+- Commit: Planned as `fix(home): align Principles responsive contract`
+- Routes and locales: `/` and `/cs`; compact descriptions below 1024 CSS pixels
+- Source boundary: Figma-reference, next-intl, owner-approved-brief
+- Message keys or public CMS fields:
+  `home.principles.items.<key>.descriptionCompact`
+- Rendering location:
+  `src/app/[locale]/(frontend)/(pages)/(home)/blocks/principles/index.tsx`
+- Figma file and nodes: `cs38WzlXKY9xfDYBinoKel`; desktop `6:54`, tablet
+  `7:415`, mobile `8:125`, 320 px `8:178`, 430 px `8:231`, dark desktop
+  `8:298`, dark mobile `8:363`
+- Original source: existing owner-approved desktop catalog descriptions remain
+  the factual source; compact English descriptions are exact approved Figma
+  copy; Czech compact variants are natural professional localizations authored
+  by the implementation team
+- Original purpose: summarize how architecture, accessibility, delivery
+  quality and leadership reduce risk and help teams make reliable decisions
+- Audience and user intent: prospective employers, collaborators and clients
+  scanning the engineering principles on a compact Home viewport
+
+### Original (verbatim)
+
+The following descriptions remain unchanged in the desktop presentation.
+
+#### English
+
+```text
+Choose boundaries and patterns that reduce product risk.
+Build inclusive behavior into components and reviews.
+Use tests, tooling and feedback where they protect change.
+Make trade-offs visible and help teams move with confidence.
+```
+
+#### Czech
+
+```text
+Volím hranice a vzory, které snižují produktová rizika.
+Přístupné chování začleňuji přímo do komponent a revizí.
+Testy, nástroje a zpětnou vazbu používám tam, kde chrání změnu.
+Zviditelňuji kompromisy a pomáhám týmům postupovat s jistotou.
+```
+
+### Replacement (verbatim)
+
+The original strings remain the wide-screen presentation. The following
+responsive variants are added below 1024 CSS pixels.
+
+#### English compact descriptions
+
+```text
+Reduce product risk.
+Build inclusion into components.
+Protect the changes that matter.
+Make trade-offs visible.
+```
+
+#### Czech compact descriptions
+
+```text
+Snižuji produktová rizika.
+Přístupnost začleňuji do komponent.
+Chráním změny, na kterých záleží.
+Zviditelňuji kompromisy.
+```
+
+### Rationale
+
+- Problem being solved: the desktop descriptions made the compact Principles
+  section denser than approved Figma nodes `7:415`, `8:125`, `8:178` and
+  `8:231`, while the existing Home typography did not reproduce the approved
+  48/32 px heading and 20/19 px item hierarchy.
+- Why this wording was selected: English is exact Figma copy. Czech keeps the
+  same first-person professional voice as the existing desktop catalog and
+  preserves each principle's central meaning without mechanical translation.
+- Alternatives rejected: overwriting the desktop strings would discard useful
+  explanation; truncation would hide meaning from assistive technology;
+  client-side viewport branching would make server rendering fragile; forcing
+  viewport-unit width through the stable scrollbar gutter would reduce the
+  genuinely visible right gutter and mask an overflow risk.
+- Meaning intentionally preserved: reducing product risk, component-level
+  accessibility, protecting important changes and making trade-offs visible.
+- Meaning intentionally changed: compact presentation omits implementation
+  detail about boundaries, reviews, tooling, feedback and team confidence only
+  to match the approved responsive information density.
+
+### Fact And Claim Controls
+
+- Claims affected: engineering methods around architecture, accessibility,
+  testing, feedback and leadership clarity.
+- Evidence source and checked date: approved Figma nodes and existing
+  owner-approved public portfolio copy, checked 2026-07-29.
+- Time-sensitive review: review if these statements no longer represent the
+  owner's current working practices.
+- NDA or client review: not applicable; no employer, client, confidential
+  product, metric or implementation detail is introduced.
+- Owner approval: Karel Kutchan explicitly authorized implementation of the
+  redesign parity plan on 2026-07-29; separate approval of the Czech phrasing is
+  not recorded.
+
+### Impact Review
+
+- Internationalization: matching, non-empty semantic keys are added to both
+  catalogs; all desktop descriptions remain unchanged.
+- Accessibility: every item remains an H3 followed by one semantic paragraph;
+  CSS exposes one complete description variant at a time without truncation or
+  client viewport logic. The light-desktop Figma binding `#0a6e80` on
+  `#08090c` measures only 3.37:1 for the 12 px eyebrow, so the implementation
+  intentionally retains `--accent-on-contrast: #22d3ee`, measured at 11.02:1
+  in light mode and 9.66:1 in dark mode.
+- Responsive layout: exact Figma typography, padding, rhythm and layout are
+  measured at 1440, 768, 430, 390 and 320 CSS pixels. The global
+  `scrollbar-gutter: stable` can reserve 15 px on Windows Chromium. At 390 and
+  320 this safely narrows the content and may add a natural text line; the
+  implementation preserves symmetric visible gutters and permits content-led
+  section growth instead of extending text beneath the scrollbar.
+- SEO and metadata: no title, description, canonical, hreflang, Open Graph,
+  robots, structured-data or sitemap change.
+- CMS or data boundary: static Home presentation copy remains in next-intl; no
+  Payload field, schema or migration change.
+- Privacy and confidentiality: only existing public engineering principles are
+  restated.
+
+### Verification
+
+- Automated tests: the focused Principles Chromium contract passed 9/9;
+  catalog parity and non-empty validation passed 3/3; TypeScript and targeted
+  Biome validation passed.
+- Routes and locales: verified English `/` and Czech `/cs`, including document
+  language and the active full description variant at every target width.
+- Themes, viewports and interaction states: verified light geometry, type,
+  description switching, heading hierarchy, symmetric visible gutters and
+  descendant overflow at 1440, 768, 430, 390 and 320 CSS pixels. Verified the
+  semantic contrast palette and WCAG text contrast at 1440 and 390 CSS pixels
+  in both light and dark modes.
+- Manual content review: English is exact Figma copy; Czech was reviewed for
+  semantic fidelity and professional phrasing by the implementation team.
+- Result: Principles is green on the focused browser, catalog, type,
+  formatting and diff validation described above.
+- Residual risk: Czech has no canonical Figma text frame and therefore targets
+  semantic fidelity and containment rather than exact English height. The
+  stable-scrollbar topology can make the safe 390/320 layout taller than the
+  scrollbar-free Figma frame; changing that global policy belongs to a
+  separate cross-page decision.
+
+### Lifecycle
+
+- Supersedes: none; desktop strings remain active and unchanged.
+- Reverted by: none
+- Related entries: `COPY-20260729-004`
+- Notes: append a new entry rather than rewriting this record if any principle,
+  compact wording, breakpoint or scrollbar policy changes.

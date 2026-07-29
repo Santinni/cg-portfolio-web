@@ -89,19 +89,23 @@
 			"items": {
 				"architecture": {
 					"title": "Architecture with a reason",
-					"description": "Choose boundaries and patterns that reduce product risk."
+					"description": "Choose boundaries and patterns that reduce product risk.",
+					"descriptionCompact": "Reduce product risk."
 				},
 				"accessibility": {
 					"title": "Accessibility by default",
-					"description": "Build inclusive behavior into components and reviews."
+					"description": "Build inclusive behavior into components and reviews.",
+					"descriptionCompact": "Build inclusion into components."
 				},
 				"quality": {
 					"title": "Quality that supports delivery",
-					"description": "Use tests, tooling and feedback where they protect change."
+					"description": "Use tests, tooling and feedback where they protect change.",
+					"descriptionCompact": "Protect the changes that matter."
 				},
 				"leadership": {
 					"title": "Leadership through clarity",
-					"description": "Make trade-offs visible and help teams move with confidence."
+					"description": "Make trade-offs visible and help teams move with confidence.",
+					"descriptionCompact": "Make trade-offs visible."
 				}
 			}
 		},

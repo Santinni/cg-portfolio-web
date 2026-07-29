@@ -89,19 +89,23 @@
 			"items": {
 				"architecture": {
 					"title": "Architektura s důvodem",
-					"description": "Volím hranice a vzory, které snižují produktová rizika."
+					"description": "Volím hranice a vzory, které snižují produktová rizika.",
+					"descriptionCompact": "Snižuji produktová rizika."
 				},
 				"accessibility": {
 					"title": "Přístupnost od začátku",
-					"description": "Přístupné chování začleňuji přímo do komponent a revizí."
+					"description": "Přístupné chování začleňuji přímo do komponent a revizí.",
+					"descriptionCompact": "Přístupnost začleňuji do komponent."
 				},
 				"quality": {
 					"title": "Kvalita podporující dodávku",
-					"description": "Testy, nástroje a zpětnou vazbu používám tam, kde chrání změnu."
+					"description": "Testy, nástroje a zpětnou vazbu používám tam, kde chrání změnu.",
+					"descriptionCompact": "Chráním změny, na kterých záleží."
 				},
 				"leadership": {
 					"title": "Vedení skrze srozumitelnost",
-					"description": "Zviditelňuji kompromisy a pomáhám týmům postupovat s jistotou."
+					"description": "Zviditelňuji kompromisy a pomáhám týmům postupovat s jistotou.",
+					"descriptionCompact": "Zviditelňuji kompromisy."
 				}
 			}
 		},
