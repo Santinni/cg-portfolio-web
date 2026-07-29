@@ -122,25 +122,57 @@ Validation:
 Commit:
 - `fix(home): restore Selected Work responsive composition`
 
-### 5. Align Principles, Experience, And Final CTA Contracts
+### 5a. Align The Principles Contract
 
 Objective:
-- Complete the remaining Home-local typography and vertical rhythm without changing shared global primitives.
+- Match the responsive Principles typography, rhythm, and presentation copy without changing shared global primitives.
 
 Implementation:
 - Add EN/CS compact Principle descriptions while preserving desktop descriptions and ledgering their presentation use.
 - Match Principles 48/32 heading and 20/19 item typography.
-- Match Experience desktop 32 px rhythm, 104 px section padding, 48 px heading, and 18 px body; retain desktop-only visibility.
-- Match Final CTA 32/24 px rhythm, 42/30/24 responsive heading, and desktop 18 px supporting text; retain compact supporting-copy visibility rule and existing tones.
+- Preserve the accessible `--accent-on-contrast` eyebrow color where the literal light-desktop Figma color would fail text contrast.
 
 Validation:
-- Computed type, padding, gaps, visibility, and semantic heading order at all target widths and both locales.
+- Computed type, padding, gaps, visibility, natural growth, and containment at all target widths and both locales.
 - Light/dark semantic colors retain required contrast.
+- Treat a desktop browser's reserved scrollbar gutter as test-environment topology: never use `100vw` or hidden overflow to fake the mobile Figma content width.
 
 Commit:
-- `fix(home): complete Home typography and rhythm`
+- `fix(home): align Principles responsive contract`
 
-### 6. Add Complete Localized Parity Evidence
+### 5b. Align The Experience Contract
+
+Objective:
+- Match the desktop-only Experience block without leaking hidden content into compact visual or accessibility flows.
+
+Implementation:
+- Match the 104 px section padding, 32 px rhythm, 48 px heading, 18 px body, and text-only secondary CTA.
+- Retain desktop-only visibility and remove the non-design CTA icon.
+
+Validation:
+- Compare desktop light/dark against nodes `6:70` and `8:314`.
+- Prove the 1023 px hidden / 1024 px visible boundary, locale-aware CTA name and destination, focus behavior, and absence from the compact accessibility tree and tab order.
+
+Commit:
+- `fix(home): align Experience desktop contract`
+
+### 5c. Align The Final CTA Contract
+
+Objective:
+- Match the final conversion block at all approved widths while preserving localized destinations and semantic tones.
+
+Implementation:
+- Match 32/24 px rhythm, 42/30/24 responsive heading, and desktop 18 px supporting text.
+- Retain the compact supporting-copy visibility rule and existing semantic colors.
+
+Validation:
+- Test 1440/768/430/390/320 in EN/CS plus representative light/dark contrast and CTA focus/name/destination.
+- Use Figma nodes `6:76`, `7:426`, `8:242`, `8:136`, `8:189`, `8:320`, and `8:374`.
+
+Commit:
+- `fix(home): align Final CTA responsive contract`
+
+### 6a. Add Integrated Localized Geometry Evidence
 
 Objective:
 - Prove the integrated Home rather than relying on isolated component checks.
@@ -148,30 +180,64 @@ Objective:
 Implementation:
 - Add full-page order and non-overlap checks.
 - Scan visible descendants at 1440/768/430/390/320 for EN/CS; do not treat global `overflow-x:hidden` as proof.
-- Cover Home metadata/canonical/alternates/OG for `/` and `/cs`.
-- Cover skip link, CTA names/focus, heading/`aria-labelledby` integrity, reduced motion, and key contrast pairs.
-- Add a stable Chromium visual matrix for EN/CS × 1440/390 × light/dark. Generate committed baselines in the same Linux/Chromium environment used by CI; Windows screenshots are diagnostic only.
+- Compare light and dark geometry for the same locale and viewport.
+- Assert exact Figma section/page geometry for English where the browser topology is equivalent; use HUG containment, monotonic order, and non-overlap for Czech.
 
 Validation:
-- Focused Home Chromium suite passes against a production build.
-- No serious/critical accessibility failure from the repo-supported test surface; if axe is not already installed, do not add it without a separate dependency decision—use semantic/browser assertions and document the remaining automated-scan gap.
-- Screenshot and computed evidence identifies its Figma node and target SHA.
+- Focused integrated Home Chromium geometry suite passes.
+- Computed evidence identifies its Figma node and target SHA.
 
 Commit:
-- `test(home): prove localized responsive parity`
+- `test(home): prove integrated responsive geometry`
+
+### 6b. Add Home Accessibility And SEO Evidence
+
+Objective:
+- Prove the visitor-facing semantic, keyboard, reduced-motion, and locale metadata contracts independently of visual geometry.
+
+Implementation:
+- Extend the existing SEO suite for `/` and `/cs`; do not duplicate its helpers in a new suite.
+- Cover exactly one H1, section H2 and item H3 order, resolved `aria-labelledby`, localized skip link, visible CTA names/focus, compact Experience absence, and reduced-motion computed behavior.
+- Cover locale-specific canonical, `en`/`cs`/`x-default` alternates, `og:url`, and `og:locale`.
+
+Validation:
+- Covered semantic, focus, contrast, reduced-motion, and SEO contracts pass in Chromium for EN/CS.
+- Do not claim a complete WCAG or serious/critical issue scan unless an approved automated scanner actually ran; document that limitation instead of adding a dependency implicitly.
+
+Commit:
+- `test(home): prove accessibility and SEO contracts`
+
+### 6c. Prove Production Runtime And Visual Evidence
+
+Objective:
+- Distinguish production behavior from dev/Turbopack behavior and avoid non-portable visual baselines.
+
+Implementation:
+- Build first, start `.next/standalone/server.js` on a dedicated port, run focused Chromium with `PLAYWRIGHT_EXTERNAL_SERVER=true`, and tear the server down.
+- Create committed screenshot baselines only in the pinned Linux/Chromium/font environment used by CI. Windows screenshots remain diagnostic.
+- If no reproducible Linux baseline workflow exists in scope, defer the baseline explicitly and keep RPA-015 partial.
+
+Validation:
+- Production Home smoke passes for both locales and the critical responsive routes.
+- Any committed visual artifact records browser, OS, font, device scale factor, theme, locale, viewport, Figma node, and implementation SHA.
+
+Commit:
+- `test(home): prove production Home runtime`
+- Optional separate baseline commit: `test(home): add pinned visual baselines`
 
 ### 7. Refresh Audit Evidence
 
 Objective:
-- Reclassify RPA-005, RPA-014, and RPA-015 using the final branch SHA and fresh browser/Figma evidence.
+- Reclassify RPA-005, RPA-014, and RPA-015 using the tested implementation SHA and fresh browser/Figma evidence.
 
 Implementation:
 - Replace stale pre-PR #35 runtime measurements with current values.
 - Mark each finding fixed, partial, deferred, or still-valid according to actual evidence.
 - Preserve limitations: Czech has no exact design-height reference; CMS-independent Home proof does not establish secondary-route parity.
+- Keep repo-wide RPA-014 and RPA-015 partial unless their non-Home routes and states are also freshly verified.
 
 Validation:
-- Audit records SHA, routes, viewports, themes, locales, node IDs, expected/actual values, and artifact locations.
+- Audit records the tested implementation SHA separately from the later docs-only audit commit, plus routes, viewports, themes, locales, node IDs, expected/actual values, and artifact locations.
 - No release-readiness claim is made while a release-blocking P1 remains.
 
 Commit:
