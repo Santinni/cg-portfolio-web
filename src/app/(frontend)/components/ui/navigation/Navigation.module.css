@@ -5,13 +5,11 @@
     width: 100vw;
     height: var(--header-height);
     z-index: 50;
-    background-color: transparent;
-    border-bottom: 0 solid transparent;
+    background-color: var(--surface-page);
+    border-bottom: 0px solid var(--border-default);
 }
 
 .nav[data-scrolled='true'] {
-    background-color: var(--surface-page);
-    border-bottom-color: var(--border-default);
     border-bottom-width: 1px;
 }
 
@@ -25,19 +23,6 @@
     gap: var(--space-16);
     background-color: transparent;
     border-bottom: 0 solid transparent;
-}
-
-@media screen and (min-width: 1024px) {
-    .nav[data-scrolled='true'] {
-        background-color: transparent;
-        border-bottom-width: 0;
-    }
-
-    .nav[data-scrolled='true'] .menuWrapper {
-        background-color: var(--surface-page);
-        border-bottom-color: var(--border-default);
-        border-bottom-width: 1px;
-    }
 }
 
 .logo {
