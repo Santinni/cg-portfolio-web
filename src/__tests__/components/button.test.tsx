@@ -122,13 +122,14 @@ describe('Button', () => {
 			},
 		)
 
-		it.each(['transparent', 'text'] as const)(
-			'preserves the legacy %s compatibility variant',
-			(variant) => {
-				render(<Button variant={variant}>{variant}</Button>)
-				expect(screen.getByRole('button').className).toContain(`variant-${variant}`)
-			},
-		)
+		// `transparent` is the only legacy variant left; its sole consumer is
+		// `ExpandableText`. `text`, `accent`, `textSize` and `textWeight` had no
+		// consumer in source or tests and were removed against Figma `21:110`,
+		// which defines `Kind` as Primary / Secondary / Quiet only.
+		it('preserves the transparent compatibility variant', () => {
+			render(<Button variant="transparent">transparent</Button>)
+			expect(screen.getByRole('button').className).toContain('variant-transparent')
+		})
 
 		it.each(['small', 'medium', 'large'] as const)('applies the %s size class', (size) => {
 			render(<Button size={size}>{size}</Button>)

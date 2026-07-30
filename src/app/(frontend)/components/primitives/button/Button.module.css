@@ -99,25 +99,6 @@
     --button-background-active: var(--surface-raised, transparent);
     --button-foreground: var(--text-primary);
 }
-
-.variant-text {
-    --button-background: transparent;
-    --button-background-hover: transparent;
-    --button-background-active: transparent;
-    --button-foreground: var(--action-primary);
-    --button-foreground-hover: var(--action-primary-hover);
-    --button-foreground-active: var(--action-primary-pressed);
-    --button-disabled-background: transparent;
-}
-
-.accent-light,
-.accent-dark {
-    --button-background: var(--action-primary);
-    --button-background-hover: var(--action-primary-hover);
-    --button-background-active: var(--action-primary-pressed);
-    --button-foreground: var(--action-on-primary);
-}
-
 .size-small {
     min-block-size: var(--control-height-sm, 36px);
     min-inline-size: var(--control-min-width-sm, 80px);
@@ -145,40 +126,6 @@
 .button.variant-transparent:not(.rounded) {
     min-inline-size: 0;
     padding-inline: var(--space-24, 24px);
-}
-
-.button.variant-text {
-    min-block-size: 0;
-    min-inline-size: 0;
-    padding: var(--space-4, 4px);
-}
-
-.text-size-small {
-    font-size: var(--font-size-sm);
-}
-
-.text-size-medium {
-    font-size: var(--font-size-md);
-}
-
-.text-size-large {
-    font-size: var(--font-size-lg);
-}
-
-.text-weight-light {
-    font-weight: var(--font-weight-light);
-}
-
-.text-weight-normal {
-    font-weight: var(--font-weight-normal);
-}
-
-.text-weight-medium {
-    font-weight: var(--font-weight-medium);
-}
-
-.text-weight-bold {
-    font-weight: var(--font-weight-bold);
 }
 
 .fullWidth {
