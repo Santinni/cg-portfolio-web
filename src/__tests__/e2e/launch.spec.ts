@@ -236,18 +236,28 @@ test.describe('responsive shell interactions', () => {
 		await expect(dialog.locator('[data-mobile-menu-footer]')).toContainText(
 			'Senior / Lead Frontend Engineer',
 		)
-		expect(await page.locator('body').evaluate((body) => body.style.overflow)).toBe('hidden')
+		await expect
+			.poll(() => page.locator('body').evaluate((body) => body.style.overflow))
+			.toBe('hidden')
 
 		await page.getByRole('button', { name: 'Close menu' }).click()
 		await expect(dialog).not.toBeVisible()
 		await expect(trigger).toBeFocused()
-		expect(await page.locator('body').evaluate((body) => body.style.overflow)).toBe('')
+		// The scroll lock is released by a React effect that runs after the dialog's
+		// close event, so this must poll rather than sample once.
+		await expect
+			.poll(() => page.locator('body').evaluate((body) => body.style.overflow))
+			.toBe('')
 
 		await trigger.click()
 		await page.keyboard.press('Escape')
 		await expect(dialog).not.toBeVisible()
 		await expect(trigger).toBeFocused()
-		expect(await page.locator('body').evaluate((body) => body.style.overflow)).toBe('')
+		// The scroll lock is released by a React effect that runs after the dialog's
+		// close event, so this must poll rather than sample once.
+		await expect
+			.poll(() => page.locator('body').evaluate((body) => body.style.overflow))
+			.toBe('')
 
 		await page.setViewportSize({ width: 768, height: 900 })
 		await trigger.click()
@@ -256,7 +266,11 @@ test.describe('responsive shell interactions', () => {
 			.poll(() => nativeDialog.evaluate((element: HTMLDialogElement) => element.open))
 			.toBe(false)
 		await expect(nativeTrigger).not.toBeFocused()
-		expect(await page.locator('body').evaluate((body) => body.style.overflow)).toBe('')
+		// The scroll lock is released by a React effect that runs after the dialog's
+		// close event, so this must poll rather than sample once.
+		await expect
+			.poll(() => page.locator('body').evaluate((body) => body.style.overflow))
+			.toBe('')
 
 		await page.setViewportSize({ width: 390, height: 844 })
 		await trigger.click()
@@ -265,7 +279,11 @@ test.describe('responsive shell interactions', () => {
 		await expect
 			.poll(() => nativeDialog.evaluate((element: HTMLDialogElement) => element.open))
 			.toBe(false)
-		expect(await page.locator('body').evaluate((body) => body.style.overflow)).toBe('')
+		// The scroll lock is released by a React effect that runs after the dialog's
+		// close event, so this must poll rather than sample once.
+		await expect
+			.poll(() => page.locator('body').evaluate((body) => body.style.overflow))
+			.toBe('')
 		await expect
 			.poll(() => nativeDialog.evaluate((element) => !element.contains(document.activeElement)))
 			.toBe(true)
