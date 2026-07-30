@@ -1,32 +1,84 @@
-import { expect, test } from '@playwright/test'
+import { expect, type Page, test } from '@playwright/test'
+
+async function switchLocaleAndExpectLocation(
+	page: Page,
+	buttonName: string,
+	expected: { hash: string; pathname: string; search: string },
+) {
+	await Promise.all([
+		page.waitForURL((url) => {
+			return (
+				url.hash === expected.hash &&
+				url.pathname === expected.pathname &&
+				url.search === expected.search
+			)
+		}),
+		page.getByRole('button', { name: buttonName }).click(),
+	])
+	await page.waitForLoadState('load')
+}
 
 test.describe('language switcher', () => {
-	test('preserves the current route, query and hash in both directions', async ({ page }) => {
-		const scriptRenderErrors: string[] = []
-		page.on('console', (message) => {
-			if (
-				message.type() === 'error' &&
-				message.text().includes('Encountered a script tag while rendering React component')
-			) {
-				scriptRenderErrors.push(message.text())
-			}
+	const localizedRouteCases = [
+		{
+			id: 'Work',
+			englishPath: '/work',
+			czechPath: '/cs/work',
+			query: '?topic=performance',
+			hash: '#case-studies',
+		},
+		{
+			id: 'Curriculum Vitae',
+			englishPath: '/curriculum-vitae',
+			czechPath: '/cs/curriculum-vitae',
+			query: '?source=language-switcher',
+			hash: '#cv-experience',
+		},
+		{
+			id: 'booking',
+			englishPath: '/contact/book',
+			czechPath: '/cs/contact/book',
+			query: '?source=language-switcher',
+			hash: '#booking-offer-heading',
+		},
+	] as const
+
+	for (const route of localizedRouteCases) {
+		test(`${route.id} preserves its route, query and hash in both directions`, async ({ page }) => {
+			const scriptRenderErrors: string[] = []
+			page.on('console', (message) => {
+				if (
+					message.type() === 'error' &&
+					message.text().includes('Encountered a script tag while rendering React component')
+				) {
+					scriptRenderErrors.push(message.text())
+				}
+			})
+
+			await page.setViewportSize({ width: 1440, height: 900 })
+			await page.goto(`${route.englishPath}${route.query}${route.hash}`)
+			await expect(page.locator('html')).toHaveAttribute('data-scroll-behavior', 'smooth')
+
+			await switchLocaleAndExpectLocation(page, 'Switch to Czech', {
+				hash: route.hash,
+				pathname: route.czechPath,
+				search: route.query,
+			})
+			await expect(page.locator('html')).toHaveAttribute('lang', 'cs')
+			await expect(
+				page.getByRole('navigation').getByRole('link', { name: 'Projekty' }),
+			).toBeVisible()
+
+			await switchLocaleAndExpectLocation(page, 'Přepnout do jazyka: Angličtina', {
+				hash: route.hash,
+				pathname: route.englishPath,
+				search: route.query,
+			})
+			await expect(page.locator('html')).toHaveAttribute('lang', 'en')
+			await expect(page.getByRole('navigation').getByRole('link', { name: 'Work' })).toBeVisible()
+			if (route.id === 'Work') expect(scriptRenderErrors).toEqual([])
 		})
-
-		await page.setViewportSize({ width: 1440, height: 900 })
-		await page.goto('/work?topic=performance#case-studies')
-		await expect(page.locator('html')).toHaveAttribute('data-scroll-behavior', 'smooth')
-
-		await page.getByRole('button', { name: 'Switch to Czech' }).click()
-		await expect(page).toHaveURL(/\/cs\/work\?topic=performance#case-studies$/)
-		await expect(page.locator('html')).toHaveAttribute('lang', 'cs')
-		await expect(page.getByRole('navigation').getByRole('link', { name: 'Projekty' })).toBeVisible()
-
-		await page.getByRole('button', { name: 'Přepnout do jazyka: Angličtina' }).click()
-		await expect(page).toHaveURL(/\/work\?topic=performance#case-studies$/)
-		await expect(page.locator('html')).toHaveAttribute('lang', 'en')
-		await expect(page.getByRole('navigation').getByRole('link', { name: 'Work' })).toBeVisible()
-		expect(scriptRenderErrors).toEqual([])
-	})
+	}
 
 	test('marks the active locale for assistive technology', async ({ page }) => {
 		await page.setViewportSize({ width: 1440, height: 900 })

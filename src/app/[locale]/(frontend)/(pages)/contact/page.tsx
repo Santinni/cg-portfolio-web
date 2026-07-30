@@ -3,6 +3,7 @@ import type { Locale } from 'next-intl'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 import { Container } from '@/app/(frontend)/components/layout/Container'
+import { BookingCta } from '@/components/booking/BookingCta'
 import { ContactLink } from '@/components/site/ContactLink'
 import { Eyebrow } from '@/components/site/Eyebrow'
 import { PageIntro } from '@/components/site/PageIntro'
@@ -59,6 +60,8 @@ export default async function ContactPage({ params }: ContactPageProps) {
 					</div>
 				</Container>
 			</Section>
+
+			<BookingCta source="contact" />
 
 			<Section aria-labelledby="contact-expectations-heading" tone="page">
 				<Container className={styles.expectations}>

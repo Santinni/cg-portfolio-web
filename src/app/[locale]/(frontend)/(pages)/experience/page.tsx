@@ -5,6 +5,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 import { Container } from '@/app/(frontend)/components/layout/Container'
 import { Button } from '@/app/(frontend)/components/primitives/button'
+import { BookingCta } from '@/components/booking/BookingCta'
 import { Eyebrow } from '@/components/site/Eyebrow'
 import { PageIntro } from '@/components/site/PageIntro'
 import { Section } from '@/components/site/Section'
@@ -81,6 +82,8 @@ export default async function ExperiencePage({ params }: ExperiencePageProps) {
 					</div>
 				</Container>
 			</Section>
+
+			<BookingCta source="experience" />
 		</>
 	)
 }

@@ -17,6 +17,7 @@ const staticPaths = [
 	'/experience',
 	'/about',
 	'/contact',
+	'/contact/book',
 	'/insights',
 	'/curriculum-vitae',
 ]

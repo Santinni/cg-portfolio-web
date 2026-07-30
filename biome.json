@@ -4,7 +4,7 @@
 		"enabled": true,
 		"indentStyle": "tab",
 		"indentWidth": 2,
-		"lineEnding": "auto",
+		"lineEnding": "lf",
 		"lineWidth": 100
 	},
 	"javascript": {
