@@ -156,16 +156,24 @@
 - [x] Run `pnpm test:unit` — 17 tests passed.
 - [x] Run `pnpm typecheck` — passed.
 - [x] Run `pnpm lint` — 0 errors; 3 pre-existing warnings in `home-flagship-parity.spec.ts`.
-- [!] Run `pnpm format:check` — global gate reports 13 pre-existing CRLF-only mismatches in unchanged files; scoped Biome check passes all 23 changed source/catalog/config files.
-- [x] Run `pnpm build` — optimized Next.js 16 production build passed.
-- [!] Run `pnpm exec playwright test --project=chromium` — 233/237 passed against standalone; all 53 new CV/booking tests passed. Four failures are branch-external: two existing EN Home 390px pixel expectations and two standalone CMS/readiness environment contracts.
+- [x] Run `pnpm format:check` — resolved at the root cause. `biome.json` used `lineEnding: "auto"`, so the gate demanded CRLF on Windows and LF on Linux for the same working copy. Pinned to `lf` and added `.gitattributes`; no file content changed and the gate is now clean.
+- [x] Run `pnpm build` — optimized Next.js 16 production build passed; both booking routes prerendered.
+- [x] Run `pnpm exec playwright test --project=chromium --workers=1` against the standalone build — 233/237 passed, all 53 CV/booking tests green.
+  - The earlier run reported 8 extra SEO failures only because the artifact was built with canonical origin `localhost:3000` and served on port `3100`. Re-running the standalone server on its build-time origin makes all 66 SEO/switcher/booking/CV tests pass.
+  - Remaining 4 failures are branch-external:
+    - `home-hero-anchoring:266` and `home-integrated-parity` at EN 390px assert `MOBILE_GUTTER_HERO_GROWTH` = 22.203125px within ±0.1px; this machine measures −2.453125px. The constant is coupled to the browser's reserved scrollbar gutter. The branch changes no Home block, no Home CSS and no `home` message key, so Home output is identical to `dev`.
+    - `launch:27` readiness and `i18n-routing:119` CMS 404 require the Postgres container; Docker Desktop could not be started unattended in this session. The branch touches no health, readiness, insights or API file.
 - [x] Run `git diff --check`.
-- [ ] Inspect `git status --short` and confirm only intended files changed.
-- [ ] Run controller-owned review and completion verification.
+- [x] Inspect `git status --short` and confirm only intended files changed.
+- [x] Run controller-owned review and completion verification.
+  - Reviewed `booking.ts`, `BookingScheduler`, `BookingCta`, the booking route, `DownloadAction` and the CV composition; no blocking finding.
+  - Confirmed `Button renders="link"` uses the locale-aware `Link` from `@/i18n/navigation`, so every contextual CTA resolves per locale.
+  - Dropped an out-of-scope `Navigation.module.css` change found in the working tree: it moved the scrolled desktop surface onto the nav element and broke the asserted contract at `launch.spec.ts:188`. Removing it restored that test.
+  - `tmp/` and `.playwright-mcp/` were staged but never committed; both are now gitignored. `tmp/pdfs/cv-audit/*.txt` duplicated the CV phone number as plaintext in the repository.
 
 ### Phase 8: Booking Flow Implementation
 
-- [ ] Re-read the booking findings and repository state after CV completion.
+- [x] Re-read the booking findings and repository state after CV completion.
 - [x] Reconfirm the Google Appointment Schedule response and record the unverifiable ownership limitation.
   - `2026-07-30`: HTTP 200, `text/html`, title `Book a consultation`;
   - the public response does not prove which Google account owns the schedule.
@@ -187,14 +195,14 @@
 
 ### Phase 9: Branch Delivery
 
-- [ ] Review the complete diff and exclude temporary/browser evidence from the commit.
-- [ ] Verify the branch still targets an up-to-date `dev` ancestry and resolve only in-scope conflicts.
-- [ ] Create scoped commits after checking the staged file list.
-- [ ] Push `feat/curriculum-vitae-redesign` and confirm its remote SHA.
-- [ ] Check whether an open PR already exists for the exact head/base pair.
-- [ ] Create a PR targeting `dev`.
+- [x] Review the complete diff and exclude temporary/browser evidence from the commit.
+- [x] Verify the branch still targets an up-to-date `dev` ancestry and resolve only in-scope conflicts.
+  - `dev` already carried the brand-identity change as squash merge `7a732fb`; the local duplicate `2d5c55b` had an identical tree and was dropped by the rebase without conflicts.
+- [x] Create scoped commits after checking the staged file list.
+- [x] Push `feat/curriculum-vitae-redesign` and confirm its remote SHA.
+- [!] Create a PR targeting `dev` — `gh` is not installed in this environment, so the PR must be opened from the compare URL. Body prepared by the controller.
 - [ ] Independently verify PR number, URL, base, head and head SHA.
-- [ ] Do not merge, enable auto-merge, delete the branch or trigger deployment.
+- [x] Do not merge, enable auto-merge, delete the branch or trigger deployment.
 
 ## Agent Orchestration Ledger
 
