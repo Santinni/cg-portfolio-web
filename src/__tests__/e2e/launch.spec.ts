@@ -245,9 +245,7 @@ test.describe('responsive shell interactions', () => {
 		await expect(trigger).toBeFocused()
 		// The scroll lock is released by a React effect that runs after the dialog's
 		// close event, so this must poll rather than sample once.
-		await expect
-			.poll(() => page.locator('body').evaluate((body) => body.style.overflow))
-			.toBe('')
+		await expect.poll(() => page.locator('body').evaluate((body) => body.style.overflow)).toBe('')
 
 		await trigger.click()
 		await page.keyboard.press('Escape')
@@ -255,9 +253,7 @@ test.describe('responsive shell interactions', () => {
 		await expect(trigger).toBeFocused()
 		// The scroll lock is released by a React effect that runs after the dialog's
 		// close event, so this must poll rather than sample once.
-		await expect
-			.poll(() => page.locator('body').evaluate((body) => body.style.overflow))
-			.toBe('')
+		await expect.poll(() => page.locator('body').evaluate((body) => body.style.overflow)).toBe('')
 
 		await page.setViewportSize({ width: 768, height: 900 })
 		await trigger.click()
@@ -268,9 +264,7 @@ test.describe('responsive shell interactions', () => {
 		await expect(nativeTrigger).not.toBeFocused()
 		// The scroll lock is released by a React effect that runs after the dialog's
 		// close event, so this must poll rather than sample once.
-		await expect
-			.poll(() => page.locator('body').evaluate((body) => body.style.overflow))
-			.toBe('')
+		await expect.poll(() => page.locator('body').evaluate((body) => body.style.overflow)).toBe('')
 
 		await page.setViewportSize({ width: 390, height: 844 })
 		await trigger.click()
@@ -281,9 +275,7 @@ test.describe('responsive shell interactions', () => {
 			.toBe(false)
 		// The scroll lock is released by a React effect that runs after the dialog's
 		// close event, so this must poll rather than sample once.
-		await expect
-			.poll(() => page.locator('body').evaluate((body) => body.style.overflow))
-			.toBe('')
+		await expect.poll(() => page.locator('body').evaluate((body) => body.style.overflow)).toBe('')
 		await expect
 			.poll(() => nativeDialog.evaluate((element) => !element.contains(document.activeElement)))
 			.toBe(true)

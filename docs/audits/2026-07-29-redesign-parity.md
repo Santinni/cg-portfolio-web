@@ -122,23 +122,23 @@ The 15 px cases model browser topology explicitly: the document viewport remains
 
 | ID | Current status | Priority | Release | Current conclusion |
 |---|---|---:|---|---|
-| RPA-001 | `still-valid` | P1 | `release-blocking` | Button geometry/API still conflicts with `21:110`. |
-| RPA-002 | `still-valid` | P2 | `can-wait` | Disabled/loading styles are still not composed per kind. |
-| RPA-003 | `still-valid` | P1 | `release-blocking` | Navigation still flattens `21:357` and lacks current-route semantics. |
-| RPA-004 | `still-valid` | P1 | `release-blocking` | Resize can leave an invisible modal and body scroll lock. |
-| RPA-005 | `fixed-on-feature-branch` | P1 | `resolved-on-feature-branch` | Home matches the approved responsive composition across the complete EN/CS target matrix; integration into `dev` remains pending. |
+| RPA-001 | `fixed-in-dev` | P1 | `resolved` | Geometry, colour and state model match `21:110` exactly across all 54 variants; the surplus API with no consumer was removed. |
+| RPA-002 | `not-a-defect` | P2 | `resolved` | Per-kind state properties, hover guards and a `currentColor` loader are in place; Figma's own Loading variant hides the label and shows a 16px indicator, which is what the implementation does. |
+| RPA-003 | `fixed-in-dev` | P1 | `resolved` | Measured geometry matches `21:357` at 1440/1024/768/390 in EN and CS and both themes; `aria-current="page"` is emitted. `Theme` is applied as Solid everywhere by decision. |
+| RPA-004 | `fixed-in-dev` | P1 | `resolved` | Six consecutive browser runs of open, Escape, focus restoration and resize 390 to 1024 released the dialog and the scroll lock every time; the intermittent test assertion was the only instability. |
+| RPA-005 | `fixed-in-dev` | P1 | `resolved` | Merged into `dev` through PR #36. |
 | RPA-006 | `still-valid` | P1 | `can-wait` | Work still implements a different layout/content revision. |
 | RPA-007 | `still-valid` | P1 | `can-wait` | Case-study template still adds unapproved composition and rhythm. |
 | RPA-008 | `still-valid` | P1 | `can-wait` | About/Experience/Contact still contain materially different sections. |
 | RPA-009 | `needs-reverification` | P1 | `can-wait` | Current published CMS article data is not a stable audit fixture. |
-| RPA-010 | `still-valid` | P1 | `release-blocking` | ShareBar foreground token still fails the light-theme contract. |
+| RPA-010 | `fixed-in-dev` | P1 | `resolved` | `--action-primary-text` no longer exists anywhere in the repository; `.action` reads the canonical `--action-on-primary`. |
 | RPA-011 | `still-valid` | P2 | `can-wait` | Article composition/tokens remain incomplete. |
 | RPA-012 | `still-valid` | P2 | `can-wait` | Theme control and CV theme scope remain inconsistent. |
 | RPA-013 | `fixed-by-i18n` | P2 | `can-wait` | Missing insight slugs now return a genuine branded noindex 404. |
 | RPA-014 | `partially-fixed-on-feature-branch` | P2 | `can-wait` | Home descendant-overflow coverage is fixed and verified at all target widths/locales; global public-route scope remains open. |
 | RPA-015 | `partially-fixed-on-feature-branch` | P2 | `can-wait` | Computed geometry, state, accessibility, SEO, and revision evidence is substantially expanded; a pinned screenshot baseline remains open. |
-| RPA-016 | `still-valid` | P3 | `can-wait` | Portfolio and CV still expose different email addresses. |
-| RPA-017 | `still-valid` | P1 | `release-blocking` | Mobile menu still diverges from prototype `27:49`. |
+| RPA-016 | `fixed-in-dev` | P3 | `resolved` | PR #39 unified the public identity; `karel@codeguy.cz` is the only address in `src/content`. |
+| RPA-017 | `fixed-in-dev` | P1 | `resolved` | The menu uses a native `<dialog>` with `showModal()`, Escape, focus restoration and scroll-lock release, all verified in repeated browser runs. |
 | RPA-018 | `still-valid` | P2 | `can-wait` | Editorial states remain centered/skeletal instead of the approved panels. |
 
 ## Reproducible evidence matrix
@@ -438,3 +438,83 @@ DevTools extension frame. Loading `/insights`, `/` and `/work` in clean headless
 Chromium with no extensions produces zero console errors or warnings. It is
 development-only instrumentation and never reaches production. Do not spend time
 on it; check the stack for `chrome-extension://` before investigating.
+
+## 2026-07-30 — Shared UI re-measurement
+
+Branch `test/shared-ui-redesign-parity`, measured against `dev` at `7220472`.
+The ledger above was stale: PR #35 implemented most of the Button and Navigation
+findings and the audit was never re-measured against it. Every row changed below
+is backed by a measurement recorded here, not by reading source.
+
+### Button — `21:110`
+
+The component set has 54 variants: `Kind` Primary/Secondary/Quiet × `State`
+Default/Hover/Active/Focus/Disabled/Loading × `Size` SM/MD/LG. Extracted every
+variant's geometry, fills, strokes and label programmatically and compared with
+`Button.module.css`:
+
+- SM/MD/LG heights 36/44/52px, radius 4px, inline padding 12/16/20px, gap 8px,
+  labels 14/16/16px Medium — all match.
+- Primary `#0a6e80` / hover `#085a6a` / active `#064854`, white label; disabled
+  `#f1f4f8` with `#4a5963` label — all match their tokens.
+- Secondary: transparent with a 1px `#7c8d99` border, hover `#f1f4f8`, active
+  `#f8faff`, disabled border `#d8dee8` — all match.
+- Quiet: transparent with `#0a6e80` label, hover `#f1f4f8`, active `#f8faff` — match.
+- Focus binds `--focus-ring` `#0a6e80` at `--focus-ring-width` 2 — the
+  implementation uses `--action-focus` `#0a6e80` at 2px. The raw stroke reads as
+  black only because that is the unresolved base paint under the variable.
+- Loading sets the label to opacity 0 and shows a 16×16 indicator — exactly what
+  `.loadingContent` and `.loadingIcon` do. RPA-002 described approved behaviour
+  as a defect.
+
+The only real divergence was surplus API. `accent`, `textSize`, `textWeight` and
+`variant="text"` had zero consumers in source and in tests and were removed.
+`transparent` and `rounded` remain for `ExpandableText`, which itself now has no
+runtime consumer — a candidate for removal in a later pass.
+
+**Expression difference, not a defect:** Figma draws focus as a 2px stroke on the
+control because it cannot express `outline-offset`. The implementation uses an
+offset outline, which keeps the ring clear of the control.
+
+### Navigation — `21:357`
+
+24 variants: `Mode` Desktop/Tablet/Mobile × `Theme` Transparent/Solid/Inverse ×
+`State` Default/Scrolled/Menu Open. Desktop is 1200×72 with no inline padding,
+Tablet 768×64 with 48px, Mobile 390×64 with 20px. Solid fills `--surface-page`;
+Scrolled adds a 1px `--border-default` bottom border.
+
+Measured on `/work` and `/cs/work` at 1440, 1024, 768 and 390px in both themes —
+16 combinations, all identical to the spec: 72/72/64/64px bar height, 1200/896/
+672/350px content row, 120/64/48/20px gutter, 0px border at rest and 1px in
+`--border-default` when scrolled.
+
+### Mobile menu — `27:49`, RPA-004 and RPA-017
+
+Six consecutive direct browser runs of open → Escape → focus restoration →
+reopen → resize 390 to 1024: **0 failures**. The scroll lock is applied on open
+and released on both close paths, and the resize closes the dialog and releases
+the lock.
+
+`launch:218` was failing intermittently because it sampled `body.style.overflow`
+once, immediately after the dialog stopped being visible, while the lock is
+released by a React effect that runs after the close event. Converted to
+`expect.poll`; three consecutive runs pass.
+
+### Still open
+
+- RPA-001 residue: `ExpandableText` and the `transparent`/`rounded` pair it keeps alive.
+- RPA-003 residue: the three-variant `Theme` model is not implemented — Solid is
+  applied everywhere by decision, and the Figma instances were updated to match.
+- The full-bleed scrolled divider is implemented in code but the Figma component
+  is still 1200px wide.
+- RPA-006/007/008/009/011/012/018 are untouched by this pass.
+
+### Review limitation
+
+The brief asked for independent read-only review by Mistral Vibe, Copilot CLI and
+Claude. Vibe fails on a local configuration merge, Copilot CLI has no
+authentication and `gh` is not installed in this environment. This pass was
+reviewed by the controller only and must not be described as independently
+reviewed. The document also lives at `docs/audits/2026-07-29-redesign-parity.md`
+rather than the `docs/redesign-parity-audit.md` path the brief named; renaming it
+would break existing references in commits and plans.
