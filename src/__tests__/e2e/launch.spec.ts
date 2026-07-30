@@ -169,9 +169,14 @@ test.describe('responsive shell interactions', () => {
 				const top = await readSurface()
 				const expectedHeight = viewport.width >= 1024 ? 72 : 64
 
+				// Deliberate deviation from the page frames in Figma, which instance the
+				// Navigation `Theme=Transparent` variant (46:117, 74:266). We apply the
+				// approved `Theme=Solid` variant (21:318 / 21:321) on every route instead,
+				// so the bar owns its own surface and can never inherit an unreadable
+				// background from whatever section happens to scroll beneath it.
 				expect(top.navHeight).toBe(expectedHeight)
 				expect(top.wrapperHeight).toBe(expectedHeight)
-				expect(top.navBackground).toBe('rgba(0, 0, 0, 0)')
+				expect(top.navBackground).toBe(top.surfaceColor)
 				expect(top.wrapperBackground).toBe('rgba(0, 0, 0, 0)')
 				expect(top.navBorderWidth).toBe(0)
 				expect(top.wrapperBorderWidth).toBe(0)
@@ -184,19 +189,16 @@ test.describe('responsive shell interactions', () => {
 
 				expect(scrolled.navHeight).toBe(top.navHeight)
 				expect(scrolled.wrapperHeight).toBe(top.wrapperHeight)
+				// The scrolled separator now spans the full bar at every viewport rather
+				// than only the inner 1200px container, so the rule reads as one divider
+				// across the whole header.
+				expect(scrolled.navBackground).toBe(scrolled.surfaceColor)
+				expect(scrolled.navBorderWidth).toBe(1)
+				expect(scrolled.navBorderColor).toBe(scrolled.borderColor)
+				expect(scrolled.wrapperBackground).toBe('rgba(0, 0, 0, 0)')
+				expect(scrolled.wrapperBorderWidth).toBe(0)
 				if (viewport.width >= 1024) {
-					expect(scrolled.navBackground).toBe('rgba(0, 0, 0, 0)')
-					expect(scrolled.navBorderWidth).toBe(0)
-					expect(scrolled.wrapperBackground).toBe(scrolled.surfaceColor)
-					expect(scrolled.wrapperBorderWidth).toBe(1)
-					expect(scrolled.wrapperBorderColor).toBe(scrolled.borderColor)
 					expect(scrolled.wrapperWidth).toBe(1200)
-				} else {
-					expect(scrolled.navBackground).toBe(scrolled.surfaceColor)
-					expect(scrolled.navBorderWidth).toBe(1)
-					expect(scrolled.navBorderColor).toBe(scrolled.borderColor)
-					expect(scrolled.wrapperBackground).toBe('rgba(0, 0, 0, 0)')
-					expect(scrolled.wrapperBorderWidth).toBe(0)
 				}
 
 				await page.evaluate(() => window.scrollTo(0, 0))
