@@ -2,6 +2,7 @@ import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
 import { Container } from '@/app/(frontend)/components/layout/Container'
+import { BookingCta } from '@/components/booking/BookingCta'
 import { Eyebrow } from '@/components/site/Eyebrow'
 import { caseStudySectionKeys, type CaseStudy } from '@/content/work'
 import { Link } from '@/i18n/navigation'
@@ -64,6 +65,8 @@ export function CaseStudyLayout({ caseStudy, nextCase }: CaseStudyLayoutProps) {
 					))}
 				</Container>
 			</div>
+
+			<BookingCta source="caseStudy" />
 
 			<nav className={styles.caseNavigation} aria-label={t('navigation.label')}>
 				<Container className={styles.caseNavigationInner}>

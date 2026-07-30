@@ -118,6 +118,7 @@ const nextConfig: NextConfig = {
 				{ source: '/experience', destination: '/en/experience' },
 				{ source: '/about', destination: '/en/about' },
 				{ source: '/contact', destination: '/en/contact' },
+				{ source: '/contact/book', destination: '/en/contact/book' },
 				{ source: '/insights', destination: '/en/insights' },
 				{ source: '/curriculum-vitae', destination: '/en/curriculum-vitae' },
 			],

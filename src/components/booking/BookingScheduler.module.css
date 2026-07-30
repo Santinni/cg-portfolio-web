@@ -1,0 +1,119 @@
+.scheduler {
+	display: grid;
+	gap: var(--space-24);
+	inline-size: 100%;
+}
+
+.loadPanel,
+.fallbacks {
+	display: grid;
+	gap: var(--space-16);
+	padding: var(--space-24);
+	border: 1px solid var(--border-default);
+	border-radius: var(--radius-4, 4px);
+	background: var(--surface-raised);
+	color: var(--text-primary);
+}
+
+.privacyText,
+.loadingStatus,
+.fallbackTitle {
+	margin: 0;
+}
+
+.privacyText,
+.loadingStatus {
+	max-inline-size: 68ch;
+	color: var(--text-secondary);
+	font-size: var(--font-size-body);
+	line-height: var(--line-height-body);
+}
+
+.loadButton {
+	justify-self: start;
+	min-block-size: var(--control-height-lg, 52px);
+	min-inline-size: var(--control-min-width-lg, 112px);
+	padding-block: 0;
+	padding-inline: var(--button-padding-inline-lg, 20px);
+	border: 0;
+	border-radius: var(--radius-4, 4px);
+	background: var(--action-primary);
+	color: var(--action-on-primary);
+	font: inherit;
+	font-weight: var(--font-weight-medium, 500);
+	cursor: pointer;
+	transition:
+		background-color 0.2s,
+		color 0.2s;
+}
+
+.loadButton:hover {
+	background: var(--action-primary-hover);
+}
+
+.loadButton:active {
+	background: var(--action-primary-pressed);
+}
+
+.loadButton:focus-visible,
+.fallbackLink:focus-visible {
+	outline: 2px solid var(--action-focus);
+	outline-offset: 2px;
+}
+
+.frameShell {
+	overflow: hidden;
+	inline-size: 100%;
+	min-block-size: 640px;
+	aspect-ratio: 3 / 4;
+	border: 1px solid var(--border-default);
+	border-radius: var(--radius-4, 4px);
+	background: var(--surface-raised);
+}
+
+.frame {
+	display: block;
+	inline-size: 100%;
+	block-size: 100%;
+	min-block-size: inherit;
+	border: 0;
+}
+
+.fallbackTitle {
+	font-size: var(--font-size-body-lg);
+	font-weight: var(--font-weight-semibold, 600);
+	line-height: var(--line-height-body-lg);
+}
+
+.fallbackLinks {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-12) var(--space-24);
+}
+
+.fallbackLink {
+	display: inline-flex;
+	min-block-size: var(--touch-target-min, 44px);
+	align-items: center;
+	color: var(--action-primary);
+	font-weight: var(--font-weight-medium, 500);
+	text-decoration: underline;
+	text-underline-offset: 0.2em;
+}
+
+.fallbackLink:hover {
+	color: var(--action-primary-hover);
+}
+
+@media (min-width: 768px) {
+	.frameShell {
+		min-block-size: 640px;
+		aspect-ratio: 4 / 3;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.loadButton {
+		transition: none;
+	}
+}

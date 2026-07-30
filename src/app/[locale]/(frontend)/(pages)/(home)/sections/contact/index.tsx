@@ -1,5 +1,4 @@
 import { GitHubIcon, LinkedInIcon } from '@/app/(frontend)/components/icons/BrandIcons'
-import BookingModal from '@/app/(frontend)/components/ui/bookingModal'
 import type { Contact as ContactType } from '@/payload-types'
 
 import styles from './Contact.module.css'
@@ -9,10 +8,7 @@ interface ContactProps {
 	data: ContactType
 }
 
-/**
- * Contact section — displays email, phone, social links
- * fetched from the CMS, plus a Google Calendar booking modal.
- */
+/** Contact section — displays email, phone, and social links fetched from the CMS. */
 export default function Contact({ data }: ContactProps) {
 	return (
 		<section className={styles.section} id="contact" aria-labelledby="contact-heading">
@@ -56,7 +52,6 @@ export default function Contact({ data }: ContactProps) {
 							</a>
 						)}
 					</div>
-					<BookingModal />
 				</div>
 			</div>
 		</section>

@@ -11,8 +11,9 @@ interface SeoExpectation {
 }
 
 async function expectLocalizedSeo(page: Page, expectation: SeoExpectation) {
-	const configuredOrigin = new URL(process.env.NEXT_PUBLIC_SERVER_URL ?? 'https://codeguy.cz')
-		.origin
+	const configuredOrigin = new URL(
+		process.env.NEXT_PUBLIC_SERVER_URL ?? process.env.PLAYWRIGHT_BASE_URL ?? page.url(),
+	).origin
 	const absoluteUrl = (path: string) => {
 		const url = new URL(path, `${configuredOrigin}/`)
 		return path === '/' ? url.origin : url.href
@@ -121,5 +122,81 @@ test.describe('localized search metadata', () => {
 			czechPath: '/cs/work/energy-customer-portal',
 			openGraphLocale: 'cs_CZ',
 		})
+	})
+
+	test.describe('Curriculum Vitae and booking metadata', () => {
+		// Next's development server can transiently return 500 when both localized
+		// CV metadata routes compile concurrently. CI already runs one worker.
+		test.describe.configure({ mode: 'serial' })
+
+		const cvAndBookingMetadata = [
+			{
+				id: 'English Curriculum Vitae',
+				path: '/curriculum-vitae',
+				canonicalPath: '/curriculum-vitae',
+				englishPath: '/curriculum-vitae',
+				czechPath: '/cs/curriculum-vitae',
+				lang: 'en',
+				description:
+					'Karel Kutchan — Senior Frontend Engineer with more than ten years in web development.',
+				openGraphLocale: 'en_US',
+				title: 'Curriculum Vitae | Codeguy',
+			},
+			{
+				id: 'Czech Curriculum Vitae',
+				path: '/cs/curriculum-vitae',
+				canonicalPath: '/cs/curriculum-vitae',
+				englishPath: '/curriculum-vitae',
+				czechPath: '/cs/curriculum-vitae',
+				lang: 'cs',
+				description:
+					'Karel Kutchan — Senior frontend engineer s více než deseti lety zkušeností ve webovém vývoji.',
+				openGraphLocale: 'cs_CZ',
+				title: 'Životopis | Codeguy',
+			},
+			{
+				id: 'English booking',
+				path: '/contact/book',
+				canonicalPath: '/contact/book',
+				englishPath: '/contact/book',
+				czechPath: '/cs/contact/book',
+				lang: 'en',
+				description:
+					'Book a focused introductory conversation with Karel Kutchan about a role, team, project or another reason to connect.',
+				openGraphLocale: 'en_US',
+				title: 'Book an introductory conversation | Codeguy',
+			},
+			{
+				id: 'Czech booking',
+				path: '/cs/contact/book',
+				canonicalPath: '/cs/contact/book',
+				englishPath: '/contact/book',
+				czechPath: '/cs/contact/book',
+				lang: 'cs',
+				description:
+					'Domluvte si s Karlem Kutchanem věcný úvodní rozhovor o roli, týmu, projektu nebo jiném tématu, které chcete probrat.',
+				openGraphLocale: 'cs_CZ',
+				title: 'Domluvit úvodní rozhovor | Codeguy',
+			},
+		] as const
+
+		for (const metadata of cvAndBookingMetadata) {
+			test(`${metadata.id} publishes exact indexable localized metadata`, async ({ page }) => {
+				const response = await page.goto(metadata.path)
+
+				expect(response?.status()).toBe(200)
+				await expect(page.locator('html')).toHaveAttribute('lang', metadata.lang)
+				await expectLocalizedSeo(page, {
+					canonicalPath: metadata.canonicalPath,
+					description: metadata.description,
+					englishPath: metadata.englishPath,
+					czechPath: metadata.czechPath,
+					openGraphLocale: metadata.openGraphLocale,
+					openGraphType: 'website',
+					title: metadata.title,
+				})
+				await expectIndexable(page)
+			})
+		}
 	})
 })
