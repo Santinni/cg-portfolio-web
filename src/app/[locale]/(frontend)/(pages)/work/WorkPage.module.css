@@ -1,7 +1,7 @@
 .hero {
   padding-block: var(--space-64);
-  background: var(--surface-contrast);
-  color: var(--text-on-contrast);
+  background: var(--surface-page);
+  color: var(--text-primary);
 }
 
 .heroInner {
@@ -10,13 +10,13 @@
 }
 
 .heroInner > p:first-child {
-  color: var(--accent-on-contrast);
+  color: var(--action-primary);
 }
 
 .title {
   max-width: 20ch;
   margin: 0;
-  color: var(--text-on-contrast);
+  color: var(--text-primary);
   font-size: var(--font-size-h1);
   font-weight: 700;
   line-height: var(--line-height-h1);
@@ -26,7 +26,7 @@
 .intro {
   max-width: 62ch;
   margin: 0;
-  color: var(--text-on-contrast-muted);
+  color: var(--text-secondary);
   font-size: var(--font-size-body-lg);
   line-height: var(--line-height-body-lg);
 }

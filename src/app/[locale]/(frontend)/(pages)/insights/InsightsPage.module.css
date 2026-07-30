@@ -1,7 +1,7 @@
 .hero {
 	padding-block: var(--space-64);
-	color: var(--text-on-contrast);
-	background: var(--surface-contrast);
+	color: var(--text-primary);
+	background: var(--surface-page);
 }
 
 .heroInner,
@@ -13,7 +13,7 @@
 
 .heroInner > p:first-child,
 .ctaInner > p:first-child {
-	color: var(--accent-on-contrast);
+	color: var(--action-primary);
 }
 
 .title,
@@ -26,7 +26,7 @@
 
 .title {
 	max-width: 18ch;
-	color: var(--text-on-contrast);
+	color: var(--text-primary);
 	font-size: var(--font-size-h1);
 	line-height: var(--line-height-h1);
 }
@@ -40,7 +40,7 @@
 }
 
 .intro {
-	color: var(--text-on-contrast-muted);
+	color: var(--text-secondary);
 }
 
 .filterBar {
@@ -112,19 +112,19 @@
 
 .cta {
 	padding-block: var(--section-block);
-	color: var(--text-on-contrast);
-	background: var(--surface-contrast);
+	color: var(--text-primary);
+	background: var(--surface-subtle);
 }
 
 .ctaTitle {
 	max-width: 24ch;
-	color: var(--text-on-contrast);
+	color: var(--text-primary);
 	font-size: var(--font-size-h2);
 	line-height: var(--line-height-h2);
 }
 
 .ctaCopy {
-	color: var(--text-on-contrast-muted);
+	color: var(--text-secondary);
 }
 
 .visuallyHidden {
