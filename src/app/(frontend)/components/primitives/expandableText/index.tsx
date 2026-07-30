@@ -1,6 +1,7 @@
 'use client'
 
 import { ChevronDownIcon } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { type FC, type PropsWithChildren, useId, useState } from 'react'
 
 import { Button } from '../button'
@@ -13,6 +14,7 @@ import styles from './ExpandableText.module.css'
 const ExpandableText: FC<PropsWithChildren> = ({ children }) => {
 	const [isOpen, setIsOpen] = useState(false)
 	const contentId = useId()
+	const t = useTranslations('accessibility')
 
 	return (
 		<div className={styles.expandableText}>
@@ -31,7 +33,7 @@ const ExpandableText: FC<PropsWithChildren> = ({ children }) => {
 				rounded
 				aria-expanded={isOpen}
 				aria-controls={contentId}
-				aria-label={isOpen ? 'Show less' : 'Show more'}
+				aria-label={isOpen ? t('showLess') : t('showMore')}
 			>
 				<ChevronDownIcon className={styles.triggerIcon} />
 			</Button>

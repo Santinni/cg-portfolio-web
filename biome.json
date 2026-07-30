@@ -4,6 +4,7 @@
 		"enabled": true,
 		"indentStyle": "tab",
 		"indentWidth": 2,
+		"lineEnding": "lf",
 		"lineWidth": 100
 	},
 	"javascript": {
@@ -16,11 +17,27 @@
 		"includes": [
 			"src/app/(frontend)/**/*.tsx",
 			"src/app/(frontend)/**/*.ts",
+			"src/app/*/(frontend)/**/*.tsx",
+			"src/app/*/(frontend)/**/*.ts",
 			"src/app/robots.ts",
 			"src/app/sitemap.ts",
+			"src/components/article/**/*.tsx",
+			"src/components/site/**/*.tsx",
+			"src/components/work/**/*.tsx",
+			"src/content/**/*.ts",
+			"src/i18n/**/*.ts",
+			"src/__tests__/**/*.ts",
+			"src/__tests__/**/*.tsx",
+			"src/proxy.ts",
+			"src/global.d.ts",
+			"src/app/global-not-found.tsx",
 			"src/collections/**/*.ts",
 			"src/access/**/*.ts",
-			"src/lib/**/*.ts"
+			"src/lib/**/*.ts",
+			"messages/*.json",
+			"next.config.ts",
+			"playwright.config.ts",
+			"biome.json"
 		]
 	},
 	"linter": {

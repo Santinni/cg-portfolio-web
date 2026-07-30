@@ -1,0 +1,279 @@
+import type { Metadata } from 'next'
+import { hasLocale } from 'next-intl'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
+import { notFound } from 'next/navigation'
+
+import { Container } from '@/app/(frontend)/components/layout/Container'
+import { Button } from '@/app/(frontend)/components/primitives/button'
+import { DownloadAction } from '@/app/(frontend)/components/primitives/downloadAction'
+import {
+	curriculumVitae,
+	curriculumVitaeEducation,
+	curriculumVitaeExperience,
+	curriculumVitaeHighlights,
+	type CurriculumVitaeLocale,
+	curriculumVitaeLanguages,
+	curriculumVitaeProjects,
+	curriculumVitaeSkills,
+} from '@/content/curriculum-vitae'
+import { contact } from '@/content/site'
+import { createLocalizedMetadata } from '@/i18n/metadata'
+import { routing } from '@/i18n/routing'
+
+import styles from './page.module.css'
+
+interface CurriculumPageProps {
+	params: Promise<{ locale: string }>
+}
+
+function formatMonth(value: string, locale: string) {
+	const [year, month] = value.split('-').map(Number)
+
+	return new Intl.DateTimeFormat(locale, {
+		month: 'short',
+		year: 'numeric',
+		timeZone: 'UTC',
+	}).format(new Date(Date.UTC(year, month - 1, 1)))
+}
+
+export async function generateMetadata({ params }: CurriculumPageProps): Promise<Metadata> {
+	const { locale } = await params
+	if (!hasLocale(routing.locales, locale)) notFound()
+
+	const t = await getTranslations({ locale, namespace: 'curriculumVitae.metadata' })
+	return createLocalizedMetadata({
+		locale,
+		pathname: '/curriculum-vitae',
+		title: t('title'),
+		description: t('description'),
+	})
+}
+
+/** Localized, structured Curriculum Vitae page composed from the public CV fact model. */
+export default async function CurriculumPage({ params }: CurriculumPageProps) {
+	const { locale } = await params
+	if (!hasLocale(routing.locales, locale)) notFound()
+
+	setRequestLocale(locale)
+	const t = await getTranslations('curriculumVitae')
+	const bookingT = await getTranslations('booking.entryPoints')
+	const pdf = curriculumVitae.pdfByLocale[locale as CurriculumVitaeLocale]
+	const downloadFilename = pdf.href.split('/').at(-1)
+
+	return (
+		<article className={styles.page} data-cv-content data-locale={locale}>
+			<header className={styles.hero}>
+				<Container className={styles.heroInner}>
+					<p className={styles.eyebrow}>{t('hero.eyebrow')}</p>
+					<h1 className={styles.name}>{curriculumVitae.person.name}</h1>
+					<p className={styles.role}>{t('hero.role')}</p>
+					<p className={styles.heroIntro}>{t('hero.intro')}</p>
+
+					<address className={styles.contactList}>
+						<span className={styles.contactLocation}>{t('contact.location')}</span>
+						<a className={styles.contactLink} href={`mailto:${contact.email}`}>
+							{contact.email}
+						</a>
+						<a
+							className={styles.contactLink}
+							href={contact.linkedin}
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							LinkedIn
+						</a>
+						<a
+							className={styles.contactLink}
+							href={contact.github}
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							GitHub
+						</a>
+					</address>
+
+					<div className={styles.heroActions} data-booking-source="curriculumVitae">
+						<DownloadAction
+							href={pdf.href}
+							label={t('download.label')}
+							downloadFilename={downloadFilename}
+							mode="expanded"
+						/>
+						<Button renders="link" href="/contact/book" size="large" variant="secondary">
+							{bookingT('curriculumVitae.action')}
+						</Button>
+					</div>
+				</Container>
+			</header>
+
+			<section id="cv-profile" className={`${styles.section} ${styles.subtleSection}`}>
+				<Container>
+					<div className={styles.sectionHeading}>
+						<p className={styles.eyebrow}>{t('highlights.eyebrow')}</p>
+						<h2>{t('highlights.title')}</h2>
+					</div>
+					<ul className={styles.highlightGrid}>
+						{curriculumVitaeHighlights.map(({ id }) => (
+							<li className={styles.highlightCard} key={id}>
+								<h3>{t(`highlights.entries.${id}.title`)}</h3>
+								<p>{t(`highlights.entries.${id}.description`)}</p>
+							</li>
+						))}
+					</ul>
+				</Container>
+			</section>
+
+			<section id="cv-skills" className={styles.section}>
+				<Container>
+					<div className={styles.sectionHeading}>
+						<p className={styles.eyebrow}>{t('skills.eyebrow')}</p>
+						<h2>{t('skills.title')}</h2>
+					</div>
+					<ul className={styles.skillList}>
+						{curriculumVitaeSkills.map(({ id }) => (
+							<li className={styles.skillRow} key={id}>
+								<h3>{t(`skills.entries.${id}.title`)}</h3>
+								<p>{t(`skills.entries.${id}.description`)}</p>
+							</li>
+						))}
+					</ul>
+				</Container>
+			</section>
+
+			<section id="cv-experience" className={`${styles.section} ${styles.raisedSection}`}>
+				<Container>
+					<div className={styles.sectionHeading}>
+						<p className={styles.eyebrow}>{t('experience.eyebrow')}</p>
+						<h2>{t('experience.title')}</h2>
+						<p className={styles.sectionIntro}>{t('experience.intro')}</p>
+					</div>
+					<ol className={styles.timeline}>
+						{curriculumVitaeExperience.map((experience) => {
+							const isCurrent = experience.end === null
+
+							return (
+								<li
+									className={styles.timelineEntry}
+									data-current-role={isCurrent || undefined}
+									key={experience.id}
+								>
+									<p className={styles.timelinePeriod}>
+										<time dateTime={experience.start}>{formatMonth(experience.start, locale)}</time>
+										<span aria-hidden="true"> – </span>
+										{experience.end ? (
+											<time dateTime={experience.end}>{formatMonth(experience.end, locale)}</time>
+										) : (
+											<span>{t('experience.presentLabel')}</span>
+										)}
+									</p>
+									<div className={styles.timelineContent}>
+										<div className={styles.timelineTitleRow}>
+											<h3>
+												{t(`experience.entries.${experience.id}.title`)}
+												<span aria-hidden="true"> · </span>
+												{experience.company}
+											</h3>
+											{isCurrent ? (
+												<span className={styles.currentRole}>{t('accessibility.currentRole')}</span>
+											) : null}
+										</div>
+										<p className={styles.summary}>
+											{t(`experience.entries.${experience.id}.summary`)}
+										</p>
+									</div>
+								</li>
+							)
+						})}
+					</ol>
+				</Container>
+			</section>
+
+			<section id="cv-projects" className={styles.section}>
+				<Container>
+					<div className={styles.sectionHeading}>
+						<p className={styles.eyebrow}>{t('projects.eyebrow')}</p>
+						<h2>{t('projects.title')}</h2>
+					</div>
+					<ul className={styles.projectGrid}>
+						{curriculumVitaeProjects.map(({ id, experienceId }) => {
+							const experience = curriculumVitaeExperience.find((item) => item.id === experienceId)
+
+							return (
+								<li className={styles.projectCard} key={id}>
+									{experience ? (
+										<p className={styles.projectCompany}>{experience.company}</p>
+									) : null}
+									<h3>{t(`projects.entries.${id}.title`)}</h3>
+									<p>{t(`projects.entries.${id}.description`)}</p>
+								</li>
+							)
+						})}
+					</ul>
+				</Container>
+			</section>
+
+			<section id="cv-education" className={`${styles.section} ${styles.raisedSection}`}>
+				<Container>
+					<div className={styles.sectionHeading}>
+						<p className={styles.eyebrow}>{t('education.eyebrow')}</p>
+						<h2>{t('education.title')}</h2>
+					</div>
+					<div className={styles.educationLayout}>
+						<ul className={styles.educationList}>
+							{curriculumVitaeEducation.map((education) => (
+								<li className={styles.educationEntry} key={education.id}>
+									<p className={styles.period}>
+										<time dateTime={education.start}>{education.start}</time>
+										<span aria-hidden="true"> – </span>
+										<time dateTime={education.end}>{education.end}</time>
+									</p>
+									<h3>{education.institution}</h3>
+									<p>{t(`education.entries.${education.id}.degree`)}</p>
+								</li>
+							))}
+						</ul>
+						<div className={styles.languages}>
+							<h3>{t('education.languagesTitle')}</h3>
+							<ul>
+								{curriculumVitaeLanguages.map(({ id }) => (
+									<li key={id}>
+										<span>{t(`education.languages.${id}.name`)}</span>
+										<span>{t(`education.languages.${id}.level`)}</span>
+									</li>
+								))}
+							</ul>
+						</div>
+					</div>
+				</Container>
+			</section>
+
+			<section id="cv-download" className={styles.downloadSection}>
+				<Container className={styles.downloadInner}>
+					<div>
+						<p className={`${styles.eyebrow} ${styles.downloadEyebrow}`}>
+							{t('download.languageLabel')} · {t('download.profileLabel')}
+						</p>
+						<h2>{t('download.label')}</h2>
+						<p>{t('download.description')}</p>
+					</div>
+					<div className={styles.footerDownload} data-cv-download="footer">
+						<DownloadAction
+							href={pdf.href}
+							label={t('download.label')}
+							downloadFilename={downloadFilename}
+							mode="expanded"
+						/>
+					</div>
+				</Container>
+			</section>
+
+			<div className={styles.floatingDownload} data-cv-download="floating">
+				<DownloadAction
+					href={pdf.href}
+					label={t('download.label')}
+					downloadFilename={downloadFilename}
+				/>
+			</div>
+		</article>
+	)
+}

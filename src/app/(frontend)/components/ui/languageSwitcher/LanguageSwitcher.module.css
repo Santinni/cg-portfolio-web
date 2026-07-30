@@ -1,0 +1,22 @@
+.switcher {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--space-4);
+}
+
+.option {
+	min-width: var(--touch-target-min);
+	min-height: var(--touch-target-min);
+	border: 0;
+	background: transparent;
+	color: var(--text-secondary);
+	font: inherit;
+	font-size: var(--font-size-small);
+	font-weight: 700;
+	cursor: pointer;
+}
+
+.option[aria-pressed='true'],
+.option:hover {
+	color: var(--action-primary);
+}

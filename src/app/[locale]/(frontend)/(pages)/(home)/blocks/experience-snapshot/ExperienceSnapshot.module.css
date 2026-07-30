@@ -1,0 +1,51 @@
+.section {
+  display: none;
+
+  @media (min-width: 1024px) {
+    display: block;
+    padding-block: 104px;
+  }
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-32);
+  max-width: 720px;
+
+  @media (min-width: 1024px) {
+    max-width: none;
+  }
+}
+
+.eyebrow {
+  font-size: 12px;
+  line-height: 1.45;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--action-primary);
+  max-width: 600px;
+}
+
+.title {
+  font-size: 48px;
+  line-height: 1.45;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+  text-wrap: balance;
+  max-width: 850px;
+}
+
+.description {
+  font-size: 18px;
+  line-height: 1.45;
+  font-weight: 400;
+  color: var(--text-secondary);
+  margin: 0;
+  max-width: 760px;
+}
+
+.cta {
+  align-self: flex-start;
+}

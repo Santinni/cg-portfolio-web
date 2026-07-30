@@ -66,9 +66,22 @@ function checkRateLimit(ip: string): { allowed: boolean; remaining: number } {
 
 export function proxy(request: NextRequest) {
 	const { pathname } = request.nextUrl
+	const isCzechFrontendRoute = pathname === '/cs' || pathname.startsWith('/cs/')
 
-	// Only rate-limit API and admin routes
-	if (!pathname.startsWith('/api') && !pathname.startsWith('/admin')) {
+	if (isCzechFrontendRoute) {
+		const requestHeaders = new Headers(request.headers)
+		// Supply the same request locale header as next-intl without invoking its
+		// URL-rewriting middleware, which would turn streamed 404s into soft 404s.
+		requestHeaders.set('X-NEXT-INTL-LOCALE', 'cs')
+
+		return NextResponse.next({ request: { headers: requestHeaders } })
+	}
+
+	const isRateLimitedRoute = ['/api', '/admin'].some(
+		(route) => pathname === route || pathname.startsWith(`${route}/`),
+	)
+
+	if (!isRateLimitedRoute) {
 		return NextResponse.next()
 	}
 
@@ -86,7 +99,7 @@ export function proxy(request: NextRequest) {
 					'X-RateLimit-Limit': String(RATE_LIMIT_MAX),
 					'X-RateLimit-Remaining': '0',
 				},
-			}
+			},
 		)
 	}
 
@@ -98,5 +111,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-	matcher: ['/api/:path*', '/admin/:path*'],
+	matcher: ['/api/:path*', '/admin/:path*', '/cs/:path*'],
 }

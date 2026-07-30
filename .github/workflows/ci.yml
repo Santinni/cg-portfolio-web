@@ -85,6 +85,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: quality
     env:
+      APP_REVISION: ${{ github.sha }}
       CI: "true"
       DATABASE_URI: postgresql://postgres:postgres@127.0.0.1:5432/codeguy_test
       HOSTNAME: 127.0.0.1
@@ -139,16 +140,16 @@ jobs:
       - name: Run Chromium launch suite
         run: pnpm exec playwright test --project=chromium
 
-      - name: Upload browser failure evidence
-        if: failure()
+      - name: Upload browser evidence
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-failure-${{ github.run_id }}
+          name: playwright-evidence-${{ github.run_id }}-${{ github.sha }}
           path: |
             playwright-report/
             test-results/
           if-no-files-found: ignore
-          retention-days: 7
+          retention-days: 14
 
   build:
     name: Build and publish immutable image

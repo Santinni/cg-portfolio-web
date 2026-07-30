@@ -4,9 +4,9 @@ import { describe, expect, it, vi } from 'vitest'
 
 import { Button } from '@/app/(frontend)/components/primitives/button'
 
-// Mock next/link
-vi.mock('next/link', () => ({
-	default: ({
+// Keep the component test focused on Button behavior rather than next-intl routing.
+vi.mock('@/i18n/navigation', () => ({
+	Link: ({
 		children,
 		href,
 		...props
@@ -29,6 +29,9 @@ describe('Button', () => {
 
 			expect(button).toBeInTheDocument()
 			expect(button.tagName).toBe('BUTTON')
+			expect(button).toHaveAttribute('type', 'button')
+			expect(button.className).toContain('variant-primary')
+			expect(button.className).toContain('size-medium')
 		})
 
 		it('calls onClick when clicked', async () => {
@@ -47,6 +50,26 @@ describe('Button', () => {
 
 			expect(button).toBeDisabled()
 			expect(button).toHaveAttribute('aria-disabled', 'true')
+			expect(button.className).toContain('disabled')
+		})
+
+		it('treats the native disabled prop as the canonical disabled state', () => {
+			render(<Button disabled>Disabled</Button>)
+			const button = screen.getByRole('button')
+
+			expect(button).toBeDisabled()
+			expect(button).toHaveAttribute('aria-disabled', 'true')
+			expect(button.className).toContain('disabled')
+		})
+
+		it('does not let disabled=false override isDisabled', () => {
+			render(
+				<Button isDisabled disabled={false}>
+					Disabled
+				</Button>,
+			)
+
+			expect(screen.getByRole('button')).toBeDisabled()
 		})
 
 		it('shows loading state with aria-busy', () => {
@@ -55,6 +78,19 @@ describe('Button', () => {
 
 			expect(button).toBeDisabled()
 			expect(button).toHaveAttribute('aria-busy', 'true')
+			expect(button).toHaveAccessibleName('Loading')
+			expect(button).toHaveAttribute('data-loading', 'true')
+			expect(button.querySelector('svg')).toHaveAttribute('aria-hidden', 'true')
+		})
+
+		it('does not let disabled=false override loading', () => {
+			render(
+				<Button isLoading disabled={false}>
+					Loading
+				</Button>,
+			)
+
+			expect(screen.getByRole('button')).toBeDisabled()
 		})
 
 		it('does not fire onClick when disabled', async () => {
@@ -64,7 +100,7 @@ describe('Button', () => {
 			render(
 				<Button onClick={handleClick} isDisabled>
 					Click me
-				</Button>
+				</Button>,
 			)
 			await user.click(screen.getByRole('button'))
 
@@ -78,11 +114,33 @@ describe('Button', () => {
 			expect(button.className).toContain('variant-primary')
 		})
 
-		it('applies size class', () => {
-			render(<Button size="large">Large</Button>)
+		it.each(['primary', 'secondary', 'quiet'] as const)(
+			'applies the canonical %s variant class',
+			(variant) => {
+				render(<Button variant={variant}>{variant}</Button>)
+				expect(screen.getByRole('button').className).toContain(`variant-${variant}`)
+			},
+		)
+
+		it.each(['transparent', 'text'] as const)(
+			'preserves the legacy %s compatibility variant',
+			(variant) => {
+				render(<Button variant={variant}>{variant}</Button>)
+				expect(screen.getByRole('button').className).toContain(`variant-${variant}`)
+			},
+		)
+
+		it.each(['small', 'medium', 'large'] as const)('applies the %s size class', (size) => {
+			render(<Button size={size}>{size}</Button>)
 			const button = screen.getByRole('button')
 
-			expect(button.className).toContain('size-large')
+			expect(button.className).toContain(`size-${size}`)
+		})
+
+		it('preserves an explicit submit type', () => {
+			render(<Button type="submit">Submit</Button>)
+
+			expect(screen.getByRole('button')).toHaveAttribute('type', 'submit')
 		})
 
 		it('applies fullWidth class', () => {
@@ -96,6 +154,19 @@ describe('Button', () => {
 			render(<Button rounded>Rounded</Button>)
 			const button = screen.getByRole('button')
 
+			expect(button.className).toContain('rounded')
+		})
+
+		it('keeps transparent and rounded compatibility classes on icon controls', () => {
+			render(
+				<Button variant="transparent" rounded aria-label="Open menu">
+					<span aria-hidden="true">≡</span>
+				</Button>,
+			)
+			const button = screen.getByRole('button', { name: 'Open menu' })
+
+			expect(button.className).toContain('variant-transparent')
+			expect(button.className).toContain('size-medium')
 			expect(button.className).toContain('rounded')
 		})
 
@@ -119,12 +190,14 @@ describe('Button', () => {
 			render(
 				<Button renders="link" href="/about">
 					Go to About
-				</Button>
+				</Button>,
 			)
 			const link = screen.getByRole('link', { name: 'Go to About' })
 
 			expect(link).toBeInTheDocument()
 			expect(link).toHaveAttribute('href', '/about')
+			expect(link.className).toContain('variant-primary')
+			expect(link.className).toContain('size-medium')
 		})
 
 		it('forwards ref for link variant', () => {
@@ -132,7 +205,7 @@ describe('Button', () => {
 			render(
 				<Button renders="link" href="/test" ref={ref}>
 					Link
-				</Button>
+				</Button>,
 			)
 
 			expect(ref).toHaveBeenCalledWith(expect.any(HTMLAnchorElement))
@@ -142,7 +215,7 @@ describe('Button', () => {
 			render(
 				<Button renders="link" href="/test" variant="secondary">
 					Styled Link
-				</Button>
+				</Button>,
 			)
 			const link = screen.getByRole('link')
 

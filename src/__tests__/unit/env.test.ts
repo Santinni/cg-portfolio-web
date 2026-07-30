@@ -44,7 +44,7 @@ describe('validateEnv', () => {
 		const { serverEnvSchema, validateEnv } = await importEnvModule()
 
 		expect(() => validateEnv(serverEnvSchema, {}, 'server')).toThrow(
-			'Invalid server environment variables'
+			'Invalid server environment variables',
 		)
 	})
 
@@ -58,7 +58,7 @@ describe('validateEnv', () => {
 		}
 
 		expect(() => validateEnv(serverEnvSchema, env, 'server')).toThrow(
-			'Invalid server environment variables'
+			'Invalid server environment variables',
 		)
 	})
 
@@ -72,7 +72,7 @@ describe('validateEnv', () => {
 		}
 
 		expect(() => validateEnv(serverEnvSchema, env, 'server')).toThrow(
-			'Invalid server environment variables'
+			'Invalid server environment variables',
 		)
 	})
 
@@ -116,7 +116,7 @@ describe('validateEnv', () => {
 		}
 
 		expect(() => validateEnv(serverEnvSchema, env, 'server')).toThrow(
-			'Invalid server environment variables'
+			'Invalid server environment variables',
 		)
 	})
 
@@ -125,7 +125,7 @@ describe('validateEnv', () => {
 		const { publicEnvSchema, validateEnv } = await importEnvModule()
 
 		expect(() => validateEnv(publicEnvSchema, {}, 'public')).toThrow(
-			'Invalid public environment variables'
+			'Invalid public environment variables',
 		)
 	})
 })
@@ -146,7 +146,7 @@ describe('publicEnvSchema', () => {
 		const { publicEnvSchema, validateEnv } = await importEnvModule()
 
 		expect(() => validateEnv(publicEnvSchema, {}, 'public')).toThrow(
-			'Invalid public environment variables'
+			'Invalid public environment variables',
 		)
 	})
 
@@ -154,8 +154,8 @@ describe('publicEnvSchema', () => {
 		Object.assign(process.env, validEnv)
 		const { publicEnvSchema, validateEnv } = await importEnvModule()
 
-		expect(() =>
-			validateEnv(publicEnvSchema, { NEXT_PUBLIC_SERVER_URL: '' }, 'public')
-		).toThrow('Invalid public environment variables')
+		expect(() => validateEnv(publicEnvSchema, { NEXT_PUBLIC_SERVER_URL: '' }, 'public')).toThrow(
+			'Invalid public environment variables',
+		)
 	})
 })

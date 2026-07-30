@@ -1,87 +1,94 @@
 import { ArrowLeft, ArrowRight } from 'lucide-react'
-import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 
 import { Container } from '@/app/(frontend)/components/layout/Container'
+import { BookingCta } from '@/components/booking/BookingCta'
 import { Eyebrow } from '@/components/site/Eyebrow'
-import type { CaseStudy } from '@/content/work'
+import { caseStudySectionKeys, type CaseStudy } from '@/content/work'
+import { Link } from '@/i18n/navigation'
 
 import styles from './CaseStudyLayout.module.css'
 
 interface CaseStudyLayoutProps {
-  caseStudy: CaseStudy
-  nextCase: CaseStudy
+	caseStudy: CaseStudy
+	nextCase: CaseStudy
 }
 
 /** Shared semantic shell for the three launch case studies. */
 export function CaseStudyLayout({ caseStudy, nextCase }: CaseStudyLayoutProps) {
-  return (
-    <article>
-      <header className={styles.hero}>
-        <Container className={styles.heroInner}>
-          <div className={styles.heroCopy}>
-            <Link href="/work" className={styles.backLink}>
-              <ArrowLeft aria-hidden="true" />
-              All work
-            </Link>
-            <Eyebrow>{caseStudy.eyebrow}</Eyebrow>
-            <h1 className={styles.title}>{caseStudy.title}</h1>
-            <p className={styles.description}>{caseStudy.description}</p>
-          </div>
+	const t = useTranslations('work')
+	const caseKey = caseStudy.key
 
-          <dl className={styles.facts}>
-            {caseStudy.role && (
-              <div className={styles.fact}>
-                <dt>Role</dt>
-                <dd>{caseStudy.role}</dd>
-              </div>
-            )}
-            <div className={styles.fact}>
-              <dt>Focus</dt>
-              <dd>{caseStudy.focus}</dd>
-            </div>
-            <div className={styles.fact}>
-              <dt>Stack</dt>
-              <dd>{caseStudy.stack.join(' · ')}</dd>
-            </div>
-          </dl>
-        </Container>
-      </header>
+	return (
+		<article>
+			<header className={styles.hero}>
+				<Container className={styles.heroInner}>
+					<div className={styles.heroCopy}>
+						<Link href="/work" className={styles.backLink}>
+							<ArrowLeft aria-hidden="true" />
+							{t('navigation.allWork')}
+						</Link>
+						<Eyebrow>{t(`cases.${caseKey}.eyebrow`)}</Eyebrow>
+						<h1 className={styles.title}>{t(`cases.${caseKey}.title`)}</h1>
+						<p className={styles.description}>{t(`cases.${caseKey}.description`)}</p>
+					</div>
 
-      <div className={styles.body}>
-        <Container className={styles.sections}>
-          {caseStudy.sections.map((section) => (
-            <section key={section.eyebrow} className={styles.section}>
-              <Eyebrow>{section.eyebrow}</Eyebrow>
-              <div className={styles.sectionCopy}>
-                <h2>{section.heading}</h2>
-                <p>{section.body}</p>
-              </div>
-            </section>
-          ))}
-        </Container>
-      </div>
+					<dl className={styles.facts}>
+						{caseStudy.hasRole && (
+							<div className={styles.fact}>
+								<dt>{t('facts.role')}</dt>
+								<dd>{t(`cases.${caseKey}.role`)}</dd>
+							</div>
+						)}
+						<div className={styles.fact}>
+							<dt>{t('facts.focus')}</dt>
+							<dd>{t(`cases.${caseKey}.focus`)}</dd>
+						</div>
+						<div className={styles.fact}>
+							<dt>{t('facts.stack')}</dt>
+							<dd>{caseStudy.stack.join(' · ')}</dd>
+						</div>
+					</dl>
+				</Container>
+			</header>
 
-      <nav className={styles.caseNavigation} aria-label="Case study navigation">
-        <Container className={styles.caseNavigationInner}>
-          <Link href="/work" className={styles.navigationLink}>
-            <ArrowLeft aria-hidden="true" />
-            <span>
-              <small>Back to</small>
-              All work
-            </span>
-          </Link>
-          <Link
-            href={`/work/${nextCase.slug}`}
-            className={`${styles.navigationLink} ${styles.nextLink}`}
-          >
-            <span>
-              <small>Next case</small>
-              {nextCase.title}
-            </span>
-            <ArrowRight aria-hidden="true" />
-          </Link>
-        </Container>
-      </nav>
-    </article>
-  )
+			<div className={styles.body}>
+				<Container className={styles.sections}>
+					{caseStudySectionKeys.map((sectionKey) => (
+						<section key={sectionKey} className={styles.section}>
+							<Eyebrow>{t(`cases.${caseKey}.sections.${sectionKey}.eyebrow`)}</Eyebrow>
+							<div className={styles.sectionCopy}>
+								<h2>{t(`cases.${caseKey}.sections.${sectionKey}.heading`)}</h2>
+								<p>{t(`cases.${caseKey}.sections.${sectionKey}.body`)}</p>
+							</div>
+						</section>
+					))}
+				</Container>
+			</div>
+
+			<BookingCta source="caseStudy" />
+
+			<nav className={styles.caseNavigation} aria-label={t('navigation.label')}>
+				<Container className={styles.caseNavigationInner}>
+					<Link href="/work" className={styles.navigationLink}>
+						<ArrowLeft aria-hidden="true" />
+						<span>
+							<small>{t('navigation.backTo')}</small>
+							{t('navigation.allWork')}
+						</span>
+					</Link>
+					<Link
+						href={`/work/${nextCase.slug}`}
+						className={`${styles.navigationLink} ${styles.nextLink}`}
+					>
+						<span>
+							<small>{t('navigation.nextCase')}</small>
+							{t(`cases.${nextCase.key}.title`)}
+						</span>
+						<ArrowRight aria-hidden="true" />
+					</Link>
+				</Container>
+			</nav>
+		</article>
+	)
 }

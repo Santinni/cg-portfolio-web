@@ -1,0 +1,91 @@
+.iconButton {
+    --icon-button-background: var(--surface-subtle);
+    --icon-button-background-hover: var(--action-icon-hover);
+    --icon-button-background-active: var(--border-default);
+    --icon-button-foreground: var(--text-primary);
+    --icon-button-disabled-background: var(--surface-subtle);
+    --icon-button-disabled-foreground: var(--text-secondary);
+
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-4);
+    background-color: var(--icon-button-background);
+    color: var(--icon-button-foreground);
+    font: inherit;
+    cursor: pointer;
+}
+
+.iconButton:not(:disabled):hover {
+    background-color: var(--icon-button-background-hover);
+}
+
+.iconButton:not(:disabled):active {
+    background-color: var(--icon-button-background-active);
+}
+
+.iconButton:focus-visible {
+    outline: 2px solid var(--action-focus);
+    outline-offset: 2px;
+}
+
+.iconButton:disabled {
+    background-color: var(--icon-button-disabled-background);
+    color: var(--icon-button-disabled-foreground);
+    cursor: not-allowed;
+}
+
+.variant-default {
+    --icon-button-background: var(--surface-subtle);
+}
+
+.variant-quiet {
+    --icon-button-background: transparent;
+    --icon-button-disabled-background: transparent;
+}
+
+.size-small {
+    inline-size: 32px;
+    block-size: 32px;
+    --icon-button-icon-size: var(--icon-16);
+}
+
+.size-medium {
+    inline-size: var(--control-height-md);
+    block-size: var(--control-height-md);
+    --icon-button-icon-size: var(--icon-20);
+}
+
+.size-large {
+    inline-size: var(--control-height-lg);
+    block-size: var(--control-height-lg);
+    --icon-button-icon-size: var(--icon-24);
+}
+
+.icon {
+    display: inline-flex;
+    inline-size: var(--icon-button-icon-size);
+    block-size: var(--icon-button-icon-size);
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.icon > :where(svg) {
+    inline-size: 100%;
+    block-size: 100%;
+    color: currentColor;
+}
+
+@media (forced-colors: active) {
+    .iconButton {
+        border: 1px solid ButtonText;
+    }
+
+    .iconButton:focus-visible {
+        outline-color: Highlight;
+    }
+}

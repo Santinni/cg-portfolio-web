@@ -1,48 +1,47 @@
-import Link from "next/link";
+import { useTranslations } from 'next-intl'
 
-import styles from "./Article.module.css";
+import { Link } from '@/i18n/navigation'
 
-export type EditorialStateKind = "empty" | "error" | "loading";
+import styles from './Article.module.css'
+
+export type EditorialStateKind = 'empty' | 'error' | 'loading'
 
 export interface EditorialStateProps {
-  actionHref?: string;
-  actionLabel?: string;
-  description?: string;
-  kind: EditorialStateKind;
-  title?: string;
+	actionHref?: string
+	actionLabel?: string
+	description?: string
+	kind: EditorialStateKind
+	title?: string
 }
 
-const defaultTitles: Record<EditorialStateKind, string> = {
-  empty: "No insights published yet",
-  error: "Insights could not be loaded",
-  loading: "Loading insights",
-};
-
 export function EditorialState({
-  actionHref,
-  actionLabel,
-  description,
-  kind,
-  title = defaultTitles[kind],
+	actionHref,
+	actionLabel,
+	description,
+	kind,
+	title,
 }: EditorialStateProps) {
-  if (kind === "loading") {
-    return (
-      <section className={styles.editorialState} aria-busy="true" aria-label={title}>
-        <span className={styles.skeleton} />
-        <span className={`${styles.skeleton} ${styles.skeletonShort}`} />
-      </section>
-    );
-  }
+	const t = useTranslations('article.states')
+	const resolvedTitle = title ?? t(kind)
 
-  return (
-    <section className={styles.editorialState}>
-      <h2 className={styles.stateTitle}>{title}</h2>
-      {description ? <p className={styles.stateDescription}>{description}</p> : null}
-      {actionHref && actionLabel ? (
-        <Link className={styles.stateAction} href={actionHref}>
-          {actionLabel}
-        </Link>
-      ) : null}
-    </section>
-  );
+	if (kind === 'loading') {
+		return (
+			<section className={styles.editorialState} aria-busy="true" aria-label={resolvedTitle}>
+				<span className={styles.skeleton} />
+				<span className={`${styles.skeleton} ${styles.skeletonShort}`} />
+			</section>
+		)
+	}
+
+	return (
+		<section className={styles.editorialState}>
+			<h2 className={styles.stateTitle}>{resolvedTitle}</h2>
+			{description ? <p className={styles.stateDescription}>{description}</p> : null}
+			{actionHref && actionLabel ? (
+				<Link className={styles.stateAction} href={actionHref}>
+					{actionLabel}
+				</Link>
+			) : null}
+		</section>
+	)
 }

@@ -1,9 +1,9 @@
 # CodeGuy portfolio web
 
-Technický základ nového webu CodeGuy nad Next.js App Router, TypeScriptem,
-Payload CMS a PostgreSQL. Veřejný frontend je rozpracovaný scaffold; finální
-vizuální implementace musí navázat na Figma soubor
-`Codeguy Portfolio - Final Design`.
+Produkční osobní web CodeGuy nad Next.js App Router, TypeScriptem, Payload CMS
+a PostgreSQL. Veřejná verze podle návrhu `Codeguy Portfolio - Final Design` je
+nasazená na [https://codeguy.cz](https://codeguy.cz). HTTP provoz se automaticky
+přesměruje na HTTPS a `www` na hlavní doménu.
 
 ## Požadavky
 
@@ -57,9 +57,22 @@ Rozhodnutí, slepé cesty, stav implementace a review jsou v:
 - `IMPLEMENTATION_REPORT.md`
 - `CODE_REVIEW.md`
 
-## Rozsah této změny
+## Produkční provoz
 
-Hotový je modernizovaný runtime, redakční základ Insights, public content DTO,
-bezpečnostní helpery, základ theme/layout/article komponent a bezpečnější Docker
-kontrakt. Nové Figma routy, finální design tokeny, preview/revalidation endpointy
-a browser/visual/a11y QA zůstávají navazující prací.
+Větev `main` je zdroj produkce. Pull request musí projít kontrolou kvality,
+testy a produkčním buildem s browser smoke testem. Po sloučení GitHub Actions
+vytvoří neměnný GHCR image a po schválení prostředí `production` ho nasadí na
+VPS.
+
+Kompletní provisioning, GitHub nastavení, DNS, rollout, rollback, ověřovací
+příkazy a řešení známých chyb jsou v [produkčním runbooku](docs/deployment.md).
+
+Payload administrace a uživatelské API jsou z veřejného Caddy vstupu záměrně
+blokované, dokud není přes privátní SSH tunel založen první vlastnický účet.
+
+## Aktuální produkční baseline
+
+První ověřený produkční rollout proběhl 28. července 2026. Veřejné HTTPS,
+přesměrování z HTTP a `www`, přesná aplikační revize, databázová readiness a
+zdraví všech Compose služeb byly po nasazení ověřeny. Ostatní VPS workloady,
+zejména `docling-service`, nejsou součástí tohoto Compose projektu.
