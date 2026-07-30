@@ -1,0 +1,20 @@
+# Normalize all text files to LF in the repository and in the working copy.
+# Biome formats with LF, so a local core.autocrlf=true would otherwise check
+# files out with CRLF and fail `pnpm format:check` on untouched files.
+* text=auto eol=lf
+
+# Binary assets must never be line-ending converted.
+*.pdf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.avif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.otf binary
+*.mp4 binary
+*.webm binary
