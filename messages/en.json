@@ -376,28 +376,177 @@
 			"body": "What you are building, where frontend ownership currently sits, and what success would look like in the first months."
 		}
 	},
+	"booking": {
+		"metadata": {
+			"title": "Book an introductory conversation",
+			"description": "Book a focused introductory conversation with Karel Kutchan about a role, team, project or another reason to connect."
+		},
+		"hero": {
+			"eyebrow": "BOOK A CONVERSATION",
+			"title": "Start with a focused introductory conversation.",
+			"intro": "Choose a time to discuss a role, team, project or another reason to connect."
+		},
+		"offer": {
+			"eyebrow": "INTRODUCTORY CONVERSATION",
+			"title": "A practical first conversation.",
+			"body": "Share the context, what you want to explore and what a useful next step would look like."
+		},
+		"embed": {
+			"privacy": "Google Calendar handles the scheduling experience and loads only after you explicitly choose to open it.",
+			"load": "Load Google Calendar",
+			"loading": "Loading Google Calendar…",
+			"iframeTitle": "Google Calendar appointment scheduling"
+		},
+		"fallbacks": {
+			"title": "Prefer another way to connect?",
+			"externalCalendar": "Open Google Calendar in a new tab",
+			"email": "Send an email"
+		},
+		"entryPoints": {
+			"contact": {
+				"eyebrow": "BOOK A CONVERSATION",
+				"title": "Choose a time for an introductory conversation.",
+				"body": "Useful for discussing a role, team, project or another reason to connect.",
+				"action": "Book a conversation"
+			},
+			"experience": {
+				"eyebrow": "NEXT STEP",
+				"title": "Discuss the experience behind the profile.",
+				"body": "Use an introductory conversation to compare the role, team context and the problems that need ownership.",
+				"action": "Book a conversation"
+			},
+			"curriculumVitae": {
+				"eyebrow": "CONTINUE THE CONVERSATION",
+				"title": "Discuss the profile in context.",
+				"body": "Book an introductory conversation about a role, team, project or another reason to connect.",
+				"action": "Book a conversation"
+			},
+			"caseStudy": {
+				"eyebrow": "WORKING ON A RELATED PROBLEM?",
+				"title": "Bring the project context into a conversation.",
+				"body": "Use an introductory conversation to compare constraints, decisions and the next useful step.",
+				"action": "Book a conversation"
+			}
+		}
+	},
 	"curriculumVitae": {
 		"metadata": {
 			"title": "Curriculum Vitae",
-			"description": "Karel Kutchan — Frontend Developer. Curriculum Vitae with experience, education, and tech stack."
+			"description": "Karel Kutchan — Senior Frontend Engineer with more than ten years in web development."
+		},
+		"hero": {
+			"eyebrow": "CURRICULUM VITAE",
+			"role": "Senior Frontend Engineer",
+			"intro": "Prague-based Senior Frontend Engineer with more than ten years in web development, currently leading frontend work at BlueGhost."
+		},
+		"highlights": {
+			"eyebrow": "PROFILE",
+			"title": "Senior frontend engineering with increasing product and team ownership.",
+			"entries": {
+				"experience": {
+					"title": "10+ years",
+					"description": "More than ten years building and improving web products."
+				},
+				"currentRole": {
+					"title": "Lead role",
+					"description": "Currently Lead Frontend Engineer at BlueGhost."
+				},
+				"productSystems": {
+					"title": "Product systems",
+					"description": "React and TypeScript product systems, component foundations, accessibility and delivery quality."
+				},
+				"location": {
+					"title": "Prague",
+					"description": "Based in Prague, Czech Republic."
+				}
+			}
+		},
+		"skills": {
+			"eyebrow": "CORE SKILLS",
+			"title": "Tools and practices used in delivery.",
+			"entries": {
+				"frontendEngineering": {
+					"title": "Frontend engineering",
+					"description": "React · TypeScript · Next.js · JavaScript"
+				},
+				"stateAndData": {
+					"title": "State and data",
+					"description": "MobX · Redux · application state"
+				},
+				"validationAndForms": {
+					"title": "Validation and forms",
+					"description": "Accessible form behavior · clear validation patterns"
+				},
+				"cssUiSystems": {
+					"title": "CSS and UI systems",
+					"description": "HTML · CSS · Sass · CSS Modules · Storybook"
+				},
+				"cmsPlatformIntegration": {
+					"title": "CMS and platform integration",
+					"description": "Kentico · Kontent.ai · WordPress"
+				},
+				"qualityAndTooling": {
+					"title": "Quality and tooling",
+					"description": "Playwright · Vitest / Jest · Git · Vite · Webpack"
+				},
+				"accessibilityI18n": {
+					"title": "Accessibility and localization",
+					"description": "React Aria · accessible interaction · localized interfaces"
+				}
+			}
+		},
+		"projects": {
+			"eyebrow": "SELECTED PROJECTS",
+			"title": "Representative work across products, platforms and teams.",
+			"entries": {
+				"frontendLeadership": {
+					"title": "Frontend leadership",
+					"description": "Leading frontend architecture, delivery practices and technical decisions across product teams."
+				},
+				"accessibilityRefactoring": {
+					"title": "Accessibility refactoring",
+					"description": "Improving accessibility and refactoring an established React product with React Aria and custom solutions."
+				},
+				"energyCustomerPortals": {
+					"title": "Energy customer portals",
+					"description": "Developing and modernizing interfaces for energy-sector customer products."
+				},
+				"skypeWebPlatform": {
+					"title": "Skype.com web platform",
+					"description": "Contributing to an accessible, responsive platform serving more than 400,000 daily users in over 30 countries."
+				}
+			}
+		},
+		"download": {
+			"label": "Download CV",
+			"languageLabel": "English",
+			"profileLabel": "React profile",
+			"description": "English React-focused curriculum vitae in PDF format.",
+			"accessibilityLabel": "Download Karel Kutchan’s English React CV as a PDF"
+		},
+		"accessibility": {
+			"currentRole": "Current role",
+			"downloadAction": "Download curriculum vitae",
+			"externalLink": "Opens in a new tab"
 		},
 		"header": {
 			"headline": "curriculum vitæ",
-			"profession": "Frontend Developer"
+			"profession": "Senior Frontend Engineer"
 		},
 		"downloadPdf": "Download CV (English PDF)",
 		"contact": {
+			"email": "Email",
 			"linkedin": "LinkedIn",
 			"location": "Prague, Czech Republic"
 		},
 		"biography": {
 			"title": "Who am I?",
 			"paragraphs": {
-				"focus": "Mid-level frontend developer focused on usability, performance and scalability. Bringing web applications to life with React, Next.js and HTMX.",
-				"experience": "With over eight years of experience, currently I am specializing in React and Next.js development.",
-				"quality": "I focus on building high-quality web applications with modern technologies, delivering scalable, accessible, and high-performance solutions.",
-				"systems": "In recent roles, I've designed and documented reusable UI components and design systems using tools like Storybook and RadixUI. My work spans complex frontend architectures, particularly in industries like B2C energy, where adaptability, performance, and sustainability are critical.",
-				"collaboration": "I thrive on collaboration, clear communication, and delivering reliable solutions. Fluent in English and with beginner-level Swedish, I am committed to continuous learning and professional growth. I bring a combination of technical excellence, problem-solving skills, and a dedication to teamwork to every project."
+				"focus": "I am a Senior Frontend Engineer focused on maintainable product systems, accessibility and dependable delivery.",
+				"experience": "I have more than ten years of experience in web development and currently work as Lead Frontend Engineer at BlueGhost.",
+				"quality": "My strongest work sits where product delivery, frontend architecture and team clarity meet.",
+				"systems": "I build React and TypeScript interfaces, reusable component foundations and testing practices for complex products.",
+				"collaboration": "I value direct communication, visible trade-offs and close collaboration with product, design and backend teams."
 			}
 		},
 		"technology": {
@@ -406,12 +555,23 @@
 			"styling": "Styling & Design Systems"
 		},
 		"experience": {
+			"eyebrow": "EXPERIENCE",
 			"title": "Experience",
-			"presentPeriod": "6/2024 – Present",
+			"intro": "Selected frontend roles in reverse chronological order.",
+			"presentLabel": "Present",
+			"presentPeriod": "6/2024 – 2/2025",
 			"freelancerAt": "Freelancer at {company}",
 			"entries": {
+				"blueghost": {
+					"title": "Lead Frontend Engineer",
+					"summary": "Leading frontend architecture, delivery practices and technical decisions across product teams.",
+					"descriptions": {
+						"leadership": "Leading frontend architecture, delivery practices and technical decisions across product teams."
+					}
+				},
 				"kontentAi": {
 					"title": "Frontend Engineer",
+					"summary": "Accessibility-focused React contract completed in February 2025.",
 					"descriptions": {
 						"accessibilityProject": "I worked as part of a team on a contract-based project focused on improving accessibility and refactoring code to provide users with a better and more accessible user experience.",
 						"reactAria": "Our team utilized React Aria, specifically its hooks, and developed custom solutions to address specific accessibility requirements.",
@@ -421,6 +581,7 @@
 				},
 				"tldrit": {
 					"title": "Lead Frontend Engineer",
+					"summary": "Led frontend delivery for web and mobile applications in a time-framed role.",
 					"descriptions": {
 						"leadership": "As a Lead Frontend Engineer in a time-framed role, I designed and implemented solutions for web and mobile applications while leading the frontend team.",
 						"delivery": "I proposed technical approaches, developed scalable applications using ReactJS, Next.js, and Storybook, and ensured high-quality, user-friendly results within tight deadlines."
@@ -428,6 +589,7 @@
 				},
 				"eman": {
 					"title": "Frontend Developer",
+					"summary": "Delivered and modernized customer-facing interfaces for major energy-sector clients.",
 					"descriptions": {
 						"clients": "Developed and implemented user interfaces for key clients such as EON, MND, ČEZ, and Bohemia Energy.",
 						"optimization": "Optimized web applications to improve their performance and accessibility, resulting in higher user satisfaction.",
@@ -437,6 +599,7 @@
 				},
 				"lmc": {
 					"title": "Frontend Developer",
+					"summary": "Built bespoke, responsive web solutions for corporate clients.",
 					"descriptions": {
 						"solutions": "Focused on creating bespoke web solutions for corporate clients, delivering tailored solutions for platforms like jobs.cz.",
 						"discovery": "Collaborated with designers and clients to analyze requirements and design functional, visually appealing solutions.",
@@ -446,6 +609,7 @@
 				},
 				"ampX": {
 					"title": "Frontend Developer",
+					"summary": "Developed the frontend of a distributed-energy product.",
 					"descriptions": {
 						"platform": "Worked on the frontend of a new digital energy platform enabling distributed energy participation.",
 						"quality": "Delivered high-quality, accessible, and responsive UI while maintaining clean and readable code.",
@@ -454,6 +618,7 @@
 				},
 				"skype": {
 					"title": "Frontend Developer",
+					"summary": "Contributed to the accessible and responsive Skype.com web platform.",
 					"descriptions": {
 						"scale": "Contributed to a platform serving over 400,000 daily users from more than 30 countries.",
 						"quality": "Focused on ensuring accessibility, responsiveness, and performance of the main website.",
@@ -463,6 +628,7 @@
 				},
 				"foxconn": {
 					"title": "Frontend Coder",
+					"summary": "Developed responsive interfaces and a BEM-based component foundation.",
 					"descriptions": {
 						"gui": "Developed the GUI with a strong focus on HTML architecture and responsive design.",
 						"collaboration": "Collaborated with designers and developers to implement modern CSS and JavaScript solutions.",
@@ -472,6 +638,7 @@
 				},
 				"mountfield": {
 					"title": "Frontend Coder",
+					"summary": "Maintained the main website and delivered supporting marketing and internal interfaces.",
 					"descriptions": {
 						"website": "Managed and maintained the company's main website built on the Kentico platform.",
 						"microsites": "Created microsites and supported marketing websites, and developed responsive HTML newsletters.",
@@ -480,6 +647,7 @@
 				},
 				"bitware": {
 					"title": "Web Administrator, Graphic Designer, and Junior Frontend Coder",
+					"summary": "Worked across website administration, visual design and early frontend delivery.",
 					"descriptions": {
 						"scope": "Managed website administration, graphic design, and frontend development.",
 						"presentations": "Created responsive web presentations using HTML5/CSS3.",
@@ -489,7 +657,28 @@
 			}
 		},
 		"education": {
+			"eyebrow": "EDUCATION & LANGUAGES",
 			"title": "Education",
+			"entries": {
+				"copth": {
+					"degree": "Electrical engineering, telecommunications and computer technologies"
+				}
+			},
+			"languagesTitle": "Languages",
+			"languages": {
+				"czech": {
+					"name": "Czech",
+					"level": "Native"
+				},
+				"english": {
+					"name": "English",
+					"level": "Fluent"
+				},
+				"swedish": {
+					"name": "Swedish",
+					"level": "Beginner"
+				}
+			},
 			"degree": "Electrical engineering, telecommunications and computer technologies",
 			"coursesTitle": "Courses and Seminars",
 			"courses": {

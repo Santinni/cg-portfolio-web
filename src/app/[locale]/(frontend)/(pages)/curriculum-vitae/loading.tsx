@@ -1,15 +1,16 @@
 import { useTranslations } from 'next-intl'
 
-import styles from '@/app/(frontend)/styles/loading.module.css'
+import styles from './loading.module.css'
 
-/** Loading spinner shown while the Curriculum Vitae page is loading. */
+/** Theme-aware route-local loading state for the Curriculum Vitae page. */
 export default function Loading() {
 	const t = useTranslations('errors')
+	const label = t('loading')
 
 	return (
-		<div className={styles.container}>
-			<div className={styles.spinner} />
-			<p className={styles.text}>{t('loading')}</p>
+		<div className={styles.container} role="status" aria-label={label} aria-busy="true">
+			<span className={styles.spinner} aria-hidden="true" />
+			<p>{label}</p>
 		</div>
 	)
 }
