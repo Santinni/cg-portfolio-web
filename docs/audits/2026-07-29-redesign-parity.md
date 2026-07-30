@@ -396,3 +396,45 @@ The release smoke must cover `/`, `/cs`, Work, Contact, valid and invalid detail
 - The final documentation commit still requires the planned exact-head production gate; the cited run is the successful pre-audit implementation gate, and the only subsequent code commit is formatter-only.
 - RPA-015 remains partial because Linux, Chromium, and font inputs are not yet pinned as a reproducible screenshot-baseline environment.
 - ThemeToggle state semantics in RPA-012 remain deferred; a successful real toggle used for Home geometry does not close that control-level finding.
+
+## 2026-07-30 — Work and Insights hero surface
+
+Branch `fix/work-insights-hero-figma-parity`.
+
+- `/work` and `/insights` painted their heroes with `--surface-contrast`, placing a
+  near-black band directly beneath the fixed navigation. Figma composes both pages
+  on the page surface: `Desktop / Work` (`7:2`) puts the navigation in its own 72px
+  `Header band` with `Work intro` (`7:11`) starting at `y=72`, and `Desktop /
+  Insights` (`74:264`) mirrors that with `Insights hero` (`74:286`), which binds
+  `--surface-page`. The closing `Insights CTA` (`74:335`) binds `--surface-subtle`,
+  not the contrast surface.
+- Measured consequence before the fix, light theme at 1440px: navigation links
+  resolve to `--text-primary` `#08090c` and the surface behind them was `#08090c`,
+  giving **1.00:1** on `/work` and `/insights`. Every other public route measured
+  19.91:1. After the fix all seven public routes measure 19.91:1 in both themes.
+- Fixed by moving both heroes to `--surface-page` / `--text-primary` /
+  `--text-secondary` / `--action-primary` and the Insights CTA to `--surface-subtle`.
+  Covered by `src/__tests__/e2e/work-insights-hero-parity.spec.ts` (16 tests, both
+  locales and themes) which asserts the surface token and a >=4.5:1 navigation
+  contrast. This closes the hero-surface portion of RPA-006 and RPA-009; their
+  remaining layout, rhythm and content findings are untouched.
+
+### Accepted deviation — navigation always uses `Theme=Solid`
+
+The page frames instance the Navigation `Theme=Transparent` variant (`46:117` on
+Work, `74:266` on Insights; both bind `--text-primary` and `--action-primary` and
+no surface). We deliberately apply the approved `Theme=Solid` variant (`21:318`,
+scrolled `21:321`) on every route instead, so the bar owns its surface and cannot
+inherit an unreadable background from a section that scrolls beneath it. The
+scrolled separator also spans the full bar rather than the inner 1200px container.
+`launch.spec.ts` now encodes this contract; RPA-003 stays open for the full
+three-variant `Theme` model.
+
+### Known non-issue — React DevTools console noise
+
+The dev overlay message "We are cleaning up async info that was not on the parent
+Suspense boundary. This is a bug in React." originates entirely inside the React
+DevTools extension frame. Loading `/insights`, `/` and `/work` in clean headless
+Chromium with no extensions produces zero console errors or warnings. It is
+development-only instrumentation and never reaches production. Do not spend time
+on it; check the stack for `chrome-extension://` before investigating.
