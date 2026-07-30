@@ -14,6 +14,10 @@
 /coverage
 /playwright-report
 /test-results
+/.playwright-mcp
+
+# local working artifacts (browser evidence, asset and PDF extraction dumps)
+/tmp
 
 # next.js
 /.next/
