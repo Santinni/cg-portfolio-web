@@ -73,7 +73,7 @@ The complete 11-page file was re-enumerated on 2026-07-29. Root metadata was not
 | Navigation component set | `21:357` | 24 desktop/tablet/mobile variants |
 | Nav Link component set | `44:60` | Default/Hover/Current/Focus × Default/Inverse |
 | Open mobile menu | `27:49` | 390 × 844 |
-| Editorial Empty/Loading/Error | `77:419`, `77:423`, `77:427` | 640 × 240 state panels |
+| Editorial Empty/Loading/Error | `77:378` (set), `77:419`, `77:423`, `77:427` (instances) | 640 × 240 state panels. The master set was unnamed and overlapped `77:365`; on 2026-07-31 it was named `Content State / Editorial` and moved to 7000,1350 on page `4:3`. |
 
 The Button contract is unchanged: Primary/Secondary/Quiet × Default/Hover/Active/Focus/Disabled/Loading × SM/MD/LG. Heights are 36/44/52 px, corner radius is 4 px, and inline padding is 12/16/20 px.
 
@@ -292,7 +292,7 @@ Feature-branch source paths refer to audited code revision `2e484a7`. Authoritat
 
 - **Expected:** left-aligned raised Empty/Loading/Error panels with visible eyebrow, exact title, description, and stable dimensions.
 - **Current:** loading is two skeleton bars; empty/error omit the state eyebrow and remain centered.
-- **Evidence:** `EditorialState.tsx`, `Article.module.css`, Figma `77:419–427`.
+- **Evidence:** `EditorialState.tsx`, `Article.module.css`, Figma master set `77:378` (`Content State / Editorial`) and its instances `77:419–427`.
 - **Smallest fix:** retain live/busy semantics while implementing the approved visible structure.
 
 ## Work packages
