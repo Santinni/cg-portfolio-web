@@ -1,0 +1,107 @@
+name: cg-portfolio-e2e
+
+# Pinned Linux/Chromium/font environment for the browser parity suite.
+#
+# The Home parity contracts compare rendered geometry against approved Figma
+# frames. Text wrapping decides several of those measurements, and wrapping
+# depends on the font stack and rasteriser, so the same correct layout measures
+# differently on Windows and on Linux. Running the suite here removes that
+# variable: every input that can move a line break -- OS, browser build, font
+# packages -- is fixed by the image tags below.
+#
+# Usage:
+#   pnpm test:e2e:pinned
+#
+# The database is intentionally ephemeral (tmpfs, no named volume). It starts
+# empty on every run, so Payload applies `prodMigrations` cleanly instead of
+# detecting dev-mode schema drift and blocking on an interactive prompt. The
+# local development database is never touched.
+
+services:
+  database:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: e2e
+      POSTGRES_DB: codeguy_e2e
+    # Ephemeral storage: a fresh schema every run, and nothing to clean up.
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d codeguy_e2e"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+
+  app:
+    build:
+      context: .
+      args:
+        APP_REVISION: ${APP_REVISION:-pinned-e2e}
+        # Baked into the bundle; must equal what the suite browses and what the
+        # SEO expectations resolve to, exactly as the CI job sets it.
+        NEXT_PUBLIC_SERVER_URL: http://localhost:3000
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      DATABASE_URI: postgres://postgres:e2e@database:5432/codeguy_e2e
+      PAYLOAD_SECRET: ${PAYLOAD_SECRET:?PAYLOAD_SECRET must be set in .env}
+      NEXT_PUBLIC_SERVER_URL: http://app:3000
+      APP_REVISION: ${APP_REVISION:-pinned-e2e}
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "fetch('http://127.0.0.1:3000/api/health').then((r) => { if (!r.ok) process.exit(1) }).catch(() => process.exit(1))"
+      interval: 5s
+      timeout: 5s
+      retries: 24
+      start_period: 20s
+
+  e2e:
+    # Pinned to the exact @playwright/test version in package.json. Bump both
+    # together, never one alone -- Playwright refuses mismatched browser builds.
+    image: mcr.microsoft.com/playwright:v1.62.0-noble
+    depends_on:
+      app:
+        condition: service_healthy
+    # Share the app's network namespace so the suite reaches it on localhost.
+    # The app sends HSTS and a CSP carrying `upgrade-insecure-requests`
+    # (next.config.ts), so Chromium rewrites http://<hostname> to https and the
+    # navigation dies with ERR_SSL_PROTOCOL_ERROR. localhost is exempt from that
+    # upgrade, which is also why CI -- which serves on localhost -- never hit it.
+    network_mode: service:app
+    working_dir: /work
+    volumes:
+      - .:/work
+      # Container-local dependencies. Without this the Linux install would
+      # overwrite the host's Windows node_modules with incompatible binaries.
+      - e2e_node_modules:/work/node_modules
+      # Keeps the pnpm store across runs; without it every run re-downloads all
+      # 977 packages, which dominates the wall time.
+      - e2e_pnpm_store:/pnpm-store
+    environment:
+      CI: "true"
+      PLAYWRIGHT_EXTERNAL_SERVER: "true"
+      PLAYWRIGHT_BASE_URL: http://localhost:3000
+      # The SEO suite resolves its expected absolute URLs from this.
+      NEXT_PUBLIC_SERVER_URL: http://localhost:3000
+      APP_REVISION: ${APP_REVISION:-pinned-e2e}
+    command:
+      - sh
+      - -c
+      - |
+        set -e
+        corepack enable
+        corepack prepare pnpm@10.28.0 --activate
+        # Passed as a flag, never written to .npmrc: the repo is bind-mounted and
+        # a config write would land in the host working tree.
+        pnpm install --frozen-lockfile --store-dir /pnpm-store
+        pnpm exec playwright test --project=chromium
+
+volumes:
+  e2e_node_modules:
+  e2e_pnpm_store:

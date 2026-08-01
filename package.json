@@ -59,6 +59,8 @@
     "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
+    "test:e2e:pinned": "docker compose -p cg-portfolio-e2e -f compose.e2e.yaml up --build --abort-on-container-exit --exit-code-from e2e",
+    "test:e2e:pinned:down": "docker compose -p cg-portfolio-e2e -f compose.e2e.yaml down --volumes",
     "typecheck": "tsc --noEmit --incremental false",
     "format": "biome format --write src messages next.config.ts playwright.config.ts biome.json",
     "format:check": "biome format src messages next.config.ts playwright.config.ts biome.json",

@@ -1,5 +1,6 @@
 import { expect, type Page, test } from '@playwright/test'
 import {
+	expectLineWrapGrowth,
 	expectPx,
 	findVisibleDescendantOverflow,
 	HOME_ORDERED_SECTION_CONTRACTS,
@@ -118,17 +119,14 @@ function expectEnglishFigmaGeometry(geometry: HomeGeometry, viewportWidth: numbe
 	expect([0, RESERVED_SCROLLBAR_GUTTER]).toContain(reservedScrollbarGutter)
 
 	const roundingTolerance = viewportWidth === 1440 ? 0.5 : viewportWidth === 768 ? 1.5 : 2.5
-	const expectedGrowthByIndex = new Map<number, { amount: number; tolerance: number }>()
-	if (reservedScrollbarGutter === RESERVED_SCROLLBAR_GUTTER) {
-		if (viewportWidth === 430) expectedGrowthByIndex.set(2, { amount: 46.4, tolerance: 1 })
-		if (viewportWidth === 390) {
-			expectedGrowthByIndex.set(0, { amount: 22.203125, tolerance: 0.1 })
-		}
-		if (viewportWidth === 320) {
-			expectedGrowthByIndex.set(1, { amount: 46.4, tolerance: 1 })
-			expectedGrowthByIndex.set(3, { amount: 27.55, tolerance: 1 })
-		}
-	}
+	// A reserved scrollbar gutter narrows the content box, so any section holding
+	// copy may rewrap. Which ones actually do is font-metric dependent: at 390px
+	// the Hero gains a line on the CI Linux image while Principles does not, and
+	// on Windows it is the other way round. Enumerating the sections that wrapped
+	// on one machine encodes that machine into the contract, so under a gutter
+	// every section is measured as "Figma height plus a whole number of its own
+	// line boxes" instead. Without a gutter the exact Figma height still applies.
+	const contentBoxIsNarrowed = reservedScrollbarGutter === RESERVED_SCROLLBAR_GUTTER
 
 	let cumulativeMeasuredDelta = 0
 	for (const [index, section] of visible.entries()) {
@@ -136,9 +134,13 @@ function expectEnglishFigmaGeometry(geometry: HomeGeometry, viewportWidth: numbe
 		expectPx(section.rect.top - geometry.main.top, expected.top + cumulativeMeasuredDelta)
 
 		const measuredDelta = section.rect.height - expected.height
-		const expectedGrowth = expectedGrowthByIndex.get(index)
-		if (expectedGrowth) {
-			expectPx(measuredDelta, expectedGrowth.amount, expectedGrowth.tolerance)
+		if (contentBoxIsNarrowed) {
+			// The residual is the same quantity the exact branch compares, so it gets
+			// the same per-width budget. Anything looser would quietly weaken parity
+			// at the widths that do not rewrap.
+			expectLineWrapGrowth(measuredDelta, section.lineHeights, {
+				tolerance: roundingTolerance,
+			})
 		} else {
 			expectPx(section.rect.height, expected.height, roundingTolerance)
 		}

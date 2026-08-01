@@ -16,12 +16,13 @@ import { Link } from '@/i18n/navigation'
 /** Shared style props for both button and link renders. */
 interface BaseButtonProps {
 	className?: string
-	variant?: 'primary' | 'secondary' | 'quiet' | 'transparent' | 'text'
-	accent?: 'light' | 'dark'
+	/**
+	 * `transparent` is retained only for `ExpandableText`; Figma `21:110` defines
+	 * `Kind` as Primary / Secondary / Quiet.
+	 */
+	variant?: 'primary' | 'secondary' | 'quiet' | 'transparent'
 	rounded?: boolean
 	size?: 'small' | 'medium' | 'large'
-	textWeight?: 'normal' | 'demi' | 'bold'
-	textSize?: 'small' | 'medium' | 'large'
 	fullWidth?: boolean
 	children?: ReactNode
 }
@@ -68,12 +69,9 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonOr
 			className,
 			children,
 			variant = 'primary',
-			accent,
 			rounded,
 			size = 'medium',
-			textWeight,
 			fullWidth,
-			textSize,
 			onClick,
 			isLoading,
 			isDisabled,
@@ -87,10 +85,7 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonOr
 			styles[`size-${size}`],
 			className,
 			{
-				[styles[`accent-${accent}`]]: accent,
-				[styles[`text-weight-${textWeight}`]]: textWeight,
 				[styles.fullWidth]: fullWidth,
-				[styles[`text-size-${textSize}`]]: textSize,
 				[styles.rounded]: rounded,
 			},
 		)
