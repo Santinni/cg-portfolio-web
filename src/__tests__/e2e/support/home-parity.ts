@@ -113,6 +113,8 @@ export interface HomeDirectChildGeometry {
 	ariaLabelledBy: string | null
 	id: string | null
 	labelResolvesInside: boolean
+	/** Distinct computed line heights of the text this section actually renders. */
+	lineHeights: number[]
 	rect: HomeGeometryRect
 	tagName: string
 	visible: boolean
@@ -145,6 +147,28 @@ export function readHomeGeometry(main: HTMLElement): HomeGeometry {
 		}
 	}
 
+	// Every line box a section can add when its copy wraps. Collected from the
+	// elements that actually own text, so a growth allowance can be expressed as
+	// "N more line boxes of type that this section renders" instead of a pixel
+	// amount measured once on one machine.
+	const readLineHeights = (element: Element): number[] => {
+		const values = new Set<number>()
+		const visit = (node: Element) => {
+			const ownsText = Array.from(node.childNodes).some(
+				(child) => child.nodeType === Node.TEXT_NODE && (child.textContent ?? '').trim() !== '',
+			)
+			if (ownsText) {
+				const lineHeight = Number.parseFloat(getComputedStyle(node).lineHeight)
+				if (Number.isFinite(lineHeight) && lineHeight > 0) {
+					values.add(Math.round(lineHeight * 1000) / 1000)
+				}
+			}
+			for (const child of Array.from(node.children)) visit(child)
+		}
+		visit(element)
+		return Array.from(values).sort((first, second) => first - second)
+	}
+
 	const children = Array.from(main.children).map((element) => {
 		const rect = readRect(element)
 		const styles = getComputedStyle(element)
@@ -154,6 +178,7 @@ export function readHomeGeometry(main: HTMLElement): HomeGeometry {
 			ariaLabelledBy,
 			id: element.id || null,
 			labelResolvesInside: label !== null && element.contains(label),
+			lineHeights: readLineHeights(element),
 			rect,
 			tagName: element.tagName,
 			visible:
@@ -209,6 +234,55 @@ export function expectPx(actual: number, expected: number, tolerance = 0.5): voi
 	expect(
 		difference,
 		`Expected ${actual}px to be within ±${tolerance}px of ${expected}px (difference: ${difference}px)`,
+	).toBeLessThanOrEqual(tolerance)
+}
+
+/**
+ * Assert that a section is taller than its approved Figma frame by a whole number
+ * of line boxes and by nothing else.
+ *
+ * When Chromium reserves a vertical-scrollbar gutter the content box narrows, so
+ * copy can wrap onto further lines and the section grows. How many lines it gains
+ * depends on font metrics, which differ between the CI Linux image and a developer
+ * machine: at 390px the Home Hero gains exactly one 24.65625px body line on Linux
+ * and none on Windows. Both are correct renders of the same layout.
+ *
+ * Pinning the growth to an amount measured once on one machine therefore encodes
+ * that machine into the contract. Requiring a whole multiple of a line height the
+ * section really renders keeps the contract environment-independent while still
+ * rejecting growth that no line wrap explains -- a stray margin or padding
+ * regression is not a multiple of any line box.
+ *
+ * `tolerance` must stay the same rounding budget the no-gutter comparison uses
+ * for that viewport. Every viewport reserves a gutter on some platforms --
+ * Windows reserves one even at 1440px -- so a looser default here would weaken
+ * the exact contract at the widths that never rewrap.
+ */
+export function expectLineWrapGrowth(
+	growth: number,
+	lineHeights: readonly number[],
+	{ maxLines = 3, tolerance = 3 }: { maxLines?: number; tolerance?: number } = {},
+): void {
+	expect(lineHeights.length, 'no text line heights were measured for this section').toBeGreaterThan(
+		0,
+	)
+
+	const candidates = lineHeights.flatMap((lineHeight) =>
+		Array.from({ length: maxLines + 1 }, (_unused, lines) => ({
+			lineHeight,
+			lines,
+			residual: growth - lines * lineHeight,
+		})),
+	)
+	const best = candidates.reduce((closest, candidate) =>
+		Math.abs(candidate.residual) < Math.abs(closest.residual) ? candidate : closest,
+	)
+
+	expect(
+		Math.abs(best.residual),
+		`Expected ${growth}px of growth to be a whole number of wrapped line boxes ` +
+			`(line heights present: ${lineHeights.join(', ')}px; closest fit: ${best.lines} x ` +
+			`${best.lineHeight}px leaving ${best.residual}px unexplained)`,
 	).toBeLessThanOrEqual(tolerance)
 }
 

@@ -1,6 +1,7 @@
 import { expect, type Locator, test } from '@playwright/test'
 
 import {
+	expectLineWrapGrowth,
 	expectPx,
 	findVisibleDescendantOverflow,
 	HOME_PARITY_VIEWPORTS,
@@ -24,7 +25,6 @@ const czechCompactExperience =
 	'Webům se věnuji přes deset let a nyní působím ve vedoucí frontendové roli. S Reactem, TypeScriptem a Next.js pracuji na zákaznických portálech, podnikových aplikacích a komponentových systémech.'
 const czechCompactQuality = 'Architektura, přístupnost a udržovatelnost jsou součástí dodávky.'
 const RESERVED_SCROLLBAR_GUTTER = 15
-const MOBILE_GUTTER_HERO_GROWTH = 22.203125
 
 async function expectResponsiveCopyVisibility(
 	hero: Locator,
@@ -259,11 +259,16 @@ test.describe('Home Hero Figma contract', () => {
 			// the section height from the approved frame.
 			expectPx(contract.children[1].height, viewport.headlineHeight, 1.5)
 			const normalizedHeroHeight = contract.hero.height - viewport.headerHeight
-			if (
-				viewport.width === HOME_PARITY_VIEWPORTS.mobile.width &&
-				reservedScrollbarGutter === RESERVED_SCROLLBAR_GUTTER
-			) {
-				expectPx(normalizedHeroHeight - viewport.heroHeight, MOBILE_GUTTER_HERO_GROWTH, 0.1)
+			if (reservedScrollbarGutter === RESERVED_SCROLLBAR_GUTTER) {
+				// A reserved gutter narrows the content box, so the body copy can rewrap.
+				// Only the body is a candidate: the headline is pinned by its own height
+				// assertion above, and the eyebrow is a single word.
+				expectLineWrapGrowth(
+					normalizedHeroHeight - viewport.heroHeight,
+					[contract.bodyLineHeight],
+					// Same budget as the exact comparison in the branch below.
+					{ tolerance: 3 },
+				)
 			} else {
 				expectPx(normalizedHeroHeight, viewport.heroHeight, 3)
 			}
