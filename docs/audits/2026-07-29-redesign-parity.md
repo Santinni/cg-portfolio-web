@@ -518,3 +518,139 @@ reviewed by the controller only and must not be described as independently
 reviewed. The document also lives at `docs/audits/2026-07-29-redesign-parity.md`
 rather than the `docs/redesign-parity-audit.md` path the brief named; renaming it
 would break existing references in commits and plans.
+
+## 2026-08-01 — The Home geometry contract was locked to one machine
+
+Branch `test/shared-ui-redesign-parity`. The first attempt to re-run the release
+gate off CI, on Windows 11 against a standalone production build, exposed a defect
+in the parity method itself rather than in the product.
+
+### What failed
+
+`home-hero-anchoring.spec.ts` and `home-integrated-parity.spec.ts` both failed at
+390px with an identical message:
+
+```
+Expected -2.453125px to be within ±0.1px of 22.203125px (difference: 24.65625px)
+```
+
+`MOBILE_GUTTER_HERO_GROWTH = 22.203125` was a bare constant. It recorded how much
+the Home Hero grew, on the CI Linux image, when Chromium reserved a 15px
+scrollbar gutter and the body copy wrapped onto one more line. The difference
+between the two runs is `24.65625px` — exactly one body line box at the mobile
+type scale (17px × 1.45). On Linux the copy takes one extra line; on Windows it
+does not. Both are correct renders of the same layout.
+
+The residual `-2.453125px` is identical in both environments, so the section
+geometry itself never diverged. Only the line count did.
+
+### The second-order finding
+
+Removing the constant let the 390px integrated test run past the Hero for the
+first time, and it failed again further down: section index 3 measured
+`702.046875px` against an approved `656px`. The `expectedGrowthByIndex` map that
+listed *which* sections were allowed to grow was itself derived from Linux-only
+observation. Under a reserved gutter the Hero rewraps on Linux and Principles
+rewraps on Windows — the enumeration encoded one machine just as much as the
+constant did.
+
+This is the more important half of the finding: the first failure was one magic
+number, the second showed the whole growth model was machine-shaped.
+
+### What changed
+
+`expectLineWrapGrowth` in `src/__tests__/e2e/support/home-parity.ts` replaces both.
+A section under a reserved gutter must measure its approved Figma height plus a
+whole number of line boxes it actually renders, and nothing else. Line heights are
+read from the DOM per section by `readHomeGeometry`, so no pixel amount is pinned.
+Without a gutter the exact Figma height still applies unchanged.
+
+This is not a loosened contract. The previous version accepted any 22.203125px
+growth for any reason; this one rejects growth that no line wrap explains, and
+still carries every measured delta through subsequent section positions and total
+main height. What it stops asserting is *which* machine rendered the page.
+
+The residual budget is deliberately tied to the per-viewport rounding tolerance
+(0.5px at 1440, 1.5px at 768, 2.5px below) rather than to a single looser number.
+Windows reserves a 15px gutter at *every* width, 1440px included — measured
+`document-client=1440, body-client=1425` — so a blanket allowance would have
+silently relaxed the 1440px contract from ±0.5px to ±3px on the platform where
+nothing rewraps at all.
+
+Worth recording: at 390px the Hero's residual is `-2.453125px` against a 2.5px
+budget. It passes, with 0.047px to spare, and it is the same value on both
+platforms. That is a real 2.45px gap between the implementation and the approved
+`831px` frame height which the old constant absorbed invisibly. It is not a new
+defect, but it is now the tightest margin in the suite and should be resolved
+against Figma rather than left to sit on the tolerance boundary.
+
+### Coverage this did not have
+
+The suite had never been run outside CI. Both defects were latent from the day the
+constants were written and would have surfaced the first time any contributor ran
+the browser gate locally. `pnpm test:e2e:pinned` (`compose.e2e.yaml`) now runs the
+suite inside `mcr.microsoft.com/playwright:v1.62.0-noble` against an ephemeral
+database, so the geometry contracts are reproducible off CI.
+
+Result: **253/253 Chromium tests pass in the pinned Linux container, and 253/253
+pass on Windows**, from the same working tree. The geometry contracts now hold in
+both, which is the property the old constants made impossible.
+
+Three things had to be true for that container to work, and all are recorded in
+`compose.e2e.yaml` because none is obvious. The runner shares the app's network
+namespace and addresses it as `localhost`: the app sends HSTS and a CSP carrying
+`upgrade-insecure-requests` (`next.config.ts:55`, `next.config.ts:76`), so reaching
+it under any other hostname makes Chromium rewrite `http://` to `https://` and every
+navigation dies with `ERR_SSL_PROTOCOL_ERROR`. CI never met this because it serves
+on `localhost`, which is exempt from the upgrade. The pnpm store is also a named
+volume: with the repository bind-mounted, the default store path resolves inside the
+mount and drops a 1.4GB `.pnpm-store/` into the host working tree. And
+`NEXT_PUBLIC_SERVER_URL` is passed as a Docker *build* argument, because Next inlines
+`NEXT_PUBLIC_*` at build time — supplied only at run time the image keeps the
+`https://codeguy.cz` fallback and the five localized-SEO canonical assertions fail.
+`Dockerfile` gained an `ARG`/`ENV` pair for it in the builder stage; unset, the build
+behaves exactly as before.
+
+The pinned image is *a* fixed environment, not byte-identical to CI: the workflow
+still runs `playwright install --with-deps chromium` on `ubuntu-latest`, whose font
+packages are not guaranteed to match the image. Pointing the CI browser job at the
+same image would make the two identical. That change is not made here because an
+Actions edit cannot be verified locally; it belongs in its own PR where a CI run
+proves it.
+
+### Also fixed
+
+`work-insights-hero-parity.spec.ts` read `document.querySelector('main header')!`
+with no wait. On a cold database `/insights` can still be streaming when the
+navigation promise resolves, and the missing element surfaced as an opaque
+`getComputedStyle` TypeError. It now waits for the element the contract is about
+and reports what was absent. This flaked only under local parallelism; CI runs
+`workers: 1`.
+
+### Running the browser gate locally
+
+The production server cannot use the development database. Payload detects the
+dev-mode pushed schema, blocks on an interactive "data loss will occur" prompt and
+never serves a request. Use an empty database — which is what `compose.e2e.yaml`
+does — and note that the standalone server reads `HOSTNAME`, not `HOST`.
+
+### Independent review — still not achieved
+
+The 2026-07-30 pass recorded that independent review was unavailable. Mistral Vibe
+is now installed and working (v2.23.2), and its programmatic mode was pointed at an
+isolated `git worktree` of the branch head so it could not observe uncommitted work.
+Both attempts stalled on the first tool call: in `-p` mode Vibe waits for tool
+approval, which cannot be answered non-interactively. `--auto-approve` is the
+documented answer, and selecting the installed `lean` agent did not change the
+behaviour. Neither run produced output; both were stopped after ~10 minutes of zero
+CPU movement.
+
+This pass therefore remains controller-reviewed only and must not be described as
+independently reviewed. Unblocking it is a permission decision, not a technical one.
+
+### RPA-015 impact
+
+The open scope of RPA-015 was recorded as a missing pinned screenshot baseline.
+That understated it: an existing *geometry* contract was already environment-locked,
+and nobody knew because the gate only ever ran in one place. The screenshot-baseline
+scope remains open; the geometry scope is now reproducible.
