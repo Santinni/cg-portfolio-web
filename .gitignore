@@ -62,3 +62,6 @@ caddy_config/
 icon-scan-report.json
 src/assets/**/files.json
 src/components/**/files.json
+
+# CV PDF build artefacts
+tools/cv-pdf/out/

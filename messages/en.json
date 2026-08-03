@@ -365,10 +365,19 @@
 		"methods": {
 			"eyebrow": "CONTACT DETAILS",
 			"title": "Choose the most useful channel.",
-			"email": { "label": "Email" },
-			"location": { "label": "Location", "value": "Prague, Czech Republic" },
-			"linkedin": { "label": "LinkedIn" },
-			"github": { "label": "GitHub" }
+			"email": {
+				"label": "Email"
+			},
+			"location": {
+				"label": "Location",
+				"value": "Prague, Czech Republic"
+			},
+			"linkedin": {
+				"label": "LinkedIn"
+			},
+			"github": {
+				"label": "GitHub"
+			}
 		},
 		"expectations": {
 			"eyebrow": "BEFORE WE TALK",
@@ -467,31 +476,31 @@
 			"entries": {
 				"frontendEngineering": {
 					"title": "Frontend engineering",
-					"description": "React · TypeScript · Next.js · JavaScript"
+					"description": "React 18/19, TypeScript, Next.js, JavaScript, HTML5, CSS3, functional React patterns"
 				},
 				"stateAndData": {
 					"title": "State and data",
-					"description": "MobX · Redux · application state"
+					"description": "TanStack React Query, Zustand, Redux, MobX, URL-synced UI patterns, typed API integration"
 				},
 				"validationAndForms": {
 					"title": "Validation and forms",
-					"description": "Accessible form behavior · clear validation patterns"
+					"description": "Configuration-driven UI, reusable form fields, schema-aware validation, sync and async validation patterns"
 				},
 				"cssUiSystems": {
 					"title": "CSS and UI systems",
-					"description": "HTML · CSS · Sass · CSS Modules · Storybook"
+					"description": "SCSS/Sass, CSS Modules, styled-components, LESS, specificity and cascade, responsive layouts, design systems, Storybook"
 				},
 				"cmsPlatformIntegration": {
 					"title": "CMS and platform integration",
-					"description": "Kentico · Kontent.ai · WordPress"
+					"description": "WordPress, Kentico CMS, Kontent.ai, Payload CMS, PHP/Twig, monorepo-ready workflow"
 				},
 				"qualityAndTooling": {
 					"title": "Quality and tooling",
-					"description": "Playwright · Vitest / Jest · Git · Vite · Webpack"
+					"description": "Vitest, Playwright, React Testing Library, Git, PNPM/NPM/Yarn, code reviews, CI/CD practices, AI-assisted development workflows"
 				},
 				"accessibilityI18n": {
 					"title": "Accessibility and localization",
-					"description": "React Aria · accessible interaction · localized interfaces"
+					"description": "React Aria hooks, keyboard and screen-reader usability, WCAG-oriented implementation, internationalisation-aware UI, RTL-aware CSS"
 				}
 			}
 		},
@@ -564,94 +573,97 @@
 			"entries": {
 				"blueghost": {
 					"title": "Lead Frontend Engineer",
-					"summary": "Leading frontend architecture, delivery practices and technical decisions across product teams.",
+					"summary": "Frontend architecture, delivery standards and engineering quality across product teams.",
 					"descriptions": {
-						"leadership": "Leading frontend architecture, delivery practices and technical decisions across product teams."
+						"foundation": "Architected a reusable React/Next.js frontend foundation for web platforms by defining application structure, component boundaries and TypeScript conventions, improving long-term maintainability across current and future projects.",
+						"release": "Improved release confidence by combining Storybook-driven component workflows with Vitest/Playwright testing practices and stricter review standards instead of relying only on manual QA.",
+						"state": "Standardized server-state and client-state patterns with TanStack React Query and Zustand, making data loading, cache invalidation and UI state easier to reason about in feature development.",
+						"quality": "Raised frontend quality by leading code reviews, mentoring engineers and enforcing conventions around strict TypeScript, SCSS Modules, reusable UI patterns, accessibility and performance.",
+						"ai": "Introduced structured AI-assisted development workflows — Copilot, Gemini/Codex-style CLI workflows, system prompts, Figma-to-token/code assistance — while keeping architecture, code review and maintainability under engineering control."
 					}
 				},
 				"kontentAi": {
 					"title": "Frontend Engineer",
-					"summary": "Accessibility-focused React contract completed in February 2025.",
+					"summary": "Accessibility engineering inside the Kontent.ai CMS product itself.",
 					"descriptions": {
-						"accessibilityProject": "I worked as part of a team on a contract-based project focused on improving accessibility and refactoring code to provide users with a better and more accessible user experience.",
-						"reactAria": "Our team utilized React Aria, specifically its hooks, and developed custom solutions to address specific accessibility requirements.",
-						"responsibilities": "My responsibilities included ensuring the application complied with all accessibility standards, collaborating with team members to optimize code, and applying best practices for frontend development.",
-						"outcome": "We created an intuitive and efficient user interface while meeting strict accessibility guidelines within the project’s defined timeframe."
+						"product": "Improved accessibility of a complex React application by refactoring UI behavior with React Aria hooks and custom accessible interaction patterns for keyboard and screen-reader users.",
+						"depth": "Reduced accessibility risk by reviewing landmarks, labels, focus behavior and component semantics against strict usability requirements instead of treating a11y as a final QA step.",
+						"safety": "Kept refactoring safe by collaborating with the team on maintainable TypeScript components, Storybook workflows and Playwright-based checks in a contract environment with defined delivery scope."
 					}
 				},
 				"tldrit": {
 					"title": "Lead Frontend Engineer",
 					"summary": "Led frontend delivery for web and mobile applications in a time-framed role.",
 					"descriptions": {
-						"leadership": "As a Lead Frontend Engineer in a time-framed role, I designed and implemented solutions for web and mobile applications while leading the frontend team.",
-						"delivery": "I proposed technical approaches, developed scalable applications using ReactJS, Next.js, and Storybook, and ensured high-quality, user-friendly results within tight deadlines."
+						"architecture": "Delivered frontend architecture for time-boxed web and mobile-oriented projects by selecting scalable React/Next.js patterns, reusable component structures and CSS Modules/Sass styling strategy.",
+						"cms": "Connected modern React interfaces to CMS-driven content using Payload CMS and TypeScript models, strengthening my ability to work with editorial/admin data structures and frontend contracts."
 					}
 				},
 				"eman": {
 					"title": "Frontend Developer",
-					"summary": "Delivered and modernized customer-facing interfaces for major energy-sector clients.",
+					"summary": "Frontend delivery for energy-sector clients — E.ON, MND, ČEZ and Bohemia Energy.",
 					"descriptions": {
-						"clients": "Developed and implemented user interfaces for key clients such as EON, MND, ČEZ, and Bohemia Energy.",
-						"optimization": "Optimized web applications to improve their performance and accessibility, resulting in higher user satisfaction.",
-						"refactoring": "Refactored and modernized legacy code using React, NextJS, and TypeScript.",
-						"collaboration": "Collaborated closely with UX designers and backend developers to meet client expectations."
+						"clients": "Built and evolved React/TypeScript interfaces for enterprise clients including E.ON, MND, ČEZ and Bohemia Energy, increasing reuse and consistency through design systems and component libraries.",
+						"mnd": "Built Moje MND, a customer self-service portal, from scratch in a two-person frontend team — forms, validation, tabular overviews, invoices, contracts and document handling.",
+						"eon": "Delivered two internal E.ON applications: PUDplus for work orders, findings and preventive maintenance, and MKME web for work orders and metering.",
+						"maintainability": "Improved maintainability of client applications by refactoring legacy frontend code into modern React/TypeScript patterns, reusable components and clearer styling architecture.",
+						"collaboration": "Supported performance, accessibility and responsive UX improvements by working closely with UX and backend teams on production web applications used by large customer bases."
 					}
 				},
 				"lmc": {
 					"title": "Frontend Developer",
-					"summary": "Built bespoke, responsive web solutions for corporate clients.",
+					"summary": "Custom responsive frontend work for corporate clients on the jobs.cz ecosystem.",
 					"descriptions": {
-						"solutions": "Focused on creating bespoke web solutions for corporate clients, delivering tailored solutions for platforms like jobs.cz.",
-						"discovery": "Collaborated with designers and clients to analyze requirements and design functional, visually appealing solutions.",
-						"technology": "Used modern frontend technologies such as HTML, CSS, JavaScript, and React, ensuring responsive design and high performance.",
-						"accessibility": "Prioritized accessibility standards and optimized user experience across devices and browsers."
+						"clients": "Delivered custom web solutions for corporate clients on the jobs.cz ecosystem by translating client and design requirements into responsive frontend implementations.",
+						"php": "Worked comfortably in a PHP/Twig and frontend hybrid environment, strengthening the same PHP-to-frontend collaboration mindset needed for React features embedded in CMS platforms."
 					}
 				},
 				"ampX": {
 					"title": "Frontend Developer",
 					"summary": "Developed the frontend of a distributed-energy product.",
 					"descriptions": {
-						"platform": "Worked on the frontend of a new digital energy platform enabling distributed energy participation.",
-						"quality": "Delivered high-quality, accessible, and responsive UI while maintaining clean and readable code.",
-						"technology": "Used technologies such as ReactJS, Material-UI, Vanilla JavaScript, HTML5, and CSS-in-JS (JSS) to develop and implement frontend solutions."
+						"platform": "Built React/TypeScript UI for a distributed-energy platform where data clarity and reliable interaction patterns were critical for market-facing workflows.",
+						"sustainable": "Maintained readable and sustainable frontend code with Redux, Storybook and component-based UI practices in a product development team."
 					}
 				},
 				"skype": {
 					"title": "Frontend Developer",
 					"summary": "Contributed to the accessible and responsive Skype.com web platform.",
 					"descriptions": {
-						"scale": "Contributed to a platform serving over 400,000 daily users from more than 30 countries.",
-						"quality": "Focused on ensuring accessibility, responsiveness, and performance of the main website.",
-						"components": "Developed and optimized components, improved usability, and maintained clean, maintainable code.",
-						"cms": "Worked closely with Kentico CMS to manage and integrate content."
+						"scale": "Contributed to a high-traffic public website serving more than 400,000 unique users daily across 30+ countries by improving responsive components, accessibility and performance.",
+						"cms": "Worked inside a CMS-backed publishing environment with Kentico, aligning frontend components with editorial/content-management workflows on a global public site."
 					}
 				},
 				"foxconn": {
 					"title": "Frontend Coder",
 					"summary": "Developed responsive interfaces and a BEM-based component foundation.",
 					"descriptions": {
-						"gui": "Developed the GUI with a strong focus on HTML architecture and responsive design.",
-						"collaboration": "Collaborated with designers and developers to implement modern CSS and JavaScript solutions.",
-						"technology": "Worked with React, Vanilla JS, and occasionally jQuery.",
-						"designSystem": "Developed a custom design system based on the BEM framework."
+						"foundation": "Built scalable UI foundations for data visualization, management and processing applications by applying modular HTML/CSS architecture, BEM and component-based React practices."
 					}
 				},
 				"mountfield": {
 					"title": "Frontend Coder",
 					"summary": "Maintained the main website and delivered supporting marketing and internal interfaces.",
 					"descriptions": {
-						"website": "Managed and maintained the company's main website built on the Kentico platform.",
-						"microsites": "Created microsites and supported marketing websites, and developed responsive HTML newsletters.",
-						"internalApps": "Contributed to internal application development to improve employee workflows and customer access."
+						"website": "Maintained the main company website and marketing microsites by implementing responsive pages, newsletters and internal UI improvements in a CMS-driven environment."
 					}
 				},
 				"bitware": {
 					"title": "Web Administrator, Graphic Designer, and Junior Frontend Coder",
 					"summary": "Worked across website administration, visual design and early frontend delivery.",
 					"descriptions": {
-						"scope": "Managed website administration, graphic design, and frontend development.",
-						"presentations": "Created responsive web presentations using HTML5/CSS3.",
-						"wordpress": "Worked on WordPress-based projects, designed templates, and produced print materials."
+						"wordpress": "Managed and built WordPress-based websites and responsive presentations using HTML/CSS/JavaScript and PHP, forming the foundation for later React and CMS-integrated platform work."
+					}
+				}
+			},
+			"stackLabel": "Stack",
+			"targetFitTitle": "Target-fit highlights",
+			"earlierExperience": {
+				"title": "Earlier experience",
+				"entries": {
+					"austroBohemia": {
+						"title": "Sales Manager",
+						"summary": "CRM/ERP and ICT services."
 					}
 				}
 			}
@@ -662,6 +674,9 @@
 			"entries": {
 				"copth": {
 					"degree": "Electrical engineering, telecommunications and computer technologies"
+				},
+				"fortyTwoPrague": {
+					"degree": "Core student — software engineering fundamentals in C and Python"
 				}
 			},
 			"languagesTitle": "Languages",
@@ -672,7 +687,7 @@
 				},
 				"english": {
 					"name": "English",
-					"level": "Fluent"
+					"level": "Working professional"
 				},
 				"swedish": {
 					"name": "Swedish",
@@ -688,6 +703,14 @@
 				"freeCodeCamp": "Full Stack Web Development Certification, Computer Software Engineering",
 				"codecademy": "Basics of HTML & CSS - www.codecademy.com",
 				"scomp": "Web Application Programmer, Graphic studio worker"
+			},
+			"ongoingLabel": "Present"
+		},
+		"profile": {
+			"title": "Professional summary",
+			"paragraphs": {
+				"experience": "Senior Frontend Engineer with more than ten years of commercial experience, currently Lead Frontend Engineer at BlueGhost, where I own frontend architecture, delivery standards and engineering quality across product teams.",
+				"focus": "My work centres on React and TypeScript applications that have to last: component foundations, accessibility, testing strategy and code review, with hands-on CMS and platform background across Kentico, Kontent.ai, Payload CMS and PHP/Twig. I keep learning deliberately as a core student at 42 Prague, and use AI-assisted workflows while keeping architecture and maintainability under engineering control."
 			}
 		}
 	},
