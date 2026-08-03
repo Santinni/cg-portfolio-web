@@ -638,25 +638,21 @@
 					"title": "Frontend Coder",
 					"summary": "Developed responsive interfaces and a BEM-based component foundation.",
 					"descriptions": {
-						"foundation": "Built scalable UI foundations for data visualization, management and processing applications by applying modular HTML/CSS architecture, BEM and component-based React practices.",
-						"designSystem": "Helped refine a custom design system, improving consistency and speed of frontend implementation across internal projects."
+						"foundation": "Built scalable UI foundations for data visualization, management and processing applications by applying modular HTML/CSS architecture, BEM and component-based React practices."
 					}
 				},
 				"mountfield": {
 					"title": "Frontend Coder",
 					"summary": "Maintained the main website and delivered supporting marketing and internal interfaces.",
 					"descriptions": {
-						"website": "Maintained the main company website and marketing microsites by implementing responsive pages, newsletters and internal UI improvements in a CMS-driven environment.",
-						"microsites": "Created microsites and supported marketing websites, and developed responsive HTML newsletters.",
-						"internalApps": "Contributed to internal application development to improve employee workflows and customer access."
+						"website": "Maintained the main company website and marketing microsites by implementing responsive pages, newsletters and internal UI improvements in a CMS-driven environment."
 					}
 				},
 				"bitware": {
 					"title": "Web Administrator, Graphic Designer, and Junior Frontend Coder",
 					"summary": "Worked across website administration, visual design and early frontend delivery.",
 					"descriptions": {
-						"wordpress": "Managed and built WordPress-based websites and responsive presentations using HTML/CSS/JavaScript and PHP, forming the foundation for later React and CMS-integrated platform work.",
-						"design": "Handled website administration, graphic design and print materials alongside frontend development."
+						"wordpress": "Managed and built WordPress-based websites and responsive presentations using HTML/CSS/JavaScript and PHP, forming the foundation for later React and CMS-integrated platform work."
 					}
 				}
 			},
@@ -713,9 +709,8 @@
 		"profile": {
 			"title": "Professional summary",
 			"paragraphs": {
-				"experience": "Senior Frontend Engineer with more than ten years of commercial experience building React/TypeScript user interfaces for product platforms, CMS-backed public websites, internal dashboards and reusable component systems. Currently Lead Frontend Engineer at BlueGhost, responsible for frontend architecture, delivery standards and engineering quality across product teams.",
-				"focus": "My work centres on React applications that have to last: TanStack React Query, strict TypeScript, SCSS/CSS Modules, Storybook, accessibility, responsive layouts and API-driven frontend architecture. I have hands-on CMS and platform background across WordPress, Kentico, Kontent.ai, Payload CMS and PHP/Twig contexts, and I am comfortable working at the boundary between frontend contracts and backend/CMS data models.",
-				"growth": "I keep learning deliberately and am currently a student at 42 Prague. I use AI-assisted development workflows in daily practice while keeping architecture, code review and maintainability under engineering control, and I write about frontend decisions at codeguy.cz."
+				"experience": "Senior Frontend Engineer with more than ten years of commercial experience, currently Lead Frontend Engineer at BlueGhost, where I own frontend architecture, delivery standards and engineering quality across product teams.",
+				"focus": "My work centres on React and TypeScript applications that have to last: component foundations, accessibility, testing strategy and code review, with hands-on CMS and platform background across Kentico, Kontent.ai, Payload CMS and PHP/Twig. I keep learning deliberately as a core student at 42 Prague, and use AI-assisted workflows while keeping architecture and maintainability under engineering control."
 			}
 		}
 	},

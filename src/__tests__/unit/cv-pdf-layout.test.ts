@@ -56,6 +56,16 @@ describe('cv pdf layout contract', () => {
 		expect(css).toMatch(/\.skills\s*\{[^}]*grid-template-columns/)
 	})
 
+	it('constrains the QR code so it cannot overflow the masthead', async () => {
+		const css = await readFile(resolve(toolDir, 'cv-print.css'), 'utf8')
+
+		// The generated SVG carries its own width/height in millimetres. Without
+		// an explicit override it ignores its box and paints over the section
+		// below — which it did.
+		expect(css).toMatch(/\.qr svg\s*\{[^}]*inline-size:\s*100%/)
+		expect(css).toMatch(/\.qr svg\s*\{[^}]*block-size:\s*100%/)
+	})
+
 	it('prints A4 with the page geometry in @page', async () => {
 		const css = await readFile(resolve(toolDir, 'cv-print.css'), 'utf8')
 
@@ -87,7 +97,9 @@ describe('cv pdf layout contract', () => {
 		const html = await renderDocument('en')
 		const summaries = html.match(/class="summary"/g) ?? []
 
-		expect(summaries.length).toBeGreaterThanOrEqual(3)
+		// Multi-paragraph, as in the approved document — the single-sentence
+		// hero intro is not a professional summary.
+		expect(summaries.length).toBeGreaterThanOrEqual(2)
 		expect(html).toContain('42 Prague')
 		expect(html).toContain('codeguy.cz')
 	})

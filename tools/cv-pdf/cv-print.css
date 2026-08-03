@@ -77,7 +77,7 @@ body {
 /* ------------------------------------------------------------- masthead ---- */
 
 .header {
-	margin-block-end: var(--space-8);
+	margin-block-end: var(--space-16);
 	text-align: center;
 }
 
@@ -92,7 +92,7 @@ body {
 }
 
 .tagline {
-	margin: var(--space-4) 0 0;
+	margin: var(--space-8) 0 0;
 	color: var(--text-primary);
 	font-size: var(--print-tagline);
 	font-weight: 600;
@@ -120,13 +120,23 @@ body {
 	display: block;
 	inline-size: 17mm;
 	block-size: 17mm;
-	margin: var(--space-4) auto 0;
+	margin: var(--space-12) auto var(--space-4);
+}
+
+/*
+ * The generated SVG carries its own width and height in millimetres. Without
+ * this it ignores the box, overflows, and paints over the section below it.
+ */
+.qr svg {
+	display: block;
+	inline-size: 100%;
+	block-size: 100%;
 }
 
 /* ------------------------------------------------------------- section ---- */
 
 .section {
-	margin-block-start: var(--space-8);
+	margin-block-start: var(--space-12);
 }
 
 /*
@@ -224,7 +234,7 @@ body {
 }
 
 .entry {
-	margin-block-end: 6pt;
+	margin-block-end: var(--space-8);
 	/* A role split from its bullets across a page is unreadable. */
 	break-inside: avoid;
 }
