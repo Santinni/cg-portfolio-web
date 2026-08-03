@@ -77,6 +77,21 @@ export const curriculumVitaeExperience = [
 	},
 ] as const
 
+/**
+ * Pre-web career, listed as a one-line footnote rather than a timeline entry.
+ * Kept out of curriculumVitaeExperience so it does not dilute the frontend
+ * chronology or count towards the "more than ten years in web" claim.
+ * Years only — these predate the month-level records.
+ */
+export const curriculumVitaeEarlierExperience = [
+	{
+		id: 'austroBohemia',
+		company: 'Austro-Bohemia',
+		start: '2011',
+		end: '2014',
+	},
+] as const
+
 export const curriculumVitaeHighlights = [
 	{ id: 'experience' },
 	{ id: 'currentRole' },
@@ -150,6 +165,7 @@ export const curriculumVitae = {
 	},
 	currentExperienceId: 'blueghost',
 	experience: curriculumVitaeExperience,
+	earlierExperience: curriculumVitaeEarlierExperience,
 	highlights: curriculumVitaeHighlights,
 	skills: curriculumVitaeSkills,
 	projects: curriculumVitaeProjects,
@@ -160,6 +176,8 @@ export const curriculumVitae = {
 
 export type CurriculumVitaeLocale = keyof typeof curriculumVitaePdfByLocale
 export type CurriculumVitaeExperienceId = (typeof curriculumVitaeExperience)[number]['id']
+export type CurriculumVitaeEarlierExperienceId =
+	(typeof curriculumVitaeEarlierExperience)[number]['id']
 export type CurriculumVitaeHighlightId = (typeof curriculumVitaeHighlights)[number]['id']
 export type CurriculumVitaeSkillId = (typeof curriculumVitaeSkills)[number]['id']
 export type CurriculumVitaeProjectId = (typeof curriculumVitaeProjects)[number]['id']
