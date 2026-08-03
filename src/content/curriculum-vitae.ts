@@ -96,7 +96,7 @@ export const curriculumVitaeEducation = [
 
 export const curriculumVitaeLanguages = [
 	{ id: 'czech', levelId: 'native' },
-	{ id: 'english', levelId: 'fluent' },
+	{ id: 'english', levelId: 'workingProfessional' },
 	{ id: 'swedish', levelId: 'beginner' },
 ] as const
 
@@ -122,6 +122,10 @@ export const curriculumVitae = {
 		email: contact.email,
 		emailHref: `mailto:${contact.email}`,
 		linkedin: contact.linkedin,
+		// CV-only fact: the public CV page renders email, LinkedIn and GitHub.
+		// This feeds the generated PDF, which requires a phone number.
+		phone: '+420 605 570 494',
+		phoneHref: 'tel:+420605570494',
 	},
 	positioning: {
 		roleId: 'seniorFrontendEngineer',
