@@ -365,10 +365,19 @@
 		"methods": {
 			"eyebrow": "KONTAKTNÍ ÚDAJE",
 			"title": "Vyberte nejvhodnější způsob kontaktu.",
-			"email": { "label": "E-mail" },
-			"location": { "label": "Lokalita", "value": "Praha, Česká republika" },
-			"linkedin": { "label": "LinkedIn" },
-			"github": { "label": "GitHub" }
+			"email": {
+				"label": "E-mail"
+			},
+			"location": {
+				"label": "Lokalita",
+				"value": "Praha, Česká republika"
+			},
+			"linkedin": {
+				"label": "LinkedIn"
+			},
+			"github": {
+				"label": "GitHub"
+			}
 		},
 		"expectations": {
 			"eyebrow": "NEŽ SI PROMLUVÍME",
@@ -564,83 +573,80 @@
 			"entries": {
 				"blueghost": {
 					"title": "Lead Frontend Engineer",
-					"summary": "Vedení frontendové architektury, způsobu dodávky a technických rozhodnutí napříč produktovými týmy.",
+					"summary": "Frontendová architektura, standardy dodávky a inženýrská kvalita napříč produktovými týmy.",
 					"descriptions": {
-						"leadership": "Vedu frontendovou architekturu, způsob dodávky a technická rozhodnutí napříč produktovými týmy."
+						"foundation": "Navrhl jsem znovupoužitelný frontendový základ v Reactu a Next.js — strukturu aplikace, hranice komponent a konvence TypeScriptu — a zlepšil tím dlouhodobou udržovatelnost současných i budoucích projektů.",
+						"release": "Zvýšil jsem jistotu při releasech propojením komponentových postupů ve Storybooku s testováním ve Vitestu a Playwrightu a přísnějšími standardy revizí, místo spoléhání na ruční QA.",
+						"state": "Sjednotil jsem práci se serverovým i klientským stavem pomocí TanStack React Query a Zustandu, díky čemuž je načítání dat, invalidace cache a stav rozhraní při vývoji srozumitelnější.",
+						"quality": "Zvýšil jsem kvalitu frontendu vedením code review, mentoringem vývojářů a prosazováním konvencí kolem striktního TypeScriptu, SCSS Modules, znovupoužitelných UI vzorů, přístupnosti a výkonu.",
+						"ai": "Zavedl jsem strukturované postupy vývoje s podporou AI — Copilot, CLI workflow ve stylu Gemini/Codex, systémové prompty, převod z Figmy do tokenů a kódu — a přitom ponechal architekturu, code review a udržovatelnost pod inženýrskou kontrolou."
 					}
 				},
 				"kontentAi": {
 					"title": "Frontend vývojář",
 					"summary": "Přístupnost přímo v produktu CMS Kontent.ai.",
 					"descriptions": {
-						"product": "Pracoval jsem na přístupnosti přímo v produktu CMS Kontent.ai — v aplikaci, kterou denně používají obsahové týmy, ne na webu nad ní postaveném.",
-						"reactAria": "Přestavěl jsem interakční vzory pomocí React Aria hooks a doplnil vlastní řešení tam, kde knihovna požadavek nepokrývala.",
-						"depth": "Procházel jsem landmarky, popisky, chování fokusu a sémantiku komponent už při návrhu, místo abych přístupnost řešil až jako závěrečné QA.",
-						"safety": "Rozsáhlý refaktoring jsem jistil udržovatelnými TypeScript komponentami, Storybookem a kontrolami v Playwrightu."
+						"product": "Zlepšil jsem přístupnost rozsáhlé React aplikace refaktoringem chování rozhraní pomocí React Aria hooks a vlastních přístupných interakčních vzorů pro ovládání klávesnicí a čtečkami obrazovky.",
+						"depth": "Snížil jsem riziko v oblasti přístupnosti procházením landmarků, popisků, chování fokusu a sémantiky komponent proti přísným požadavkům na použitelnost, místo abych přístupnost řešil až jako závěrečné QA.",
+						"safety": "Rozsáhlý refaktoring jsem jistil spoluprací s týmem na udržovatelných TypeScript komponentách, Storybooku a kontrolách v Playwrightu, a to v kontraktním prostředí s definovaným rozsahem dodávky."
 					}
 				},
 				"tldrit": {
 					"title": "Vedoucí frontend vývoje",
 					"summary": "Vedl jsem frontendovou dodávku webových a mobilních aplikací v časově omezené roli.",
 					"descriptions": {
-						"leadership": "V časově omezené roli vedoucího frontend vývoje jsem navrhoval a implementoval řešení pro webové a mobilní aplikace a zároveň vedl frontendový tým.",
-						"delivery": "Navrhoval jsem technické postupy, vyvíjel škálovatelné aplikace s ReactJS, Next.js a Storybookem a v krátkých termínech zajišťoval kvalitní a uživatelsky přívětivé výsledky."
+						"architecture": "Dodal jsem frontendovou architekturu pro časově omezené webové a mobilně orientované projekty volbou škálovatelných vzorů v Reactu a Next.js, znovupoužitelných komponentových struktur a strategie stylování v CSS Modules a Sassu.",
+						"cms": "Propojil jsem moderní React rozhraní s obsahem řízeným CMS pomocí Payload CMS a TypeScript modelů, čímž jsem posílil schopnost pracovat s redakčními datovými strukturami a frontendovými kontrakty."
 					}
 				},
 				"eman": {
 					"title": "Frontend vývojář",
 					"summary": "Frontendová dodávka pro klienty z energetiky — E.ON, MND, ČEZ a Bohemia Energy.",
 					"descriptions": {
+						"clients": "Stavěl a rozvíjel jsem rozhraní v Reactu a TypeScriptu pro podnikové klienty včetně E.ON, MND, ČEZ a Bohemia Energy a zvyšoval znovupoužitelnost i konzistenci prostřednictvím design systémů a komponentových knihoven.",
 						"mnd": "Vyvíjel jsem zákaznický portál Moje MND od začátku ve dvoučlenném frontendovém týmu — formuláře, validace, tabulkové přehledy, faktury, smlouvy a práci s dokumenty.",
 						"eon": "Dodal jsem dvě interní aplikace pro E.ON: PUDplus pro pracovní příkazy, nálezy a preventivní údržbu a MKME web pro pracovní příkazy a měřidla.",
-						"designSystems": "Stavěl a rozvíjel jsem komponentové knihovny @eman/mnd-storybook a @eman/pud-storybook a design systém pro Bohemia Energy.",
-						"collaboration": "Úzce jsem spolupracoval s UX designéry a backendovými vývojáři na naplnění očekávání klientů."
+						"maintainability": "Zlepšil jsem udržovatelnost klientských aplikací refaktoringem staršího frontendového kódu do moderních vzorů v Reactu a TypeScriptu, znovupoužitelných komponent a přehlednější architektury stylů.",
+						"collaboration": "Podporoval jsem zlepšení výkonu, přístupnosti a responzivního UX úzkou spoluprací s UX a backendovými týmy na produkčních aplikacích s velkou uživatelskou základnou."
 					}
 				},
 				"lmc": {
 					"title": "Frontend vývojář",
-					"summary": "Tvořil jsem responzivní webová řešení na míru pro firemní klienty.",
+					"summary": "Zakázková responzivní frontendová práce pro firemní klienty na platformě Jobs.cz.",
 					"descriptions": {
-						"solutions": "Zaměřoval jsem se na tvorbu webových řešení na míru pro firemní klienty, včetně řešení pro platformy, jako je jobs.cz.",
-						"discovery": "Spolupracoval jsem s designéry a klienty na analýze požadavků a návrhu funkčních, vizuálně přitažlivých řešení.",
-						"technology": "Používal jsem moderní frontendové technologie, jako jsou HTML, CSS, JavaScript a React, a zajišťoval responzivní design i vysoký výkon.",
-						"accessibility": "Upřednostňoval jsem standardy přístupnosti a optimalizoval uživatelský prožitek napříč zařízeními a prohlížeči."
+						"clients": "Dodával jsem zakázková webová řešení pro firemní klienty v ekosystému jobs.cz převodem klientských a designových požadavků do responzivních frontendových implementací.",
+						"php": "Pracoval jsem bez problémů v hybridním prostředí PHP/Twig a frontendu, čímž jsem posílil stejný způsob spolupráce mezi PHP a frontendem, jaký je potřeba u React funkcí zasazených do CMS platforem."
 					}
 				},
 				"ampX": {
 					"title": "Frontend vývojář",
 					"summary": "Vyvíjel jsem frontend produktu pro distribuovanou energetiku.",
 					"descriptions": {
-						"platform": "Pracoval jsem na frontendu nové digitální energetické platformy umožňující zapojení do distribuované energetiky.",
-						"quality": "Dodával jsem kvalitní, přístupné a responzivní uživatelské rozhraní a udržoval čistý a čitelný kód.",
-						"technology": "K vývoji a implementaci frontendových řešení jsem používal ReactJS, Material-UI, Vanilla JavaScript, HTML5 a CSS-in-JS (JSS)."
+						"platform": "Stavěl jsem rozhraní v Reactu a TypeScriptu pro platformu distribuované energetiky, kde byla srozumitelnost dat a spolehlivé interakční vzory zásadní pro procesy směřující na trh.",
+						"sustainable": "Udržoval jsem čitelný a udržitelný frontendový kód s Reduxem, Storybookem a komponentovými postupy v produktovém vývojovém týmu."
 					}
 				},
 				"skype": {
 					"title": "Frontend vývojář",
 					"summary": "Podílel jsem se na přístupné a responzivní webové platformě Skype.com.",
 					"descriptions": {
-						"scale": "Podílel jsem se na platformě, kterou denně používalo více než 400 000 uživatelů z více než 30 zemí.",
-						"quality": "Zaměřoval jsem se na přístupnost, responzivitu a výkon hlavního webu.",
-						"components": "Vyvíjel a optimalizoval jsem komponenty, zlepšoval použitelnost a udržoval čistý a udržitelný kód.",
-						"cms": "Úzce jsem pracoval s Kentico CMS při správě a integraci obsahu."
+						"scale": "Podílel jsem se na vysoce navštěvovaném veřejném webu s více než 400 000 unikátními uživateli denně ve více než 30 zemích zlepšováním responzivních komponent, přístupnosti a výkonu.",
+						"cms": "Pracoval jsem v publikačním prostředí postaveném na CMS Kentico a slaďoval frontendové komponenty s redakčními procesy na globálním veřejném webu."
 					}
 				},
 				"foxconn": {
 					"title": "Frontend kodér",
 					"summary": "Vyvíjel jsem responzivní rozhraní a komponentový základ postavený na metodice BEM.",
 					"descriptions": {
-						"gui": "Vyvíjel jsem grafické uživatelské rozhraní se silným důrazem na HTML architekturu a responzivní design.",
-						"collaboration": "Spolupracoval jsem s designéry a vývojáři na implementaci moderních řešení v CSS a JavaScriptu.",
-						"technology": "Pracoval jsem s Reactem, Vanilla JS a příležitostně s jQuery.",
-						"designSystem": "Vyvinul jsem vlastní design systém založený na metodice BEM."
+						"foundation": "Stavěl jsem škálovatelné základy rozhraní pro aplikace na vizualizaci, správu a zpracování dat pomocí modulární architektury HTML/CSS, metodiky BEM a komponentových postupů v Reactu.",
+						"designSystem": "Podílel jsem se na vyladění vlastního design systému a zlepšil tím konzistenci i rychlost frontendové implementace napříč interními projekty."
 					}
 				},
 				"mountfield": {
 					"title": "Frontend kodér",
 					"summary": "Spravoval jsem hlavní web a dodával podpůrná marketingová i interní rozhraní.",
 					"descriptions": {
-						"website": "Spravoval a udržoval jsem hlavní firemní web postavený na platformě Kentico.",
+						"website": "Spravoval jsem hlavní firemní web a marketingové microsity, implementoval responzivní stránky, newslettery a interní úpravy rozhraní v prostředí řízeném CMS.",
 						"microsites": "Vytvářel jsem microsites, podporoval marketingové weby a vyvíjel responzivní HTML newslettery.",
 						"internalApps": "Podílel jsem se na vývoji interních aplikací, které zlepšovaly pracovní postupy zaměstnanců a přístup zákazníků."
 					}
@@ -649,9 +655,8 @@
 					"title": "Webový administrátor, grafik a junior frontend kodér",
 					"summary": "Pracoval jsem napříč správou webů, vizuálním designem a ranou frontendovou dodávkou.",
 					"descriptions": {
-						"scope": "Spravoval jsem weby, věnoval se grafickému designu a frontendovému vývoji.",
-						"presentations": "Vytvářel jsem responzivní webové prezentace pomocí HTML5/CSS3.",
-						"wordpress": "Pracoval jsem na projektech ve WordPressu, navrhoval šablony a připravoval tiskové materiály."
+						"wordpress": "Spravoval jsem a stavěl weby na WordPressu a responzivní prezentace v HTML, CSS, JavaScriptu a PHP, čímž vznikl základ pro pozdější práci na Reactu a CMS platformách.",
+						"design": "Vedle frontendového vývoje jsem zajišťoval správu webů, grafický design a tiskové materiály."
 					}
 				}
 			},
