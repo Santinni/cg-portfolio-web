@@ -476,31 +476,31 @@
 			"entries": {
 				"frontendEngineering": {
 					"title": "Frontend engineering",
-					"description": "React · TypeScript · Next.js · JavaScript"
+					"description": "React 18/19, TypeScript, Next.js, JavaScript, HTML5, CSS3, functional React patterns"
 				},
 				"stateAndData": {
 					"title": "State and data",
-					"description": "MobX · Redux · application state"
+					"description": "TanStack React Query, Zustand, Redux, MobX, URL-synced UI patterns, typed API integration"
 				},
 				"validationAndForms": {
 					"title": "Validation and forms",
-					"description": "Accessible form behavior · clear validation patterns"
+					"description": "Configuration-driven UI, reusable form fields, schema-aware validation, sync and async validation patterns"
 				},
 				"cssUiSystems": {
 					"title": "CSS and UI systems",
-					"description": "HTML · CSS · Sass · CSS Modules · Storybook"
+					"description": "SCSS/Sass, CSS Modules, styled-components, LESS, specificity and cascade, responsive layouts, design systems, Storybook"
 				},
 				"cmsPlatformIntegration": {
 					"title": "CMS and platform integration",
-					"description": "Kentico · Kontent.ai · WordPress"
+					"description": "WordPress, Kentico CMS, Kontent.ai, Payload CMS, PHP/Twig, monorepo-ready workflow"
 				},
 				"qualityAndTooling": {
 					"title": "Quality and tooling",
-					"description": "Playwright · Vitest / Jest · Git · Vite · Webpack"
+					"description": "Vitest, Playwright, React Testing Library, Git, PNPM/NPM/Yarn, code reviews, CI/CD practices, AI-assisted development workflows"
 				},
 				"accessibilityI18n": {
 					"title": "Accessibility and localization",
-					"description": "React Aria · accessible interaction · localized interfaces"
+					"description": "React Aria hooks, keyboard and screen-reader usability, WCAG-oriented implementation, internationalisation-aware UI, RTL-aware CSS"
 				}
 			}
 		},
@@ -678,6 +678,9 @@
 			"entries": {
 				"copth": {
 					"degree": "Electrical engineering, telecommunications and computer technologies"
+				},
+				"fortyTwoPrague": {
+					"degree": "Core student — software engineering fundamentals in C and Python"
 				}
 			},
 			"languagesTitle": "Languages",
@@ -704,6 +707,15 @@
 				"freeCodeCamp": "Full Stack Web Development Certification, Computer Software Engineering",
 				"codecademy": "Basics of HTML & CSS - www.codecademy.com",
 				"scomp": "Web Application Programmer, Graphic studio worker"
+			},
+			"ongoingLabel": "Present"
+		},
+		"profile": {
+			"title": "Professional summary",
+			"paragraphs": {
+				"experience": "Senior Frontend Engineer with more than ten years of commercial experience building React/TypeScript user interfaces for product platforms, CMS-backed public websites, internal dashboards and reusable component systems. Currently Lead Frontend Engineer at BlueGhost, responsible for frontend architecture, delivery standards and engineering quality across product teams.",
+				"focus": "My work centres on React applications that have to last: TanStack React Query, strict TypeScript, SCSS/CSS Modules, Storybook, accessibility, responsive layouts and API-driven frontend architecture. I have hands-on CMS and platform background across WordPress, Kentico, Kontent.ai, Payload CMS and PHP/Twig contexts, and I am comfortable working at the boundary between frontend contracts and backend/CMS data models.",
+				"growth": "I keep learning deliberately and am currently a student at 42 Prague. I use AI-assisted development workflows in daily practice while keeping architecture, code review and maintainability under engineering control, and I write about frontend decisions at codeguy.cz."
 			}
 		}
 	},

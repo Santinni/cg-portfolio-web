@@ -252,7 +252,11 @@ export default async function CurriculumPage({ params }: CurriculumPageProps) {
 									<p className={styles.period}>
 										<time dateTime={education.start}>{education.start}</time>
 										<span aria-hidden="true"> – </span>
-										<time dateTime={education.end}>{education.end}</time>
+										{education.end ? (
+											<time dateTime={education.end}>{education.end}</time>
+										) : (
+											<span>{t('education.ongoingLabel')}</span>
+										)}
 									</p>
 									<h3>{education.institution}</h3>
 									<p>{t(`education.entries.${education.id}.degree`)}</p>

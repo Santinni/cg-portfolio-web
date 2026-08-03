@@ -55,7 +55,12 @@ export function renderCv({
 	]
 
 	const headline = variant?.headline ?? messages.hero.role
-	const summary = variant?.summary ?? messages.hero.intro
+
+	// A variant may replace the whole summary with a single targeted paragraph;
+	// otherwise the multi-paragraph professional summary is used.
+	const summaryParagraphs = variant?.summary
+		? [variant.summary]
+		: Object.values(messages.profile.paragraphs)
 
 	// The original states the role followed by its defining technologies.
 	const tagline = [headline, ...(variant?.taglineKeywords ?? [])].join(
@@ -67,7 +72,8 @@ export function renderCv({
 		escapeHtml(cv.contact.phone),
 		`<a href="${escapeHtml(cv.contact.emailHref)}">${escapeHtml(cv.contact.email)}</a>`,
 		`<a href="${escapeHtml(cv.contact.linkedin)}">LinkedIn</a>`,
-		`<a href="${escapeHtml(facts.curriculumVitae.contact.github ?? 'https://codeguy.cz')}">GitHub</a>`,
+		`<a href="${escapeHtml(cv.contact.github)}">GitHub</a>`,
+		`<a href="${escapeHtml(cv.contact.website)}">${escapeHtml(cv.contact.websiteLabel)}</a>`,
 	].join(`<span class="contactSeparator">|</span>`)
 
 	const highlightsSection = variant?.highlights?.length
@@ -136,7 +142,9 @@ export function renderCv({
 			<ul class="plainList">${education
 				.map(
 					(item) =>
-						`<li><strong>${escapeHtml(item.institution)}</strong> <span class="muted">(${item.start}–${item.end})</span><br><span class="muted">${escapeHtml(
+						`<li><strong>${escapeHtml(item.institution)}</strong> <span class="muted">(${item.start}–${escapeHtml(
+							item.end ?? messages.education.ongoingLabel,
+						)})</span><br><span class="muted">${escapeHtml(
 							messages.education.entries[item.id].degree,
 						)}</span></li>`,
 				)
@@ -169,7 +177,10 @@ export function renderCv({
 		${qrSvg ? `<div class="qr">${qrSvg}</div>` : ''}
 	</header>
 
-	${section(messages.highlights.eyebrow, `<p class="summary">${escapeHtml(summary)}</p>`)}
+	${section(
+		messages.profile.title,
+		summaryParagraphs.map((text) => `<p class="summary">${escapeHtml(text)}</p>`).join(''),
+	)}
 	${highlightsSection}
 	${skillsSection}
 	${experienceSection}

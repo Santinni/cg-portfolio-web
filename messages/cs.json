@@ -476,31 +476,31 @@
 			"entries": {
 				"frontendEngineering": {
 					"title": "Frontendový vývoj",
-					"description": "React · TypeScript · Next.js · JavaScript"
+					"description": "React 18/19, TypeScript, Next.js, JavaScript, HTML5, CSS3, funkcionální vzory Reactu"
 				},
 				"stateAndData": {
 					"title": "Stav a data",
-					"description": "MobX · Redux · stav aplikace"
+					"description": "TanStack React Query, Zustand, Redux, MobX, stav rozhraní synchronizovaný s URL, typovaná integrace API"
 				},
 				"validationAndForms": {
 					"title": "Validace a formuláře",
-					"description": "Přístupné chování formulářů · srozumitelné validační postupy"
+					"description": "Konfigurací řízené UI, znovupoužitelná formulářová pole, validace odvozená ze schématu, synchronní i asynchronní validační postupy"
 				},
 				"cssUiSystems": {
 					"title": "CSS a UI systémy",
-					"description": "HTML · CSS · Sass · CSS Modules · Storybook"
+					"description": "SCSS/Sass, CSS Modules, styled-components, LESS, specificita a kaskáda, responzivní layouty, design systémy, Storybook"
 				},
 				"cmsPlatformIntegration": {
 					"title": "CMS a integrace platforem",
-					"description": "Kentico · Kontent.ai · WordPress"
+					"description": "WordPress, Kentico CMS, Kontent.ai, Payload CMS, PHP/Twig, workflow připravené na monorepo"
 				},
 				"qualityAndTooling": {
 					"title": "Kvalita a nástroje",
-					"description": "Playwright · Vitest / Jest · Git · Vite · Webpack"
+					"description": "Vitest, Playwright, React Testing Library, Git, PNPM/NPM/Yarn, code review, postupy CI/CD, vývoj s podporou AI"
 				},
 				"accessibilityI18n": {
 					"title": "Přístupnost a lokalizace",
-					"description": "React Aria · přístupné interakce · lokalizovaná rozhraní"
+					"description": "React Aria hooks, ovládání klávesnicí a čtečkami obrazovky, implementace podle WCAG, rozhraní připravené na lokalizaci, CSS s ohledem na RTL"
 				}
 			}
 		},
@@ -678,6 +678,9 @@
 			"entries": {
 				"copth": {
 					"degree": "Elektrotechnika, telekomunikace a výpočetní technika"
+				},
+				"fortyTwoPrague": {
+					"degree": "Core student — základy softwarového inženýrství v C a Pythonu"
 				}
 			},
 			"languagesTitle": "Jazyky",
@@ -704,6 +707,15 @@
 				"freeCodeCamp": "Certifikace Full Stack Web Development, softwarové inženýrství",
 				"codecademy": "Základy HTML a CSS - www.codecademy.com",
 				"scomp": "Programátor webových aplikací, pracovník grafického studia"
+			},
+			"ongoingLabel": "současnost"
+		},
+		"profile": {
+			"title": "Profesní shrnutí",
+			"paragraphs": {
+				"experience": "Senior frontend engineer s více než deseti lety komerční praxe ve vývoji uživatelských rozhraní v Reactu a TypeScriptu — pro produktové platformy, veřejné weby postavené na CMS, interní dashboardy a znovupoužitelné komponentové systémy. Aktuálně působím jako Lead Frontend Engineer v BlueGhost, kde odpovídám za frontendovou architekturu, standardy dodávky a inženýrskou kvalitu napříč produktovými týmy.",
+				"focus": "Těžištěm mé práce jsou React aplikace, které musí vydržet: TanStack React Query, striktní TypeScript, SCSS/CSS Modules, Storybook, přístupnost, responzivní layouty a frontendová architektura postavená na API. Mám praktické zkušenosti s CMS a platformami napříč WordPressem, Kenticem, Kontent.ai, Payload CMS a prostředím PHP/Twig a je mi přirozené pracovat na rozhraní mezi frontendovými kontrakty a datovými modely backendu a CMS.",
+				"growth": "Vzdělávám se cíleně dál a v současné době studuji na 42 Prague. Při každodenní práci využívám postupy vývoje s podporou AI, přičemž architekturu, code review a udržovatelnost ponechávám pod inženýrskou kontrolou. O frontendových rozhodnutích píšu na codeguy.cz."
 			}
 		}
 	},

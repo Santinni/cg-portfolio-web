@@ -23,7 +23,7 @@
 
 @page {
 	size: A4;
-	margin: 12mm 13mm 14mm;
+	margin: 11mm 13mm 13mm;
 }
 
 /*
@@ -33,14 +33,14 @@
  * page-appropriate absolute size.
  */
 :root {
-	--print-name: 21pt;
-	--print-name-lh: 25pt;
+	--print-name: 19pt;
+	--print-name-lh: 22pt;
 	--print-tagline: 10pt;
 	--print-tagline-lh: 14pt;
 	--print-contact: 8pt;
 	--print-contact-lh: 11pt;
 	--print-section: 10pt;
-	--print-section-lh: 13pt;
+	--print-section-lh: 12pt;
 	--print-role: 10pt;
 	--print-role-lh: 13pt;
 	--print-body: 9pt;
@@ -77,7 +77,7 @@ body {
 /* ------------------------------------------------------------- masthead ---- */
 
 .header {
-	margin-block-end: var(--space-16);
+	margin-block-end: var(--space-8);
 	text-align: center;
 }
 
@@ -92,7 +92,7 @@ body {
 }
 
 .tagline {
-	margin: var(--space-8) 0 0;
+	margin: var(--space-4) 0 0;
 	color: var(--text-primary);
 	font-size: var(--print-tagline);
 	font-weight: 600;
@@ -118,15 +118,15 @@ body {
 
 .qr {
 	display: block;
-	inline-size: 22mm;
-	block-size: 22mm;
-	margin: var(--space-8) auto 0;
+	inline-size: 17mm;
+	block-size: 17mm;
+	margin: var(--space-4) auto 0;
 }
 
 /* ------------------------------------------------------------- section ---- */
 
 .section {
-	margin-block-start: var(--space-12);
+	margin-block-start: var(--space-8);
 }
 
 /*
@@ -147,6 +147,10 @@ body {
 .summary {
 	margin: 0;
 	color: var(--text-primary);
+}
+
+.summary + .summary {
+	margin-block-start: var(--space-4);
 }
 
 .summary strong {
@@ -220,7 +224,7 @@ body {
 }
 
 .entry {
-	margin-block-end: var(--space-8);
+	margin-block-end: 6pt;
 	/* A role split from its bullets across a page is unreadable. */
 	break-inside: avoid;
 }

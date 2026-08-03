@@ -160,6 +160,13 @@ export const curriculumVitaeProjects = [
 
 export const curriculumVitaeEducation = [
 	{
+		// Ongoing: end is null, as with a current role.
+		id: 'fortyTwoPrague',
+		institution: '42 Prague',
+		start: '2026',
+		end: null,
+	},
+	{
 		id: 'copth',
 		institution: 'COPTH',
 		start: '2002',
@@ -196,6 +203,8 @@ export const curriculumVitae = {
 		emailHref: `mailto:${contact.email}`,
 		linkedin: contact.linkedin,
 		github: contact.github,
+		website: 'https://codeguy.cz',
+		websiteLabel: 'codeguy.cz',
 		// CV-only fact: the public CV page renders email, LinkedIn and GitHub.
 		// This feeds the generated PDF, which requires a phone number.
 		phone: '+420 605 570 494',
