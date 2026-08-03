@@ -3,6 +3,20 @@ import { contact } from './site'
 export const curriculumVitaeExperience = [
 	{
 		id: 'blueghost',
+		stack: [
+			'Next.js',
+			'React',
+			'TypeScript',
+			'PNPM',
+			'TanStack React Query',
+			'Zustand',
+			'SCSS Modules',
+			'Storybook',
+			'React Aria',
+			'Vitest',
+			'Playwright',
+			'Git',
+		],
 		company: 'BlueGhost',
 		roleId: 'leadFrontendEngineer',
 		start: '2025-03',
@@ -10,6 +24,16 @@ export const curriculumVitaeExperience = [
 	},
 	{
 		id: 'kontentAi',
+		stack: [
+			'React',
+			'TypeScript',
+			'Next.js',
+			'styled-components',
+			'React Aria',
+			'Storybook',
+			'Playwright',
+			'Git',
+		],
 		company: 'Kontent.ai',
 		roleId: 'frontendEngineer',
 		start: '2024-06',
@@ -18,6 +42,7 @@ export const curriculumVitaeExperience = [
 	},
 	{
 		id: 'tldrit',
+		stack: ['Next.js', 'React', 'TypeScript', 'Sass', 'CSS Modules', 'Payload CMS'],
 		company: 'TLDR;IT s.r.o.',
 		roleId: 'leadFrontendEngineer',
 		start: '2024-04',
@@ -26,6 +51,17 @@ export const curriculumVitaeExperience = [
 	},
 	{
 		id: 'eman',
+		stack: [
+			'React',
+			'Next.js',
+			'TypeScript',
+			'MobX',
+			'Redux',
+			'Sass',
+			'CSS Modules',
+			'Storybook',
+			'Git',
+		],
 		company: 'eMan a.s.',
 		roleId: 'frontendEngineer',
 		start: '2021-09',
@@ -33,6 +69,7 @@ export const curriculumVitaeExperience = [
 	},
 	{
 		id: 'lmc',
+		stack: ['React', 'JavaScript', 'PHP/Twig', 'Less', 'Sass'],
 		company: 'LMC',
 		roleId: 'frontendEngineer',
 		start: '2020-09',
@@ -40,6 +77,7 @@ export const curriculumVitaeExperience = [
 	},
 	{
 		id: 'ampX',
+		stack: ['React', 'TypeScript', 'Redux', 'JSS', 'Storybook', 'Git'],
 		company: 'Amp X',
 		roleId: 'frontendEngineer',
 		start: '2019-09',
@@ -47,6 +85,7 @@ export const curriculumVitaeExperience = [
 	},
 	{
 		id: 'skype',
+		stack: ['JavaScript', 'jQuery', 'HTML5', 'CSS3', 'Sass', 'Kentico CMS', 'Git'],
 		company: 'Skype.com',
 		roleId: 'frontendEngineer',
 		start: '2019-04',
@@ -54,6 +93,7 @@ export const curriculumVitaeExperience = [
 	},
 	{
 		id: 'foxconn',
+		stack: ['HTML5', 'CSS3', 'Sass', 'React', 'BEM', 'Git'],
 		company: 'Foxconn DRC s.r.o.',
 		roleId: 'frontendCoder',
 		start: '2018-06',
@@ -61,6 +101,7 @@ export const curriculumVitaeExperience = [
 	},
 	{
 		id: 'mountfield',
+		stack: ['HTML5', 'CSS3', 'JavaScript', 'jQuery', 'Kentico CMS'],
 		company: 'Mountfield, a.s.',
 		roleId: 'frontendCoder',
 		start: '2017-05',
@@ -70,6 +111,7 @@ export const curriculumVitaeExperience = [
 		// Start of the web career. This entry is what substantiates the
 		// "more than ten years" claim in positioning.
 		id: 'bitware',
+		stack: ['HTML5', 'CSS3', 'JavaScript', 'jQuery', 'PHP', 'WordPress'],
 		company: 'BitWare CZ s.r.o.',
 		roleId: 'webmaster',
 		start: '2014-08',
@@ -153,6 +195,7 @@ export const curriculumVitae = {
 		email: contact.email,
 		emailHref: `mailto:${contact.email}`,
 		linkedin: contact.linkedin,
+		github: contact.github,
 		// CV-only fact: the public CV page renders email, LinkedIn and GitHub.
 		// This feeds the generated PDF, which requires a phone number.
 		phone: '+420 605 570 494',

@@ -1,6 +1,10 @@
 /**
- * Builds the CV document. Every string comes from the message catalogs or the
- * variant overlay — no copy is written here, so translations stay in one place.
+ * Builds the CV document.
+ *
+ * The structure mirrors the approved 2026 React CV: centred masthead, then
+ * summary, optional target-fit highlights, core skills, experience and
+ * education. Every string comes from the message catalogs or the variant
+ * overlay — no copy is written here, so translations stay in one place.
  */
 
 const escapeHtml = (value) =>
@@ -10,18 +14,27 @@ const escapeHtml = (value) =>
 		.replaceAll('>', '&gt;')
 		.replaceAll('"', '&quot;')
 
+const SEPARATOR = '<span class="entrySeparator">|</span>'
+
 function formatPeriod(start, end, locale, presentLabel) {
 	const format = (value) => {
 		if (!value.includes('-')) return value // year-only, e.g. earlier experience
 		const [year, month] = value.split('-').map(Number)
-		return new Intl.DateTimeFormat(locale, { month: 'numeric', year: 'numeric' }).format(
-			new Date(year, month - 1),
-		)
+		return `${String(month).padStart(2, '0')}/${year}`
 	}
 	return `${format(start)} – ${end ? format(end) : presentLabel}`
 }
 
-export function renderCv({ facts, messages, variant, locale, tokensCss, fontCss, printCss }) {
+export function renderCv({
+	facts,
+	messages,
+	variant,
+	locale,
+	tokensCss,
+	fontCss,
+	printCss,
+	qrSvg,
+}) {
 	const {
 		curriculumVitae: cv,
 		curriculumVitaeExperience: experience,
@@ -31,10 +44,10 @@ export function renderCv({ facts, messages, variant, locale, tokensCss, fontCss,
 		curriculumVitaeLanguages: languages,
 	} = facts
 
-	const hidden = new Set(variant?.hideExperience?.filter((id) => !id.startsWith('$')) ?? [])
-	const emphasised = variant?.emphasizeExperience?.filter((id) => !id.startsWith('$')) ?? []
+	const clean = (list) => list?.filter((id) => !id.startsWith('$')) ?? []
+	const hidden = new Set(clean(variant?.hideExperience))
+	const emphasised = clean(variant?.emphasizeExperience)
 
-	// Emphasised roles float to the top; the rest keep chronological order.
 	const visible = experience.filter((entry) => !hidden.has(entry.id))
 	const ordered = [
 		...emphasised.map((id) => visible.find((entry) => entry.id === id)).filter(Boolean),
@@ -43,19 +56,22 @@ export function renderCv({ facts, messages, variant, locale, tokensCss, fontCss,
 
 	const headline = variant?.headline ?? messages.hero.role
 	const summary = variant?.summary ?? messages.hero.intro
-	const present = messages.experience.presentLabel
 
-	const contactParts = [
-		messages.contact.location,
-		cv.contact.phone,
-		cv.contact.email,
-		'codeguy.cz',
-	].filter(Boolean)
+	// The original states the role followed by its defining technologies.
+	const tagline = [headline, ...(variant?.taglineKeywords ?? [])].join(
+		` <span class="entrySeparator">|</span> `,
+	)
+
+	const contactLine = [
+		escapeHtml(messages.contact.location),
+		escapeHtml(cv.contact.phone),
+		`<a href="${escapeHtml(cv.contact.emailHref)}">${escapeHtml(cv.contact.email)}</a>`,
+		`<a href="${escapeHtml(cv.contact.linkedin)}">LinkedIn</a>`,
+		`<a href="${escapeHtml(facts.curriculumVitae.contact.github ?? 'https://codeguy.cz')}">GitHub</a>`,
+	].join(`<span class="contactSeparator">|</span>`)
 
 	const highlightsSection = variant?.highlights?.length
 		? section(
-				// Falls back to the catalog rather than reusing the profile
-				// eyebrow, which would print "PROFILE" twice.
 				variant.highlightsTitle ?? messages.experience.targetFitTitle,
 				`<ul class="highlights">${variant.highlights
 					.map(
@@ -82,25 +98,23 @@ export function renderCv({ facts, messages, variant, locale, tokensCss, fontCss,
 		`<ol class="experience">${ordered
 			.map((entry) => {
 				const copy = messages.experience.entries[entry.id]
-				const allBullets = Object.values(copy.descriptions ?? {}).filter(
+				const bullets = Object.values(copy.descriptions ?? {}).filter(
 					(line) => line.trim() !== copy.summary.trim(),
 				)
-				// A one-item list is not a list. Where an entry has a single
-				// bullet it invariably restates the summary (blueghost does so
-				// verbatim in English and as a paraphrase in Czech), and printing
-				// both reads as a duplication bug.
-				const bullets = allBullets.length > 1 ? allBullets : []
+				// Where an entry has a single bullet it restates the summary; a
+				// one-item list is not a list.
+				const body = bullets.length > 1 ? bullets : [copy.summary]
+
 				return `<li class="entry">
-					<div class="entryHead">
-						<p class="entryRole">${escapeHtml(copy.title)} <span class="entryCompany">· ${escapeHtml(entry.company)}</span></p>
-						<p class="entryPeriod">${escapeHtml(formatPeriod(entry.start, entry.end, locale, present))}</p>
-					</div>
-					<p class="entrySummary">${escapeHtml(copy.summary)}</p>
+					<p class="entryHead">${escapeHtml(copy.title)}${SEPARATOR}<span class="entryCompany">${escapeHtml(entry.company)}</span>${SEPARATOR}<span class="entryPeriod">${escapeHtml(
+						formatPeriod(entry.start, entry.end, locale, messages.experience.presentLabel),
+					)}</span></p>
 					${
-						bullets.length
-							? `<ul class="entryBullets">${bullets.map((line) => `<li>${escapeHtml(line)}</li>`).join('')}</ul>`
+						entry.stack?.length
+							? `<p class="entryStack"><span class="entryStackLabel">${escapeHtml(messages.experience.stackLabel)}:</span> ${escapeHtml(entry.stack.join(', '))}</p>`
 							: ''
 					}
+					<ul class="entryBullets">${body.map((line) => `<li>${escapeHtml(line)}</li>`).join('')}</ul>
 				</li>`
 			})
 			.join('')}</ol>
@@ -122,17 +136,17 @@ export function renderCv({ facts, messages, variant, locale, tokensCss, fontCss,
 			<ul class="plainList">${education
 				.map(
 					(item) =>
-						`<li><strong>${escapeHtml(item.institution)}</strong> (${item.start}–${item.end})<br>${escapeHtml(
+						`<li><strong>${escapeHtml(item.institution)}</strong> <span class="muted">(${item.start}–${item.end})</span><br><span class="muted">${escapeHtml(
 							messages.education.entries[item.id].degree,
-						)}</li>`,
+						)}</span></li>`,
 				)
 				.join('')}</ul>
 			<ul class="plainList">${languages
 				.map(
 					({ id }) =>
-						`<li><strong>${escapeHtml(messages.education.languages[id].name)}</strong> — ${escapeHtml(
+						`<li><strong>${escapeHtml(messages.education.languages[id].name)}</strong> <span class="muted">— ${escapeHtml(
 							messages.education.languages[id].level,
-						)}</li>`,
+						)}</span></li>`,
 				)
 				.join('')}</ul>
 		</div>`,
@@ -150,8 +164,9 @@ export function renderCv({ facts, messages, variant, locale, tokensCss, fontCss,
 <body>
 	<header class="header">
 		<h1 class="name">${escapeHtml(cv.person.name)}</h1>
-		<p class="tagline">${escapeHtml(headline)}</p>
-		<p class="contact">${contactParts.map((part) => `<span>${escapeHtml(part)}</span>`).join('')}</p>
+		<p class="tagline">${tagline}</p>
+		<p class="contact">${contactLine}</p>
+		${qrSvg ? `<div class="qr">${qrSvg}</div>` : ''}
 	</header>
 
 	${section(messages.highlights.eyebrow, `<p class="summary">${escapeHtml(summary)}</p>`)}

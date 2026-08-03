@@ -41,13 +41,14 @@ async function loadFontCss() {
 	return css
 }
 
-const [facts, messages, variant, tokens, fontCss, printCss] = await Promise.all([
+const [facts, messages, variant, tokens, fontCss, printCss, qrSvg] = await Promise.all([
 	loadFacts(),
 	loadMessages(values.locale),
 	loadVariant(values.variant),
 	loadLightTokens(),
 	loadFontCss(),
 	readFile(resolve(here, 'cv-print.css'), 'utf8'),
+	readFile(resolve(here, 'qr-codeguy.svg'), 'utf8').catch(() => ''),
 ])
 
 // Fail loudly if the brand accent ever stops resolving to the canonical teal.
@@ -69,6 +70,7 @@ const html = renderCv({
 	tokensCss: tokensToCss(tokens),
 	fontCss,
 	printCss,
+	qrSvg,
 })
 
 const slug = variant?.slug ? `-${variant.slug}` : ''
@@ -89,6 +91,19 @@ try {
 	const page = await browser.newPage()
 	await page.setContent(html, { waitUntil: 'load' })
 	await page.evaluate(() => document.fonts.ready)
+	// Running footer, as in the approved layout. Chrome renders header/footer
+	// templates in an isolated context that ignores page CSS, so the styling is
+	// inline and the accent is interpolated from the resolved token.
+	const headline = variant?.headline ?? messages.hero.role
+	const issued = new Intl.DateTimeFormat(values.locale, {
+		month: 'long',
+		year: 'numeric',
+	}).format(new Date())
+	const footer = `<div style="width:100%;padding:0 13mm;font-family:Inter,sans-serif;font-size:7pt;line-height:9pt;color:${resolveToken(tokens, '--text-secondary')};display:flex;justify-content:space-between;">
+		<span>${facts.curriculumVitae.person.name} — ${headline}</span>
+		<span>${issued}</span>
+	</div>`
+
 	await page.pdf({
 		path: outPath,
 		format: 'A4',
@@ -97,6 +112,9 @@ try {
 		// source of truth for page geometry.
 		preferCSSPageSize: true,
 		tagged: true,
+		displayHeaderFooter: true,
+		headerTemplate: '<span></span>',
+		footerTemplate: footer,
 	})
 } finally {
 	await browser.close()

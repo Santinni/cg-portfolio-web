@@ -655,6 +655,7 @@
 					}
 				}
 			},
+			"stackLabel": "Stack",
 			"targetFitTitle": "Target-fit highlights",
 			"earlierExperience": {
 				"title": "Earlier experience",
