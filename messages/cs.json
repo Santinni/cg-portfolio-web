@@ -571,12 +571,12 @@
 				},
 				"kontentAi": {
 					"title": "Frontend vývojář",
-					"summary": "Kontrakt zaměřený na přístupnost v Reactu ukončený v únoru 2025.",
+					"summary": "Přístupnost přímo v produktu CMS Kontent.ai.",
 					"descriptions": {
-						"accessibilityProject": "Pracoval jsem jako součást týmu na smluvním projektu zaměřeném na zlepšení přístupnosti a refaktoring kódu s cílem nabídnout uživatelům lepší a přístupnější prostředí.",
-						"reactAria": "Náš tým využíval React Aria, zejména její hooky, a vyvíjel vlastní řešení pro konkrétní požadavky na přístupnost.",
-						"responsibilities": "Odpovídal jsem za dodržení standardů přístupnosti v aplikaci, spolupracoval s týmem na optimalizaci kódu a uplatňoval osvědčené postupy frontendového vývoje.",
-						"outcome": "Vytvořili jsme intuitivní a efektivní uživatelské rozhraní a zároveň v daném časovém rámci splnili přísné požadavky na přístupnost."
+						"product": "Pracoval jsem na přístupnosti přímo v produktu CMS Kontent.ai — v aplikaci, kterou denně používají obsahové týmy, ne na webu nad ní postaveném.",
+						"reactAria": "Přestavěl jsem interakční vzory pomocí React Aria hooks a doplnil vlastní řešení tam, kde knihovna požadavek nepokrývala.",
+						"depth": "Procházel jsem landmarky, popisky, chování fokusu a sémantiku komponent už při návrhu, místo abych přístupnost řešil až jako závěrečné QA.",
+						"safety": "Rozsáhlý refaktoring jsem jistil udržovatelnými TypeScript komponentami, Storybookem a kontrolami v Playwrightu."
 					}
 				},
 				"tldrit": {
@@ -589,11 +589,11 @@
 				},
 				"eman": {
 					"title": "Frontend vývojář",
-					"summary": "Dodával a modernizoval jsem zákaznická rozhraní pro významné klienty v energetice.",
+					"summary": "Frontendová dodávka pro klienty z energetiky — E.ON, MND, ČEZ a Bohemia Energy.",
 					"descriptions": {
-						"clients": "Vyvíjel a implementoval jsem uživatelská rozhraní pro klíčové klienty, jako jsou EON, MND, ČEZ a Bohemia Energy.",
-						"optimization": "Optimalizoval jsem webové aplikace s cílem zlepšit jejich výkon a přístupnost, což vedlo k vyšší spokojenosti uživatelů.",
-						"refactoring": "Refaktoroval a modernizoval jsem starší kód pomocí Reactu, NextJS a TypeScriptu.",
+						"mnd": "Vyvíjel jsem zákaznický portál Moje MND od začátku ve dvoučlenném frontendovém týmu — formuláře, validace, tabulkové přehledy, faktury, smlouvy a práci s dokumenty.",
+						"eon": "Dodal jsem dvě interní aplikace pro E.ON: PUDplus pro pracovní příkazy, nálezy a preventivní údržbu a MKME web pro pracovní příkazy a měřidla.",
+						"designSystems": "Stavěl a rozvíjel jsem komponentové knihovny @eman/mnd-storybook a @eman/pud-storybook a design systém pro Bohemia Energy.",
 						"collaboration": "Úzce jsem spolupracoval s UX designéry a backendovými vývojáři na naplnění očekávání klientů."
 					}
 				},

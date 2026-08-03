@@ -59,6 +59,22 @@ export const curriculumVitaeExperience = [
 		start: '2018-06',
 		end: '2019-03',
 	},
+	{
+		id: 'mountfield',
+		company: 'Mountfield, a.s.',
+		roleId: 'frontendCoder',
+		start: '2017-05',
+		end: '2018-05',
+	},
+	{
+		// Start of the web career. This entry is what substantiates the
+		// "more than ten years" claim in positioning.
+		id: 'bitware',
+		company: 'BitWare CZ s.r.o.',
+		roleId: 'webmaster',
+		start: '2014-08',
+		end: '2017-05',
+	},
 ] as const
 
 export const curriculumVitaeHighlights = [

@@ -571,12 +571,12 @@
 				},
 				"kontentAi": {
 					"title": "Frontend Engineer",
-					"summary": "Accessibility-focused React contract completed in February 2025.",
+					"summary": "Accessibility engineering inside the Kontent.ai CMS product itself.",
 					"descriptions": {
-						"accessibilityProject": "I worked as part of a team on a contract-based project focused on improving accessibility and refactoring code to provide users with a better and more accessible user experience.",
-						"reactAria": "Our team utilized React Aria, specifically its hooks, and developed custom solutions to address specific accessibility requirements.",
-						"responsibilities": "My responsibilities included ensuring the application complied with all accessibility standards, collaborating with team members to optimize code, and applying best practices for frontend development.",
-						"outcome": "We created an intuitive and efficient user interface while meeting strict accessibility guidelines within the project’s defined timeframe."
+						"product": "Worked on accessibility inside the Kontent.ai CMS product — the application content teams use daily, not a site built on top of it.",
+						"reactAria": "Rebuilt interaction patterns with React Aria hooks, adding custom solutions where the library did not cover the requirement.",
+						"depth": "Reviewed landmarks, labels, focus behavior and component semantics as part of the design, instead of treating accessibility as a final QA step.",
+						"safety": "Kept a large refactor safe with maintainable TypeScript components, Storybook workflows and Playwright checks."
 					}
 				},
 				"tldrit": {
@@ -589,11 +589,11 @@
 				},
 				"eman": {
 					"title": "Frontend Developer",
-					"summary": "Delivered and modernized customer-facing interfaces for major energy-sector clients.",
+					"summary": "Frontend delivery for energy-sector clients — E.ON, MND, ČEZ and Bohemia Energy.",
 					"descriptions": {
-						"clients": "Developed and implemented user interfaces for key clients such as EON, MND, ČEZ, and Bohemia Energy.",
-						"optimization": "Optimized web applications to improve their performance and accessibility, resulting in higher user satisfaction.",
-						"refactoring": "Refactored and modernized legacy code using React, NextJS, and TypeScript.",
+						"mnd": "Built Moje MND, a customer self-service portal, from scratch in a two-person frontend team — forms, validation, tabular overviews, invoices, contracts and document handling.",
+						"eon": "Delivered two internal E.ON applications: PUDplus for work orders, findings and preventive maintenance, and MKME web for work orders and metering.",
+						"designSystems": "Built and maintained the @eman/mnd-storybook and @eman/pud-storybook component libraries, plus a design system for Bohemia Energy.",
 						"collaboration": "Collaborated closely with UX designers and backend developers to meet client expectations."
 					}
 				},
