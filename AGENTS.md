@@ -109,11 +109,20 @@ For CV implementation:
 - Compare the route against every relevant light/dark and responsive node above; passing one frame does not establish CV parity.
 - Preserve the recognizable expanding download interaction, but implement it from `122:181` with semantic tokens, a 4 px system radius, accessible focus/keyboard behavior and a continuously understandable label on touch devices. Do not reuse the legacy pill styling in `ExpandingButton.module.css` as the visual contract.
 - Use the existing Button system `21:110` and semantic control tokens where the Download Action shares properties with ordinary buttons. Keep CV-specific expansion behavior in a narrow component rather than altering unrelated buttons.
-- Treat `docs/Karel_Kutchan_CV.pdf` and `docs/Karel_Kutchan_CV_Frontend_React_Engineer_2026.pdf` as the current factual PDF inputs. The existing public `public/curriculum-vitae/CV_Karel_Kutchan.pdf` is legacy content until replaced through the implementation plan.
+- `docs/Karel_Kutchan_CV.pdf` and `docs/Karel_Kutchan_CV_Frontend_React_Engineer_2026.pdf` are **historical Google Docs exports**, kept as a record of what was previously sent out. They are no longer design references: they use Arial/Play and navy `#1F4E79`, which conflict with the current identity. The public `public/curriculum-vitae/CV_Karel_Kutchan.pdf` is legacy content until regenerated.
 - Static HTML CV copy belongs in the `curriculumVitae` namespace in both translation catalogs, while locale-neutral periods, company identifiers, URLs and other structured facts should live in a shared content model. Do not move CV content into Payload as part of this work.
 - A download label must state the actual PDF language or profile variant. Do not label a file as Czech unless the linked asset is genuinely Czech.
 - Do not expose private or unnecessary personal data merely because it appears in an older PDF. Resolve the public email identity centrally and keep contact facts consistent with the rest of the portfolio.
 - Validate English and Czech at 1440, 768 and 390 px in light and dark mode, including text wrapping, download behavior, focus, hover, reduced motion, real PDF responses, metadata and locale switching.
+
+### CV PDFs Are Generated, Not Authored
+
+`tools/cv-pdf/` generates the CV as a tagged A4 PDF from `src/content/curriculum-vitae.ts`, the message catalogs and the semantic tokens in `variables.css`. See `tools/cv-pdf/README.md`.
+
+- Do not hand-author a CV PDF and do not reintroduce a Google Docs workflow. A CV that is not generated cannot stay in sync with the site.
+- The generator defines no colours of its own and fails the build if `--action-primary` stops resolving to `#0A6E80`. `src/__tests__/unit/cv-pdf-tokens.test.ts` guards that binding — treat a failure there as a brand defect, not a flaky test.
+- Company-specific variants are overlays that may reorder and re-emphasise but never restate hard facts. They live outside this repository, in `new_job/cv/variants/`.
+- Changing how the CV looks means changing tokens, or the print type scale in `tools/cv-pdf/cv-print.css`. Do not put values in the template.
 
 ## Available Ways To Work With Figma
 

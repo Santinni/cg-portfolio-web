@@ -1,0 +1,306 @@
+/*
+ * CV print stylesheet.
+ *
+ * Rules of this file:
+ *   1. It defines NO colours. Every colour is a semantic token read from
+ *      src/app/(frontend)/styles/variables.css at build time.
+ *   2. It defines NO spacing values outside the token scale.
+ *   3. It owns only what is genuinely print-specific: page geometry, page-break
+ *      behaviour and the print type scale.
+ *
+ * Changing how the CV looks means changing tokens or the print scale here —
+ * never sprinkling values into the template.
+ */
+
+/* ---------------------------------------------------------------- page ---- */
+
+@page {
+	size: A4;
+	/* Generous outer margin; the content column carries the rhythm. */
+	margin: 14mm 14mm 16mm;
+}
+
+/*
+ * Print type scale.
+ *
+ * The web tokens are tuned for a 1280px+ viewport where an H1 of 48px reads
+ * correctly. An A4 content column is ~180mm, so those tiers are stepped down to
+ * print-appropriate sizes here. This is the one place where the PDF deviates
+ * from the web tiers, and it is deliberate: same hierarchy, page-appropriate
+ * absolute size.
+ */
+:root {
+	--print-name: 26pt;
+	--print-name-lh: 30pt;
+	--print-tagline: 10.5pt;
+	--print-tagline-lh: 14pt;
+	--print-section: 9pt;
+	--print-section-lh: 12pt;
+	--print-role: 11pt;
+	--print-role-lh: 15pt;
+	--print-body: 9.5pt;
+	--print-body-lh: 13.5pt;
+	--print-meta: 8.5pt;
+	--print-meta-lh: 12pt;
+
+	--print-rule: 0.5pt;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html {
+	-webkit-print-color-adjust: exact;
+	print-color-adjust: exact;
+}
+
+body {
+	margin: 0;
+	background: var(--surface-page);
+	color: var(--text-primary);
+	font-family: 'Inter', system-ui, sans-serif;
+	font-size: var(--print-body);
+	font-weight: 400;
+	line-height: var(--print-body-lh);
+	/* Hyphenation off: broken words read as sloppy typesetting in a CV. */
+	hyphens: none;
+}
+
+/* -------------------------------------------------------------- header ---- */
+
+.header {
+	margin-block-end: var(--space-20);
+	padding-block-end: var(--space-12);
+	border-block-end: var(--print-rule) solid var(--border-default);
+}
+
+.name {
+	margin: 0;
+	color: var(--text-primary);
+	font-size: var(--print-name);
+	font-weight: 700;
+	line-height: var(--print-name-lh);
+	letter-spacing: -0.02em;
+}
+
+.tagline {
+	margin: var(--space-4) 0 0;
+	color: var(--action-primary);
+	font-size: var(--print-tagline);
+	font-weight: 600;
+	line-height: var(--print-tagline-lh);
+}
+
+.contact {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0 var(--space-12);
+	margin: var(--space-8) 0 0;
+	color: var(--text-secondary);
+	font-size: var(--print-meta);
+	line-height: var(--print-meta-lh);
+}
+
+.contact a {
+	color: var(--text-secondary);
+	text-decoration: none;
+}
+
+/* Separator as a border, so it never gets selected or read aloud. */
+.contact > span + span {
+	padding-inline-start: var(--space-12);
+	border-inline-start: var(--print-rule) solid var(--border-default);
+}
+
+/* ------------------------------------------------------------- section ---- */
+
+.section {
+	margin-block-start: var(--space-16);
+	/* A heading stranded at the foot of a page is the classic print failure. */
+	break-inside: auto;
+}
+
+.sectionTitle {
+	margin: 0 0 var(--space-8);
+	padding-block-end: var(--space-4);
+	border-block-end: var(--print-rule) solid var(--action-primary);
+	color: var(--action-primary);
+	font-size: var(--print-section);
+	font-weight: 700;
+	line-height: var(--print-section-lh);
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	break-after: avoid;
+}
+
+.summary {
+	margin: 0;
+	color: var(--text-primary);
+	text-align: left;
+}
+
+/* ------------------------------------------------------------ highlights -- */
+
+.highlights {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.highlights li {
+	margin-block-end: var(--space-4);
+	padding-inline-start: var(--space-12);
+	position: relative;
+	break-inside: avoid;
+}
+
+.highlights li::before {
+	content: '';
+	position: absolute;
+	inset-inline-start: 0;
+	inset-block-start: 0.45em;
+	inline-size: 3pt;
+	block-size: 3pt;
+	border-radius: var(--radius-pill);
+	background: var(--action-primary);
+}
+
+.highlightLabel {
+	font-weight: 600;
+}
+
+/* ---------------------------------------------------------------- skills -- */
+
+/*
+ * Two-column label/value grid. The label column is fixed so every row aligns
+ * regardless of label length — a ragged left edge here reads as an accident.
+ */
+.skills {
+	display: grid;
+	grid-template-columns: 42mm 1fr;
+	gap: var(--space-4) var(--space-12);
+	margin: 0;
+}
+
+.skills dt {
+	color: var(--text-primary);
+	font-weight: 600;
+	break-inside: avoid;
+}
+
+.skills dd {
+	margin: 0;
+	color: var(--text-secondary);
+	break-inside: avoid;
+}
+
+/* ------------------------------------------------------------ experience -- */
+
+.experience {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.entry {
+	margin-block-end: var(--space-12);
+	/* Keep a role and its bullets together; splitting them mid-page is unreadable. */
+	break-inside: avoid;
+}
+
+.entryHead {
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	gap: var(--space-12);
+}
+
+.entryRole {
+	margin: 0;
+	color: var(--text-primary);
+	font-size: var(--print-role);
+	font-weight: 600;
+	line-height: var(--print-role-lh);
+}
+
+.entryCompany {
+	font-weight: 400;
+}
+
+.entryPeriod {
+	flex-shrink: 0;
+	color: var(--action-primary);
+	font-size: var(--print-meta);
+	font-weight: 600;
+	line-height: var(--print-meta-lh);
+	letter-spacing: 0.04em;
+	white-space: nowrap;
+}
+
+.entrySummary {
+	margin: var(--space-4) 0 0;
+	color: var(--text-secondary);
+}
+
+.entryBullets {
+	margin: var(--space-4) 0 0;
+	padding-inline-start: var(--space-12);
+	color: var(--text-secondary);
+}
+
+.entryBullets li {
+	margin-block-end: 2pt;
+}
+
+.entryBullets li::marker {
+	color: var(--action-primary);
+}
+
+/* --------------------------------------------------------------- earlier -- */
+
+.earlier {
+	margin: 0;
+	padding-block-start: var(--space-8);
+	border-block-start: var(--print-rule) solid var(--border-default);
+	color: var(--text-secondary);
+	font-size: var(--print-meta);
+	line-height: var(--print-meta-lh);
+}
+
+/* ------------------------------------------------------- education, langs -- */
+
+.twoUp {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: var(--space-16);
+}
+
+.plainList {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	color: var(--text-secondary);
+}
+
+.plainList li {
+	margin-block-end: var(--space-4);
+	break-inside: avoid;
+}
+
+.plainList strong {
+	color: var(--text-primary);
+	font-weight: 600;
+}
+
+/* ---------------------------------------------------------------- footer -- */
+
+.footer {
+	margin-block-start: var(--space-16);
+	padding-block-start: var(--space-8);
+	border-block-start: var(--print-rule) solid var(--border-default);
+	color: var(--text-secondary);
+	font-size: var(--print-meta);
+	line-height: var(--print-meta-lh);
+	text-align: center;
+}
