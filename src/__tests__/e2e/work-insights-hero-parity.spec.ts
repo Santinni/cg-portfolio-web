@@ -44,9 +44,19 @@ const readTokens = () => {
 		return resolved
 	}
 
+	const hero = document.querySelector('main header')
+	const title = document.querySelector('main header h1')
+	if (!hero || !title) {
+		// Without this the missing element surfaces as an opaque getComputedStyle
+		// TypeError that reads like a browser fault rather than an absent hero.
+		throw new Error(
+			`Hero not rendered: main header=${hero !== null}, main header h1=${title !== null}`,
+		)
+	}
+
 	return {
-		heroBackground: getComputedStyle(document.querySelector('main header')!).backgroundColor,
-		titleColor: getComputedStyle(document.querySelector('main header h1')!).color,
+		heroBackground: getComputedStyle(hero).backgroundColor,
+		titleColor: getComputedStyle(title).color,
 		surfacePage: resolveToken('--surface-page'),
 		textPrimary: resolveToken('--text-primary'),
 	} as const
@@ -63,6 +73,10 @@ test.describe('Work and Insights hero parity', () => {
 
 				const response = await page.goto(route)
 				expect(response?.status()).toBe(200)
+				// `/insights` renders from the CMS, so on a cold database the hero can
+				// still be streaming when the navigation promise resolves. Wait for the
+				// element the contract is about instead of racing it.
+				await expect(page.locator('main header h1')).toBeVisible()
 				await page.evaluate(async (value) => {
 					document.documentElement.dataset.theme = value
 					await document.fonts.ready

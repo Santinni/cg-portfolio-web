@@ -1,0 +1,341 @@
+/*
+ * CV print stylesheet.
+ *
+ * The layout is taken from the approved 2026 React CV
+ * (docs/Karel_Kutchan_CV_Frontend_React_Engineer_2026.pdf): centred masthead,
+ * left-aligned section headings, a tinted label column in Core Skills, and a
+ * dense Role | Company | Period + Stack + bullets rhythm in Experience.
+ *
+ * What changed from that document is only the identity layer — Inter instead of
+ * Arial/Play, brand teal instead of navy #1F4E79 — because the original is a
+ * Google Docs export predating the current brand. The geometry is deliberately
+ * preserved.
+ *
+ * Rules of this file:
+ *   1. It defines NO colours. Every colour is a semantic token read from
+ *      src/app/(frontend)/styles/variables.css at build time.
+ *   2. Spacing uses the token scale.
+ *   3. It owns only what is print-specific: page geometry, page-break behaviour
+ *      and the print type scale.
+ */
+
+/* ---------------------------------------------------------------- page ---- */
+
+@page {
+	size: A4;
+	margin: 11mm 13mm 13mm;
+}
+
+/*
+ * Print type scale, transcribed from the original at print sizes. The web
+ * tokens are tuned for a 1280px viewport where an H1 of 48px is correct; an A4
+ * column is ~184mm, so the scale is restated here in points. Same hierarchy,
+ * page-appropriate absolute size.
+ */
+:root {
+	--print-name: 19pt;
+	--print-name-lh: 22pt;
+	--print-tagline: 10pt;
+	--print-tagline-lh: 14pt;
+	--print-contact: 8pt;
+	--print-contact-lh: 11pt;
+	--print-section: 10pt;
+	--print-section-lh: 12pt;
+	--print-role: 10pt;
+	--print-role-lh: 13pt;
+	--print-body: 9pt;
+	--print-body-lh: 12.5pt;
+	--print-stack: 7.8pt;
+	--print-stack-lh: 10.5pt;
+
+	--print-rule: 0.5pt;
+	--print-bullet: 2.6pt;
+	--skills-label-column: 52mm;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html {
+	-webkit-print-color-adjust: exact;
+	print-color-adjust: exact;
+}
+
+body {
+	margin: 0;
+	background: var(--surface-page);
+	color: var(--text-primary);
+	font-family: 'Inter', system-ui, sans-serif;
+	font-size: var(--print-body);
+	font-weight: 400;
+	line-height: var(--print-body-lh);
+	/* Broken words read as sloppy typesetting in a CV. */
+	hyphens: none;
+}
+
+/* ------------------------------------------------------------- masthead ---- */
+
+.header {
+	margin-block-end: var(--space-16);
+	text-align: center;
+}
+
+.name {
+	margin: 0;
+	color: var(--action-primary);
+	font-size: var(--print-name);
+	font-weight: 700;
+	line-height: var(--print-name-lh);
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+}
+
+.tagline {
+	margin: var(--space-8) 0 0;
+	color: var(--text-primary);
+	font-size: var(--print-tagline);
+	font-weight: 600;
+	line-height: var(--print-tagline-lh);
+}
+
+.contact {
+	margin: var(--space-4) 0 0;
+	color: var(--text-secondary);
+	font-size: var(--print-contact);
+	line-height: var(--print-contact-lh);
+}
+
+.contact a {
+	color: var(--action-primary);
+	text-decoration: none;
+}
+
+.contactSeparator {
+	color: var(--border-strong);
+	padding: 0 var(--space-4);
+}
+
+.qr {
+	display: block;
+	inline-size: 17mm;
+	block-size: 17mm;
+	margin: var(--space-12) auto var(--space-4);
+}
+
+/*
+ * The generated SVG carries its own width and height in millimetres. Without
+ * this it ignores the box, overflows, and paints over the section below it.
+ */
+.qr svg {
+	display: block;
+	inline-size: 100%;
+	block-size: 100%;
+}
+
+/* ------------------------------------------------------------- section ---- */
+
+.section {
+	margin-block-start: var(--space-12);
+}
+
+/*
+ * No rule under the heading: the original relies on colour and weight alone,
+ * and adding a border changes the density of the whole document.
+ */
+.sectionTitle {
+	margin: 0 0 var(--space-4);
+	color: var(--action-primary);
+	font-size: var(--print-section);
+	font-weight: 700;
+	line-height: var(--print-section-lh);
+	letter-spacing: 0.02em;
+	text-transform: uppercase;
+	break-after: avoid;
+}
+
+.summary {
+	margin: 0;
+	color: var(--text-primary);
+}
+
+.summary + .summary {
+	margin-block-start: var(--space-4);
+}
+
+.summary strong {
+	font-weight: 600;
+}
+
+/* ------------------------------------------------------------ highlights -- */
+
+.highlights {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.highlights li {
+	margin-block-end: var(--space-4);
+	padding-inline-start: var(--space-8);
+	position: relative;
+	break-inside: avoid;
+}
+
+.highlights li::before {
+	content: '';
+	position: absolute;
+	inset-inline-start: 0;
+	inset-block-start: 0.42em;
+	inline-size: var(--print-bullet);
+	block-size: var(--print-bullet);
+	border-radius: var(--radius-pill);
+	background: var(--action-primary);
+}
+
+.highlightLabel {
+	color: var(--text-primary);
+	font-weight: 600;
+}
+
+/* ---------------------------------------------------------------- skills -- */
+
+/*
+ * Two-column label/value grid. The label column carries a tinted band, as in
+ * the original, which is what makes this section read as a table without rules.
+ */
+.skills {
+	display: grid;
+	grid-template-columns: var(--skills-label-column) 1fr;
+	margin: 0;
+}
+
+.skills dt {
+	padding: var(--space-4) var(--space-8);
+	background: var(--surface-subtle);
+	color: var(--action-primary);
+	font-weight: 600;
+	break-inside: avoid;
+}
+
+.skills dd {
+	margin: 0;
+	padding: var(--space-4) 0 var(--space-4) var(--space-12);
+	color: var(--text-primary);
+	break-inside: avoid;
+}
+
+/* ------------------------------------------------------------ experience -- */
+
+.experience {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.entry {
+	margin-block-end: var(--space-8);
+	/* A role split from its bullets across a page is unreadable. */
+	break-inside: avoid;
+}
+
+.entryHead {
+	margin: 0;
+	color: var(--text-primary);
+	font-size: var(--print-role);
+	font-weight: 700;
+	line-height: var(--print-role-lh);
+}
+
+.entryCompany {
+	color: var(--action-primary);
+}
+
+.entryPeriod {
+	color: var(--text-secondary);
+	font-weight: 400;
+}
+
+.entrySeparator {
+	color: var(--border-strong);
+	font-weight: 400;
+	padding: 0 var(--space-4);
+}
+
+.entryStack {
+	margin: 1pt 0 var(--space-4);
+	color: var(--text-secondary);
+	font-size: var(--print-stack);
+	line-height: var(--print-stack-lh);
+}
+
+.entryStackLabel {
+	color: var(--text-primary);
+	font-weight: 600;
+}
+
+.entryBullets {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.entryBullets li {
+	margin-block-end: 1.5pt;
+	padding-inline-start: var(--space-8);
+	position: relative;
+	color: var(--text-primary);
+}
+
+.entryBullets li::before {
+	content: '';
+	position: absolute;
+	inset-inline-start: 0;
+	inset-block-start: 0.42em;
+	inline-size: var(--print-bullet);
+	block-size: var(--print-bullet);
+	border-radius: var(--radius-pill);
+	background: var(--action-primary);
+}
+
+/* --------------------------------------------------------------- earlier -- */
+
+.earlier {
+	margin: var(--space-4) 0 0;
+	color: var(--text-secondary);
+	font-size: var(--print-stack);
+	line-height: var(--print-stack-lh);
+}
+
+.earlier strong {
+	color: var(--text-primary);
+	font-weight: 600;
+}
+
+/* ------------------------------------------------------- education, langs -- */
+
+.twoUp {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: var(--space-16);
+}
+
+.plainList {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	color: var(--text-primary);
+}
+
+.plainList li {
+	margin-block-end: 2pt;
+	break-inside: avoid;
+}
+
+.plainList strong {
+	font-weight: 600;
+}
+
+.plainList .muted {
+	color: var(--text-secondary);
+}

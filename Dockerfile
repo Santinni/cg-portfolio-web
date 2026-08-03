@@ -23,6 +23,13 @@ RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
 
 FROM dependencies AS builder
 
+# `NEXT_PUBLIC_*` values are inlined into the bundle at build time, so the canonical
+# site URL has to be chosen here rather than at run time. Left unset the build keeps
+# its previous behaviour and falls back to `siteConfig.url`; the pinned browser-test
+# stack passes the address the suite actually browses.
+ARG NEXT_PUBLIC_SERVER_URL
+ENV NEXT_PUBLIC_SERVER_URL=${NEXT_PUBLIC_SERVER_URL}
+
 COPY . .
 
 RUN pnpm run build

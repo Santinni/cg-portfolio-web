@@ -15,6 +15,8 @@ const selectedExperienceIds = [
 	'ampX',
 	'skype',
 	'foxconn',
+	'mountfield',
+	'bitware',
 ] as const
 
 const highlightIds = ['experience', 'currentRole', 'productSystems', 'location'] as const

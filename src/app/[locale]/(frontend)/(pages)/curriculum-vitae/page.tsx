@@ -8,6 +8,7 @@ import { Button } from '@/app/(frontend)/components/primitives/button'
 import { DownloadAction } from '@/app/(frontend)/components/primitives/downloadAction'
 import {
 	curriculumVitae,
+	curriculumVitaeEarlierExperience,
 	curriculumVitaeEducation,
 	curriculumVitaeExperience,
 	curriculumVitaeHighlights,
@@ -185,6 +186,32 @@ export default async function CurriculumPage({ params }: CurriculumPageProps) {
 							)
 						})}
 					</ol>
+					<div className={styles.earlierExperience}>
+						<h3 className={styles.earlierExperienceTitle}>
+							{t('experience.earlierExperience.title')}
+						</h3>
+						<ul className={styles.earlierExperienceList}>
+							{curriculumVitaeEarlierExperience.map((entry) => (
+								<li key={entry.id}>
+									<p className={styles.earlierExperiencePeriod}>
+										<time dateTime={entry.start}>{entry.start}</time>
+										<span aria-hidden="true"> – </span>
+										<time dateTime={entry.end}>{entry.end}</time>
+									</p>
+									<p>
+										<span className={styles.earlierExperienceRole}>
+											{t(`experience.earlierExperience.entries.${entry.id}.title`)}
+											<span aria-hidden="true"> · </span>
+											{entry.company}
+										</span>
+										<span className={styles.earlierExperienceSummary}>
+											{t(`experience.earlierExperience.entries.${entry.id}.summary`)}
+										</span>
+									</p>
+								</li>
+							))}
+						</ul>
+					</div>
 				</Container>
 			</section>
 
@@ -225,7 +252,11 @@ export default async function CurriculumPage({ params }: CurriculumPageProps) {
 									<p className={styles.period}>
 										<time dateTime={education.start}>{education.start}</time>
 										<span aria-hidden="true"> – </span>
-										<time dateTime={education.end}>{education.end}</time>
+										{education.end ? (
+											<time dateTime={education.end}>{education.end}</time>
+										) : (
+											<span>{t('education.ongoingLabel')}</span>
+										)}
 									</p>
 									<h3>{education.institution}</h3>
 									<p>{t(`education.entries.${education.id}.degree`)}</p>

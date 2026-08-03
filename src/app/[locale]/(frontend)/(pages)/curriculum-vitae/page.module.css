@@ -271,6 +271,61 @@
 	line-height: 24px;
 }
 
+/*
+ * Pre-web career: a footnote to the timeline, deliberately quieter than a
+ * timeline entry so it reads as context rather than as frontend experience.
+ */
+.earlierExperience {
+	margin-block-start: var(--space-24);
+	padding-block-start: var(--space-16);
+	border-block-start: 1px solid var(--border-default);
+}
+
+.earlierExperienceTitle {
+	margin: 0 0 var(--space-8);
+	color: var(--text-secondary);
+	font-size: var(--font-size-label);
+	font-weight: 600;
+	line-height: var(--line-height-label);
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.earlierExperienceList {
+	display: grid;
+	gap: var(--space-8);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.earlierExperienceList p {
+	margin: 0;
+}
+
+.earlierExperiencePeriod {
+	color: var(--text-secondary);
+	font-size: 12px;
+	line-height: 16px;
+	letter-spacing: 0.08em;
+}
+
+.earlierExperienceRole {
+	color: var(--text-primary);
+	font-size: 16px;
+	line-height: 24px;
+}
+
+.earlierExperienceSummary {
+	color: var(--text-secondary);
+	font-size: 16px;
+	line-height: 24px;
+}
+
+.earlierExperienceSummary::before {
+	content: ' — ';
+}
+
 .projectGrid {
 	display: grid;
 	gap: var(--space-16);
