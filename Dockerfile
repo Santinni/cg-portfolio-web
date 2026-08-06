@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 ARG NODE_VERSION=24.18.0
-ARG PNPM_VERSION=10.28.0
+ARG PNPM_VERSION=11.20.0
 ARG APP_REVISION=development
 
 FROM node:${NODE_VERSION}-slim AS base

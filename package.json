@@ -11,22 +11,10 @@
   },
   "type": "module",
   "private": true,
-  "packageManager": "pnpm@10.28.0",
+  "packageManager": "pnpm@11.20.0",
   "engines": {
-    "node": ">=24.0.0 <25.0.0",
-    "pnpm": ">=10.28.0 <11.0.0"
-  },
-  "pnpm": {
-    "overrides": {
-      "@esbuild-kit/core-utils>esbuild": "0.25.12",
-      "next>postcss": "8.5.12",
-      "next>sharp": "0.35.3"
-    },
-    "onlyBuiltDependencies": [
-      "esbuild",
-      "sharp",
-      "unrs-resolver"
-    ]
+    "node": ">=24.0.0 <26.0.0",
+    "pnpm": ">=10.28.0 <12.0.0"
   },
   "browserslist": {
     "production": [
@@ -72,40 +60,40 @@
     "icons:clean": "node -e \"const fs=require('node:fs');for(const p of fs.readdirSync('src/components/icons'))if(p.endsWith('.tsx'))fs.rmSync('src/components/icons/'+p);fs.rmSync('icon-scan-report.json',{force:true})\""
   },
   "dependencies": {
-    "@payloadcms/db-postgres": "^3.86.0",
-    "@payloadcms/next": "^3.86.0",
-    "@payloadcms/payload-cloud": "^3.86.0",
-    "@payloadcms/richtext-lexical": "^3.86.0",
+    "@payloadcms/db-postgres": "^3.87.0",
+    "@payloadcms/next": "^3.87.0",
+    "@payloadcms/payload-cloud": "^3.87.0",
+    "@payloadcms/richtext-lexical": "^3.87.0",
     "clsx": "^2.1.1",
     "cross-env": "^10.1.0",
-    "lucide-react": "^1.26.0",
-    "next": "16.2.11",
-    "next-intl": "4.13.4",
-    "payload": "^3.86.0",
+    "lucide-react": "^1.28.0",
+    "next": "16.3.0",
+    "next-intl": "4.13.5",
+    "payload": "^3.87.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "sharp": "^0.35.3",
-    "zod": "^4.3.6"
+    "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.4.9",
-    "@playwright/test": "^1.58.2",
+    "@biomejs/biome": "^2.5.7",
+    "@playwright/test": "^1.62.1",
     "@svgr/cli": "^8.1.0",
     "@svgr/webpack": "^8.1.0",
-    "@testing-library/jest-dom": "6.9.1",
+    "@testing-library/jest-dom": "7.0.0",
     "@testing-library/react": "^16.3.2",
-    "@testing-library/user-event": "^14.6.1",
-    "@types/node": "^24.10.1",
-    "@types/react": "^19.2.17",
-    "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^5.2.0",
+    "@testing-library/user-event": "^14.6.3",
+    "@types/node": "^24.13.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "@vitejs/plugin-react": "^6.0.5",
     "esbuild": "0.28.1",
     "eslint": "^9.39.5",
-    "eslint-config-next": "16.2.11",
+    "eslint-config-next": "16.3.0",
     "fast-glob": "^3.3.3",
     "fdir": "^6.5.0",
-    "jsdom": "^29.0.1",
+    "jsdom": "^30.0.1",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.2"
+    "vitest": "^4.1.10"
   }
 }

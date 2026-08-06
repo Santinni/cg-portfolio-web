@@ -109,6 +109,19 @@ Owns architecture, task packets, diff review, integration corrections, Insights/
 - release-candidate Docker build
 - post-deploy `https://codeguy.cz`, `/api/health`, core routes and one 404 probe
 
+## Post-launch backlog
+
+Work requested after this launch plan was written is recorded in
+`docs/plans/2026-08-06-post-launch-backlog.md`. It is planning only and does not
+change the launch scope or the deployment gate below:
+
+- BL-001 — a reset-tracker page providing the same information as
+  `https://codex-resets.com/` (blocked on data-source and originality decisions).
+- BL-002 — Curriculum Vitae component revision: apply DRY against the shared
+  `src/components/site/*` primitives and unify contact-style links site-wide.
+- BL-003 — state identity more clearly on the homepage and surface a direct
+  contact affordance above the fold.
+
 ## Deployment gate
 
 Do not push the release to `main` until all of the following are proven:

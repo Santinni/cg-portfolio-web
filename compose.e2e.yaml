@@ -96,7 +96,7 @@ services:
       - |
         set -e
         corepack enable
-        corepack prepare pnpm@10.28.0 --activate
+        corepack prepare pnpm@11.20.0 --activate
         # Passed as a flag, never written to .npmrc: the repo is bind-mounted and
         # a config write would land in the host working tree.
         pnpm install --frozen-lockfile --store-dir /pnpm-store
