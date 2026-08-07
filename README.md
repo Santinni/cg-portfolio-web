@@ -57,6 +57,30 @@ Rozhodnutí, slepé cesty, stav implementace a review jsou v:
 - `IMPLEMENTATION_REPORT.md`
 - `CODE_REVIEW.md`
 
+## Plánování a evidence práce
+
+Práce na tomto repozitáři se eviduje ve dvou vrstvách, které se nesmí míchat:
+
+- **Repozitář** vlastní proces — implementační plány, backlog, rozhodnutí,
+  záznamy slepých cest a validační matice. Vše je v `docs/plans/`, releasový
+  plán v `plans/portfolio-production-delivery.md`.
+- **Figma** (`Codeguy Portfolio - Final Design`, klíč `cs38WzlXKY9xfDYBinoKel`)
+  vlastní výsledný produktový design — obrazovky, komponenty, stavy, prototypy
+  a handoff anotace. Implementační plány do Figmy nepatří; pravidlo je
+  zapsané v `.agents/skills/figma-product-delivery/SKILL.md`.
+- **Linear** vlastní stav a pořadí úkolů. Portfolio má vlastní workspace,
+  oddělený od workspace `Codeguys`, kde běží nesouvisející produkt Revesto.
+
+  > Workspace se zakládá; odkaz sem doplnit, jakmile bude vytvořený.
+
+Konvence pro issues přebíráme z dosavadní praxe: české tituly s prefixem role
+(`Frontend:`, `Design:`, `QA:`, `EPIC:`) a label `AI-Ready` pro izolované úkoly
+s jednoznačnými vstupy, výstupy a validačními kroky versus `Lidská práce` tam,
+kde je potřeba produktové, UX nebo architektonické rozhodnutí.
+
+Každé issue odkazuje na svůj plán v `docs/plans/`. Plán je zdroj pravdy pro
+zadání a akceptační kritéria, Linear pro stav.
+
 ## Produkční provoz
 
 Větev `main` je zdroj produkce. Pull request musí projít kontrolou kvality,
