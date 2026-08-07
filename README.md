@@ -69,10 +69,10 @@ Práce na tomto repozitáři se eviduje ve dvou vrstvách, které se nesmí míc
   a handoff anotace. Implementační plány do Figmy nepatří; pravidlo je
   zapsané v `.agents/skills/figma-product-delivery/SKILL.md`.
 - **Linear** vlastní stav a pořadí úkolů. Práce na tomto repozitáři žije
-  v projektu [Codeguy portfolio web](https://linear.app/codeguys/project/codeguy-portfolio-web)
+  v projektu [Codeguy portfolio web](https://linear.app/codeguys/project/codeguy-portfolio-web-8c2db25da850)
   v týmu `Codeguys`, odděleně od nesouvisejícího produktu Revesto ve stejném
   týmu. Zastřešuje ji
-  [COD-75 — EPIC: Post-Launch Portfolio Delivery](https://linear.app/codeguys/issue/COD-75).
+  [COD-75 — EPIC: Post-Launch Portfolio Delivery](https://linear.app/codeguys/issue/COD-75/epic-post-launch-portfolio-delivery).
 
 Konvence pro issues přebíráme z dosavadní praxe: české tituly s prefixem role
 (`Frontend:`, `Design:`, `QA:`, `Product:`, `EPIC:`) a label `AI-Ready` pro
