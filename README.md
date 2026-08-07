@@ -68,18 +68,26 @@ Práce na tomto repozitáři se eviduje ve dvou vrstvách, které se nesmí míc
   vlastní výsledný produktový design — obrazovky, komponenty, stavy, prototypy
   a handoff anotace. Implementační plány do Figmy nepatří; pravidlo je
   zapsané v `.agents/skills/figma-product-delivery/SKILL.md`.
-- **Linear** vlastní stav a pořadí úkolů. Portfolio má vlastní workspace,
-  oddělený od workspace `Codeguys`, kde běží nesouvisející produkt Revesto.
-
-  > Workspace se zakládá; odkaz sem doplnit, jakmile bude vytvořený.
+- **Linear** vlastní stav a pořadí úkolů. Práce na tomto repozitáři žije
+  v projektu [Codeguy portfolio web](https://linear.app/codeguys/project/codeguy-portfolio-web)
+  v týmu `Codeguys`, odděleně od nesouvisejícího produktu Revesto ve stejném
+  týmu. Zastřešuje ji
+  [COD-75 — EPIC: Post-Launch Portfolio Delivery](https://linear.app/codeguys/issue/COD-75).
 
 Konvence pro issues přebíráme z dosavadní praxe: české tituly s prefixem role
-(`Frontend:`, `Design:`, `QA:`, `EPIC:`) a label `AI-Ready` pro izolované úkoly
-s jednoznačnými vstupy, výstupy a validačními kroky versus `Lidská práce` tam,
-kde je potřeba produktové, UX nebo architektonické rozhodnutí.
+(`Frontend:`, `Design:`, `QA:`, `Product:`, `EPIC:`) a label `AI-Ready` pro
+izolované úkoly s jednoznačnými vstupy, výstupy a validačními kroky versus
+`Lidská práce` tam, kde je potřeba produktové, UX nebo architektonické
+rozhodnutí.
 
 Každé issue odkazuje na svůj plán v `docs/plans/`. Plán je zdroj pravdy pro
-zadání a akceptační kritéria, Linear pro stav.
+zadání a akceptační kritéria, Linear pro stav. Issue nese ověřený baseline
+včetně konkrétních `soubor:řádek`, aby se zadání nemuselo znovu dohledávat.
+
+Plány je nutné před spuštěním ověřit proti kódu. Část z nich vznikla na stroji,
+kde agentovi selhávalo čtení workspace, takže popisovaly kód jen podle Figmy —
+jeden plán byl tím pádem už hotový a jiný předepisoval změnu, která by rozbila
+funkční chování. Oba nesou opravné hlášení.
 
 ## Produkční provoz
 
