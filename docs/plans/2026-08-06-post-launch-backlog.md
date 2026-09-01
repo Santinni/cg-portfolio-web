@@ -39,10 +39,16 @@ The locale-aware model it should be reading already exists —
 PDF at `:190` and exports them as `curriculumVitae.pdfByLocale` at `:226`. The
 Czech Experience page therefore serves the English CV to every visitor.
 
-- [ ] Resolve URL, filename and metadata from `curriculumVitae.pdfByLocale[locale]`.
-- [ ] Replace the bespoke `ArrowDownToLine` anchor with the existing
+- [x] Resolve URL, filename and metadata from `curriculumVitae.pdfByLocale[locale]`.
+- [x] Replace the bespoke `ArrowDownToLine` anchor with the existing
       `DownloadAction` primitive, matching the CV page.
-- [ ] Add coverage asserting the Czech route serves the Czech asset.
+- [x] Add coverage asserting the Czech route serves the Czech asset.
+
+Fixed on 2026-09-01 under COD-76. The Experience-specific
+`experience.capabilities.downloadPdf` copy was removed rather than corrected: it read
+"Stáhnout PDF v angličtině", written for the hardcoded English asset, and any rewrite
+would have been a second label for an action the CV page already names. The control now
+shares `curriculumVitae.download.label`. CV-03 was amended to require exactly that.
 
 Detailed treatment lives in `2026-08-06-bl-002-bl-003-cv-navigation.md`, step 3.
 

@@ -16,7 +16,7 @@ const cvLocales = [
 		heroEyebrow: 'CURRICULUM VITAE',
 		heroRole: 'Senior Frontend Engineer',
 		currentRole: 'Current role',
-		downloadLabel: 'Download CV',
+		downloadAccessibleName: 'Download CV — Karel Kutchan',
 		pdfHref: '/curriculum-vitae/CV_Karel_Kutchan.pdf',
 		filename: 'CV_Karel_Kutchan.pdf',
 		sections: [
@@ -41,7 +41,7 @@ const cvLocales = [
 		heroEyebrow: 'ŽIVOTOPIS',
 		heroRole: 'Senior frontend engineer',
 		currentRole: 'Aktuální role',
-		downloadLabel: 'Stáhnout životopis',
+		downloadAccessibleName: 'Stáhnout životopis Karla Kutchana',
 		pdfHref: '/curriculum-vitae/CV_Karel_Kutchan_CS.pdf',
 		filename: 'CV_Karel_Kutchan_CS.pdf',
 		sections: [
@@ -187,9 +187,9 @@ for (const locale of cvLocales) {
 				'href',
 				'mailto:karel@codeguy.cz',
 			)
-			const footerDownload = getFooterDownload(page, locale.downloadLabel)
+			const footerDownload = getFooterDownload(page, locale.downloadAccessibleName)
 			await expect(footerDownload).toHaveAttribute('href', locale.pdfHref)
-			await expect(getFloatingDownload(page, locale.downloadLabel)).toHaveAttribute(
+			await expect(getFloatingDownload(page, locale.downloadAccessibleName)).toHaveAttribute(
 				'href',
 				locale.pdfHref,
 			)
@@ -198,7 +198,7 @@ for (const locale of cvLocales) {
 		test('downloads the locale-specific PDF without leaving the route', async ({ page }) => {
 			await page.goto(locale.path)
 			const pathnameBeforeDownload = new URL(page.url()).pathname
-			const footerDownload = getFooterDownload(page, locale.downloadLabel)
+			const footerDownload = getFooterDownload(page, locale.downloadAccessibleName)
 
 			const downloadPromise = page.waitForEvent('download')
 			await footerDownload.click()
@@ -240,7 +240,7 @@ for (const locale of cvLocales) {
 				const overflow = await findVisibleDescendantOverflow(page, { root: '[data-cv-content]' })
 				expect(overflow, `${locale.id}/${theme}/${viewport.id}px visible overflow`).toEqual([])
 
-				const action = getFloatingDownload(page, locale.downloadLabel)
+				const action = getFloatingDownload(page, locale.downloadAccessibleName)
 				await expect(action).toBeVisible()
 				const geometry = await readActionGeometry(action)
 				expectPx(geometry.height, 52)
@@ -260,7 +260,9 @@ for (const locale of cvLocales) {
 			const overflow = await findVisibleDescendantOverflow(page, { root: '[data-cv-content]' })
 			expect(overflow, `${locale.id}/light/${viewport.id}px visible overflow`).toEqual([])
 
-			const geometry = await readActionGeometry(getFloatingDownload(page, locale.downloadLabel))
+			const geometry = await readActionGeometry(
+				getFloatingDownload(page, locale.downloadAccessibleName),
+			)
 			expectPx(geometry.height, 52)
 			expect(geometry.borderRadius).toBe('4px')
 			expect(geometry.left).toBeGreaterThanOrEqual(-0.5)
@@ -279,7 +281,7 @@ for (const theme of themes) {
 			await page.evaluate(() => matchMedia('(hover: hover) and (pointer: fine)').matches),
 		).toBe(true)
 
-		const action = getFloatingDownload(page, locale.downloadLabel)
+		const action = getFloatingDownload(page, locale.downloadAccessibleName)
 		await page.mouse.move(0, 0)
 		const initial = await readActionGeometry(action)
 		expect(initial.backgroundColor).toBe(themeColors[theme].defaultBackground)
@@ -306,7 +308,7 @@ for (const theme of themes) {
 	}) => {
 		const locale = cvLocales[0]
 		await gotoCv(page, locale.path, theme, primaryViewports[0])
-		const action = getFloatingDownload(page, locale.downloadLabel)
+		const action = getFloatingDownload(page, locale.downloadAccessibleName)
 
 		await focusByKeyboard(page, action)
 		await expect(action).toBeFocused()
@@ -340,28 +342,29 @@ test('reduced motion removes Download Action and label transitions', async ({ pa
 	expect(response?.status()).toBe(200)
 	await waitForHomeRender(page, 'light')
 
-	const transitionDurations = await getFloatingDownload(page, locale.downloadLabel).evaluate(
-		(element) => {
-			const label = element.querySelector('span')
-			if (!(label instanceof HTMLElement)) throw new Error('Expected a Download Action label')
+	const transitionDurations = await getFloatingDownload(
+		page,
+		locale.downloadAccessibleName,
+	).evaluate((element) => {
+		const label = element.querySelector('span')
+		if (!(label instanceof HTMLElement)) throw new Error('Expected a Download Action label')
 
-			const maxTimeMs = (value: string) =>
-				Math.max(
-					...value.split(',').map((time) => {
-						const normalized = time.trim()
-						return normalized.endsWith('ms')
-							? Number.parseFloat(normalized)
-							: Number.parseFloat(normalized) * 1000
-					}),
-				)
+		const maxTimeMs = (value: string) =>
+			Math.max(
+				...value.split(',').map((time) => {
+					const normalized = time.trim()
+					return normalized.endsWith('ms')
+						? Number.parseFloat(normalized)
+						: Number.parseFloat(normalized) * 1000
+				}),
+			)
 
-			return {
-				actionMs: maxTimeMs(getComputedStyle(element).transitionDuration),
-				labelMs: maxTimeMs(getComputedStyle(label).transitionDuration),
-				reducedMotion: matchMedia('(prefers-reduced-motion: reduce)').matches,
-			}
-		},
-	)
+		return {
+			actionMs: maxTimeMs(getComputedStyle(element).transitionDuration),
+			labelMs: maxTimeMs(getComputedStyle(label).transitionDuration),
+			reducedMotion: matchMedia('(prefers-reduced-motion: reduce)').matches,
+		}
+	})
 
 	expect(transitionDurations.reducedMotion).toBe(true)
 	expect(transitionDurations.actionMs).toBeLessThanOrEqual(0.0011)
@@ -390,7 +393,7 @@ test('a separate touch context exposes a stable coarse-pointer Download Action l
 		await waitForHomeRender(page, 'light')
 
 		expect(await page.evaluate(() => matchMedia('(pointer: coarse)').matches)).toBe(true)
-		const action = getFloatingDownload(page, locale.downloadLabel)
+		const action = getFloatingDownload(page, locale.downloadAccessibleName)
 		const geometry = await readActionGeometry(action)
 		expect(geometry.labelOpacity).toBe(1)
 		expect(geometry.labelMaxInlineSize).toBeGreaterThan(0)

@@ -42,8 +42,11 @@ restate them in this record, so there is only one number to keep correct.
 ## CV-03 — Downloads are locale-first, and the two CVs are different profiles · `locked`
 
 **Decision.** The English UI downloads the English PDF; the Czech UI downloads the Czech
-PDF. No language-selection dialog appears in the normal download flow. A download label
-must state the actual PDF language or profile variant.
+PDF. No language-selection dialog appears in the normal download flow. Every download
+control uses the same localized label — "Download CV" / "Stáhnout životopis" — from one
+catalog entry, `curriculumVitae.download.label`. The label does not name the file format
+or the PDF language: locale-first routing already settles which file the visitor gets,
+and per-page label variants would fragment one action into several.
 
 **Why.** The English React-focused CV and the Czech general-profile CV are **distinct
 profile versions, not translations of one another**. UI copy that implies language-only
@@ -62,14 +65,28 @@ Regenerating the file behind a path is expected. Renaming or moving a path is no
 **What would reopen it.** A redesign of the PDF profile model — at which point an
 alternate-language selector could be reconsidered.
 
-**Implementation status: not met.** This decision states the target, not the shipped
-behaviour. Two known gaps:
+**Implementation status: met.** All four download controls — three on the CV page, one on
+Experience — resolve the file from `curriculumVitae.pdfByLocale[locale]`, render
+`DownloadAction`, and share `curriculumVitae.download.label` plus
+`curriculumVitae.download.accessibilityLabel`. The accessible name names the person and
+nothing else ("Download CV — Karel Kutchan"); it must contain the visible label verbatim,
+because `aria-label` replaces the accessible name and WCAG 2.5.3 Label in Name is what
+lets voice control reach the control by its visible words.
 
-- All three CV download controls pass the generic `download.label` ("Download CV")
-  rather than a language- or profile-specific label. A specific `languageLabel` already
-  exists in both catalogs and is unused.
-- The Czech Experience page hardcodes the English PDF and bypasses `DownloadAction`
-  entirely. Tracked as BL-000 in `docs/plans/2026-08-06-post-launch-backlog.md`.
+`src/__tests__/unit/download-action-usage.test.ts` enforces these rules over every
+rendered usage, so a new download control cannot pick its own copy or drop the accessible
+name. `src/__tests__/e2e/experience-cv-download.spec.ts` and
+`src/__tests__/e2e/curriculum-vitae.spec.ts` hold the locale-first download contract for
+both routes.
+
+The language and profile of the file stay visible where the download is *described* — the
+CV page download section carries a `languageLabel · profileLabel` eyebrow — not in the
+button that performs it.
+
+The uniform-label clause was added on 2026-09-01 under COD-76, replacing an earlier
+requirement that each label state the PDF language or profile variant. That earlier
+wording had produced per-page copy variants ("Download English PDF") that read as
+different actions.
 
 ## CV-04 — Phone number boundary · `locked`
 
