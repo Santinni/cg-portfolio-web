@@ -17,7 +17,7 @@ When Context7 applies:
 
 - These rules apply to the whole repository.
 - Public application code lives primarily in `src/app/[locale]/(frontend)`, shared frontend components in `src/app/(frontend)/components` and `src/components`, and translation catalogs in `messages`.
-- Treat `docs/plans/2026-07-28-i18n-implementation-plan.md` as the implementation and validation source of truth for the initial Czech/English rollout.
+- `docs/plans/` holds live plans only. The localization, Home-parity, CV and booking rollouts are delivered; their decisions live in `docs/decisions/` and their measured evidence in `docs/audits/`. See "Where Each Kind Of Knowledge Lives" below.
 
 ## External AI Agent Efficiency
 
@@ -55,63 +55,32 @@ When Context7 applies:
 
 ## Figma Source Of Truth
 
-The approved portfolio design is the Figma file:
+The approved design file, its file key and the approved node inventory are recorded in `docs/decisions/design-sources.md`. Route-specific frames live with their own decision record.
 
-- URL: https://www.figma.com/design/cs38WzlXKY9xfDYBinoKel/Codeguy-Portfolio---Final-Design
-- File key: `cs38WzlXKY9xfDYBinoKel`
-- Components page: `4:3`
-- Desktop page: `4:4`; Home frame: `6:2`
-- Tablet page: `4:5`; Home frame: `7:377`
-- Mobile page: `4:6`; Home frame: `8:87`
-- Responsive QA page: `4:7`
-- Dark-mode page: `4:8`
-- Button component set: `21:110`
+Do not claim that an implementation matches the redesign without comparing it against the relevant approved nodes. Verify a node still matches the shipped view before implementing against it.
 
-Treat this file as the visual source of truth for redesign work. Do not claim that an implementation matches the redesign without comparing it with the relevant Figma nodes.
+## Brand Identity
 
-## Brand Identity Source Of Truth
+The brand system is governed by `docs/brand/`:
 
-The Codeguy brand system is governed by these coordinated sources:
+- `brand-guidelines.md` defines intent, naming, voice, permitted usage, accessibility expectations and application guidance.
+- `brand-decision-log.md` records each identity decision as `locked`, `provisional`, `open` or `deprecated`, and what is required to change it. Where the two appear to disagree about status, the log governs.
 
-- `docs/brand/brand-guidelines.md` defines brand intent, naming, voice, permitted usage, accessibility expectations and application guidance.
-- `docs/brand/brand-decision-log.md` records whether each identity decision is `locked`, `provisional`, `open` or `deprecated` and what is required to change it.
-- Figma page `146:2`, `11 - Brand Identity`, is the visual working reference inside the approved portfolio file. Its six chapter frames are `146:3`, `147:2`, `149:2`, `150:2`, `151:2` and `153:15`.
-- The approved Figma variables, styles and canonical components determine exact design values. Repository semantic CSS tokens determine exact implementation values. If those exact values disagree, treat the mismatch as a defect and reconcile it explicitly rather than choosing silently.
+Read the log before applying identity in new work — several decisions are deliberately still open, and treating an open one as settled is the failure mode this repository has actually hit.
 
-Apply the identity as follows:
+Working rules:
 
-- Write `Codeguy` as the prose and product name, `CODEGUY` only as the approved live-text wordmark treatment, and `codeguy.cz` as the domain. Do not reintroduce `CodeGuy` or `CodeGuy.cz`.
-- Keep the primary wordmark as live Inter Semi Bold 600 text at its approved size for the relevant surface. Do not export it as an image or invent a combined lockup.
-- Use canonical brand teal `#0A6E80` for single-value/light contexts and adaptive cyan `#22D3EE` through the approved dark semantic mode. Consume semantic tokens in product code rather than hardcoding either value at call sites.
-- Inter is the product and brand typeface. Reuse the existing responsive text styles, spacing scale, radii and component system.
-- Legacy yellow `#FACC15` / `#FBBF24`, the old yellow CG mark and related favicon/PWA/logo assets are deprecated. Do not use them in new work or present them as current identity.
-- The secondary CG mark remains open. Do not invent, trace, redraw or approve one during ordinary UI work. Interim favicon, PWA and avatar treatments must remain explicitly provisional until BD-20 and BD-21 are resolved.
-- Imagery direction remains provisional. Do not create hard dependencies on it or describe it as final until BD-24 is reviewed against real portfolio, document and social applications.
-- Reuse the existing design system before creating any new color, type style, effect, component or layout primitive. A brand application must not become a parallel component library.
+- Consume semantic tokens in product code. Do not hardcode brand colour values at call sites, in either mode.
+- Reuse the existing design system before creating any new colour, type style, effect, component or layout primitive. A brand application must not become a parallel component library.
+- When a change affects naming, voice, colour, typography, logo status or brand governance, update the applicable guideline and decision-log entry in the same change.
 
-When a change affects naming, voice, color, typography, logo status or brand governance, update the applicable guideline and decision-log entry in the same change. When an approved visual node changes, record the new node/version here as required by the Figma implementation rules.
+## Curriculum Vitae
 
-## Curriculum Vitae Design Source Of Truth
-
-The CV implementation plan is `docs/plans/2026-07-30-cv-page-implementation-plan.md`. Keep the direct public route `/curriculum-vitae` and its localized Czech route `/cs/curriculum-vitae`.
-
-Use these approved Figma nodes for CV work:
-
-- Desktop light: `124:369`
-- Tablet light: `132:399`
-- Mobile light: `131:593`
-- Desktop dark: `136:190`
-- Mobile dark: `136:283`
-- Download Action component set: `122:181` (10 variants with approved prototype reactions)
+Routes, approved frames, the locale-first PDF contract, the phone-number boundary and the contact/download primitive split are recorded in `docs/decisions/curriculum-vitae.md`. Measured geometry, including an approved icon-size deviation from the Figma glyph, is in `docs/audits/2026-07-30-cv-redesign-baseline.md`.
 
 For CV implementation:
 
-- Compare the route against every relevant light/dark and responsive node above; passing one frame does not establish CV parity.
-- Preserve the recognizable expanding download interaction, but implement it from `122:181` with semantic tokens, a 4 px system radius, accessible focus/keyboard behavior and a continuously understandable label on touch devices. Do not reuse the legacy pill styling in `ExpandingButton.module.css` as the visual contract.
-- Use the existing Button system `21:110` and semantic control tokens where the Download Action shares properties with ordinary buttons. Keep CV-specific expansion behavior in a narrow component rather than altering unrelated buttons.
-- `docs/Karel_Kutchan_CV.pdf` and `docs/Karel_Kutchan_CV_Frontend_React_Engineer_2026.pdf` are **historical Google Docs exports**, kept as a record of what was previously sent out. They are no longer design references: they use Arial/Play and navy `#1F4E79`, which conflict with the current identity. The public `public/curriculum-vitae/CV_Karel_Kutchan.pdf` is legacy content until regenerated.
-- Static HTML CV copy belongs in the `curriculumVitae` namespace in both translation catalogs, while locale-neutral periods, company identifiers, URLs and other structured facts should live in a shared content model. Do not move CV content into Payload as part of this work.
-- A download label must state the actual PDF language or profile variant. Do not label a file as Czech unless the linked asset is genuinely Czech.
+- Compare the route against every relevant light/dark and responsive node listed in the CV decision record; passing one frame does not establish CV parity.
 - Do not expose private or unnecessary personal data merely because it appears in an older PDF. Resolve the public email identity centrally and keep contact facts consistent with the rest of the portfolio.
 - Validate English and Czech at 1440, 768 and 390 px in light and dark mode, including text wrapping, download behavior, focus, hover, reduced motion, real PDF responses, metadata and locale switching.
 
@@ -198,7 +167,7 @@ For redesign audits or implementation work:
 - Separate visual parity work from content/data availability. When CMS content, media, fonts, or external assets are missing, document the precondition instead of compensating with unrelated layout changes.
 - If the approved Figma design changes, record the newer inspected node or version and update any repository-specific measurements in this file in the same change. Do not silently reinterpret an existing specification.
 
-For buttons specifically, start from component set `21:110`. The approved large button instances in the current design are 52 px high with a 4 px corner radius; do not replace those properties with pill styling unless a newer approved Figma variant explicitly requires it.
+For buttons specifically, the approved component set is recorded in `docs/decisions/design-sources.md` and the geometry itself is BD-17 in `docs/brand/brand-decision-log.md`. Do not substitute pill styling for the approved properties.
 
 ## Figma Safety
 
@@ -209,8 +178,7 @@ For buttons specifically, start from component set `21:110`. The approved large 
 
 ## Internationalization Guardrails
 
-- The public website uses `next-intl` with `en` and `cs`. English is the default locale.
-- English URLs stay unprefixed. Czech URLs use `/cs`. Keep `localePrefix: "as-needed"` and `localeDetection: false` so existing URLs such as `https://codeguy.cz` always retain their English meaning.
+- The public website uses `next-intl` with `en` and `cs`. The locale strategy, public URL shape, routing bridge and known limitations are decisions recorded in `docs/decisions/localization.md` — read it before changing routing or locale behaviour.
 - Never hardcode new user-facing text in a live component, page, layout, helper, or content module. This includes:
   - headings, paragraphs, links, buttons, labels, placeholders and captions;
   - navigation, dialogs and language controls;
@@ -227,21 +195,18 @@ For buttons specifically, start from component set `21:110`. The approved large 
 - Use `next-intl` formatters or explicitly locale-aware `Intl` APIs for dates, times, numbers and relative values. Do not hardcode `en`, `cs`, decimal separators, date order or plural suffixes inside shared formatting code.
 - Use locale-aware `Link`, `redirect`, `useRouter`, `usePathname` and `getPathname` exports from `src/i18n/navigation.ts` for public internal navigation. A Czech route must not silently return visitors to English.
 - Public pages belong under the validated `[locale]` route tree. Server layouts/pages that use translations must validate the locale and call `setRequestLocale` where static rendering requires it.
-- Preserve the production routing bridge: unprefixed English index routes use explicit `beforeFiles` rewrites, English dynamic Work/Insights routes use thin adapters under `src/app/(english)`, and Czech routes use the `[locale]` tree directly.
-- For `/cs`, `src/proxy.ts` injects `X-NEXT-INTL-LOCALE` into request headers without invoking the `next-intl` URL-rewriting middleware. Do not replace this with `createMiddleware` without proving that standalone production routing has no redirect loop, soft 404, meta-refresh redirect, or false `Link` hreflang header.
-- Keep the locale-wide route tree free of a root `loading.tsx`. A loading boundary can start streaming before `notFound()`, turning a required HTTP 404 into a soft 200. Put loading UI only at narrow routes where status decisions happen first and preserve real-status E2E coverage.
 - Do not prefix or localize Payload `/admin`, Payload `/api/*`, or `/api/health`. Preserve the rate-limiting and security behavior in `src/proxy.ts`.
 - Generate locale-specific canonical URLs and metadata. Fully translated static pages use `en`, `cs` and `x-default` alternates; English is the `x-default` URL.
 - Do not claim a translated alternate for content that is not actually translated.
 
 ## Content And Payload Boundary
 
+- The Payload content boundary is a decision recorded in `docs/decisions/localization.md`.
 - Static portfolio copy, shared UI copy, HTML CV copy and Insights presentation chrome belong in the `next-intl` catalogs.
-- Payload-authored article, topic, author and media content is currently English editorial content.
-- Czech UI may clearly identify English-only editorial content, but it must not present that content as a Czech translation or publish a Czech article hreflang entry.
-- `/cs/insights/:slug` must issue a real HTTP redirect to unprefixed English `/insights/:slug` before rendering. It must not return a 200 meta-refresh response or advertise Czech article hreflang.
-- Do not enable Payload localization, mark fields `localized`, edit database migrations or regenerate localized Payload types as part of ordinary copy/component work. That requires a separate approved schema migration, backup, staging rehearsal and editorial workflow plan.
-- The existing downloadable PDF CV is language-specific external content. Button copy must not imply that the file is Czech unless a Czech PDF exists.
+
+## Booking Route
+
+All booking constraints are recorded in `docs/decisions/booking.md`. Read it before touching `/contact/book`.
 
 ## Required Workflow For Any Text Change
 
@@ -271,5 +236,31 @@ For buttons specifically, start from component set `21:110`. The approved large 
 
 ## Documentation Discipline
 
-- When a new language, routing rule, CMS localization boundary or translation architecture decision is introduced, update this file and the current i18n plan in the same change.
+- When a new language, routing rule, CMS localization boundary or translation architecture decision is introduced, record the decision in `docs/decisions/localization.md` and any resulting working rule in this file, in the same change.
 - Never place secrets, personal access tokens, private CMS content or production data in catalogs, tests or documentation.
+- Never expose a raw runtime `error.message` to visitors. Error and 404 surfaces show localized copy from the catalogs; the underlying message stays in logs.
+
+### Where Each Kind Of Knowledge Lives
+
+Four homes, one question each. Put knowledge where its question is answered, not where it is convenient.
+
+| Home | Holds | Answers |
+|---|---|---|
+| `AGENTS.md` | how to work here — commands, gates, conventions, workflow | "how do I do things in this repo?" |
+| `docs/decisions/` | what was decided and must hold, with status | "what am I allowed to change?" |
+| `docs/audits/` | what was measured, with date and evidence | "what was actually true when checked?" |
+| `docs/plans/` | live plans only | "what work is still outstanding?" |
+
+Linear holds task state and order. Figma holds the resulting product design.
+
+- **Before changing a route, a component contract or a content boundary, read the relevant record in `docs/decisions/`.** A settled product decision is not yours to reverse in passing.
+- This file holds **rules**, not product specification and not an index of documents. If you are about to write what the product must be, it belongs in a decision record. If you are about to add a pointer to one specific document, write the rule instead.
+- Every document in `docs/plans/` carries a `Status:` line directly under its title. A plan takes only two states, because a delivered plan is deleted rather than archived:
+
+| Status | Meaning |
+|---|---|
+| `open` | still authorizes outstanding work |
+| `provisional` | partially done, or blocked on a decision |
+
+- The four-state vocabulary in `docs/brand/brand-decision-log.md` — `locked`, `provisional`, `open`, `deprecated` — governs **decisions**, not plans. Do not mark a plan `locked`: a plan that is complete no longer belongs in `docs/plans/`.
+- Delete a plan once its work is delivered. Before deleting, move any product decision it is the sole record of into `docs/decisions/`, any working rule into this file, and any measured geometry or parity evidence into `docs/audits/`. Move first, delete second. A finished plan left in `docs/plans/` invites someone to rebuild shipped work.
