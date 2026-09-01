@@ -1,6 +1,8 @@
 # Page header and hero-layout consolidation
 
-Status: Figma structure audited; production-code inventory **partially completed 2026-08-06**, geometry audit still outstanding — blocked for implementation until Phase 1 is finished  
+Status: `provisional` — Figma structure audited and the production-code inventory
+partially completed 2026-08-06, but the geometry audit is outstanding. Blocked for
+implementation until Phase 1 is finished.  
 Date: 2026-08-06
 
 Related plan: `2026-08-06-insights-topic-filter-alignment.md`
@@ -118,7 +120,7 @@ Audit imports, DOM, component ownership, CSS declarations, tokens, media queries
 - DOM and focus order match the visual order at all breakpoints; CSS ordering does not alter reading order.
 - All hero actions retain accessible names, keyboard operation, visible focus and at least a 44×44 px effective target.
 - At 200% and 400% zoom, text reflows without clipping, overlap or horizontal page scrolling.
-- Insights topic filters remain filtering buttons with `aria-pressed`, not ARIA tabs, as defined in the related filter plan.
+- Insights topic filters remain navigation links carrying URL state with `aria-current="page"`, not buttons and not ARIA tabs. `aria-pressed` is incorrect on an element that navigates; see the semantic contract in the related filter plan.
 
 ## Acceptance criteria — responsive and visual parity
 

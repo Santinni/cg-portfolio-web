@@ -1,6 +1,7 @@
 # Insights topic-filter alignment
 
-Status: Figma is the approved visual source; production alignment pending  
+Status: `open` — the semantic layer is closed and correct; the visual alignment is
+still outstanding. Figma is the approved visual source.  
 Date: 2026-08-06
 
 ## Decision

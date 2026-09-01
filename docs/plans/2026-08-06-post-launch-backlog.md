@@ -1,5 +1,6 @@
 # Post-Launch Work Backlog
 
+Status: `open` — the backlog spine; individual items carry their own state below.  
 Recorded 2026-08-06. Planning only — nothing in this document is authorized for
 implementation until its open decisions are resolved and it is promoted into a
 dedicated implementation plan. The single exception is BL-000 below, which is a
@@ -173,17 +174,21 @@ profiles) should look and behave the same across the whole site.
 - [ ] Re-verify print/PDF-adjacent behavior and the floating Download Action
       after the refactor; they depend on `data-cv-download` hooks in the page.
 
-### Open Decisions
+### Settled Decisions
 
-- [!] **Figma authority.** The CV frames were approved as a distinct layout.
-      Unification is a deliberate departure from measured Figma parity. Confirm
-      that consistency now outranks the approved CV mockups; otherwise the scope
-      shrinks to contact links only.
-- [ ] **Refactor depth.** Minimal (contact links + section primitives) or full
-      (timeline, cards, download section too)? Recommendation: do the minimal
-      pass first, verify it, then decide on the timeline separately — the
-      timeline is the highest-risk piece because the two pages carry different
-      data shapes.
+The companion plan
+`2026-08-06-bl-002-bl-003-cv-navigation.md` carries the binding wording for the contact
+contract in "Locked product decisions" and the slice boundary in its objective; the
+section-primitive scope is defined by the work items above.
+
+- [x] **Figma authority.** Settled: unification proceeds. The CV hero adopts the
+      shared contact components and the shared section primitives; the approved CV
+      frames were updated accordingly rather than overridden silently.
+- [x] **Refactor depth.** Settled: the minimal pass covers the contact-link
+      contract together with the section/heading/eyebrow primitives listed in the
+      work items above. The companion plan excludes the Experience timeline,
+      card-system refactoring, portrait work and PDF generation from this slice;
+      the timeline stays a separate decision — see BL-002's remaining scope.
 
 ### Risks
 
@@ -213,14 +218,14 @@ they landed on.
 
 ### Work Items
 
-- [ ] Decide the identity model for the hero: name, role, location, and whether
-      a portrait or brand mark is part of it.
+- [ ] Apply the locked identity model to the hero: name and role in the existing
+      eyebrow/identity row, no portrait and no brand mark.
 - [ ] Introduce the name into the hero copy for `en` and `cs`, keeping the
       existing eyebrow/headline hierarchy readable rather than stacking a second
       competing headline.
-- [ ] Decide the CTA set. Adding a third button risks diluting the existing two;
-      evaluate replacing the secondary CTA with a contact link, or adding a
-      lower-weight inline contact link beside the CTA row.
+- [ ] Apply the locked CTA set: keep the flagship case action primary and replace
+      the secondary hero action with a visible direct e-mail action. Do not add a
+      third button.
 - [ ] Reuse the unified contact-link component from BL-002 if inline contact
       links land in the hero — do not introduce a third link style.
 - [ ] Verify heading hierarchy, landmark semantics and focus order stay correct
@@ -231,13 +236,19 @@ they landed on.
       is explicit — factual fields only.
 - [ ] Update homepage regression coverage for the new identity content.
 
-### Open Decisions
+### Settled Decisions
 
-- [ ] **Portrait.** Do we introduce a photograph? None is currently used in the
-      redesigned homepage, and adding one changes the brand's tone.
-- [ ] **Contact prominence.** Direct email exposure in the hero versus a link to
-      `/contact`. The launch plan publishes `karel@codeguy.cz` but withholds the
-      phone number; that boundary stays.
+Their binding wording lives in `2026-08-06-bl-002-bl-003-cv-navigation.md` under
+"Locked product decisions" — read it there rather than relying on this summary.
+
+- [x] **Portrait.** Settled: no portrait. No second headline and no third hero
+      CTA either; the locked brand headline remains the only `h1`.
+- [x] **Contact prominence.** Settled: the previous secondary hero action becomes
+      a visible direct e-mail action, and the flagship case CTA stays primary.
+      `karel@codeguy.cz` is published. The phone number stays out of the HTML
+      pages and the homepage hero; it is deliberately present in the generated
+      CV PDF, which is publicly downloadable. Do not describe it as withheld
+      without that qualification.
 
 ### Dependencies
 

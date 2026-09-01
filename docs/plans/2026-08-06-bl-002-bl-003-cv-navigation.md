@@ -1,8 +1,10 @@
 # BL-002, BL-003 and CV navigation delivery plan
 
+Status: `open` — Figma solution updated; application implementation and repository
+validation pending  
 Date: 2026-08-06  
-Branch: `feat/cv` (based on `dev`)  
-Status: Figma solution updated; application implementation and repository validation pending
+Base: `dev`. Deliver through a pull request into `dev`; whoever takes the work names
+their own feature branch.
 
 ## Objective
 
@@ -67,7 +69,6 @@ Relevant Figma evidence:
 ### 1. Repository preflight
 
 - Verify branch, base, staged diff and unstaged diff.
-- Preserve the already staged backlog and production-delivery documents.
 - Confirm the process helper can run `git status --short` and `rg` before dispatching CLI work.
 - Do not use `git add -A`; stage explicit reviewed paths only.
 
@@ -172,4 +173,4 @@ Repository gates:
 
 ## Completion criteria
 
-The work is complete only when code matches the Figma delta, all required tests and repository gates pass, independent reviews are resolved, documentation and dead-end records are updated, and the final explicit diff is committed and pushed from `feat/cv`.
+The work is complete only when code matches the Figma delta, all required tests and repository gates pass, independent reviews are resolved, documentation and dead-end records are updated, and the final explicit diff is committed and delivered through a pull request into `dev`.

@@ -31,6 +31,7 @@
 | Frame width | 1440px | 768px | 390px |
 | Page inline gutter | 120px | 48px | 20px |
 | Section block padding | 96px | 72px | 64px |
+| Section heading internal gap | 8px | 8px | 8px |
 | Section heading/content gap | 32px | 32px | 32px |
 | Person name | 64/68px, bold | 64/68px, bold | 64/68px, bold |
 | Role title | 24/32px, semibold | 24/32px, semibold | 24/32px, semibold |
@@ -39,7 +40,7 @@
 Download Action `122:181`:
 
 - compact geometry `52 × 52px`;
-- expanded geometry uses a `20px` icon, `8px` gap and `20px` inline padding;
+- expanded geometry uses a `20px` icon in Figma, `8px` gap and `20px` inline padding;
 - radius `4px`;
 - default `--action-primary`;
 - hover `--action-hover`;
@@ -51,6 +52,12 @@ Download Action `122:181`:
 - coarse pointers require a stable understandable label.
 
 The Figma frames still contain `8+ years` and the non-canonical email. Those strings are factual defects in the mockup. The approved implementation plan and confirmed public identity override them.
+
+### Approved deviation — Download Action icon is 24px, not 20px
+
+The shipped icon is `24px` (`src/app/(frontend)/components/primitives/downloadAction/DownloadAction.module.css:47`), while the Figma contract above specifies `20px`. This is a **deliberate, user-approved override**, not drift: the cloud-download glyph is an inline SVG using `currentColor` and was approved at `24px` during the CV delivery.
+
+Do not "correct" the implementation back to `20px` on the strength of the Figma number alone. Reopening this requires a new approval, not a parity pass.
 
 ## Browser Baseline
 
