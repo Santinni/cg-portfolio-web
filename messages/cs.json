@@ -348,8 +348,7 @@
 			"eyebrow": "HLAVNÍ KOMPETENCE",
 			"title": "Nástroje a postupy používané při dodávce.",
 			"list": "React · TypeScript · Next.js · Storybook · React Aria · Playwright · Vitest/Jest · frontendová architektura · přístupnost · komponentové systémy · code review · vedení týmu",
-			"viewCv": "Zobrazit životopis",
-			"downloadPdf": "Stáhnout PDF v angličtině"
+			"viewCv": "Zobrazit životopis"
 		}
 	},
 	"contact": {
@@ -531,18 +530,16 @@
 			"languageLabel": "Čeština",
 			"profileLabel": "Obecný profesní profil",
 			"description": "Český obecný profesní životopis ve formátu PDF.",
-			"accessibilityLabel": "Stáhnout český profesní životopis Karla Kutchana ve formátu PDF"
+			"accessibilityLabel": "Stáhnout životopis Karla Kutchana"
 		},
 		"accessibility": {
 			"currentRole": "Aktuální role",
-			"downloadAction": "Stáhnout životopis",
 			"externalLink": "Otevře se v nové kartě"
 		},
 		"header": {
 			"headline": "curriculum vitæ",
 			"profession": "Senior frontend engineer"
 		},
-		"downloadPdf": "Stáhnout CV (PDF v angličtině)",
 		"contact": {
 			"email": "E-mail",
 			"linkedin": "LinkedIn",

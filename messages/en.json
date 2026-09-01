@@ -348,8 +348,7 @@
 			"eyebrow": "CORE CAPABILITIES",
 			"title": "Tools and practices used in delivery.",
 			"list": "React · TypeScript · Next.js · Storybook · React Aria · Playwright · Vitest/Jest · frontend architecture · accessibility · component systems · code review · team leadership",
-			"viewCv": "View curriculum vitae",
-			"downloadPdf": "Download English PDF"
+			"viewCv": "View curriculum vitae"
 		}
 	},
 	"contact": {
@@ -531,18 +530,16 @@
 			"languageLabel": "English",
 			"profileLabel": "React profile",
 			"description": "English React-focused curriculum vitae in PDF format.",
-			"accessibilityLabel": "Download Karel Kutchan’s English React CV as a PDF"
+			"accessibilityLabel": "Download CV — Karel Kutchan"
 		},
 		"accessibility": {
 			"currentRole": "Current role",
-			"downloadAction": "Download curriculum vitae",
 			"externalLink": "Opens in a new tab"
 		},
 		"header": {
 			"headline": "curriculum vitæ",
 			"profession": "Senior Frontend Engineer"
 		},
-		"downloadPdf": "Download CV (English PDF)",
 		"contact": {
 			"email": "Email",
 			"linkedin": "LinkedIn",

@@ -97,6 +97,7 @@ export default async function CurriculumPage({ params }: CurriculumPageProps) {
 						<DownloadAction
 							href={pdf.href}
 							label={t('download.label')}
+							accessibilityLabel={t('download.accessibilityLabel')}
 							downloadFilename={downloadFilename}
 							mode="expanded"
 						/>
@@ -291,6 +292,7 @@ export default async function CurriculumPage({ params }: CurriculumPageProps) {
 						<DownloadAction
 							href={pdf.href}
 							label={t('download.label')}
+							accessibilityLabel={t('download.accessibilityLabel')}
 							downloadFilename={downloadFilename}
 							mode="expanded"
 						/>
@@ -302,6 +304,7 @@ export default async function CurriculumPage({ params }: CurriculumPageProps) {
 				<DownloadAction
 					href={pdf.href}
 					label={t('download.label')}
+					accessibilityLabel={t('download.accessibilityLabel')}
 					downloadFilename={downloadFilename}
 				/>
 			</div>
