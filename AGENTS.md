@@ -35,6 +35,10 @@ When Context7 applies:
 
 - `dev` is the integration branch. Create feature, fix, and documentation branches from an up-to-date `dev` and return them through a PR targeting `dev`.
 - `main` is the production branch. Promote accumulated, verified work through a release PR from `dev` to `main`; do not develop directly on `main`.
+- Name a branch `<type>/<slug>`. `<type>` is the same set used for commit types: `feat`, `fix`, `docs`, `refactor`, `test`, `chore`, `ci`, `build`. Use `fix`, never `bugfix`.
+- When the work has a Linear issue, place its identifier in lower case directly after the type, for example `refactor/cod-77-cv-shared-primitives`. Work without an issue omits it, for example `chore/bump-playwright`.
+- Keep the slug English, kebab-case and short — it names the change, not the issue title. Do not copy the branch name Linear proposes; its `<user>/<team-key>-<full-title>` shape is not used in this repository.
+- Correct a name that breaks this rule only while the branch is unpushed. Branches that predate this rule, and any branch already pushed, keep the name they have.
 - Do not rewrite shared `dev` or `main` history. Keep unrelated user changes out of task commits and verify the staged file list before every commit.
 - Before creating a PR, push the branch, confirm its remote SHA, and check whether an open PR for the same head/base pair already exists.
 - Preferred PR creation order:
