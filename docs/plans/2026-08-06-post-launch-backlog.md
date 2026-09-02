@@ -155,30 +155,51 @@ profiles) should look and behave the same across the whole site.
 
 ### Work Items
 
-- [ ] Audit the CV page section by section and classify each block as
+- [x] Audit the CV page section by section and classify each block as
       (a) already covered by a shared component, (b) a legitimate CV-only
       component, or (c) a candidate to be promoted into `src/components/site/`.
       Record the classification before touching code.
-- [ ] Replace CV-local section/heading/eyebrow markup with `Section`, `Eyebrow`
+- [x] Replace CV-local section/heading/eyebrow markup with `Section`, `Eyebrow`
       and `PageIntro` where the classification says (a), and delete the
       superseded CSS rules rather than leaving them orphaned.
 - [ ] Decide whether the CV experience timeline and the `/experience` timeline
       are the same component with different density, or genuinely different
       presentations. If the same, extend `Timeline` rather than forking it.
-- [ ] Unify contact links site-wide. Define one component contract that serves
+- [x] Unify contact links site-wide. Define one component contract that serves
       the CV hero, the contact page, the footer and any future contact surface,
       including external-link semantics (`target`, `rel`, the arrow affordance)
       and the 44px minimum target size already asserted by `ContactLink`.
-- [ ] Reconcile the visual result with `docs/brand/brand-guidelines.md` and the
+- [x] Reconcile the visual result with `docs/brand/brand-guidelines.md` and the
       approved CV Figma frames (`124:369`, `132:399`, `131:593`, `136:190`,
       `136:283`). Where unification changes the approved CV design, record the
       deviation as an explicit brand decision instead of silently diverging.
-- [ ] Keep the existing CV regression suite green
+- [x] Keep the existing CV regression suite green
       (`src/__tests__/e2e/curriculum-vitae.spec.ts`,
       `src/__tests__/unit/curriculum-vitae-i18n.test.ts`) and add coverage for
       the newly shared components at both locales, in light and dark mode.
-- [ ] Re-verify print/PDF-adjacent behavior and the floating Download Action
+- [x] Re-verify print/PDF-adjacent behavior and the floating Download Action
       after the refactor; they depend on `data-cv-download` hooks in the page.
+
+Minimal pass delivered on 2026-09-02 under COD-77. The classification is
+`docs/audits/2026-09-02-cv-shared-primitive-audit.md`; it kept the CV hero, the cards, the
+timeline and the download section CV-local and converted the five content sections plus
+every eyebrow and contact row. `PageIntro` was deliberately **not** adopted: the CV hero
+also carries the role line, the contact block and two actions, so routing it through a
+fixed eyebrow/title/intro primitive would mean adding three optional slots to a component
+five routes share.
+
+`curriculumVitae.contact.*` was removed from both catalogs — the location string now comes
+from `contact.methods.location.value`, and `tools/cv-pdf/data.mjs` reads that same value so
+the printed masthead cannot drift from the page.
+
+Verification run on 2026-09-02: `pnpm test` (177), `pnpm typecheck`, `pnpm lint`,
+`pnpm format:check`, `pnpm build`, and `playwright test curriculum-vitae.spec.ts
+--project=chromium` (32 passed) — the last covers both locales in light and dark at
+320/390/430/768/1440, the floating Download Action geometry, keyboard focus, reduced motion
+and the real PDF download. The PDF masthead is covered by `cv-pdf-layout.test.ts`.
+
+Still open against the Risks section below: no before/after screenshots were captured, so
+the refactor is proven behaviourally and by overflow/geometry assertions, not visually.
 
 ### Settled Decisions
 

@@ -171,6 +171,16 @@ Repository gates:
 - Do not weaken existing geometry tests merely because the intended design changed; update them to assert the new contract.
 - When Codex reports `setup refresh had errors`, distinguish the broken automated process launcher from a working interactive Vibe/Copilot terminal. Run one preflight and avoid repeated equivalent retries.
 
+## Delivery log
+
+- 2026-09-01, COD-76: step 3 (Experience integration) landed on `dev` in `6cfb61a`.
+- 2026-09-02, COD-77: steps 2 and 4 landed — `ContactLink` gained the `inline` variant,
+  the CV hero reads `contactMethods`, and the CV content sections moved to `Section` and
+  `Eyebrow`. Classification and brand deltas:
+  `docs/audits/2026-09-02-cv-shared-primitive-audit.md`.
+- Outstanding: step 5 (navigation, COD-78), step 6 (homepage identity, COD-79) and the
+  Playwright/visual matrix in step 7.
+
 ## Completion criteria
 
 The work is complete only when code matches the Figma delta, all required tests and repository gates pass, independent reviews are resolved, documentation and dead-end records are updated, and the final explicit diff is committed and delivered through a pull request into `dev`.

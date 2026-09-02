@@ -540,11 +540,6 @@
 			"headline": "curriculum vitæ",
 			"profession": "Senior Frontend Engineer"
 		},
-		"contact": {
-			"email": "Email",
-			"linkedin": "LinkedIn",
-			"location": "Prague, Czech Republic"
-		},
 		"biography": {
 			"title": "Who am I?",
 			"paragraphs": {

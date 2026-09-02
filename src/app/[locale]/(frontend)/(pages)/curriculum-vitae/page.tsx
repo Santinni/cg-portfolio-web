@@ -6,6 +6,10 @@ import { notFound } from 'next/navigation'
 import { Container } from '@/app/(frontend)/components/layout/Container'
 import { Button } from '@/app/(frontend)/components/primitives/button'
 import { DownloadAction } from '@/app/(frontend)/components/primitives/downloadAction'
+import { ContactLink } from '@/components/site/ContactLink'
+import { Eyebrow } from '@/components/site/Eyebrow'
+import { Section } from '@/components/site/Section'
+import { contactMethods } from '@/content/contact'
 import {
 	curriculumVitae,
 	curriculumVitaeEarlierExperience,
@@ -17,11 +21,13 @@ import {
 	curriculumVitaeProjects,
 	curriculumVitaeSkills,
 } from '@/content/curriculum-vitae'
-import { contact } from '@/content/site'
 import { createLocalizedMetadata } from '@/i18n/metadata'
 import { routing } from '@/i18n/routing'
 
 import styles from './page.module.css'
+
+/** The approved CV hero leads with location; `/contact` keeps the model order. */
+const heroContactOrder = ['location', 'email', 'linkedin', 'github'] as const
 
 interface CurriculumPageProps {
 	params: Promise<{ locale: string }>
@@ -58,6 +64,7 @@ export default async function CurriculumPage({ params }: CurriculumPageProps) {
 	setRequestLocale(locale)
 	const t = await getTranslations('curriculumVitae')
 	const bookingT = await getTranslations('booking.entryPoints')
+	const contactT = await getTranslations('contact.methods')
 	const pdf = curriculumVitae.pdfByLocale[locale as CurriculumVitaeLocale]
 	const downloadFilename = pdf.href.split('/').at(-1)
 
@@ -65,32 +72,28 @@ export default async function CurriculumPage({ params }: CurriculumPageProps) {
 		<article className={styles.page} data-cv-content data-locale={locale}>
 			<header className={styles.hero}>
 				<Container className={styles.heroInner}>
-					<p className={styles.eyebrow}>{t('hero.eyebrow')}</p>
+					<Eyebrow className={styles.eyebrowAccent}>{t('hero.eyebrow')}</Eyebrow>
 					<h1 className={styles.name}>{curriculumVitae.person.name}</h1>
 					<p className={styles.role}>{t('hero.role')}</p>
 					<p className={styles.heroIntro}>{t('hero.intro')}</p>
 
 					<address className={styles.contactList}>
-						<span className={styles.contactLocation}>{t('contact.location')}</span>
-						<a className={styles.contactLink} href={`mailto:${contact.email}`}>
-							{contact.email}
-						</a>
-						<a
-							className={styles.contactLink}
-							href={contact.linkedin}
-							target="_blank"
-							rel="noopener noreferrer"
-						>
-							LinkedIn
-						</a>
-						<a
-							className={styles.contactLink}
-							href={contact.github}
-							target="_blank"
-							rel="noopener noreferrer"
-						>
-							GitHub
-						</a>
+						{heroContactOrder.map((key) => {
+							const method = contactMethods.find((entry) => entry.key === key)
+							if (!method) return null
+
+							return (
+								<ContactLink
+									key={key}
+									method={{
+										...method,
+										label: contactT(`${key}.label`),
+										value: key === 'location' ? contactT('location.value') : method.value,
+									}}
+									variant="inline"
+								/>
+							)
+						})}
 					</address>
 
 					<div className={styles.heroActions} data-booking-source="curriculumVitae">
@@ -108,11 +111,11 @@ export default async function CurriculumPage({ params }: CurriculumPageProps) {
 				</Container>
 			</header>
 
-			<section id="cv-profile" className={`${styles.section} ${styles.subtleSection}`}>
+			<Section id="cv-profile" aria-labelledby="cv-profile-heading" tone="subtle">
 				<Container>
 					<div className={styles.sectionHeading}>
-						<p className={styles.eyebrow}>{t('highlights.eyebrow')}</p>
-						<h2>{t('highlights.title')}</h2>
+						<Eyebrow className={styles.eyebrowAccent}>{t('highlights.eyebrow')}</Eyebrow>
+						<h2 id="cv-profile-heading">{t('highlights.title')}</h2>
 					</div>
 					<ul className={styles.highlightGrid}>
 						{curriculumVitaeHighlights.map(({ id }) => (
@@ -123,13 +126,13 @@ export default async function CurriculumPage({ params }: CurriculumPageProps) {
 						))}
 					</ul>
 				</Container>
-			</section>
+			</Section>
 
-			<section id="cv-skills" className={styles.section}>
+			<Section id="cv-skills" aria-labelledby="cv-skills-heading" tone="page">
 				<Container>
 					<div className={styles.sectionHeading}>
-						<p className={styles.eyebrow}>{t('skills.eyebrow')}</p>
-						<h2>{t('skills.title')}</h2>
+						<Eyebrow className={styles.eyebrowAccent}>{t('skills.eyebrow')}</Eyebrow>
+						<h2 id="cv-skills-heading">{t('skills.title')}</h2>
 					</div>
 					<ul className={styles.skillList}>
 						{curriculumVitaeSkills.map(({ id }) => (
@@ -140,13 +143,13 @@ export default async function CurriculumPage({ params }: CurriculumPageProps) {
 						))}
 					</ul>
 				</Container>
-			</section>
+			</Section>
 
-			<section id="cv-experience" className={`${styles.section} ${styles.raisedSection}`}>
+			<Section id="cv-experience" aria-labelledby="cv-experience-heading" tone="raised">
 				<Container>
 					<div className={styles.sectionHeading}>
-						<p className={styles.eyebrow}>{t('experience.eyebrow')}</p>
-						<h2>{t('experience.title')}</h2>
+						<Eyebrow className={styles.eyebrowAccent}>{t('experience.eyebrow')}</Eyebrow>
+						<h2 id="cv-experience-heading">{t('experience.title')}</h2>
 						<p className={styles.sectionIntro}>{t('experience.intro')}</p>
 					</div>
 					<ol className={styles.timeline}>
@@ -214,13 +217,13 @@ export default async function CurriculumPage({ params }: CurriculumPageProps) {
 						</ul>
 					</div>
 				</Container>
-			</section>
+			</Section>
 
-			<section id="cv-projects" className={styles.section}>
+			<Section id="cv-projects" aria-labelledby="cv-projects-heading" tone="page">
 				<Container>
 					<div className={styles.sectionHeading}>
-						<p className={styles.eyebrow}>{t('projects.eyebrow')}</p>
-						<h2>{t('projects.title')}</h2>
+						<Eyebrow className={styles.eyebrowAccent}>{t('projects.eyebrow')}</Eyebrow>
+						<h2 id="cv-projects-heading">{t('projects.title')}</h2>
 					</div>
 					<ul className={styles.projectGrid}>
 						{curriculumVitaeProjects.map(({ id, experienceId }) => {
@@ -238,13 +241,13 @@ export default async function CurriculumPage({ params }: CurriculumPageProps) {
 						})}
 					</ul>
 				</Container>
-			</section>
+			</Section>
 
-			<section id="cv-education" className={`${styles.section} ${styles.raisedSection}`}>
+			<Section id="cv-education" aria-labelledby="cv-education-heading" tone="raised">
 				<Container>
 					<div className={styles.sectionHeading}>
-						<p className={styles.eyebrow}>{t('education.eyebrow')}</p>
-						<h2>{t('education.title')}</h2>
+						<Eyebrow className={styles.eyebrowAccent}>{t('education.eyebrow')}</Eyebrow>
+						<h2 id="cv-education-heading">{t('education.title')}</h2>
 					</div>
 					<div className={styles.educationLayout}>
 						<ul className={styles.educationList}>
@@ -277,14 +280,14 @@ export default async function CurriculumPage({ params }: CurriculumPageProps) {
 						</div>
 					</div>
 				</Container>
-			</section>
+			</Section>
 
 			<section id="cv-download" className={styles.downloadSection}>
 				<Container className={styles.downloadInner}>
 					<div>
-						<p className={`${styles.eyebrow} ${styles.downloadEyebrow}`}>
+						<Eyebrow className={styles.downloadEyebrow}>
 							{t('download.languageLabel')} · {t('download.profileLabel')}
-						</p>
+						</Eyebrow>
 						<h2>{t('download.label')}</h2>
 						<p>{t('download.description')}</p>
 					</div>
