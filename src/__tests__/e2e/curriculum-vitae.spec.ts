@@ -16,6 +16,7 @@ const cvLocales = [
 		heroEyebrow: 'CURRICULUM VITAE',
 		heroRole: 'Senior Frontend Engineer',
 		currentRole: 'Current role',
+		contactLocation: 'Prague, Czech Republic',
 		downloadAccessibleName: 'Download CV — Karel Kutchan',
 		pdfHref: '/curriculum-vitae/CV_Karel_Kutchan.pdf',
 		filename: 'CV_Karel_Kutchan.pdf',
@@ -41,6 +42,7 @@ const cvLocales = [
 		heroEyebrow: 'ŽIVOTOPIS',
 		heroRole: 'Senior frontend engineer',
 		currentRole: 'Aktuální role',
+		contactLocation: 'Praha, Česká republika',
 		downloadAccessibleName: 'Stáhnout životopis Karla Kutchana',
 		pdfHref: '/curriculum-vitae/CV_Karel_Kutchan_CS.pdf',
 		filename: 'CV_Karel_Kutchan_CS.pdf',
@@ -193,6 +195,82 @@ for (const locale of cvLocales) {
 				'href',
 				locale.pdfHref,
 			)
+		})
+
+		test('renders the shared contact contract in the hero', async ({ page }) => {
+			await page.goto(locale.path)
+
+			const rows = page.locator('[data-cv-content] address [data-contact-method]')
+			const contract = await rows.evaluateAll((elements) =>
+				elements.map((element) => ({
+					href: element.getAttribute('href'),
+					method: element.getAttribute('data-contact-method'),
+					rel: element.getAttribute('rel'),
+					tag: element.tagName,
+					target: element.getAttribute('target'),
+					text: element.textContent?.trim() ?? '',
+				})),
+			)
+
+			expect(contract).toEqual([
+				{
+					href: null,
+					method: 'location',
+					rel: null,
+					tag: 'DIV',
+					target: null,
+					text: locale.contactLocation,
+				},
+				{
+					href: 'mailto:karel@codeguy.cz',
+					method: 'email',
+					rel: null,
+					tag: 'A',
+					target: null,
+					text: 'karel@codeguy.cz',
+				},
+				{
+					href: 'https://www.linkedin.com/in/karelkutchan/',
+					method: 'linkedin',
+					rel: 'noopener noreferrer',
+					tag: 'A',
+					target: '_blank',
+					text: 'LinkedIn',
+				},
+				{
+					href: 'https://github.com/Santinni',
+					method: 'github',
+					rel: 'noopener noreferrer',
+					tag: 'A',
+					target: '_blank',
+					text: 'GitHub',
+				},
+			])
+
+			const targets = await rows.evaluateAll((elements) =>
+				elements.map((element) => element.getBoundingClientRect().height),
+			)
+			for (const height of targets) expect(height).toBeGreaterThanOrEqual(44)
+		})
+
+		test('labels every shared CV section by its own heading', async ({ page }) => {
+			await page.goto(locale.path)
+
+			const labelling = await page
+				.locator('#cv-profile, #cv-skills, #cv-experience, #cv-projects, #cv-education')
+				.evaluateAll((sections) =>
+					sections.map((section) => ({
+						headingId: section.querySelector('h2')?.id ?? null,
+						id: section.id,
+						labelledBy: section.getAttribute('aria-labelledby'),
+					})),
+				)
+
+			expect(labelling).toHaveLength(5)
+			for (const { headingId, id, labelledBy } of labelling) {
+				expect(labelledBy).toBe(`${id}-heading`)
+				expect(headingId).toBe(labelledBy)
+			}
 		})
 
 		test('downloads the locale-specific PDF without leaving the route', async ({ page }) => {

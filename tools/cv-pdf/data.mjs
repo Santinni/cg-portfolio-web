@@ -27,7 +27,14 @@ export async function loadFacts() {
 
 export async function loadMessages(locale) {
 	const raw = await readFile(resolve(repoRoot, `messages/${locale}.json`), 'utf8')
-	return JSON.parse(raw).curriculumVitae
+	const catalog = JSON.parse(raw)
+
+	// Location lives with the shared contact contract, so the masthead prints the
+	// same string the CV page renders instead of a second copy of it.
+	return {
+		...catalog.curriculumVitae,
+		contact: { location: catalog.contact.methods.location.value },
+	}
 }
 
 /**

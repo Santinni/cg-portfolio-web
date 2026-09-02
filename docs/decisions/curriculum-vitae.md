@@ -111,10 +111,24 @@ open `mailto:` in a new tab.
 component would have to branch on intent internally and would get the semantics wrong for
 at least one of them.
 
-**Implementation status: partly met.** `DownloadAction` is in place. The CV page still
-renders raw contact anchors instead of `ContactLink`; unifying them is BL-002 in
-`docs/plans/2026-08-06-post-launch-backlog.md`. Treat this record as the contract the
-unification must satisfy, not as a description of the current page.
+**Implementation status: met.** Unified on 2026-09-02 under COD-77. One component,
+`src/components/site/ContactLink.tsx`, serves every contact surface in two variants: `row`
+for `/contact` and `inline` for the CV hero, with the homepage identity row (COD-79) and a
+future footer covered by the same contract. Destinations come from `contactMethods` in
+`src/content/contact.ts`, which now derives them from the single `contact` object in
+`src/content/site.ts` instead of repeating the address and both profile URLs.
+
+Inline text names an external profile by its platform label and a direct channel by its
+value, because inline space fits one string per method and those are the strings a visitor
+uses. `src/__tests__/components/contact-link.test.tsx` holds the semantics in both
+locales, `src/__tests__/unit/contact-link-usage.test.ts` stops a surface from reintroducing
+a bespoke anchor, and `src/__tests__/e2e/curriculum-vitae.spec.ts` asserts the rendered
+hero contract.
+
+**Approved deviation.** Inline external profile links now carry the same `ArrowUpRight`
+affordance as the `/contact` rows; the approved CV frames show underlined text with no
+glyph. One contract cannot signal "this leaves the site" on one surface and stay silent on
+another. Recorded in `docs/audits/2026-09-02-cv-shared-primitive-audit.md`.
 
 ## CV-07 — The expanding download interaction is preserved, from the approved variant · `locked`
 
