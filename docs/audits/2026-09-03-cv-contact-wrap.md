@@ -132,7 +132,10 @@ on the same surface:
   *rozhovor*; unifying that register is an open question, not a decision this document makes.
 - `src/app/(frontend)/components/icons/BrandIcons.tsx` — `LinkedInIcon` was replaced. The
   previous glyph was a condensed 24-viewBox mark with a `transform`; the current one is the
-  official-proportion mark, verified pixel-identical to the supplied reference. It is also
+  official-proportion mark, taken from the reference supplied in the request. That reference
+  is not committed here, so the match is not reproducible from this repository alone — what
+  is checkable is the change itself: a 24-unit viewBox with a `transform` became a
+  260.366-unit viewBox with none. It is also
   imported by `(home)/sections/contact/index.tsx`, which no page renders today.
 
 This is a deliberate departure from the approved Figma Contact Link, not an implementation
@@ -158,6 +161,47 @@ detail — see "Consequences" below for what that means for the design file, and
 - The Figma Social icon leads with the icon before the label; this codebase's `row` variant
   (still label-then-icon) was already diverging from that before today. Out of scope here,
   flagged so it isn't mistaken for something this change introduced.
-- Line count and hero block height are the assertions that would have caught the original
+- ~~Line count and hero block height are the assertions that would have caught the original
   wrap. They're worth adding regardless of which fix shipped, because they name the failure
-  instead of relying on a screenshot to notice it.
+  instead of relying on a screenshot to notice it.~~ **Added 2026-09-07**, after a review
+  pass found this bullet had been written as a recommendation and left unimplemented while
+  the visual spec's header already described the guard as if it existed. `keeps the hero
+  contact block to its approved row count at every width` in
+  `src/__tests__/e2e/curriculum-vitae.spec.ts` now pins the row count and the block height at
+  all five widths in both locales, against measured values:
+
+  | Width | Rows | Block height |
+  | --- | --- | --- |
+  | 1440 / 768 | 1 | 44 px |
+  | 430 / 390 | 2 | 96 px |
+  | 320 | 3 | 148 px |
+
+  Heights are exactly `rows x 44 + (rows - 1) x 8` -- `--touch-target-min` per row and
+  `--space-8` between rows, which is where the original 52 px came from. Both locales wrap at
+  the same widths despite the Czech location string being ~54 px wider. This matters because
+  the pixel baselines do **not** run in GitHub Actions (`PINNED_VISUAL` is set only in
+  `compose.e2e.yaml`), so before this the wrap class of regression had no automated guard on
+  any path CI actually takes.
+
+## Follow-ups this audit did not resolve
+
+Raised by review on 2026-09-07 and left open deliberately, because each is a decision rather
+than a correction:
+
+- **`accessibility.externalLink` is authored and unused.** `messages/{en,cs}.json` carry
+  "Opens in a new tab" / "Otevře se v nové kartě" under `curriculumVitae.accessibility`, with
+  no consumer anywhere in `src/`. These links still set `target="_blank"`, and this change
+  removed the arrow that was the only cue -- a cue screen readers never got, since it was
+  `aria-hidden`. Wiring the string into the clipped label would cost no pixels, but it
+  changes the accessible name from `LinkedIn` to `LinkedIn Opens in a new tab`, which CV-05
+  currently binds and three tests assert. Needs a decision, not a patch.
+- **`--border-default` gives the icon target ~1.35:1 (light) and ~1.5:1 (dark) against the
+  page.** The 20 px glyph itself is `--text-primary` at ~19.6:1, so the control is
+  perceivable; what is hard to perceive is the *extent* of the 44 px hit area, and the hover
+  state changes only that border colour. `--border-strong` or a `--surface-subtle` fill (what
+  `IconButton` does) would fix it, but this is a token-level design call affecting more than
+  this component.
+- **CI does not run the pinned suite at all.** The 13 baselines are collected and skipped in
+  `.github/workflows/ci.yml`, so glyph identity, monochrome colour and border are guarded
+  only when someone remembers `pnpm test:e2e:pinned`. The row-count assertion above moves the
+  layout contract onto the CI-visible suite; adding a docker job would be the fuller fix.

@@ -85,16 +85,52 @@ const externalProfiles = [
 	{ label: 'GitHub', method: 'github' },
 ] as const
 
+/**
+ * How many rows the hero contact block is allowed to occupy at each width, and the height
+ * that follows from it.
+ *
+ * This is the assertion the 2026-09-03 audit named and did not add. The regression it exists
+ * for reflowed one contact line into two and grew the hero by 52px, while every other
+ * assertion in this file stayed green: nothing overflowed, no touch target changed size and
+ * no single element's geometry moved. Row count is the only thing that actually moved, so it
+ * is the only thing that can name the failure -- "expected 2 rows, got 3" instead of a
+ * screenshot diff reporting that two images differ.
+ *
+ * The values are measured, not derived: `--touch-target-min` (44) per row plus the
+ * `--space-8` row gap between rows, which is where the original 52px came from. Both locales
+ * wrap at the same widths despite the Czech location string being ~54px wider, so one table
+ * covers both.
+ *
+ * Change these only with a decision record. A number edited to make a red suite go green
+ * records the regression as the intent.
+ */
+const contactRowCounts: Record<string, number> = {
+	'1440': 1,
+	'768': 1,
+	'430': 2,
+	'390': 2,
+	'320': 3,
+}
+
+/** 44px per row, 8px between rows -- `--touch-target-min` and `--space-8`. */
+function expectedContactBlockHeight(rows: number): number {
+	return rows * 44 + (rows - 1) * 8
+}
+
 const themeColors = {
 	light: {
 		defaultBackground: 'rgb(10, 110, 128)',
 		hoverBackground: 'rgb(8, 90, 106)',
 		focus: 'rgb(10, 110, 128)',
+		// `--text-primary: #08090c` -- what CV-05 binds the brand mark to.
+		textPrimary: 'rgb(8, 9, 12)',
 	},
 	dark: {
 		defaultBackground: 'rgb(34, 211, 238)',
 		hoverBackground: 'rgb(103, 232, 249)',
 		focus: 'rgb(34, 211, 238)',
+		// `--text-primary: #ffffff` in dark.
+		textPrimary: 'rgb(255, 255, 255)',
 	},
 } as const
 
@@ -310,7 +346,45 @@ for (const locale of cvLocales) {
 					expect(iconTarget, `${where}: target must be laid out`).not.toBeNull()
 					expectPx(iconTarget?.height ?? 0, 44)
 					expectPx(iconTarget?.width ?? 0, 44)
+
+					// CV-05 binds the mark to `--text-primary`, deliberately not the platform's
+					// brand colour. Nothing but a pixel baseline asserted that, and those do not
+					// run in GitHub CI.
+					const glyphColor = await brandGlyph.evaluate((el) => getComputedStyle(el).color)
+					expect(glyphColor, `${where}: brand mark stays monochrome`).toBe(
+						themeColors.light.textPrimary,
+					)
 				}
+			}
+		})
+
+		test('keeps the hero contact block to its approved row count at every width', async ({
+			page,
+		}) => {
+			// The guard the audit named: a reflow changes row count and block height and nothing
+			// else, so this is what turns "the images differ" into a failure that says which row
+			// appeared and how much taller the hero got.
+			for (const viewport of [...primaryViewports, ...compactOverflowViewports]) {
+				await gotoCv(page, locale.path, 'light', viewport)
+
+				const block = page.locator('[data-cv-content] address')
+				const geometry = await block.evaluate((element) => {
+					const items = Array.from(element.querySelectorAll('[data-contact-method]'))
+					const tops = new Set(items.map((item) => Math.round(item.getBoundingClientRect().top)))
+					return {
+						height: element.getBoundingClientRect().height,
+						items: items.length,
+						rows: tops.size,
+					}
+				})
+
+				// If a method stops rendering, row count collapses and would otherwise "pass".
+				expect(geometry.items, `${viewport.id}px contact methods`).toBe(4)
+
+				const expectedRows = contactRowCounts[viewport.id]
+				expect(expectedRows, `no approved row count recorded for ${viewport.id}px`).toBeDefined()
+				expect(geometry.rows, `${viewport.id}px contact rows`).toBe(expectedRows)
+				expectPx(geometry.height, expectedContactBlockHeight(expectedRows))
 			}
 		})
 

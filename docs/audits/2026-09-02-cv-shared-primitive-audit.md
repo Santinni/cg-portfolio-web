@@ -96,5 +96,9 @@ Measured against `docs/brand/brand-guidelines.md` and the approved CV frames
 
 The Figma frames were not re-fetched for this pass; the geometry contract in
 `docs/audits/2026-07-30-cv-redesign-baseline.md` is still the reference, and no geometry
-token changed. Visual proof at 390/768/1440 in both locales and both themes is a
-Playwright-backed step and is listed as outstanding in the delivery note on COD-77.
+token changed. ~~Visual proof at 390/768/1440 in both locales and both themes is a
+Playwright-backed step and is listed as outstanding in the delivery note on COD-77.~~
+**Closed 2026-09-03.** That step was carried out, and it is what found the 390 px wrap
+corrected above. The standing baselines live in
+`src/__tests__/e2e/curriculum-vitae-visual.spec.ts`; the measurements are in
+`docs/audits/2026-09-03-cv-contact-wrap.md`.

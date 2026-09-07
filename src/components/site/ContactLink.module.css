@@ -85,6 +85,13 @@
 .inlineIconic {
 	position: relative;
 	justify-content: center;
+	/*
+	 * The 44px target is a property of the control, not of today's container. `.inline` sets
+	 * `min-inline-size: 0`, which switches off the automatic minimum size that would otherwise
+	 * hold this box open; `.contactList` only avoids shrinking it because it wraps. Pin it here
+	 * so reusing `inline` in a nowrap context cannot quietly shrink a touch target.
+	 */
+	flex: 0 0 auto;
 	inline-size: var(--touch-target-min);
 	block-size: var(--touch-target-min);
 	gap: 0;
@@ -123,6 +130,22 @@
 
 	.label {
 		grid-column: 1 / -1;
+	}
+}
+
+/*
+ * Forced colors override author border and outline colours with the same system palette, so
+ * the resting hairline and the focus ring would resolve to one indistinguishable value -- on a
+ * control whose entire visual is that border and which has no visible label to fall back on.
+ * Same treatment the repo already applies to IconButton and Navigation.
+ */
+@media (forced-colors: active) {
+	.inlineIconic {
+		border-color: ButtonText;
+	}
+
+	.inlineIconic:focus-visible {
+		outline-color: Highlight;
 	}
 }
 

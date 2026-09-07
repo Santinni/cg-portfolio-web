@@ -157,7 +157,8 @@ Because the label is hidden with `clip` rather than `display: none`, the choice 
 load-bearing rather than cosmetic: `display: none` would remove the accessible name. That is
 asserted, not merely intended — `renders external profiles as an icon-only brand target at
 every width` in `src/__tests__/e2e/curriculum-vitae.spec.ts` checks the accessible name, the
-single brand glyph, an exact 44×44 target and a non-null but ≤1 px label box, for both
+single brand glyph, a 44×44 target (within the suite's ±0.5 px `expectPx` tolerance) and a
+non-null but ≤1 px label box, for both
 profiles across 1440/768/390/430/320 in both locales. The focus ring has its own test per
 theme, because without a visible label it is the only cue a keyboard user gets.
 

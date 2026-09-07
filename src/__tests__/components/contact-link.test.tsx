@@ -79,8 +79,11 @@ describe('ContactLink', () => {
 		expect(github).toHaveAttribute('href', 'https://github.com/Santinni')
 		expect(github).toHaveAttribute('target', '_blank')
 		expect(github).toHaveAttribute('rel', 'noopener noreferrer')
-		// The row variant keeps its arrow -- the icon-only rule is scoped to `inline`.
+		// The row variant keeps its arrow -- the icon-only rule is scoped to `inline`. Counting
+		// to one is not enough: swapping the arrow for a brand mark here would keep the count
+		// at 1 and ship green, so identify the glyph rather than tally it.
 		expect(github.querySelectorAll('svg')).toHaveLength(1)
+		expect(github.querySelector('svg')).not.toHaveAttribute('data-contact-glyph')
 	})
 
 	it.each(catalogs)('leaves the %s location non-interactive in both variants', (_l, messages) => {
@@ -118,9 +121,12 @@ describe('ContactLink', () => {
 
 	/**
 	 * Scope note: this project's Vitest config sets no `css.include`, so CSS Modules are not
-	 * processed here -- `styles.anything` echoes the key back. These assertions therefore prove
-	 * which branch the component took, not that the class exists in the stylesheet. The rendered
-	 * result is proven by `src/__tests__/e2e/curriculum-vitae.spec.ts` and the pinned pixel suite.
+	 * processed here, and `css.modules.classNameStrategy: 'non-scoped'` (vitest.config.ts:20-24)
+	 * is what makes `styles.inlineIconic` echo the bare key back -- under Vitest's default
+	 * `stable` strategy the class would be `_inlineIconic_<hash>` and these assertions would
+	 * fail. They therefore prove which branch the component took, not that the class exists in
+	 * the stylesheet. The rendered result is proven by
+	 * `src/__tests__/e2e/curriculum-vitae.spec.ts` and the pinned pixel suite.
 	 */
 	it.each(catalogs)(
 		'pins the %s inline density branch and external profile name',
