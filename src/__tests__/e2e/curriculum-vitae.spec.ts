@@ -16,7 +16,7 @@ const cvLocales = [
 		heroEyebrow: 'CURRICULUM VITAE',
 		heroRole: 'Senior Frontend Engineer',
 		currentRole: 'Current role',
-		contactLocation: 'Prague, Czech Republic',
+		contactLocation: 'Prague, Czechia',
 		downloadAccessibleName: 'Download CV — Karel Kutchan',
 		pdfHref: '/curriculum-vitae/CV_Karel_Kutchan.pdf',
 		filename: 'CV_Karel_Kutchan.pdf',
@@ -75,6 +75,15 @@ const compactOverflowViewports = [
 ] as const
 
 const themes = ['light', 'dark'] as const satisfies readonly HomeTheme[]
+
+/**
+ * The two methods that render as a brand mark instead of text. Their labels are platform
+ * names, so both catalogs carry the same string -- see `messages/*.json` `contact.methods`.
+ */
+const externalProfiles = [
+	{ label: 'LinkedIn', method: 'linkedin' },
+	{ label: 'GitHub', method: 'github' },
+] as const
 
 const themeColors = {
 	light: {
@@ -148,7 +157,7 @@ async function focusByKeyboard(page: Page, target: Locator) {
 		if (await target.evaluate((element) => document.activeElement === element)) return
 	}
 
-	throw new Error('Could not reach the fixed CV Download Action using keyboard navigation')
+	throw new Error('Could not reach the target element using keyboard navigation')
 }
 
 for (const locale of cvLocales) {
@@ -247,11 +256,96 @@ for (const locale of cvLocales) {
 				},
 			])
 
-			const targets = await rows.evaluateAll((elements) =>
-				elements.map((element) => element.getBoundingClientRect().height),
+			const targetSizes = await rows.evaluateAll((elements) =>
+				elements.map((element) => ({
+					height: element.getBoundingClientRect().height,
+					method: element.getAttribute('data-contact-method'),
+					width: element.getBoundingClientRect().width,
+				})),
 			)
-			for (const height of targets) expect(height).toBeGreaterThanOrEqual(44)
+			for (const { height, method, width } of targetSizes) {
+				expect(height, `${method} target height`).toBeGreaterThanOrEqual(44)
+				expect(width, `${method} target width`).toBeGreaterThanOrEqual(44)
+			}
 		})
+
+		test('renders external profiles as an icon-only brand target at every width', async ({
+			page,
+		}) => {
+			// Every width the design claims, not just the ones that were convenient: dropping the
+			// width switch means no viewport is a special case, and 320 is the width the decision
+			// record names as the lower bound.
+			const widths = [...primaryViewports, ...compactOverflowViewports]
+
+			for (const viewport of widths) {
+				await gotoCv(page, locale.path, 'light', viewport)
+
+				// Both profiles, not just the first one: a swapped ternary in BrandGlyph or a
+				// dropped key in hasBrandGlyph would otherwise leave the suite green.
+				for (const profile of externalProfiles) {
+					const link = page.locator(
+						`[data-cv-content] address a[data-contact-method="${profile.method}"]`,
+					)
+					const label = link.getByText(profile.label, { exact: true })
+					const brandGlyph = link.locator('[data-contact-glyph="brand"]')
+					const where = `${profile.method} @ ${viewport.id}px`
+
+					// The accessible name is the assertion that matters: `display: none` would take
+					// the label out of the accessibility tree, which the clipped label avoids.
+					await expect(link, where).toHaveAccessibleName(profile.label)
+					await expect(brandGlyph, where).toBeVisible()
+					await expect(link.locator('svg'), where).toHaveCount(1)
+
+					// `boundingBox()` returns null for a `display: none` element, so the null case
+					// must fail rather than coalesce to a passing zero -- that is the exact
+					// substitution this assertion exists to catch.
+					const labelBox = await label.boundingBox()
+					expect(labelBox, `${where}: clipped label must still occupy a box`).not.toBeNull()
+					expect(
+						labelBox?.width,
+						`${where}: clipped label must not occupy layout`,
+					).toBeLessThanOrEqual(1)
+
+					const iconTarget = await link.boundingBox()
+					expect(iconTarget, `${where}: target must be laid out`).not.toBeNull()
+					expectPx(iconTarget?.height ?? 0, 44)
+					expectPx(iconTarget?.width ?? 0, 44)
+				}
+			}
+		})
+
+		for (const theme of themes) {
+			test(`shows a visible ${theme} focus ring on the icon-only profile target`, async ({
+				page,
+			}) => {
+				// Without a visible label, the focus ring is the only thing telling a keyboard user
+				// where they are -- and dark resolves it through a different token.
+				await gotoCv(page, locale.path, theme, primaryViewports[0])
+
+				for (const profile of externalProfiles) {
+					const link = page.locator(
+						`[data-cv-content] address a[data-contact-method="${profile.method}"]`,
+					)
+					await focusByKeyboard(page, link)
+					await expect(link, profile.method).toBeFocused()
+
+					const outline = await link.evaluate((element) => {
+						const styles = getComputedStyle(element)
+						return {
+							outlineColor: styles.outlineColor,
+							outlineStyle: styles.outlineStyle,
+							outlineWidth: styles.outlineWidth,
+						}
+					})
+
+					expect(outline, profile.method).toEqual({
+						outlineColor: themeColors[theme].focus,
+						outlineStyle: 'solid',
+						outlineWidth: '2px',
+					})
+				}
+			})
+		}
 
 		test('labels every shared CV section by its own heading', async ({ page }) => {
 			await page.goto(locale.path)
@@ -351,8 +445,15 @@ for (const locale of cvLocales) {
 
 for (const theme of themes) {
 	test(`fine-pointer ${theme} hover expands left and keeps the Download Action anchored`, async ({
+		isMobile,
 		page,
 	}) => {
+		// The hover expansion is a fine-pointer affordance, so the touch project has nothing to
+		// assert. Without this the test fails there on its own precondition -- which CI never sees,
+		// because it runs Chromium alone. The assertion below still proves the desktop projects
+		// really do report a fine pointer, so the test cannot quietly become a no-op.
+		test.skip(Boolean(isMobile), 'Hover expansion needs a fine pointer; this project has none')
+
 		const locale = cvLocales[0]
 		await gotoCv(page, locale.path, theme, primaryViewports[0])
 		expect(

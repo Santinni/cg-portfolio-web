@@ -46,8 +46,10 @@ One contract now serves every contact surface:
   - `inline` — the compact hero token used by the CV, and available to the homepage
     identity row (BL-003, COD-79) and a future footer without a second component.
 - Inline text rule: an external profile shows its **label** ("LinkedIn"), a direct channel
-  shows its **value** (the e-mail address, "Prague, Czech Republic"). A profile is named by
+  shows its **value** (the e-mail address, "Prague, Czechia"). A profile is named by
   its platform; a direct channel is named by the address the visitor will use.
+  **Superseded 2026-09-03 for external profiles:** they now show a brand mark and no visible
+  text at all in `inline`. The rule still holds for direct channels and for `row`.
 
 Order stays per surface: the approved CV hero leads with the non-interactive location,
 `/contact` keeps the model order. Order is layout, not contract.
@@ -62,16 +64,33 @@ stays a separate primitive (CV-05).
 Measured against `docs/brand/brand-guidelines.md` and the approved CV frames
 (`124:369`, `132:399`, `131:593`, `136:190`, `136:283`).
 
-- **Inline contact links gain the arrow affordance.** External profile links on the CV hero
+- ~~**Inline contact links gain the arrow affordance.** External profile links on the CV hero
   now carry the same `ArrowUpRight` glyph the `/contact` rows use. The approved CV frames
   show underlined text without a glyph. Taken deliberately: one contract cannot signal
-  "leaves the site" on one surface and stay silent on another. Recorded here as a
-  deviation rather than shipped quietly.
+  "leaves the site" on one surface and stay silent on another.~~
+  **Retracted 2026-09-03.** The `inline` variant no longer renders an arrow at any width.
+  That glyph is what pushed the 390 px row past its content column, and the fix went further
+  than restoring the line: LinkedIn and GitHub now render as their brand mark alone in a
+  44 px target at every width, and the mark carries the "leaves the site" signal instead.
+  The contract itself is unchanged — the element, its `data-contact-method`, href, target,
+  rel and text content are identical to before. `/contact` (the `row` variant) still shows
+  the arrow. See `docs/audits/2026-09-03-cv-contact-wrap.md` and CV-05 in
+  `docs/decisions/curriculum-vitae.md`.
+
+  An earlier version of this amendment described a width-switched design (arrow above
+  768 px, brand mark below). That intermediate state was replaced the same day, before
+  merge, and never shipped.
 - **Eyebrow colour is preserved, not unified.** The shared `Eyebrow` renders
   `--text-secondary`; the CV eyebrow is `--action-primary` in the approved frames. The CV
   keeps its accent through a local class rather than changing the primitive for five
   routes.
-- Contact typography, spacing and hero geometry are unchanged.
+- ~~Contact typography, spacing and hero geometry are unchanged.~~ **Corrected 2026-09-03:
+  false at 390 px.** The arrow widened the contact items past the 350 px content column, so
+  `GitHub` wrapped to a second line and the hero grew 52 px in both locales and both themes.
+  That was the regression as measured against this pass; desktop and tablet were unaffected
+  *by it*. The resolution then changed all three widths on purpose — icon-only profiles
+  everywhere, and `.contactList` column gap `--space-24` → `--space-16`. Measured evidence
+  and the resolution are in `docs/audits/2026-09-03-cv-contact-wrap.md`.
 
 ## Not re-verified here
 

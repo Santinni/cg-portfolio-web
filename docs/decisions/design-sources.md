@@ -4,7 +4,7 @@
 | --- | --- |
 | Scope | The Figma file of record and its approved node inventory |
 | Status vocabulary | See [`README.md`](README.md) |
-| Last updated | 2026-09-01 |
+| Last updated | 2026-09-03 |
 
 ## DS-01 — Figma file of record · `locked`
 
@@ -30,6 +30,7 @@ This file is the visual source of truth for redesign work.
 | Responsive QA page | `4:7` |
 | Dark-mode page | `4:8` |
 | Button component set | `21:110` |
+| Contact Link component set | `21:273` — gained `Kind=LinkedIn Icon` and `Kind=GitHub Icon` on 2026-09-03; see CV-05 |
 | Brand Identity page `11 - Brand Identity` | `146:2` · chapter frames `146:3`, `147:2`, `149:2`, `150:2`, `151:2`, `153:15` |
 
 The Brand Identity page is the visual working reference for the identity; its governing

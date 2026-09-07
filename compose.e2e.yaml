@@ -87,6 +87,10 @@ services:
       CI: "true"
       PLAYWRIGHT_EXTERNAL_SERVER: "true"
       PLAYWRIGHT_BASE_URL: http://localhost:3000
+      # Opt-in for pixel baselines. Only this image has the font packages the
+      # baselines were captured with, so specs that compare screenshots skip
+      # everywhere else -- including CI, which is Linux but not this image.
+      PINNED_VISUAL: "true"
       # The SEO suite resolves its expected absolute URLs from this.
       NEXT_PUBLIC_SERVER_URL: http://localhost:3000
       APP_REVISION: ${APP_REVISION:-pinned-e2e}

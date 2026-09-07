@@ -44,7 +44,7 @@ describe('ContactLink', () => {
 		const link = screen.getByRole('link', { name: 'karel@codeguy.cz' })
 		expect(link).not.toHaveAttribute('target')
 		expect(link).not.toHaveAttribute('rel')
-		expect(link.querySelector('svg')).toBeNull()
+		expect(link.querySelectorAll('svg')).toHaveLength(0)
 	})
 
 	it.each(catalogs)('keeps %s external profiles safe and signposted', (_locale, messages) => {
@@ -56,7 +56,22 @@ describe('ContactLink', () => {
 		expect(linkedin).toHaveAttribute('href', 'https://www.linkedin.com/in/karelkutchan/')
 		expect(linkedin).toHaveAttribute('target', '_blank')
 		expect(linkedin).toHaveAttribute('rel', 'noopener noreferrer')
-		expect(linkedin.querySelector('svg')).toHaveAttribute('aria-hidden', 'true')
+		// Inline external profiles are the brand mark alone -- no arrow -- at every width.
+		const inlineSvgs = linkedin.querySelectorAll('svg')
+		expect(inlineSvgs).toHaveLength(1)
+		expect(inlineSvgs[0]).toHaveAttribute('data-contact-glyph', 'brand')
+		for (const svg of inlineSvgs) expect(svg).toHaveAttribute('aria-hidden', 'true')
+
+		// GitHub inline, not only LinkedIn: a swapped ternary in BrandGlyph or a dropped key in
+		// hasBrandGlyph would leave every other assertion in this file green.
+		rerender(<ContactLink method={resolveMethod(messages, 'github')} variant="inline" />)
+
+		const githubInline = screen.getByRole('link', { name: 'GitHub' })
+		expect(githubInline).toHaveAttribute('href', 'https://github.com/Santinni')
+		expect(githubInline).toHaveClass('inline', 'inlineIconic')
+		const githubSvgs = githubInline.querySelectorAll('svg')
+		expect(githubSvgs).toHaveLength(1)
+		expect(githubSvgs[0]).toHaveAttribute('data-contact-glyph', 'brand')
 
 		rerender(<ContactLink method={resolveMethod(messages, 'github')} variant="row" />)
 
@@ -64,6 +79,8 @@ describe('ContactLink', () => {
 		expect(github).toHaveAttribute('href', 'https://github.com/Santinni')
 		expect(github).toHaveAttribute('target', '_blank')
 		expect(github).toHaveAttribute('rel', 'noopener noreferrer')
+		// The row variant keeps its arrow -- the icon-only rule is scoped to `inline`.
+		expect(github.querySelectorAll('svg')).toHaveLength(1)
 	})
 
 	it.each(catalogs)('leaves the %s location non-interactive in both variants', (_l, messages) => {
@@ -96,6 +113,38 @@ describe('ContactLink', () => {
 
 			expect(screen.getByRole('link')).toHaveAccessibleName('LinkedIn')
 			expect(screen.queryByText('karelkutchan')).toBeNull()
+		},
+	)
+
+	/**
+	 * Scope note: this project's Vitest config sets no `css.include`, so CSS Modules are not
+	 * processed here -- `styles.anything` echoes the key back. These assertions therefore prove
+	 * which branch the component took, not that the class exists in the stylesheet. The rendered
+	 * result is proven by `src/__tests__/e2e/curriculum-vitae.spec.ts` and the pinned pixel suite.
+	 */
+	it.each(catalogs)(
+		'pins the %s inline density branch and external profile name',
+		(_locale, messages) => {
+			const { rerender } = render(
+				<ContactLink method={resolveMethod(messages, 'email')} variant="inline" />,
+			)
+
+			const email = screen.getByRole('link', { name: 'karel@codeguy.cz' })
+			expect(email).toHaveClass('inline')
+			expect(email).not.toHaveClass('inlineIconic')
+
+			for (const [key, label] of [
+				['linkedin', 'LinkedIn'],
+				['github', 'GitHub'],
+			] as const) {
+				rerender(<ContactLink method={resolveMethod(messages, key)} variant="inline" />)
+
+				const profile = screen.getByRole('link', { name: label })
+				expect(profile, key).toHaveClass('inline', 'inlineIconic')
+				// Text content survives the clip; it is what keeps the accessible name.
+				expect(profile, key).toHaveTextContent(label)
+				expect(profile, key).toHaveAccessibleName(label)
+			}
 		},
 	)
 })
