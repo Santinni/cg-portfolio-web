@@ -36,7 +36,10 @@
 			"description": "Karel Kutchan is a senior frontend engineer based in Prague, building resilient frontend systems with React, TypeScript and Next.js."
 		},
 		"hero": {
-			"eyebrow": "SENIOR FRONTEND ENGINEER / PRAGUE",
+			"eyebrow": "<identity>{name}</identity> / SENIOR FRONTEND ENGINEER / PRAGUE",
+			"identity": {
+				"name": "Karel Kutchan"
+			},
 			"headline": "I build frontend systems for products that have to last.",
 			"paragraphs": {
 				"experience": "More than ten years in web development, currently in a lead frontend role. I work with React, TypeScript and Next.js across customer portals, internal enterprise applications and the component libraries underneath them.",
@@ -46,8 +49,7 @@
 				"experience": "More than ten years in web development, currently in a lead frontend role. I work with React, TypeScript and Next.js across customer portals, enterprise applications and component systems.",
 				"quality": "Architecture, accessibility and maintainability are part of the delivery."
 			},
-			"primaryCta": "Read flagship case",
-			"secondaryCta": "View experience"
+			"primaryCta": "Read flagship case"
 		},
 		"flagship": {
 			"eyebrow": "FLAGSHIP CASE / ENERGY",

@@ -4,13 +4,15 @@ interface LocaleExpectation {
 	path: '/' | '/cs'
 	labels: {
 		heroPrimary: string
-		heroSecondary: string
+		/** The inline e-mail token names the address itself (contact contract). */
+		heroEmail: string
 		flagship: string
 		experience: string
 		final: string
 	}
 	hrefs: {
 		flagship: string
+		email: string
 		experience: string
 		contact: string
 	}
@@ -21,13 +23,14 @@ const localeExpectations: LocaleExpectation[] = [
 		path: '/',
 		labels: {
 			heroPrimary: 'Read flagship case',
-			heroSecondary: 'View experience',
+			heroEmail: 'karel@codeguy.cz',
 			flagship: 'Read the case',
 			experience: 'View full experience',
 			final: 'Start a conversation',
 		},
 		hrefs: {
 			flagship: '/work/energy-customer-portal',
+			email: 'mailto:karel@codeguy.cz',
 			experience: '/experience',
 			contact: '/contact',
 		},
@@ -36,13 +39,14 @@ const localeExpectations: LocaleExpectation[] = [
 		path: '/cs',
 		labels: {
 			heroPrimary: 'Přečíst hlavní případovou studii',
-			heroSecondary: 'Zobrazit zkušenosti',
+			heroEmail: 'karel@codeguy.cz',
 			flagship: 'Přečíst studii',
 			experience: 'Zobrazit všechny zkušenosti',
 			final: 'Začít konverzaci',
 		},
 		hrefs: {
 			flagship: '/cs/work/energy-customer-portal',
+			email: 'mailto:karel@codeguy.cz',
 			experience: '/cs/experience',
 			contact: '/cs/contact',
 		},
@@ -60,9 +64,9 @@ function getHomeCtas(page: Page, expectation: LocaleExpectation) {
 			exact: true,
 			name: expectation.labels.heroPrimary,
 		}),
-		heroSecondary: hero.getByRole('link', {
+		heroEmail: hero.getByRole('link', {
 			exact: true,
-			name: expectation.labels.heroSecondary,
+			name: expectation.labels.heroEmail,
 		}),
 		flagship: flagship.getByRole('link', {
 			exact: true,
@@ -117,6 +121,35 @@ async function expectLargeButtonContract(link: Locator) {
 	})
 }
 
+/**
+ * The hero's second action is the shared inline contact token, not a button: a real
+ * mailto anchor with the 44px target (Figma Contact Link instance 185:503 is 44px
+ * tall), underlined text, no new tab.
+ */
+async function expectInlineEmailContract(link: Locator, href: string) {
+	await expect(link).toBeVisible()
+	await expect(link).toHaveAttribute('href', href)
+	await expect(link).toHaveAttribute('data-contact-method', 'email')
+	await expect(link).not.toHaveAttribute('target')
+	await expect(link).not.toHaveAttribute('rel')
+
+	const contract = await link.evaluate((element) => {
+		const styles = getComputedStyle(element)
+
+		return {
+			height: element.getBoundingClientRect().height,
+			lineCount: element.getClientRects().length,
+			textDecorationLine: styles.textDecorationLine,
+		}
+	})
+
+	expect(contract).toEqual({
+		height: 44,
+		lineCount: 1,
+		textDecorationLine: 'underline',
+	})
+}
+
 interface HeroActionLayoutExpectation {
 	direction: 'column' | 'row'
 	gap: number
@@ -125,7 +158,7 @@ interface HeroActionLayoutExpectation {
 
 async function expectHeroActionLayout(
 	primary: Locator,
-	secondary: Locator,
+	email: Locator,
 	expectation: HeroActionLayoutExpectation,
 ) {
 	const actions = primary.locator('..')
@@ -142,7 +175,7 @@ async function expectHeroActionLayout(
 
 		const styles = getComputedStyle(element)
 		const row = element.getBoundingClientRect()
-		const [primaryAction, secondaryAction] = links.map((link) => link.getBoundingClientRect())
+		const [primaryAction, emailAction] = links.map((link) => link.getBoundingClientRect())
 		const previous = previousContent.getBoundingClientRect()
 
 		return {
@@ -153,32 +186,37 @@ async function expectHeroActionLayout(
 			primary: primaryAction.toJSON(),
 			row: row.toJSON(),
 			rowGap: Number.parseFloat(styles.rowGap),
-			secondary: secondaryAction.toJSON(),
+			email: emailAction.toJSON(),
 		}
 	})
 
-	expect.soft(layout.alignItems).toBe('flex-start')
+	// Desktop (Figma 6:16) centres the 44px token on the 52px button; compact widths
+	// (7:382, 8:92) keep both actions hugging the left edge.
+	expect.soft(layout.alignItems).toBe(expectation.direction === 'row' ? 'center' : 'flex-start')
 	expect.soft(layout.direction).toBe(expectation.direction)
 	expect.soft(layout.paragraphGap).toBeCloseTo(expectation.paragraphGap, 5)
 	expect.soft(layout.primary.width).toBeLessThan(layout.row.width)
-	expect.soft(layout.secondary.width).toBeLessThan(layout.row.width)
+	expect.soft(layout.email.width).toBeLessThan(layout.row.width)
 
 	if (expectation.direction === 'row') {
 		expect.soft(layout.columnGap).toBe(expectation.gap)
-		expect.soft(layout.primary.y).toBeCloseTo(layout.secondary.y, 5)
 		expect
-			.soft(layout.secondary.x - (layout.primary.x + layout.primary.width))
+			.soft(layout.email.y + layout.email.height / 2)
+			.toBeCloseTo(layout.primary.y + layout.primary.height / 2, 5)
+		expect.soft(layout.email.y - layout.primary.y).toBeCloseTo(4, 5)
+		expect
+			.soft(layout.email.x - (layout.primary.x + layout.primary.width))
 			.toBeCloseTo(expectation.gap, 5)
 	} else {
 		expect.soft(layout.rowGap).toBe(expectation.gap)
 		expect.soft(layout.primary.x).toBeCloseTo(layout.row.x, 5)
-		expect.soft(layout.secondary.x).toBeCloseTo(layout.row.x, 5)
+		expect.soft(layout.email.x).toBeCloseTo(layout.row.x, 5)
 		expect
-			.soft(layout.secondary.y - (layout.primary.y + layout.primary.height))
+			.soft(layout.email.y - (layout.primary.y + layout.primary.height))
 			.toBeCloseTo(expectation.gap, 5)
 	}
 
-	await expect(secondary).toBeVisible()
+	await expect(email).toBeVisible()
 }
 
 async function expectHugLeftAlignedButton(link: Locator) {
@@ -211,16 +249,16 @@ for (const locale of localeExpectations) {
 			const ctas = getHomeCtas(page, locale)
 
 			await expect(ctas.heroPrimary).toHaveAttribute('href', locale.hrefs.flagship)
-			await expect(ctas.heroSecondary).toHaveAttribute('href', locale.hrefs.experience)
 			await expect(ctas.flagship).toHaveAttribute('href', locale.hrefs.flagship)
 			await expect(ctas.experience).toHaveAttribute('href', locale.hrefs.experience)
 			await expect(ctas.final).toHaveAttribute('href', locale.hrefs.contact)
 
-			for (const cta of Object.values(ctas)) {
+			for (const cta of [ctas.heroPrimary, ctas.flagship, ctas.experience, ctas.final]) {
 				await expectLargeButtonContract(cta)
 			}
+			await expectInlineEmailContract(ctas.heroEmail, locale.hrefs.email)
 
-			await expectHeroActionLayout(ctas.heroPrimary, ctas.heroSecondary, {
+			await expectHeroActionLayout(ctas.heroPrimary, ctas.heroEmail, {
 				direction: 'row',
 				gap: 16,
 				paragraphGap: 32,
@@ -241,15 +279,15 @@ for (const locale of localeExpectations) {
 
 				const ctas = getHomeCtas(page, locale)
 				await expect(ctas.heroPrimary).toHaveAttribute('href', locale.hrefs.flagship)
-				await expect(ctas.heroSecondary).toHaveAttribute('href', locale.hrefs.experience)
 				await expect(ctas.flagship).toHaveAttribute('href', locale.hrefs.flagship)
 				await expect(ctas.final).toHaveAttribute('href', locale.hrefs.contact)
 
-				for (const cta of [ctas.heroPrimary, ctas.heroSecondary, ctas.flagship, ctas.final]) {
+				for (const cta of [ctas.heroPrimary, ctas.flagship, ctas.final]) {
 					await expectLargeButtonContract(cta)
 				}
+				await expectInlineEmailContract(ctas.heroEmail, locale.hrefs.email)
 
-				await expectHeroActionLayout(ctas.heroPrimary, ctas.heroSecondary, {
+				await expectHeroActionLayout(ctas.heroPrimary, ctas.heroEmail, {
 					direction: 'column',
 					gap: 24,
 					paragraphGap: 24,
@@ -271,9 +309,8 @@ test('keeps the long Czech Hero actions inside a 320px reflow viewport', async (
 	const ctas = getHomeCtas(page, expectation)
 
 	await expect(ctas.heroPrimary).toBeVisible()
-	await expect(ctas.heroSecondary).toBeVisible()
 	await expect(ctas.heroPrimary).toHaveAttribute('href', expectation.hrefs.flagship)
-	await expect(ctas.heroSecondary).toHaveAttribute('href', expectation.hrefs.experience)
+	await expectInlineEmailContract(ctas.heroEmail, expectation.hrefs.email)
 
 	const reflow = await ctas.heroPrimary.locator('..').evaluate((element) => {
 		const links = Array.from(element.children).filter(
@@ -300,9 +337,11 @@ test('keeps the long Czech Hero actions inside a 320px reflow viewport', async (
 	expect(reflow.rowGap).toBe(24)
 	expect(reflow.documentScrollWidth).toBeLessThanOrEqual(reflow.viewportWidth)
 	expect(reflow.links[0].y).toBeLessThan(reflow.links[1].y)
+	// Button first (52px), then the inline e-mail token with its 44px target.
+	expect(reflow.links[0].height).toBeGreaterThanOrEqual(52)
+	expect(reflow.links[1].height).toBeGreaterThanOrEqual(44)
 
 	for (const link of reflow.links) {
-		expect(link.height).toBeGreaterThanOrEqual(52)
 		expect(link.x).toBeGreaterThanOrEqual(reflow.row.x)
 		expect(link.x + link.width).toBeLessThanOrEqual(reflow.row.x + reflow.row.width)
 		expect(link.x + link.width).toBeLessThanOrEqual(reflow.viewportWidth)

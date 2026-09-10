@@ -245,23 +245,25 @@ they landed on.
 
 ### Work Items
 
-- [ ] Apply the locked identity model to the hero: name and role in the existing
+- [x] Apply the locked identity model to the hero: name and role in the existing
       eyebrow/identity row, no portrait and no brand mark.
-- [ ] Introduce the name into the hero copy for `en` and `cs`, keeping the
+- [x] Introduce the name into the hero copy for `en` and `cs`, keeping the
       existing eyebrow/headline hierarchy readable rather than stacking a second
       competing headline.
-- [ ] Apply the locked CTA set: keep the flagship case action primary and replace
+- [x] Apply the locked CTA set: keep the flagship case action primary and replace
       the secondary hero action with a visible direct e-mail action. Do not add a
       third button.
-- [ ] Reuse the unified contact-link component from BL-002 if inline contact
+- [x] Reuse the unified contact-link component from BL-002 if inline contact
       links land in the hero — do not introduce a third link style.
-- [ ] Verify heading hierarchy, landmark semantics and focus order stay correct
-      after the change.
+- [-] Verify heading hierarchy, landmark semantics and focus order stay correct
+      after the change. (COD-79: proven by the component test; the Playwright
+      accessibility contract is updated but still has to run in the pinned container.)
 - [ ] Verify the hero still fits at 390/768/1440 without overflow, in light and
       dark mode, and that the compact copy variants remain coherent.
-- [ ] Consider `Person` structured data on the homepage once the identity model
-      is explicit — factual fields only.
-- [ ] Update homepage regression coverage for the new identity content.
+- [!] Consider `Person` structured data on the homepage once the identity model
+      is explicit — factual fields only. (COD-79: the repository has no JSON-LD or
+      structured-data pattern to extend; needs a decision on where it lives first.)
+- [x] Update homepage regression coverage for the new identity content.
 
 ### Settled Decisions
 

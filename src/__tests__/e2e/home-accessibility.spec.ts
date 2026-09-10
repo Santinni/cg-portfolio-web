@@ -21,6 +21,8 @@ interface HomeAccessibilityContract {
 	id: 'cs' | 'en'
 	lang: 'cs' | 'en'
 	path: '/cs' | '/'
+	/** Locale-neutral: a personal name is not translated (BL-003). */
+	heroName: 'Karel Kutchan'
 	skipLink: string
 	pending: string
 	desktop: {
@@ -77,6 +79,7 @@ const contracts: HomeAccessibilityContract[] = [
 		id: 'en',
 		lang: 'en',
 		path: '/',
+		heroName: 'Karel Kutchan',
 		skipLink: 'Skip to main content',
 		pending: 'Case study coming soon',
 		desktop: {
@@ -90,7 +93,7 @@ const contracts: HomeAccessibilityContract[] = [
 			],
 			links: [
 				{ href: '/work/energy-customer-portal', name: 'Read flagship case' },
-				{ href: '/experience', name: 'View experience' },
+				{ href: 'mailto:karel@codeguy.cz', name: 'karel@codeguy.cz' },
 				{ href: '/work/energy-customer-portal', name: 'Read the case' },
 				{ href: '/work/maintenance-applications', name: 'Read case' },
 				{ href: '/work/distributed-energy-platform', name: 'Read case' },
@@ -124,7 +127,7 @@ const contracts: HomeAccessibilityContract[] = [
 			],
 			links: [
 				{ href: '/work/energy-customer-portal', name: 'Read flagship case' },
-				{ href: '/experience', name: 'View experience' },
+				{ href: 'mailto:karel@codeguy.cz', name: 'karel@codeguy.cz' },
 				{ href: '/work/energy-customer-portal', name: 'Read the case' },
 				{ href: '/work/maintenance-applications', name: 'Read case' },
 				{ href: '/work/distributed-energy-platform', name: 'Read case' },
@@ -143,6 +146,7 @@ const contracts: HomeAccessibilityContract[] = [
 		id: 'cs',
 		lang: 'cs',
 		path: '/cs',
+		heroName: 'Karel Kutchan',
 		skipLink: 'Přeskočit na hlavní obsah',
 		pending: 'Případová studie se připravuje',
 		desktop: {
@@ -159,7 +163,7 @@ const contracts: HomeAccessibilityContract[] = [
 					href: '/cs/work/energy-customer-portal',
 					name: 'Přečíst hlavní případovou studii',
 				},
-				{ href: '/cs/experience', name: 'Zobrazit zkušenosti' },
+				{ href: 'mailto:karel@codeguy.cz', name: 'karel@codeguy.cz' },
 				{ href: '/cs/work/energy-customer-portal', name: 'Přečíst studii' },
 				{ href: '/cs/work/maintenance-applications', name: 'Přečíst studii' },
 				{ href: '/cs/work/distributed-energy-platform', name: 'Přečíst studii' },
@@ -196,7 +200,7 @@ const contracts: HomeAccessibilityContract[] = [
 					href: '/cs/work/energy-customer-portal',
 					name: 'Přečíst hlavní případovou studii',
 				},
-				{ href: '/cs/experience', name: 'Zobrazit zkušenosti' },
+				{ href: 'mailto:karel@codeguy.cz', name: 'karel@codeguy.cz' },
 				{ href: '/cs/work/energy-customer-portal', name: 'Přečíst studii' },
 				{ href: '/cs/work/maintenance-applications', name: 'Přečíst studii' },
 				{ href: '/cs/work/distributed-energy-platform', name: 'Přečíst studii' },
@@ -263,6 +267,49 @@ async function expectHeadingOrder(page: Page, expected: ExpectedHeading[]) {
 	)
 
 	expect(actual).toEqual(expected)
+}
+
+/**
+ * BL-003 hero identity: the name sits in the eyebrow paragraph (not a heading), the locked
+ * headline is the only heading in the hero, and the only focusable elements are the
+ * flagship CTA followed by the direct e-mail link — so Tab order is primary, then e-mail.
+ */
+async function expectHeroIdentityContract(
+	page: Page,
+	{ headline, name, primaryHref }: { headline: string; name: string; primaryHref: string },
+) {
+	const hero = page.locator('section[aria-labelledby="hero-heading"]')
+	await expect(hero.getByRole('heading')).toHaveCount(1)
+	await expect(hero.getByRole('heading', { exact: true, level: 1, name: headline })).toBeVisible()
+
+	const identity = hero.locator('span', { hasText: name })
+	await expect(identity).toHaveCount(1)
+	await expect(identity).toBeVisible()
+	const placement = await identity.evaluate((element) => {
+		const heading = document.getElementById('hero-heading')
+
+		return {
+			insideHeading: element.closest('h1, h2, h3, h4, h5, h6') !== null,
+			parentTag: element.parentElement?.tagName ?? null,
+			precedesHeadline:
+				heading !== null &&
+				Boolean(element.compareDocumentPosition(heading) & Node.DOCUMENT_POSITION_FOLLOWING),
+			text: element.textContent?.trim() ?? '',
+		}
+	})
+	expect(placement).toEqual({
+		insideHeading: false,
+		parentTag: 'P',
+		precedesHeadline: true,
+		text: name,
+	})
+
+	const focusables = hero.locator('a[href], button, [tabindex]:not([tabindex="-1"])')
+	await expect(focusables).toHaveCount(2)
+	await expect(focusables.nth(0)).toHaveAttribute('href', primaryHref)
+	await expect(focusables.nth(1)).toHaveAttribute('href', 'mailto:karel@codeguy.cz')
+	await expect(focusables.nth(1)).toHaveAttribute('data-contact-method', 'email')
+	await expect(focusables.nth(1)).not.toHaveAttribute('target')
 }
 
 async function expectLocalizedSections(page: Page, sectionNames: string[]) {
@@ -408,6 +455,11 @@ for (const locale of contracts) {
 				await expect(page.locator('main')).toBeVisible()
 				await expect(page.locator('h1:visible')).toHaveCount(1)
 				await expectHeadingOrder(page, expected.headings)
+				await expectHeroIdentityContract(page, {
+					headline: expected.headings[0].name,
+					name: locale.heroName,
+					primaryHref: expected.links[0].href,
+				})
 				await expectLocalizedSections(page, expected.sectionNames)
 				await expectLocalizedLinks(page, expected.links)
 				await expectPendingCardHasNoLink(page, locale.pending)

@@ -178,8 +178,8 @@ Repository gates:
   the CV hero reads `contactMethods`, and the CV content sections moved to `Section` and
   `Eyebrow`. Classification and brand deltas:
   `docs/audits/2026-09-02-cv-shared-primitive-audit.md`.
-- Outstanding: step 5 (navigation, COD-78), step 6 (homepage identity, COD-79) and the
-  Playwright/visual matrix in step 7.
+- 2026-09-11, COD-79: step 6 (homepage identity) — `Karel Kutchan` joins the hero eyebrow via `home.hero.identity.name`, the secondary action is the inline e-mail `ContactLink`; component test added, E2E hero contracts re-pinned to the approved frames (Playwright run pending in the pinned container).
+- Outstanding: step 5 (navigation, COD-78) and the Playwright/visual matrix in step 7.
 
 ## Completion criteria
 

@@ -48,6 +48,7 @@ const viewports = [
 	{
 		bodySize: 18,
 		compact: false,
+		eyebrowLines: 1,
 		eyebrowSize: 12,
 		firstContentY: 176,
 		headerHeight: 72,
@@ -66,6 +67,7 @@ const viewports = [
 	{
 		bodySize: 17,
 		compact: true,
+		eyebrowLines: 1,
 		eyebrowSize: 11,
 		firstContentY: 120,
 		headerHeight: 64,
@@ -74,7 +76,7 @@ const viewports = [
 		headlineHeight: 116,
 		headlineSize: 40,
 		height: HOME_PARITY_VIEWPORTS.tablet.height,
-		heroHeight: 576,
+		heroHeight: 568,
 		node: HOME_PARITY_VIEWPORTS.tablet.figmaNode,
 		paddingBottom: 64,
 		paragraphWidth: null,
@@ -84,6 +86,7 @@ const viewports = [
 	{
 		bodySize: 17,
 		compact: true,
+		eyebrowLines: 1,
 		eyebrowSize: 11,
 		firstContentY: 120,
 		headerHeight: 64,
@@ -92,7 +95,7 @@ const viewports = [
 		headlineHeight: 232,
 		headlineSize: 40,
 		height: HOME_PARITY_VIEWPORTS.responsive430.height,
-		heroHeight: 767,
+		heroHeight: 759,
 		node: HOME_PARITY_VIEWPORTS.responsive430.figmaNode,
 		paddingBottom: 64,
 		paragraphWidth: null,
@@ -102,6 +105,7 @@ const viewports = [
 	{
 		bodySize: 17,
 		compact: true,
+		eyebrowLines: 1,
 		eyebrowSize: 11,
 		firstContentY: 120,
 		headerHeight: 64,
@@ -110,7 +114,7 @@ const viewports = [
 		headlineHeight: 232,
 		headlineSize: 40,
 		height: HOME_PARITY_VIEWPORTS.mobile.height,
-		heroHeight: 767,
+		heroHeight: 759,
 		node: HOME_PARITY_VIEWPORTS.mobile.figmaNode,
 		paddingBottom: 64,
 		paragraphWidth: null,
@@ -120,6 +124,7 @@ const viewports = [
 	{
 		bodySize: 17,
 		compact: true,
+		eyebrowLines: 2,
 		eyebrowSize: 11,
 		firstContentY: 120,
 		headerHeight: 64,
@@ -128,7 +133,7 @@ const viewports = [
 		headlineHeight: 160,
 		headlineSize: 36,
 		height: HOME_PARITY_VIEWPORTS.responsive320.height,
-		heroHeight: 770,
+		heroHeight: 778,
 		node: HOME_PARITY_VIEWPORTS.responsive320.figmaNode,
 		paddingBottom: 64,
 		paragraphWidth: null,
@@ -259,17 +264,24 @@ test.describe('Home Hero Figma contract', () => {
 			// the section height from the approved frame.
 			expectPx(contract.children[1].height, viewport.headlineHeight, 1.5)
 			const normalizedHeroHeight = contract.hero.height - viewport.headerHeight
+			// The identity eyebrow ("KAREL KUTCHAN / ROLE / CITY") is one line at every
+			// approved width except 320px, where Figma 8:146 wraps it onto two.
+			const eyebrowLines = Math.round(contract.children[0].height / contract.eyebrowLineHeight)
 			if (reservedScrollbarGutter === RESERVED_SCROLLBAR_GUTTER) {
-				// A reserved gutter narrows the content box, so the body copy can rewrap.
-				// Only the body is a candidate: the headline is pinned by its own height
-				// assertion above, and the eyebrow is a single word.
+				// A reserved gutter narrows the content box, so the body copy can rewrap and
+				// the eyebrow can gain a line. The headline is pinned by its own height
+				// assertion above. Any extra eyebrow line is measured directly and removed
+				// before the remaining growth has to be whole body line boxes.
+				expect(eyebrowLines).toBeGreaterThanOrEqual(viewport.eyebrowLines)
+				const eyebrowGrowth = (eyebrowLines - viewport.eyebrowLines) * contract.eyebrowLineHeight
 				expectLineWrapGrowth(
-					normalizedHeroHeight - viewport.heroHeight,
+					normalizedHeroHeight - viewport.heroHeight - eyebrowGrowth,
 					[contract.bodyLineHeight],
 					// Same budget as the exact comparison in the branch below.
 					{ tolerance: 3 },
 				)
 			} else {
+				expect(eyebrowLines).toBe(viewport.eyebrowLines)
 				expectPx(normalizedHeroHeight, viewport.heroHeight, 3)
 			}
 			expect(contract.headlineWeight).toBe('600')
@@ -281,6 +293,22 @@ test.describe('Home Hero Figma contract', () => {
 			expect(contract.documentScrollWidth).toBeLessThanOrEqual(contract.documentClientWidth)
 			for (const action of contract.actions) {
 				expect(action.right).toBeLessThanOrEqual(contract.hero.right)
+			}
+
+			// Hero actions (Figma 6:16, 7:382, 8:92): the 52px flagship button first, then the
+			// inline e-mail token with its 44px target (Contact Link instances 185:503,
+			// 185:1941, 185:1946). Desktop puts the token 16px after the button, centred on
+			// it (token y=4 inside the 52px row); compact widths stack them 24px apart.
+			expect(contract.actions).toHaveLength(2)
+			const [primaryAction, emailAction] = contract.actions
+			expectPx(primaryAction.height, 52)
+			expectPx(emailAction.height, 44)
+			if (viewport.compact) {
+				expectPx(emailAction.x, primaryAction.x)
+				expectPx(emailAction.top - primaryAction.bottom, 24)
+			} else {
+				expectPx(emailAction.left - primaryAction.right, 16)
+				expectPx(emailAction.top - primaryAction.top, 4)
 			}
 		})
 	}

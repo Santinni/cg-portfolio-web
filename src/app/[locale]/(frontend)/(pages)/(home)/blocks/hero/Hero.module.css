@@ -79,6 +79,11 @@
   }
 }
 
+/*
+ * Actions: the 52px primary button and the 44px inline e-mail token. Stacked and
+ * left-aligned below 1024px (Figma 7:382 / 8:92: 24px apart); one row on desktop where
+ * the token sits centred on the button (Figma 6:16: token at y=4 in a 52px row, 16px gap).
+ */
 .ctaRow {
   display: flex;
   flex-direction: column;
@@ -87,6 +92,7 @@
 
   @media (min-width: 1024px) {
     flex-direction: row;
+    align-items: center;
     gap: var(--space-16);
   }
 }

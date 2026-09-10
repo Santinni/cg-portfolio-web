@@ -36,7 +36,10 @@
 			"description": "Karel Kutchan je senior frontend vývojář z Prahy. V Reactu, TypeScriptu a Next.js staví odolné frontendové systémy."
 		},
 		"hero": {
-			"eyebrow": "SENIOR FRONTEND VÝVOJÁŘ / PRAHA",
+			"eyebrow": "<identity>{name}</identity> / SENIOR FRONTEND VÝVOJÁŘ / PRAHA",
+			"identity": {
+				"name": "Karel Kutchan"
+			},
 			"headline": "Stavím frontendové systémy pro produkty, které musí vydržet.",
 			"paragraphs": {
 				"experience": "Webům se věnuji přes deset let a dnes působím jako vedoucí frontend vývoje. S Reactem, TypeScriptem a Next.js pracuji na zákaznických portálech, interních podnikových aplikacích i komponentových knihovnách, na kterých stojí.",
@@ -46,8 +49,7 @@
 				"experience": "Webům se věnuji přes deset let a nyní působím ve vedoucí frontendové roli. S Reactem, TypeScriptem a Next.js pracuji na zákaznických portálech, podnikových aplikacích a komponentových systémech.",
 				"quality": "Architektura, přístupnost a udržovatelnost jsou součástí dodávky."
 			},
-			"primaryCta": "Přečíst hlavní případovou studii",
-			"secondaryCta": "Zobrazit zkušenosti"
+			"primaryCta": "Přečíst hlavní případovou studii"
 		},
 		"flagship": {
 			"eyebrow": "HLAVNÍ PŘÍPADOVÁ STUDIE / ENERGETIKA",
