@@ -193,7 +193,11 @@ test.describe('ShareBar action contrast harness', () => {
 		expect(focus.color).not.toBe('rgba(0, 0, 0, 0)')
 	})
 
-	test('keeps focused controls distinct in forced colors', async ({ page }) => {
+	test('keeps focused controls distinct in forced colors', async ({ browserName, page }) => {
+		// WebKit has no forced-colors mode: `emulateMedia({ forcedColors })` is accepted but no
+		// system colours are substituted, so the outline and the background stay the author
+		// values and the contract below cannot be observed there. Chromium and Firefox honour it.
+		test.skip(browserName === 'webkit', 'WebKit does not implement forced-colors mode.')
 		await page.emulateMedia({ forcedColors: 'active' })
 		await renderShareActionHarness(page, 'light')
 		await page.keyboard.press('Tab')
