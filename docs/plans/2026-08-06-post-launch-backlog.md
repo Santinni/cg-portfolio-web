@@ -162,9 +162,16 @@ profiles) should look and behave the same across the whole site.
 - [x] Replace CV-local section/heading/eyebrow markup with `Section`, `Eyebrow`
       and `PageIntro` where the classification says (a), and delete the
       superseded CSS rules rather than leaving them orphaned.
-- [ ] Decide whether the CV experience timeline and the `/experience` timeline
+- [!] Decide whether the CV experience timeline and the `/experience` timeline
       are the same component with different density, or genuinely different
       presentations. If the same, extend `Timeline` rather than forking it.
+      **Decision brief posted on COD-84 (2026-09-11).** Measured finding: the two
+      carry different information contracts, not different densities —
+      `Timeline` renders NDA-safe role/description pairs by design, the CV renders
+      dated engagements with employer, badge and stack. Cards and the download
+      block have a single consumer. Recommendation: close as not-the-same-component;
+      the one shared candidate (`.sectionHeading`) belongs to COD-82. Awaiting
+      Karel's decision; the decision record goes to `docs/decisions/curriculum-vitae.md`.
 - [x] Unify contact links site-wide. Define one component contract that serves
       the CV hero, the contact page, the footer and any future contact surface,
       including external-link semantics (`target`, `rel`, the arrow affordance)
