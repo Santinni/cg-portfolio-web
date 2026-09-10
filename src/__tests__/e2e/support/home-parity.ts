@@ -267,12 +267,25 @@ export function expectLineWrapGrowth(
 		0,
 	)
 
-	const candidates = lineHeights.flatMap((lineHeight) =>
-		Array.from({ length: maxLines + 1 }, (_unused, lines) => ({
-			lineHeight,
-			lines,
-			residual: growth - lines * lineHeight,
-		})),
+	// A section carries more than one text style, and a narrower content box can
+	// rewrap two of them at once -- at 390px the Home Hero's identity eyebrow gains
+	// a 15.95px line while a body paragraph gains a 24.65px line. The fit therefore
+	// allows the growth to be a sum over at most two of the section's line heights;
+	// each still contributes only whole line boxes, so a stray margin remains
+	// unexplained.
+	const terms = lineHeights.flatMap((lineHeight) =>
+		Array.from({ length: maxLines + 1 }, (_unused, lines) => ({ lineHeight, lines })),
+	)
+	const candidates = terms.flatMap((first) =>
+		terms
+			.filter((second) => second.lineHeight > first.lineHeight || second.lines === 0)
+			.map((second) => ({
+				fit:
+					second.lines === 0
+						? `${first.lines} x ${first.lineHeight}px`
+						: `${first.lines} x ${first.lineHeight}px + ${second.lines} x ${second.lineHeight}px`,
+				residual: growth - first.lines * first.lineHeight - second.lines * second.lineHeight,
+			})),
 	)
 	const best = candidates.reduce((closest, candidate) =>
 		Math.abs(candidate.residual) < Math.abs(closest.residual) ? candidate : closest,
@@ -281,8 +294,8 @@ export function expectLineWrapGrowth(
 	expect(
 		Math.abs(best.residual),
 		`Expected ${growth}px of growth to be a whole number of wrapped line boxes ` +
-			`(line heights present: ${lineHeights.join(', ')}px; closest fit: ${best.lines} x ` +
-			`${best.lineHeight}px leaving ${best.residual}px unexplained)`,
+			`(line heights present: ${lineHeights.join(', ')}px; closest fit: ${best.fit} ` +
+			`leaving ${best.residual}px unexplained)`,
 	).toBeLessThanOrEqual(tolerance)
 }
 
