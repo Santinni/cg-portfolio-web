@@ -351,8 +351,12 @@ for (const locale of cvLocales) {
 
 for (const theme of themes) {
 	test(`fine-pointer ${theme} hover expands left and keeps the Download Action anchored`, async ({
+		isMobile,
 		page,
 	}) => {
+		// The hover contract only exists for a fine pointer; the mobile-chrome project emulates a
+		// touch device, where the media query below is false by design rather than by defect.
+		test.skip(isMobile, 'Hover contract needs a fine pointer; this project emulates touch.')
 		const locale = cvLocales[0]
 		await gotoCv(page, locale.path, theme, primaryViewports[0])
 		expect(
