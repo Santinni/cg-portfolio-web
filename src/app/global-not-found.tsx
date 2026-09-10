@@ -2,10 +2,11 @@ import '@/app/(frontend)/styles/globals.css'
 
 import { headers } from 'next/headers'
 import { Inter } from 'next/font/google'
-import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
+import { NextIntlClientProvider } from 'next-intl'
 
 import { Container } from '@/app/(frontend)/components/layout/Container'
+import { Button } from '@/app/(frontend)/components/primitives/button'
 import { ThemeScript } from '@/app/(frontend)/components/theme/ThemeScript'
 import skipLinkStyles from '@/app/(frontend)/components/layout/SkipLink.module.css'
 import styles from '@/app/[locale]/(frontend)/not-found.module.css'
@@ -21,7 +22,6 @@ export default async function GlobalNotFound() {
 	const requestHeaders = await headers()
 	const locale = requestHeaders.get('X-NEXT-INTL-LOCALE') === 'cs' ? 'cs' : 'en'
 	const messages = locale === 'cs' ? csMessages : enMessages
-	const homeHref = locale === 'cs' ? '/cs' : '/'
 
 	return (
 		<html lang={locale} suppressHydrationWarning data-scroll-behavior="smooth">
@@ -31,24 +31,26 @@ export default async function GlobalNotFound() {
 				<ThemeScript />
 			</head>
 			<body className={inter.className}>
-				<a className={skipLinkStyles.skipLink} href="#main-content">
-					{messages.accessibility.skipToMain}
-				</a>
-				<main id="main-content" tabIndex={-1}>
-					<section className={styles.section} aria-labelledby="global-not-found-heading">
-						<Container className={styles.content}>
-							<Eyebrow>{messages.errors.notFound.eyebrow}</Eyebrow>
-							<h1 id="global-not-found-heading" className={styles.title}>
-								{messages.errors.notFound.title}
-							</h1>
-							<p className={styles.message}>{messages.errors.notFound.description}</p>
-							<Link href={homeHref}>
-								<ArrowLeft className={styles.icon} aria-hidden="true" />
-								{messages.errors.notFound.returnHome}
-							</Link>
-						</Container>
-					</section>
-				</main>
+				<NextIntlClientProvider locale={locale} messages={messages}>
+					<a className={skipLinkStyles.skipLink} href="#main-content">
+						{messages.accessibility.skipToMain}
+					</a>
+					<main id="main-content" tabIndex={-1}>
+						<section className={styles.section} aria-labelledby="global-not-found-heading">
+							<Container className={styles.content}>
+								<Eyebrow>{messages.errors.notFound.eyebrow}</Eyebrow>
+								<h1 id="global-not-found-heading" className={styles.title}>
+									{messages.errors.notFound.title}
+								</h1>
+								<p className={styles.message}>{messages.errors.notFound.description}</p>
+								<Button renders="link" href="/" variant="primary">
+									<ArrowLeft className={styles.icon} aria-hidden="true" />
+									{messages.errors.notFound.returnHome}
+								</Button>
+							</Container>
+						</section>
+					</main>
+				</NextIntlClientProvider>
 			</body>
 		</html>
 	)
