@@ -5,17 +5,21 @@ import { InsightFilters } from '@/app/[locale]/(frontend)/(pages)/insights/Insig
 import { getInsightFilters, type InsightFilter } from '@/lib/content/articlePresentation'
 
 // Keep the component test focused on filter semantics rather than next-intl routing.
+// `prefetch` is a Link prop, not an anchor attribute: expose it as a data attribute so
+// the test can assert the navigation contract without a real router.
 vi.mock('@/i18n/navigation', () => ({
 	Link: ({
 		children,
 		href,
+		prefetch,
 		...props
 	}: {
 		children: React.ReactNode
 		href: string
+		prefetch?: boolean | null
 		[key: string]: unknown
 	}) => (
-		<a href={href} {...props}>
+		<a href={href} data-prefetch={String(prefetch)} {...props}>
 			{children}
 		</a>
 	),
@@ -113,6 +117,14 @@ describe('InsightFilters', () => {
 		for (const link of getFilterLinks()) {
 			expect(link.className).toContain('size-small')
 			expect(link.className).toContain('filterLink')
+		}
+	})
+
+	it('disables prefetch so every activation fetches the page it navigates to', () => {
+		renderFilters()
+
+		for (const link of getFilterLinks()) {
+			expect(link).toHaveAttribute('data-prefetch', 'false')
 		}
 	})
 
