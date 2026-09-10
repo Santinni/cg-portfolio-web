@@ -1,8 +1,9 @@
 # Page header and hero-layout consolidation
 
-Status: `provisional` — Figma structure audited and the production-code inventory
-partially completed 2026-08-06, but the geometry audit is outstanding. Blocked for
-implementation until Phase 1 is finished.  
+Status: `provisional` — Phase 1 inventory completed 2026-09-11 (COD-82); see
+`docs/audits/2026-09-11-page-hero-inventory.md`. Phase 2 extraction is not yet
+authorized: it needs Karel's go on the recommended primitive shape and on the
+typography question (finding 5 of the audit) before any code moves.  
 Date: 2026-08-06
 
 Related plan: `2026-08-06-insights-topic-filter-alignment.md`
@@ -63,9 +64,16 @@ their hero from `Eyebrow` plus local markup, while Experience, About and Contact
 compose it from the shared `PageIntro` + `Section` primitives. The split is real
 and follows exactly the boundary the Figma audit predicted.
 
-Not yet established — and required before any extraction — is whether the
-*rendered and semantic output* of the two groups actually differs, or only the
-authoring style. Different class names are not by themselves a defect.
+**Established 2026-09-11** (`docs/audits/2026-09-11-page-hero-inventory.md`):
+the semantic output of the two groups is identical (`main > header > div.container >
+p + h1 + p`, one H1, no ARIA, same gutters and breakpoints); the rendered output
+differs in four group-level properties — padding scale (64/96/128 vs 64/80/96),
+grid gap (20 fixed vs 20→24), eyebrow colour (`--action-primary` vs
+`--text-secondary`) and h1 tracking/measure. Both copies drift from Figma in
+different directions, so the duplication is real and worth consolidating. The
+audit also found that no page hero compensates for the fixed 64/72 px navigation
+(the home hero does), leaving 0–56 px of clearance where Figma has 104–112 px —
+the highest-severity finding, and one the primitive should own.
 
 For reference, the CV page is a third case: it imports **no** shared site
 primitive at all (see the BL-002 entry in
