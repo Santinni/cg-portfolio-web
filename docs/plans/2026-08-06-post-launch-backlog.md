@@ -227,6 +227,10 @@ section-primitive scope is defined by the work items above.
 
 ## BL-003 — Stronger Identity On The Homepage
 
+**Delivered 2026-09-11 under COD-79 (PR #56).** The binding record is now
+`docs/decisions/homepage.md` (HP-01, HP-02); the `Person` structured-data item below is
+the only piece left open, as a decision rather than work.
+
 **Requested outcome:** the homepage should state identity more clearly, and
 probably link straight to contacts, so a visitor immediately knows whose site
 they landed on.
@@ -255,11 +259,13 @@ they landed on.
       third button.
 - [x] Reuse the unified contact-link component from BL-002 if inline contact
       links land in the hero — do not introduce a third link style.
-- [-] Verify heading hierarchy, landmark semantics and focus order stay correct
-      after the change. (COD-79: proven by the component test; the Playwright
-      accessibility contract is updated but still has to run in the pinned container.)
-- [ ] Verify the hero still fits at 390/768/1440 without overflow, in light and
-      dark mode, and that the compact copy variants remain coherent.
+- [x] Verify heading hierarchy, landmark semantics and focus order stay correct
+      after the change. (COD-79: component test plus `home-accessibility.spec.ts`,
+      green in the pinned container.)
+- [x] Verify the hero still fits at 390/768/1440 without overflow, in light and
+      dark mode, and that the compact copy variants remain coherent. (COD-79:
+      pinned Chromium suite 261/261 incl. the re-pinned hero contracts; light and
+      dark screenshots at 1440/390 compared with `6:11`, `8:92`, `8:255`.)
 - [!] Consider `Person` structured data on the homepage once the identity model
       is explicit — factual fields only. (COD-79: the repository has no JSON-LD or
       structured-data pattern to extend; needs a decision on where it lives first.)

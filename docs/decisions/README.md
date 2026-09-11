@@ -50,6 +50,7 @@ delivered plan is deleted rather than archived.
 | [`curriculum-vitae.md`](curriculum-vitae.md) | CV routes, approved frames, PDF and download contract |
 | [`localization.md`](localization.md) | Locale strategy, routing bridge, Payload content boundary |
 | [`design-sources.md`](design-sources.md) | Figma file of record and approved node inventory |
+| [`homepage.md`](homepage.md) | The `/` hero: identity row and the two actions |
 | `../brand/brand-decision-log.md` | Brand identity and control geometry — governs; referenced from these records, never restated |
 
 ## Writing a record

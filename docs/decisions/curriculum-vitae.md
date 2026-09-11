@@ -160,6 +160,27 @@ CV design" could easily reach for one of them.
 **What would reopen it.** Nothing about their status. Delete them only if the record of
 what was previously sent out stops being useful.
 
+## CV-09 — Curriculum vitae is a primary navigation destination · `locked`
+
+**Decision.** `Curriculum vitae` (Czech `Životopis`) is an item of the shared primary
+navigation, placed directly after Experience and before About, in the desktop menu and the
+mobile dialog alike. The item opens the page; it never downloads a PDF. Download actions stay
+on the page itself (CV-03, CV-05).
+
+**Why.** The CV had been reachable only by URL since the CV rollout removed it from the
+navigation pending the PDF decision (CV-03). With locale-first downloads settled, hiding the
+page cost recruiters the most-opened route on the site. One entry in the navigation's shared
+route-key source feeds both menus, so the item cannot drift between desktop and mobile.
+
+**Implementation status: met.** COD-78 (BL-002b), PR #52: `navItems` in
+`src/app/(frontend)/components/ui/navigation/index.tsx`, catalog key
+`navigation.items.curriculumVitae`, exact-route `aria-current` (the route has no child
+routes, so the prefix match is safe), keyboard activation and drawer close covered in
+`launch.spec.ts`, order and current-state in `navigation.test.tsx`.
+
+**What would reopen it.** A navigation redesign in Figma (component set `21:357`), or a
+decision to make the CV a download rather than a page.
+
 ## CV-06 — CV content stays out of Payload · `provisional`
 
 **Decision.** Static HTML CV copy lives in the `curriculumVitae` namespace in both
