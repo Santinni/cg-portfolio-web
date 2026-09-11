@@ -359,11 +359,17 @@ for (const locale of cvLocales) {
 		})
 
 		test('keeps the hero contact block to its approved row count at every width', async ({
+			browserName,
 			page,
 		}) => {
 			// The guard the audit named: a reflow changes row count and block height and nothing
 			// else, so this is what turns "the images differ" into a failure that says which row
 			// appeared and how much taller the hero got.
+			//
+			// The row counts and block heights are Chromium-on-Linux measurements (the pinned
+			// image), like every other Figma-derived number in the parity class; WebKit wraps the
+			// row differently and would fail on font metrics, not on a regression.
+			test.skip(browserName !== 'chromium', 'Measured row geometry is pinned to Chromium.')
 			for (const viewport of [...primaryViewports, ...compactOverflowViewports]) {
 				await gotoCv(page, locale.path, 'light', viewport)
 
@@ -565,24 +571,28 @@ for (const theme of themes) {
 
 		await focusByKeyboard(page, action)
 		await expect(action).toBeFocused()
-		const focusContract = await action.evaluate((element) => {
-			const label = element.querySelector('span')
-			if (!(label instanceof HTMLElement)) throw new Error('Expected a Download Action label')
-			const styles = getComputedStyle(element)
-			return {
-				labelOpacity: getComputedStyle(label).opacity,
-				outlineColor: styles.outlineColor,
-				outlineStyle: styles.outlineStyle,
-				outlineWidth: styles.outlineWidth,
-			}
-		})
-
-		expect(focusContract).toEqual({
-			labelOpacity: '1',
-			outlineColor: themeColors[theme].focus,
-			outlineStyle: 'solid',
-			outlineWidth: '2px',
-		})
+		// The label reveals through a 200ms opacity transition; sample until it settles rather
+		// than once, or an engine that starts the transition a frame later fails the contract.
+		await expect
+			.poll(() =>
+				action.evaluate((element) => {
+					const label = element.querySelector('span')
+					if (!(label instanceof HTMLElement)) throw new Error('Expected a Download Action label')
+					const styles = getComputedStyle(element)
+					return {
+						labelOpacity: getComputedStyle(label).opacity,
+						outlineColor: styles.outlineColor,
+						outlineStyle: styles.outlineStyle,
+						outlineWidth: styles.outlineWidth,
+					}
+				}),
+			)
+			.toEqual({
+				labelOpacity: '1',
+				outlineColor: themeColors[theme].focus,
+				outlineStyle: 'solid',
+				outlineWidth: '2px',
+			})
 	})
 }
 

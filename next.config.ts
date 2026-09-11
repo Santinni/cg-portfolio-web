@@ -3,6 +3,8 @@ import type { NextConfig } from 'next'
 import { withPayload } from '@payloadcms/next/withPayload'
 import createNextIntlPlugin from 'next-intl/plugin'
 
+import { buildSecurityHeaders } from './src/lib/security/headers'
+
 const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts')
 
 const nextConfig: NextConfig = {
@@ -46,37 +48,7 @@ const nextConfig: NextConfig = {
 		return [
 			{
 				source: '/(.*)',
-				headers: [
-					{ key: 'X-Frame-Options', value: 'DENY' },
-					{ key: 'X-Content-Type-Options', value: 'nosniff' },
-					{ key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
-					{ key: 'X-DNS-Prefetch-Control', value: 'on' },
-					{
-						key: 'Strict-Transport-Security',
-						value: 'max-age=31536000; includeSubDomains; preload',
-					},
-					{
-						key: 'Permissions-Policy',
-						value:
-							'accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()',
-					},
-					{
-						key: 'Content-Security-Policy',
-						value: [
-							"default-src 'self'",
-							"script-src 'self' 'unsafe-inline' 'unsafe-eval'",
-							"style-src 'self' 'unsafe-inline'",
-							"img-src 'self' blob: data: https:",
-							"font-src 'self' data:",
-							"connect-src 'self' https://calendar.google.com",
-							"frame-src 'self' https://calendar.google.com",
-							"base-uri 'self'",
-							"form-action 'self'",
-							"frame-ancestors 'none'",
-							'upgrade-insecure-requests',
-						].join('; '),
-					},
-				],
+				headers: buildSecurityHeaders({ publicServerUrl: process.env.NEXT_PUBLIC_SERVER_URL }),
 			},
 		]
 	},
