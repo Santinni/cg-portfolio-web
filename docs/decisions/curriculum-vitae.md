@@ -79,9 +79,16 @@ name. `src/__tests__/e2e/experience-cv-download.spec.ts` and
 `src/__tests__/e2e/curriculum-vitae.spec.ts` hold the locale-first download contract for
 both routes.
 
-The language and profile of the file stay visible where the download is *described* — the
-CV page download section carries a `languageLabel · profileLabel` eyebrow — not in the
-button that performs it.
+**Copy amendment, 2026-09-12 (COD-92).** The download section no longer describes the
+file's format or the profile it was written for: the "English · React profile" eyebrow and
+the "... curriculum vitae in PDF format" description were withdrawn on Karel's decision,
+because a visitor needs neither and such meta-copy is not to appear anywhere on the site.
+The eyebrow now reads `languageLabel · roleLabel` ("English · Senior Frontend Engineer"),
+and the description says what the reader takes away and for whom (a team being staffed or
+a partner being sought for a project). The locale-first routing, the distinct profile
+versions and the stable URLs above are unchanged; the profile distinction lives in this
+record, not in the UI. `curriculum-vitae-i18n.test.ts` keeps format and profile words out
+of the catalog.
 
 The uniform-label clause was added on 2026-09-01 under COD-76, replacing an earlier
 requirement that each label state the PDF language or profile variant. That earlier

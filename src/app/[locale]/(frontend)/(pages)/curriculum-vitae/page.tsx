@@ -286,7 +286,7 @@ export default async function CurriculumPage({ params }: CurriculumPageProps) {
 				<Container className={styles.downloadInner}>
 					<div>
 						<Eyebrow className={styles.downloadEyebrow}>
-							{t('download.languageLabel')} · {t('download.profileLabel')}
+							{t('download.languageLabel')} · {t('download.roleLabel')}
 						</Eyebrow>
 						<h2>{t('download.label')}</h2>
 						<p>{t('download.description')}</p>
