@@ -5,9 +5,9 @@
 | Brand | Codeguy |
 | Domain | codeguy.cz |
 | Owner | Karel Kutchan |
-| Version | 1.0 |
-| Last updated | 2026-07-29 |
-| Status | Current for strategy, voice, color, typography and digital UI expression. Logo system remains partially provisional. |
+| Version | 1.1 |
+| Last updated | 2026-09-11 |
+| Status | Current for strategy, voice, color, typography, digital UI expression and the logo system. |
 | Languages | English (primary), Czech (primary) |
 
 ---
@@ -174,31 +174,24 @@ The wordmark is set type, not an image. Render it as text so it inherits the the
 
 On brand surfaces the wordmark may be paired with `Karel Kutchan` in secondary text at label or body scale. Keep at least 8 px between them and never merge them into a single lockup graphic.
 
-### 5.2 Secondary CG mark — provisional / open
+### 5.2 Secondary mark — Arc · approved
 
-A compact secondary mark is needed for favicons, PWA icons, avatars and small square contexts. Its final form is **not decided**.
+The secondary mark is **Arc** (BD-20): a ring open to the right with a bar from the centre, read as a G. It serves favicons, PWA icons, avatars and any square context where the wordmark does not fit. It never replaces the wordmark on a brand surface; where both appear, keep at least the ring thickness between them and never merge them into a lockup.
 
-Open, and not to be assumed in new work:
+| Property | Value |
+| --- | --- |
+| Geometry | 32-unit grid; ring outer radius 12, inner 6, opening ±40°; bar 11 × 5 from the centre to the right |
+| Colour | one colour: brand `#0A6E80` on light surfaces, `#22D3EE` on dark, ink for monochrome; no gradients, no second colour |
+| Tile | brand-teal square, corner 4/32 (the 4 px control radius), mark in white at 92 % of the tile |
+| Clearspace | the ring thickness (6/32 of the mark's height) on every side |
+| Minimum size | 16 px (tile); 24 px for the bare mark on a busy surface |
+| Sources | master `src/assets/icons/codeguy-logo.svg` (`currentColor`); tile `public/icon.svg`; rasters `favicon.ico` (16/32/48), `apple-icon.png` (180), `web-app-manifest-192x192.png`, `web-app-manifest-512x512.png` — all exported from the master, never redrawn |
 
-- final production geometry of the CG mark
-- clearspace rules
-- minimum sizes
-- separate light and dark asset variants
+Do not stroke it, rotate it, add a shadow, place it on the legacy yellow, or scale the bar and ring independently.
 
-Do not invent, redraw or approximate this mark. Until it is resolved, small square contexts should use the simplest defensible interim treatment available — a `CODEGUY`-derived or plain typographic placeholder on a brand-token background — and be flagged as interim rather than published as final identity.
+### 5.3 Legacy assets — resolved
 
-### 5.3 Legacy asset warning — deprecated
-
-The following are **legacy** and conflict with the current teal/cyan system. Do not treat them as current, and do not reuse them in new brand or product work:
-
-- existing CG monogram assets
-- the yellow favicon and derived icon set
-- `public/icon.svg`
-- `src/assets/icons/codeguy-logo.svg`
-- current favicons and PWA icons
-- `public/kklogo.svg`
-
-Each of these needs an explicit migration decision — replace, redraw or retire. Until that decision is recorded, they may remain in the repository for continuity but must not be described as approved identity. See §15.
+The yellow CG monogram, `public/kklogo.svg` and the yellow favicon/PWA set were withdrawn on 2026-09-11 (BD-22). Each has an explicit decision: replaced by the Arc master or tile, or retired. `docs/project-brief.md` remains historical input only (BD-27).
 
 ---
 
@@ -378,7 +371,7 @@ Case studies follow a consistent shape: context, constraint, decision, trade-off
 
 - OG images are typography-led: the claim or article title set in Inter on a brand surface token, with `codeguy.cz` as a small identifier. No stock imagery, no decorative code.
 - Verify OG text contrast at the size it actually renders in feed previews.
-- Avatars and small square contexts are affected by the **open** secondary mark decision (§5.2) — use an interim treatment and do not publish it as final identity.
+- Avatars and small square contexts use the Arc tile (§5.2): the brand-teal square with the white mark, exported from the master, never a cropped wordmark.
 - Profile bios use the positioning language in the platform's language, kept within the approved standing claims.
 - Proposals, invoices and formal documents lead with **Karel Kutchan**, use light-mode tokens and the canonical teal, and stay factual in tone.
 
@@ -428,7 +421,7 @@ English and Czech are both primary. Neither is a translation of the other in sta
 | Keep numbers sourced and explained | Publish metrics without a basis |
 | Treat focus, contrast, keyboard and reduced motion as identity requirements | Frame accessibility or testing as extras |
 | Render the wordmark as live text | Recreate it as an image or a new lockup |
-| Flag the CG mark as provisional | Publish an invented monogram as final |
+| Export every icon from the Arc master | Redraw, stroke or recolour the mark per context |
 | Retire legacy yellow assets on contact | Reuse `#FACC15` in new work |
 
 ---
@@ -454,25 +447,14 @@ English and Czech are both primary. Neither is a translation of the other in sta
 
 Items that are unresolved. None may be described as approved until closed and logged.
 
-**Logo system**
+**Logo system** — closed 2026-09-11 (BD-20, BD-22): Arc geometry, clearspace, minimum size, light/dark colour and every icon export are in §5.2; the legacy assets were replaced or retired. Still open:
 
-- [ ] Decide final production geometry for the secondary CG mark.
-- [ ] Define its clearspace and minimum sizes.
-- [ ] Produce light and dark asset variants.
-- [ ] Define the interim treatment for favicons, PWA icons and avatars until the above lands.
-
-**Legacy asset migration** — each needs an explicit replace / redraw / retire decision:
-
-- [ ] `public/icon.svg`
-- [ ] `src/assets/icons/codeguy-logo.svg`
-- [ ] Favicon set
-- [ ] PWA icon set
-- [ ] `public/kklogo.svg`
-- [ ] Any remaining yellow-identity assets
+- [ ] Update the Figma file with the Arc component (master, tile, light/dark) so the file of record matches the repository (DS-04).
+- [ ] Social banner / OG image using the mark beside the wordmark (§10.4).
 
 **Implementation audits**
 
-- [ ] Audit the PWA manifest: theme and background colors are currently white, so adaptive browser chrome needs review against light/dark surface tokens.
+- [ ] Audit the installed-app chrome on iOS and Android with the brand theme colour and dark splash set in BD-23.
 - [ ] Sweep for deprecated `CodeGuy` / `CodeGuy.cz` spellings.
 - [ ] Sweep for `#FACC15` / `#FBBF24` usage in code and assets.
 - [ ] Verify contrast for all token pairs in both modes.
