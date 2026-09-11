@@ -68,3 +68,28 @@ and the process documentation stops being reviewable or diffable.
 Some routes were delivered without approved frames and cannot carry a parity claim. See
 [`booking.md`](booking.md) BK-02. Do not report measured Figma parity for a route with no
 approved source.
+
+## DS-06 — Insights topic filters are design-system Button links · `locked`
+
+**Decision.** The Insights topic filters render as the design-system `Button` in its `SM`
+size through `renders="link"`: the selected filter is `secondary`, the others `quiet`, 36 px
+high with a 4 px radius and 8 px gaps, hugging their labels. The list wraps on narrow
+widths; it never scrolls horizontally and carries no fixed height, so Czech labels can grow.
+Semantics are unchanged: each control is a next-intl link with `aria-current="page"` on the
+selected one, filtering is the server-rendered `?topic=` navigation, and no control becomes a
+button, gains `aria-pressed` or joins a tablist.
+
+**Why.** Figma `74:291` (desktop), `76:10` (tablet) and `76:211` (mobile, two rows 8 px
+apart) show the shared Button, not the rounded pill the first implementation styled by hand,
+and a second chip-like control would have duplicated the Button contract. The 44 px target
+belongs to the anchor, extended through an invisible pseudo-element, not to the row around
+it, so the rows keep the approved 8 px rhythm.
+
+**Implementation status: met.** COD-80, `src/app/[locale]/(frontend)/(pages)/insights/InsightFilters.tsx`
+with `insight-filters.test.tsx` and `insights-filters.spec.ts`. The links carry
+`prefetch={false}` because a prefetched entry left a bare `/insights` → `?topic=` navigation
+without a page fetch; that is a navigation contract, not a style, and the component test
+pins it.
+
+**What would reopen it.** A Figma change to the filter control, or a locale whose labels
+cannot wrap into two rows at 350 px.
