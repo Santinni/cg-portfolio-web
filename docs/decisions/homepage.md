@@ -102,9 +102,11 @@ were clients served through eMan, and the CV states them as such.
 block padding from the spacing scale, the label tier for the heading, icon tokens for the
 mark heights — and the parity specs pin that derived geometry, not a Figma measurement.
 
-**Status.** `provisional` until Karel confirms the right to show each mark. Two of the five
-are clients reached through an employer rather than direct engagements; if any rights
-question is unresolved the mark is removed from the content module, not replaced.
+**Status.** Rights confirmed by Karel on 2026-09-12 for all five marks, including E.ON and
+MND as clients reached through eMan. Still `provisional` on content: Karel asked to add
+**LMC** and **Skype** as marks of the same kind (the CV names both employers); the row locks
+once their silhouettes are in `src/content/workedWith.ts`. Any mark without a usable
+single-colour source stays out rather than being redrawn.
 
 **What would reopen it.** A rights objection, a new employer or client worth naming, or a
 decision to link the marks to the case studies (which would make the row a navigation
