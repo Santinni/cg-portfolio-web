@@ -83,11 +83,11 @@ consistent with the CV; a change in employment reopens it.
 **What would reopen it.** Karel changing role or location, withdrawing from the market, or
 choosing to show availability as a status element rather than a sentence.
 
-## HP-04 — A "Worked with" row of five monochrome marks follows the hero · `provisional`
+## HP-04 — A "Worked with" row of six monochrome marks follows the hero · `locked`
 
 **Decision.** Directly under the hero, before the flagship case, a low section labelled
-"WORKED WITH" / "SPOLUPRACOVAL JSEM S" shows five marks at a uniform height (20 px below
-1024 px, 24 px above): E.ON, MND, Kontent.ai, Jobs.cz, eMan. The marks are rendered as
+"WORKED WITH" / "SPOLUPRACOVAL JSEM S" shows six marks at a uniform height (20 px below
+1024 px, 24 px above): E.ON, MND, Kontent.ai, Skype, Jobs.cz, eMan. The marks are rendered as
 masks filled with the secondary text colour, so they are monochrome in both themes, and they
 are static — no links, no hover state. Company names are brand names and live in
 `src/content/workedWith.ts`, not the catalogs; each mark exposes its name as an image label.
@@ -102,11 +102,11 @@ were clients served through eMan, and the CV states them as such.
 block padding from the spacing scale, the label tier for the heading, icon tokens for the
 mark heights — and the parity specs pin that derived geometry, not a Figma measurement.
 
-**Status.** Rights confirmed by Karel on 2026-09-12 for all five marks, including E.ON and
-MND as clients reached through eMan. Still `provisional` on content: Karel asked to add
-**LMC** and **Skype** as marks of the same kind (the CV names both employers); the row locks
-once their silhouettes are in `src/content/workedWith.ts`. Any mark without a usable
-single-colour source stays out rather than being redrawn.
+**Status.** Rights confirmed by Karel on 2026-09-12 for every mark, including E.ON and MND as
+clients reached through eMan. Skype was added the same day (simple-icons 12 glyph, CC0; the
+brand was retired in 2025 and later icon sets dropped it). LMC was considered and left out:
+lmc.eu now serves the Alma Career identity the company adopted in 2024, so no LMC-era mark
+exists to show, and Jobs.cz already represents that employer's product in the row.
 
 **What would reopen it.** A rights objection, a new employer or client worth naming, or a
 decision to link the marks to the case studies (which would make the row a navigation

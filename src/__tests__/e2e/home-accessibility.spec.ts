@@ -351,7 +351,7 @@ async function expectWorkedWithContract(page: Page, heading: string) {
 	const marks = section.getByRole('img')
 	await expect(marks).toHaveCount(5)
 	await expect(marks).toHaveText(['', '', '', '', ''])
-	for (const name of ['E.ON', 'MND', 'Kontent.ai', 'Jobs.cz', 'eMan']) {
+	for (const name of ['E.ON', 'MND', 'Kontent.ai', 'Skype', 'Jobs.cz', 'eMan']) {
 		await expect(section.getByRole('img', { exact: true, name })).toBeVisible()
 	}
 	await expect(section.locator('a[href], button, [tabindex]:not([tabindex="-1"])')).toHaveCount(0)
