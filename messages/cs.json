@@ -415,25 +415,25 @@
 				"eyebrow": "DOMLUVIT ROZHOVOR",
 				"title": "Vyberte si termín úvodního rozhovoru.",
 				"body": "Hodí se pro rozhovor o roli, týmu, projektu nebo jiném tématu, které chcete probrat.",
-				"action": "Domluvit rozhovor"
+				"action": "Domluvit hovor"
 			},
 			"experience": {
 				"eyebrow": "DALŠÍ KROK",
 				"title": "Proberme zkušenosti za profesním profilem.",
 				"body": "V úvodním rozhovoru můžeme porovnat roli, kontext týmu a problémy, které potřebují jasnou odpovědnost.",
-				"action": "Domluvit rozhovor"
+				"action": "Domluvit hovor"
 			},
 			"curriculumVitae": {
 				"eyebrow": "POKRAČOVAT V ROZHOVORU",
 				"title": "Proberme profesní profil v souvislostech.",
 				"body": "Domluvte si úvodní rozhovor o roli, týmu, projektu nebo jiném tématu, které chcete probrat.",
-				"action": "Domluvit rozhovor"
+				"action": "Domluvit hovor"
 			},
 			"caseStudy": {
 				"eyebrow": "ŘEŠÍTE PODOBNÝ PROBLÉM?",
 				"title": "Pojďme probrat projekt v souvislostech.",
 				"body": "V úvodním rozhovoru můžeme porovnat omezení, rozhodnutí a další užitečný krok.",
-				"action": "Domluvit rozhovor"
+				"action": "Domluvit hovor"
 			}
 		}
 	},

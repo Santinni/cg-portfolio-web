@@ -369,7 +369,7 @@
 			},
 			"location": {
 				"label": "Location",
-				"value": "Prague, Czech Republic"
+				"value": "Prague, Czechia"
 			},
 			"linkedin": {
 				"label": "LinkedIn"
@@ -415,25 +415,25 @@
 				"eyebrow": "BOOK A CONVERSATION",
 				"title": "Choose a time for an introductory conversation.",
 				"body": "Useful for discussing a role, team, project or another reason to connect.",
-				"action": "Book a conversation"
+				"action": "Book a call"
 			},
 			"experience": {
 				"eyebrow": "NEXT STEP",
 				"title": "Discuss the experience behind the profile.",
 				"body": "Use an introductory conversation to compare the role, team context and the problems that need ownership.",
-				"action": "Book a conversation"
+				"action": "Book a call"
 			},
 			"curriculumVitae": {
 				"eyebrow": "CONTINUE THE CONVERSATION",
 				"title": "Discuss the profile in context.",
 				"body": "Book an introductory conversation about a role, team, project or another reason to connect.",
-				"action": "Book a conversation"
+				"action": "Book a call"
 			},
 			"caseStudy": {
 				"eyebrow": "WORKING ON A RELATED PROBLEM?",
 				"title": "Bring the project context into a conversation.",
 				"body": "Use an introductory conversation to compare constraints, decisions and the next useful step.",
-				"action": "Book a conversation"
+				"action": "Book a call"
 			}
 		}
 	},
@@ -465,7 +465,7 @@
 				},
 				"location": {
 					"title": "Prague",
-					"description": "Based in Prague, Czech Republic."
+					"description": "Based in Prague, Czechia."
 				}
 			}
 		},
