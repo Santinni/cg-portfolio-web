@@ -237,6 +237,7 @@ All booking constraints are recorded in `docs/decisions/booking.md`. Read it bef
 - Routing tests must also prove that Czech CMS article URLs return an HTTP redirect with no Czech hreflang response header.
 - SEO tests must cover locale-specific canonical URLs, language alternates and Open Graph locale.
 - Before claiming completion, run the relevant narrow tests followed by `pnpm test`, `pnpm typecheck`, `pnpm lint`, `pnpm format:check`, `pnpm build` and the required Chromium production smoke when route behavior changed.
+- A Playwright spec that asserts measured pixels (`toBeCloseTo`, `expectPx`, `getBoundingClientRect` values) or screenshots (`toHaveScreenshot`) is a parity spec: add it to `PARITY_SPECS` in `playwright.config.ts` so it runs only on Chromium in the pinned image. Everything else is functional and must pass on all four projects via `pnpm test:e2e:pinned`.
 
 ## Documentation Discipline
 

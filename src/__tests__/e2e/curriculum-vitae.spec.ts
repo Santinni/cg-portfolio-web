@@ -351,8 +351,12 @@ for (const locale of cvLocales) {
 
 for (const theme of themes) {
 	test(`fine-pointer ${theme} hover expands left and keeps the Download Action anchored`, async ({
+		isMobile,
 		page,
 	}) => {
+		// The hover contract only exists for a fine pointer; the mobile-chrome project emulates a
+		// touch device, where the media query below is false by design rather than by defect.
+		test.skip(isMobile, 'Hover contract needs a fine pointer; this project emulates touch.')
 		const locale = cvLocales[0]
 		await gotoCv(page, locale.path, theme, primaryViewports[0])
 		expect(
@@ -390,24 +394,28 @@ for (const theme of themes) {
 
 		await focusByKeyboard(page, action)
 		await expect(action).toBeFocused()
-		const focusContract = await action.evaluate((element) => {
-			const label = element.querySelector('span')
-			if (!(label instanceof HTMLElement)) throw new Error('Expected a Download Action label')
-			const styles = getComputedStyle(element)
-			return {
-				labelOpacity: getComputedStyle(label).opacity,
-				outlineColor: styles.outlineColor,
-				outlineStyle: styles.outlineStyle,
-				outlineWidth: styles.outlineWidth,
-			}
-		})
-
-		expect(focusContract).toEqual({
-			labelOpacity: '1',
-			outlineColor: themeColors[theme].focus,
-			outlineStyle: 'solid',
-			outlineWidth: '2px',
-		})
+		// The label reveals through a 200ms opacity transition; sample until it settles rather
+		// than once, or an engine that starts the transition a frame later fails the contract.
+		await expect
+			.poll(() =>
+				action.evaluate((element) => {
+					const label = element.querySelector('span')
+					if (!(label instanceof HTMLElement)) throw new Error('Expected a Download Action label')
+					const styles = getComputedStyle(element)
+					return {
+						labelOpacity: getComputedStyle(label).opacity,
+						outlineColor: styles.outlineColor,
+						outlineStyle: styles.outlineStyle,
+						outlineWidth: styles.outlineWidth,
+					}
+				}),
+			)
+			.toEqual({
+				labelOpacity: '1',
+				outlineColor: themeColors[theme].focus,
+				outlineStyle: 'solid',
+				outlineWidth: '2px',
+			})
 	})
 }
 
