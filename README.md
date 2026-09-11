@@ -61,9 +61,9 @@ Rozhodnutí, slepé cesty, stav implementace a review jsou v:
 
 Práce na tomto repozitáři se eviduje ve dvou vrstvách, které se nesmí míchat:
 
-- **Repozitář** vlastní proces — implementační plány, backlog, rozhodnutí,
-  záznamy slepých cest a validační matice. Vše je v `docs/plans/`, releasový
-  plán v `plans/portfolio-production-delivery.md`.
+- **Repozitář** vlastní proces — živé plány a backlog v `docs/plans/`,
+  produktová rozhodnutí v `docs/decisions/`, naměřené audity v `docs/audits/`.
+  Doručený plán se maže, ne archivuje (pravidlo v `AGENTS.md`).
 - **Figma** (`Codeguy Portfolio - Final Design`, klíč `cs38WzlXKY9xfDYBinoKel`)
   vlastní výsledný produktový design — obrazovky, komponenty, stavy, prototypy
   a handoff anotace. Implementační plány do Figmy nepatří; pravidlo je
