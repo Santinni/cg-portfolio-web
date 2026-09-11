@@ -349,8 +349,8 @@ async function expectWorkedWithContract(page: Page, heading: string) {
 	await expect(section.getByRole('heading', { exact: true, level: 2, name: heading })).toBeVisible()
 
 	const marks = section.getByRole('img')
-	await expect(marks).toHaveCount(5)
-	await expect(marks).toHaveText(['', '', '', '', ''])
+	await expect(marks).toHaveCount(6)
+	await expect(marks).toHaveText(['', '', '', '', '', ''])
 	for (const name of ['E.ON', 'MND', 'Kontent.ai', 'Skype', 'Jobs.cz', 'eMan']) {
 		await expect(section.getByRole('img', { exact: true, name })).toBeVisible()
 	}

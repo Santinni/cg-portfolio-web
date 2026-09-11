@@ -93,14 +93,14 @@ const FIGMA_EN_INTEGRATED_GEOMETRY = {
 		],
 	},
 	390: {
-		mainHeight: 3764,
+		mainHeight: 3800,
 		sections: [
 			{ height: 927, top: 0 },
-			{ height: 136, top: 927 },
-			{ height: 435, top: 1063 },
-			{ height: 1230, top: 1498 },
-			{ height: 656, top: 2728 },
-			{ height: 380, top: 3384 },
+			{ height: 172, top: 927 },
+			{ height: 435, top: 1099 },
+			{ height: 1230, top: 1534 },
+			{ height: 656, top: 2764 },
+			{ height: 380, top: 3420 },
 		],
 	},
 	320: {
