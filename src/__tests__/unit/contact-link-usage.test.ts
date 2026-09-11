@@ -11,7 +11,6 @@ import enMessages from '../../../messages/en.json'
 const contactSurfaces = [
 	'src/app/[locale]/(frontend)/(pages)/curriculum-vitae/page.tsx',
 	'src/app/[locale]/(frontend)/(pages)/contact/page.tsx',
-	'src/app/[locale]/(frontend)/(pages)/(home)/blocks/hero/index.tsx',
 ] as const
 
 function readSurface(path: string) {

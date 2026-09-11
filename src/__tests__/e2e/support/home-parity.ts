@@ -67,6 +67,12 @@ export const HOME_PARITY_LOCALES = [
 export const HOME_ORDERED_SECTION_CONTRACTS = [
 	{ id: null, key: 'hero', labelledBy: 'hero-heading', visibility: 'always' },
 	{
+		id: 'worked-with',
+		key: 'workedWith',
+		labelledBy: 'worked-with-heading',
+		visibility: 'always',
+	},
+	{
 		id: 'flagship-case',
 		key: 'flagship',
 		labelledBy: 'flagship-case-heading',

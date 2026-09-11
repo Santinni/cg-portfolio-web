@@ -39,6 +39,8 @@ interface HomeAccessibilityContract {
 
 const englishSharedHeadings: ExpectedHeading[] = [
 	{ level: 1, name: 'I build frontend systems for products that have to last.' },
+	// HP-04: the eyebrow-styled section heading of the Worked-with row.
+	{ level: 2, name: 'WORKED WITH' },
 	{ level: 2, name: 'A customer portal built as a system, not a collection of screens.' },
 	{ level: 2, name: 'Complex products. Clear frontend decisions.' },
 	{ level: 3, name: 'Maintenance applications' },
@@ -54,8 +56,27 @@ const englishSharedHeadings: ExpectedHeading[] = [
 	{ level: 3, name: 'Leadership through clarity' },
 ]
 
+/** Compact widths swap two headings for their shorter catalog variants; match them by name. */
+function withCompactHeadings(
+	headings: ExpectedHeading[],
+	replacements: Record<string, string>,
+): ExpectedHeading[] {
+	const seen = new Set<string>()
+	const compact = headings.map((heading) => {
+		const replacement = replacements[heading.name]
+		if (replacement === undefined) return heading
+		seen.add(heading.name)
+		return { level: heading.level, name: replacement }
+	})
+	for (const name of Object.keys(replacements)) {
+		if (!seen.has(name)) throw new Error(`Compact replacement target not found: ${name}`)
+	}
+	return compact
+}
+
 const czechSharedHeadings: ExpectedHeading[] = [
 	{ level: 1, name: 'Stavím frontendové systémy pro produkty, které musí vydržet.' },
+	{ level: 2, name: 'SPOLUPRACOVAL JSEM S' },
 	{
 		level: 2,
 		name: 'Zákaznický portál postavený jako systém, ne jako sbírka obrazovek.',
@@ -93,7 +114,7 @@ const contracts: HomeAccessibilityContract[] = [
 			],
 			links: [
 				{ href: '/work/energy-customer-portal', name: 'Read flagship case' },
-				{ href: 'mailto:karel@codeguy.cz', name: 'karel@codeguy.cz' },
+				{ href: '/contact/book', name: 'Book an intro call' },
 				{ href: '/work/energy-customer-portal', name: 'Read the case' },
 				{ href: '/work/maintenance-applications', name: 'Read case' },
 				{ href: '/work/distributed-energy-platform', name: 'Read case' },
@@ -102,6 +123,7 @@ const contracts: HomeAccessibilityContract[] = [
 			],
 			sectionNames: [
 				'I build frontend systems for products that have to last.',
+				'WORKED WITH',
 				'A customer portal built as a system, not a collection of screens.',
 				'Complex products. Clear frontend decisions.',
 				'Senior engineering is mostly about making good decisions repeatable.',
@@ -111,14 +133,11 @@ const contracts: HomeAccessibilityContract[] = [
 		},
 		compact: {
 			headings: [
-				...englishSharedHeadings.map((heading, index) => {
-					if (index === 1) {
-						return { level: 2, name: 'A customer portal built as a system.' } as const
-					}
-					if (index === 6) {
-						return { level: 2, name: 'Good decisions should be repeatable.' } as const
-					}
-					return heading
+				...withCompactHeadings(englishSharedHeadings, {
+					'A customer portal built as a system, not a collection of screens.':
+						'A customer portal built as a system.',
+					'Senior engineering is mostly about making good decisions repeatable.':
+						'Good decisions should be repeatable.',
 				}),
 				{
 					level: 2,
@@ -127,7 +146,7 @@ const contracts: HomeAccessibilityContract[] = [
 			],
 			links: [
 				{ href: '/work/energy-customer-portal', name: 'Read flagship case' },
-				{ href: 'mailto:karel@codeguy.cz', name: 'karel@codeguy.cz' },
+				{ href: '/contact/book', name: 'Book an intro call' },
 				{ href: '/work/energy-customer-portal', name: 'Read the case' },
 				{ href: '/work/maintenance-applications', name: 'Read case' },
 				{ href: '/work/distributed-energy-platform', name: 'Read case' },
@@ -135,6 +154,7 @@ const contracts: HomeAccessibilityContract[] = [
 			],
 			sectionNames: [
 				'I build frontend systems for products that have to last.',
+				'WORKED WITH',
 				'A customer portal built as a system.',
 				'Complex products. Clear frontend decisions.',
 				'Good decisions should be repeatable.',
@@ -163,7 +183,7 @@ const contracts: HomeAccessibilityContract[] = [
 					href: '/cs/work/energy-customer-portal',
 					name: 'Přečíst hlavní případovou studii',
 				},
-				{ href: 'mailto:karel@codeguy.cz', name: 'karel@codeguy.cz' },
+				{ href: '/cs/contact/book', name: 'Domluvit úvodní hovor' },
 				{ href: '/cs/work/energy-customer-portal', name: 'Přečíst studii' },
 				{ href: '/cs/work/maintenance-applications', name: 'Přečíst studii' },
 				{ href: '/cs/work/distributed-energy-platform', name: 'Přečíst studii' },
@@ -172,6 +192,7 @@ const contracts: HomeAccessibilityContract[] = [
 			],
 			sectionNames: [
 				'Stavím frontendové systémy pro produkty, které musí vydržet.',
+				'SPOLUPRACOVAL JSEM S',
 				'Zákaznický portál postavený jako systém, ne jako sbírka obrazovek.',
 				'Komplexní produkty. Jasná frontendová rozhodnutí.',
 				'Seniorní práce je hlavně o tom, aby se dobrá rozhodnutí dala opakovat.',
@@ -181,14 +202,11 @@ const contracts: HomeAccessibilityContract[] = [
 		},
 		compact: {
 			headings: [
-				...czechSharedHeadings.map((heading, index) => {
-					if (index === 1) {
-						return { level: 2, name: 'Zákaznický portál postavený jako systém.' } as const
-					}
-					if (index === 6) {
-						return { level: 2, name: 'Dobrá rozhodnutí se musí dát opakovat.' } as const
-					}
-					return heading
+				...withCompactHeadings(czechSharedHeadings, {
+					'Zákaznický portál postavený jako systém, ne jako sbírka obrazovek.':
+						'Zákaznický portál postavený jako systém.',
+					'Seniorní práce je hlavně o tom, aby se dobrá rozhodnutí dala opakovat.':
+						'Dobrá rozhodnutí se musí dát opakovat.',
 				}),
 				{
 					level: 2,
@@ -200,7 +218,7 @@ const contracts: HomeAccessibilityContract[] = [
 					href: '/cs/work/energy-customer-portal',
 					name: 'Přečíst hlavní případovou studii',
 				},
-				{ href: 'mailto:karel@codeguy.cz', name: 'karel@codeguy.cz' },
+				{ href: '/cs/contact/book', name: 'Domluvit úvodní hovor' },
 				{ href: '/cs/work/energy-customer-portal', name: 'Přečíst studii' },
 				{ href: '/cs/work/maintenance-applications', name: 'Přečíst studii' },
 				{ href: '/cs/work/distributed-energy-platform', name: 'Přečíst studii' },
@@ -208,6 +226,7 @@ const contracts: HomeAccessibilityContract[] = [
 			],
 			sectionNames: [
 				'Stavím frontendové systémy pro produkty, které musí vydržet.',
+				'SPOLUPRACOVAL JSEM S',
 				'Zákaznický portál postavený jako systém.',
 				'Komplexní produkty. Jasná frontendová rozhodnutí.',
 				'Dobrá rozhodnutí se musí dát opakovat.',
@@ -270,13 +289,19 @@ async function expectHeadingOrder(page: Page, expected: ExpectedHeading[]) {
 }
 
 /**
- * BL-003 hero identity: the name sits in the eyebrow paragraph (not a heading), the locked
- * headline is the only heading in the hero, and the only focusable elements are the
- * flagship CTA followed by the direct e-mail link — so Tab order is primary, then e-mail.
+ * HP-01/HP-02 hero contract: the name sits in the eyebrow paragraph (not a heading), the
+ * locked headline is the only heading in the hero, and the only focusable elements are the
+ * flagship button followed by the intro-call button — so Tab order is primary, then
+ * secondary. The availability line (HP-03) adds no focusable element.
  */
 async function expectHeroIdentityContract(
 	page: Page,
-	{ headline, name, primaryHref }: { headline: string; name: string; primaryHref: string },
+	{
+		headline,
+		name,
+		primaryHref,
+		secondaryHref,
+	}: { headline: string; name: string; primaryHref: string; secondaryHref: string },
 ) {
 	const hero = page.locator('section[aria-labelledby="hero-heading"]')
 	await expect(hero.getByRole('heading')).toHaveCount(1)
@@ -307,9 +332,29 @@ async function expectHeroIdentityContract(
 	const focusables = hero.locator('a[href], button, [tabindex]:not([tabindex="-1"])')
 	await expect(focusables).toHaveCount(2)
 	await expect(focusables.nth(0)).toHaveAttribute('href', primaryHref)
-	await expect(focusables.nth(1)).toHaveAttribute('href', 'mailto:karel@codeguy.cz')
-	await expect(focusables.nth(1)).toHaveAttribute('data-contact-method', 'email')
+	await expect(focusables.nth(1)).toHaveAttribute('href', secondaryHref)
 	await expect(focusables.nth(1)).not.toHaveAttribute('target')
+	await expect(hero.locator('a[href^="mailto:"]')).toHaveCount(0)
+}
+
+/**
+ * HP-04: the Worked-with row is a named region whose only heading is its eyebrow-styled
+ * label; the marks expose the company names as images and nothing in the row is focusable.
+ */
+async function expectWorkedWithContract(page: Page, heading: string) {
+	const section = page.locator('#worked-with')
+	await expect(section).toBeVisible()
+	await expect(section).toHaveAttribute('aria-labelledby', 'worked-with-heading')
+	await expect(section.getByRole('heading')).toHaveCount(1)
+	await expect(section.getByRole('heading', { exact: true, level: 2, name: heading })).toBeVisible()
+
+	const marks = section.getByRole('img')
+	await expect(marks).toHaveCount(5)
+	await expect(marks).toHaveText(['', '', '', '', ''])
+	for (const name of ['E.ON', 'MND', 'Kontent.ai', 'Jobs.cz', 'eMan']) {
+		await expect(section.getByRole('img', { exact: true, name })).toBeVisible()
+	}
+	await expect(section.locator('a[href], button, [tabindex]:not([tabindex="-1"])')).toHaveCount(0)
 }
 
 async function expectLocalizedSections(page: Page, sectionNames: string[]) {
@@ -459,7 +504,9 @@ for (const locale of contracts) {
 					headline: expected.headings[0].name,
 					name: locale.heroName,
 					primaryHref: expected.links[0].href,
+					secondaryHref: expected.links[1].href,
 				})
+				await expectWorkedWithContract(page, expected.headings[1].name)
 				await expectLocalizedSections(page, expected.sectionNames)
 				await expectLocalizedLinks(page, expected.links)
 				await expectPendingCardHasNoLink(page, locale.pending)

@@ -49,7 +49,12 @@
 				"experience": "Webům se věnuji přes deset let a nyní působím ve vedoucí frontendové roli. S Reactem, TypeScriptem a Next.js pracuji na zákaznických portálech, podnikových aplikacích a komponentových systémech.",
 				"quality": "Architektura, přístupnost a udržovatelnost jsou součástí dodávky."
 			},
-			"primaryCta": "Přečíst hlavní případovou studii"
+			"primaryCta": "Přečíst hlavní případovou studii",
+			"secondaryCta": "Domluvit úvodní hovor",
+			"availability": "Lead Frontend Engineer v BlueGhost. Otevřený seniorním a lead frontend rolím v Praze nebo remote (EU), zaměstnanecky i na kontrakt."
+		},
+		"workedWith": {
+			"eyebrow": "SPOLUPRACOVAL JSEM S"
 		},
 		"flagship": {
 			"eyebrow": "HLAVNÍ PŘÍPADOVÁ STUDIE / ENERGETIKA",
@@ -361,7 +366,8 @@
 		"hero": {
 			"eyebrow": "KONTAKT",
 			"title": "Pojďme probrat produkt, tým a frontendové problémy, které stojí za řešení.",
-			"intro": "Hledám především správnou seniorní nebo vedoucí frontendovou roli. Rád proberu i vybrané možnosti konzultací, pokud si konkrétně sedneme."
+			"intro": "Hledám především správnou seniorní nebo vedoucí frontendovou roli. Rád proberu i vybrané možnosti konzultací, pokud si konkrétně sedneme.",
+			"availability": "Lead Frontend Engineer v BlueGhost. Otevřený seniorním a lead frontend rolím v Praze nebo remote (EU), zaměstnanecky i na kontrakt."
 		},
 		"methods": {
 			"eyebrow": "KONTAKTNÍ ÚDAJE",

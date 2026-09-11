@@ -4,6 +4,7 @@ import FlagshipCase from '@/app/[locale]/(frontend)/(pages)/(home)/blocks/flagsh
 import Hero from '@/app/[locale]/(frontend)/(pages)/(home)/blocks/hero'
 import Principles from '@/app/[locale]/(frontend)/(pages)/(home)/blocks/principles'
 import SelectedWork from '@/app/[locale]/(frontend)/(pages)/(home)/blocks/selected-work'
+import WorkedWith from '@/app/[locale]/(frontend)/(pages)/(home)/blocks/worked-with'
 import type { Metadata } from 'next'
 import type { Locale } from 'next-intl'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
@@ -37,6 +38,7 @@ export default async function HomePage({ params }: HomePageProps) {
 	return (
 		<>
 			<Hero />
+			<WorkedWith />
 			<FlagshipCase />
 			<SelectedWork />
 			<Principles />

@@ -49,7 +49,12 @@
 				"experience": "More than ten years in web development, currently in a lead frontend role. I work with React, TypeScript and Next.js across customer portals, enterprise applications and component systems.",
 				"quality": "Architecture, accessibility and maintainability are part of the delivery."
 			},
-			"primaryCta": "Read flagship case"
+			"primaryCta": "Read flagship case",
+			"secondaryCta": "Book an intro call",
+			"availability": "Lead Frontend Engineer at BlueGhost. Open to senior and lead frontend roles in Prague or remote (EU), employee or contract."
+		},
+		"workedWith": {
+			"eyebrow": "WORKED WITH"
 		},
 		"flagship": {
 			"eyebrow": "FLAGSHIP CASE / ENERGY",
@@ -361,7 +366,8 @@
 		"hero": {
 			"eyebrow": "CONTACT",
 			"title": "Let’s discuss the product, the team and the frontend problems worth solving.",
-			"intro": "I am primarily looking for the right senior or lead frontend role. Selected consulting conversations are welcome when the fit is specific."
+			"intro": "I am primarily looking for the right senior or lead frontend role. Selected consulting conversations are welcome when the fit is specific.",
+			"availability": "Lead Frontend Engineer at BlueGhost. Open to senior and lead frontend roles in Prague or remote (EU), employee or contract."
 		},
 		"methods": {
 			"eyebrow": "CONTACT DETAILS",

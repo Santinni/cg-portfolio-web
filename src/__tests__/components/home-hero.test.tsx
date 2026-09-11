@@ -4,7 +4,6 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import Hero from '@/app/[locale]/(frontend)/(pages)/(home)/blocks/hero'
 import { homeLinks } from '@/content/profile'
-import { contact } from '@/content/site'
 
 import csMessages from '../../../messages/cs.json'
 import enMessages from '../../../messages/en.json'
@@ -14,8 +13,8 @@ type LocaleId = keyof typeof catalogs
 
 const intlState = vi.hoisted(() => ({ locale: 'en' as 'cs' | 'en' }))
 
-/** The Hero only reads these two namespaces; the mock resolves them from the real catalogs. */
-type HeroNamespace = 'contact.methods' | 'home.hero'
+/** The Hero only reads this namespace; the mock resolves it from the real catalogs. */
+type HeroNamespace = 'home.hero'
 
 vi.mock('next-intl/server', async () => {
 	const { createTranslator: create } = await import('next-intl')
@@ -34,7 +33,8 @@ vi.mock('next-intl/server', async () => {
 	}
 })
 
-// Keep the block test focused on the hero contract rather than next-intl routing.
+// Keep the block test focused on the hero contract rather than next-intl routing: the
+// mock only reproduces the `as-needed` prefix so the Czech destinations stay checkable.
 vi.mock('@/i18n/navigation', () => ({
 	Link: ({
 		children,
@@ -45,11 +45,15 @@ vi.mock('@/i18n/navigation', () => ({
 		href: string
 		[key: string]: unknown
 	}) => (
-		<a href={href} {...props}>
+		<a href={intlState.locale === 'cs' ? `/cs${href}` : href} {...props}>
 			{children}
 		</a>
 	),
 }))
+
+function localizeHref(locale: LocaleId, href: string) {
+	return locale === 'cs' ? `/cs${href}` : href
+}
 
 async function renderHero(locale: LocaleId) {
 	intlState.locale = locale
@@ -94,7 +98,7 @@ describe('Home hero', () => {
 	)
 
 	it.each(['en', 'cs'] as const)(
-		'keeps the %s flagship CTA first and makes the second action a direct e-mail',
+		'keeps the %s flagship CTA first and books an intro call second (HP-02)',
 		async (locale) => {
 			const { hero } = await renderHero(locale)
 			const messages = catalogs[locale]
@@ -102,30 +106,50 @@ describe('Home hero', () => {
 			const links = within(hero).getAllByRole('link')
 			expect(links).toHaveLength(2)
 
-			const [primary, email] = links
-			expect(primary).toHaveAttribute('href', homeLinks.flagshipCase)
+			const [primary, secondary] = links
+			expect(primary).toHaveAttribute('href', localizeHref(locale, homeLinks.flagshipCase))
 			expect(primary).toHaveTextContent(messages.home.hero.primaryCta)
 			expect(primary.className).toContain('variant-primary')
 			expect(primary.className).toContain('size-large')
 
-			expect(email).toHaveAttribute('href', `mailto:${contact.email}`)
-			expect(email).toHaveAttribute('data-contact-method', 'email')
-			expect(email).toHaveAccessibleName(contact.email)
-			expect(email).not.toHaveAttribute('target')
-			expect(email).not.toHaveAttribute('rel')
-			expect(email).toHaveClass('inline')
+			expect(secondary).toHaveAttribute('href', localizeHref(locale, homeLinks.booking))
+			expect(secondary).toHaveTextContent(messages.home.hero.secondaryCta)
+			expect(secondary.className).toContain('variant-secondary')
+			expect(secondary.className).toContain('size-large')
+			expect(secondary).not.toHaveAttribute('target')
+			expect(secondary).not.toHaveAttribute('rel')
 
-			// Locked decision 6: no third action, and no route link to Experience or Contact.
+			// Exactly two actions: no e-mail, no route link to Experience or Contact itself.
+			expect(hero.querySelector('a[href^="mailto:"]')).toBeNull()
 			expect(within(hero).queryByRole('link', { name: /experience|zkušenosti/i })).toBeNull()
 			expect(hero.querySelectorAll('a, button')).toHaveLength(2)
 		},
 	)
 
-	it('carries no dead secondary-action copy in either catalog', () => {
+	it.each(['en', 'cs'] as const)(
+		'states the %s availability under the actions as plain text (HP-03)',
+		async (locale) => {
+			const { hero } = await renderHero(locale)
+			const messages = catalogs[locale]
+
+			const availability = within(hero).getByText(messages.home.hero.availability)
+			expect(availability.tagName).toBe('P')
+			expect(availability.querySelector('a')).toBeNull()
+
+			const [, secondary] = within(hero).getAllByRole('link')
+			expect(
+				secondary.compareDocumentPosition(availability) & Node.DOCUMENT_POSITION_FOLLOWING,
+			).toBeTruthy()
+		},
+	)
+
+	it('keeps the hero copy and the shared availability sentence consistent in both catalogs', () => {
 		for (const messages of Object.values(catalogs)) {
-			expect(messages.home.hero).not.toHaveProperty('secondaryCta')
+			expect(messages.home.hero.secondaryCta.trim()).not.toBe('')
 			expect(messages.home.hero.identity.name).toBe('Karel Kutchan')
 			expect(messages.home.hero.eyebrow).toContain('<identity>{name}</identity>')
+			// The same fact is stated on `/contact`; the two copies must not drift.
+			expect(messages.contact.hero.availability).toBe(messages.home.hero.availability)
 		}
 	})
 })
