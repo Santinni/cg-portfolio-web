@@ -44,42 +44,31 @@
 }
 
 .filterBar {
-	overflow-x: auto;
 	background: var(--surface-page);
 	border-bottom: 1px solid var(--border-default);
-	scrollbar-width: thin;
 }
 
 .filters {
 	display: flex;
+	flex-wrap: wrap;
 	gap: var(--space-8);
-	width: max-content;
 	margin: 0;
 	padding: var(--space-16) 0;
 	list-style: none;
 }
 
-.filter,
-.filterActive {
-	display: inline-flex;
-	align-items: center;
-	min-height: var(--touch-target-min);
-	padding: var(--space-8) var(--space-16);
-	border: 1px solid var(--border-default);
-	border-radius: var(--radius-pill);
-	font-size: var(--font-size-body);
-	font-weight: 600;
-	white-space: nowrap;
-}
-
-.filter:hover {
-	background: var(--action-secondary-hover);
-}
-
-.filterActive {
-	color: var(--action-on-primary);
-	background: var(--action-primary);
-	border-color: var(--action-primary);
+/*
+ * The visible control is the 36px SM Button and rows sit 8px apart (Figma
+ * 74:291, 76:211: second row at y=44). The 44px target belongs to the anchor
+ * itself, not to the row: an invisible pseudo-element extends its hit area
+ * 4px above and below, so adjacent rows' hit areas meet without overlapping
+ * and the list keeps the approved rhythm. `.button` is `position: relative`
+ * and does not clip. No fixed heights, so wrapped Czech labels size to content.
+ */
+.filterLink::after {
+	content: '';
+	position: absolute;
+	inset: calc((var(--control-height-sm) - var(--touch-target-min)) / 2) 0;
 }
 
 .content {
@@ -145,7 +134,6 @@
 	}
 
 	.filters {
-		gap: var(--space-12);
 		padding-block: var(--space-20);
 	}
 

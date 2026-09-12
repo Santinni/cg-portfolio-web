@@ -8,11 +8,11 @@ import { Button } from '@/app/(frontend)/components/primitives/button'
 import { ArticleCard, EditorialState } from '@/components/article'
 import { Eyebrow } from '@/components/site/Eyebrow'
 import { createLocalizedMetadata } from '@/i18n/metadata'
-import { Link } from '@/i18n/navigation'
 import { getInsightFilters, toArticleSummary } from '@/lib/content/articlePresentation'
 import { listPublishedPosts, listPublicTopics } from '@/lib/content/posts.server'
 import type { PublicPost } from '@/lib/content/publicContent'
 
+import { InsightFilters } from './InsightFilters'
 import styles from './InsightsPage.module.css'
 
 export const dynamic = 'force-dynamic'
@@ -74,28 +74,18 @@ export default async function InsightsPage({ params, searchParams }: InsightsPag
 
 			<div className={styles.filterBar}>
 				<Container>
-					<nav aria-label={t('filters.label')}>
-						<ul className={styles.filters}>
-							{filters.map((filter) => {
-								const isCurrent = filter.slug ? selectedTopic === filter.slug : !selectedTopic
-								const href = filter.slug
-									? `/insights?topic=${encodeURIComponent(filter.slug)}`
-									: '/insights'
-
-								return (
-									<li key={filter.key}>
-										<Link
-											className={isCurrent ? styles.filterActive : styles.filter}
-											href={href}
-											aria-current={isCurrent ? 'page' : undefined}
-										>
-											{t(`filters.${filter.key}`)}
-										</Link>
-									</li>
-								)
-							})}
-						</ul>
-					</nav>
+					<InsightFilters
+						filters={filters}
+						label={t('filters.label')}
+						labels={{
+							all: t('filters.all'),
+							architecture: t('filters.architecture'),
+							performance: t('filters.performance'),
+							designSystems: t('filters.designSystems'),
+							accessibility: t('filters.accessibility'),
+						}}
+						selectedTopic={selectedTopic}
+					/>
 				</Container>
 			</div>
 
