@@ -4,7 +4,7 @@
 | --- | --- |
 | Scope | `/curriculum-vitae`, `/cs/curriculum-vitae`, the generated CV PDFs and the download controls |
 | Status vocabulary | See [`README.md`](README.md) |
-| Last updated | 2026-09-01 |
+| Last updated | 2026-09-03 |
 
 ## CV-01 — The CV keeps its own direct public routes · `locked`
 
@@ -79,9 +79,16 @@ name. `src/__tests__/e2e/experience-cv-download.spec.ts` and
 `src/__tests__/e2e/curriculum-vitae.spec.ts` hold the locale-first download contract for
 both routes.
 
-The language and profile of the file stay visible where the download is *described* — the
-CV page download section carries a `languageLabel · profileLabel` eyebrow — not in the
-button that performs it.
+**Copy amendment, 2026-09-12 (COD-92).** The download section no longer describes the
+file's format or the profile it was written for: the "English · React profile" eyebrow and
+the "... curriculum vitae in PDF format" description were withdrawn on Karel's decision,
+because a visitor needs neither and such meta-copy is not to appear anywhere on the site.
+The eyebrow now reads `languageLabel · roleLabel` ("English · Senior Frontend Engineer"),
+and the description says what the reader takes away and for whom (a team being staffed or
+a partner being sought for a project). The locale-first routing, the distinct profile
+versions and the stable URLs above are unchanged; the profile distinction lives in this
+record, not in the UI. `curriculum-vitae-i18n.test.ts` keeps format and profile words out
+of the catalog.
 
 The uniform-label clause was added on 2026-09-01 under COD-76, replacing an earlier
 requirement that each label state the PDF language or profile variant. That earlier
@@ -129,6 +136,57 @@ hero contract.
 affordance as the `/contact` rows; the approved CV frames show underlined text with no
 glyph. One contract cannot signal "this leaves the site" on one surface and stay silent on
 another. Recorded in `docs/audits/2026-09-02-cv-shared-primitive-audit.md`.
+
+**Amended 2026-09-03, same day, superseded before merge.** The arrow widened the CV contact
+row past the 350 px content column at 390 px, wrapping `GitHub` onto a second line and
+growing the hero by 52 px. The first fix made the `inline` variant density-switched: icon
+density below 768 px, label and arrow restored above it. That shipped and was verified, then
+was replaced the same day by the decision below — recorded here because the underlying
+measurement, and the reason a same-width gap fix wasn't enough, are still the evidence for
+what follows. Full detail in `docs/audits/2026-09-03-cv-contact-wrap.md`.
+
+**Final form.** In the `inline` variant, LinkedIn and GitHub always render as their brand
+mark alone in a 44×44 target — monochrome, `--text-primary`, not the platform's brand
+colour — with no arrow and no visible label, at every width from 320 px to desktop. E-mail
+is untouched: underlined text, no icon. There is no responsive switch left: a direct channel
+is a value worth reading, a profile is a destination recognized by a globally known mark,
+and that distinction holds as much at 1440 px as at 390 px, so one rule replaced two.
+
+This is presentation only, and the distinction matters: the rendered element,
+`data-contact-method`, href, target, rel and text content are identical at every width, so
+the single contract this decision protects is intact and `/contact` (the `row` variant)
+is untouched — that page is a browsed directory where every method keeps its label
+regardless of width. Direct channels never enter icon-only rendering — an e-mail address is
+named by its value, and no glyph replaces it, which is why only `linkedin` and `github`
+render as a mark.
+
+Because the label is hidden with `clip` rather than `display: none`, the choice is
+load-bearing rather than cosmetic: `display: none` would remove the accessible name. That is
+asserted, not merely intended — `renders external profiles as an icon-only brand target at
+every width` in `src/__tests__/e2e/curriculum-vitae.spec.ts` checks the accessible name, the
+single brand glyph, a 44×44 target (within the suite's ±0.5 px `expectPx` tolerance) and a
+non-null but ≤1 px label box, for both
+profiles across 1440/768/390/430/320 in both locales. The focus ring has its own test per
+theme, because without a visible label it is the only cue a keyboard user gets.
+
+The component tests in `src/__tests__/components/contact-link.test.tsx` prove which branch
+the component takes, not the rendered result: this project's Vitest config sets no
+`css.include`, so CSS Modules are not processed there and a class name assertion cannot fail
+on a missing rule. Rendered proof lives in the Playwright specs and the pinned pixel suite.
+
+**Known departure from the Figma file of record.** The approved `Contact Link` component
+(`21:273`) has no icon-only state today; its `Social` kind always shows a leading
+external-link icon plus a visible label, and the "Contact row" block (`131:601`) inside the
+approved mobile CV frame (`131:593`) shows LinkedIn and GitHub wrapping onto a second row
+with full labels intact — a different, independently-arrived-at answer to the same
+narrow-width problem. This decision knowingly diverges from both. The Figma component gained
+`Kind=LinkedIn Icon` and `Kind=GitHub Icon` variants on 2026-09-03; the CV frames themselves
+still need updating before the file and the shipped page agree again. Until then, this
+document and `docs/audits/2026-09-03-cv-contact-wrap.md` are the source of truth for what
+shipped.
+
+The shipped `.contactList` column gap is `--space-16`, where the Figma row specifies 12 px.
+Recorded here so the difference is a decision, not a drift.
 
 ## CV-07 — The expanding download interaction is preserved, from the approved variant · `locked`
 

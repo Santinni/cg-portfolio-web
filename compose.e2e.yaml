@@ -9,8 +9,16 @@ name: cg-portfolio-e2e
 # variable: every input that can move a line break -- OS, browser build, font
 # packages -- is fixed by the image tags below.
 #
+# Only the parity specs (PARITY_SPECS in playwright.config.ts) depend on those
+# wrapping facts, so they run on chromium alone; every other spec is functional
+# and runs on all four Playwright projects here. CI stays chromium-only because
+# ubuntu-latest is not this pinned image -- this compose run is the multi-engine
+# gate.
+#
 # Usage:
-#   pnpm test:e2e:pinned
+#   pnpm test:e2e:pinned                       # all four projects
+#   pnpm test:e2e:pinned:chromium              # chromium only
+#   PLAYWRIGHT_ARGS=--project=firefox pnpm test:e2e:pinned
 #
 # The database is intentionally ephemeral (tmpfs, no named volume). It starts
 # empty on every run, so Payload applies `prodMigrations` cleanly instead of
@@ -87,6 +95,10 @@ services:
       CI: "true"
       PLAYWRIGHT_EXTERNAL_SERVER: "true"
       PLAYWRIGHT_BASE_URL: http://localhost:3000
+      # Opt-in for pixel baselines. Only this image has the font packages the
+      # baselines were captured with, so specs that compare screenshots skip
+      # everywhere else -- including CI, which is Linux but not this image.
+      PINNED_VISUAL: "true"
       # The SEO suite resolves its expected absolute URLs from this.
       NEXT_PUBLIC_SERVER_URL: http://localhost:3000
       APP_REVISION: ${APP_REVISION:-pinned-e2e}
@@ -100,7 +112,9 @@ services:
         # Passed as a flag, never written to .npmrc: the repo is bind-mounted and
         # a config write would land in the host working tree.
         pnpm install --frozen-lockfile --store-dir /pnpm-store
-        pnpm exec playwright test --project=chromium
+        # PLAYWRIGHT_ARGS is interpolated by Compose from the caller's shell (or
+        # .env) when the file is parsed, so it needs no entry under environment.
+        pnpm exec playwright test ${PLAYWRIGHT_ARGS:-}
 
 volumes:
   e2e_node_modules:

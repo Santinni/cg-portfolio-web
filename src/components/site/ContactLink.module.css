@@ -71,10 +71,55 @@
 	overflow-wrap: anywhere;
 }
 
-.inlineIcon {
+/*
+ * An external profile in the `inline` variant is always its brand mark, at every width --
+ * see the contract note on the component. The label is clipped rather than removed: it
+ * stays the anchor's accessible name and its text content, so only the presentation changes.
+ */
+.inlineBrand {
 	flex: 0 0 auto;
-	width: var(--icon-16);
-	height: var(--icon-16);
+	width: var(--icon-20);
+	height: var(--icon-20);
+}
+
+.inlineIconic {
+	position: relative;
+	justify-content: center;
+	/*
+	 * The 44px target is a property of the control, not of today's container. `.inline` sets
+	 * `min-inline-size: 0`, which switches off the automatic minimum size that would otherwise
+	 * hold this box open; `.contactList` only avoids shrinking it because it wraps. Pin it here
+	 * so reusing `inline` in a nowrap context cannot quietly shrink a touch target.
+	 */
+	flex: 0 0 auto;
+	inline-size: var(--touch-target-min);
+	block-size: var(--touch-target-min);
+	gap: 0;
+	border: 1px solid var(--border-default);
+	border-radius: var(--radius-4);
+	color: var(--text-primary);
+	text-decoration: none;
+	transition:
+		border-color 160ms ease,
+		color 160ms ease;
+}
+
+.inlineIconic:hover {
+	border-color: var(--action-primary);
+	color: var(--action-primary-hover);
+	text-decoration: none;
+}
+
+.inlineIconic .inlineText {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
 }
 
 @media (max-width: 479px) {
@@ -88,9 +133,26 @@
 	}
 }
 
+/*
+ * Forced colors override author border and outline colours with the same system palette, so
+ * the resting hairline and the focus ring would resolve to one indistinguishable value -- on a
+ * control whose entire visual is that border and which has no visible label to fall back on.
+ * Same treatment the repo already applies to IconButton and Navigation.
+ */
+@media (forced-colors: active) {
+	.inlineIconic {
+		border-color: ButtonText;
+	}
+
+	.inlineIconic:focus-visible {
+		outline-color: Highlight;
+	}
+}
+
 @media (prefers-reduced-motion: reduce) {
 	.rowLink,
-	.inlineLink {
+	.inlineLink,
+	.inlineIconic {
 		transition: none;
 	}
 }

@@ -31,6 +31,14 @@ When Context7 applies:
 - For external agents, define an explicit output contract, forbidden operations, stop conditions and verification requirements. The controller must independently verify artifacts and repository state.
 - Record material agent-efficiency incidents and corrective actions in `docs/agent-efficiency-log.md`.
 
+## Temporary Working Files
+
+- `tmp/` and the agent scratchpad hold disposable working artifacts only -- diagnostic screenshots, comparison renders, staged HTML for artifact previews, one-off debug scripts. Nothing there is a deliverable; `.gitignore` already excludes `tmp/` from commits, so this is about disk hygiene, not repo hygiene.
+- Once a task's outcome has been captured elsewhere -- applied to code, written into a doc, published as an artifact, or reported to the user -- remove what that task produced there. A screenshot that proved a point in conversation does not need to keep existing on disk after the point is made.
+- Do this at the end of the task that created the files, not as a separate cleanup pass later. Leaving it for "later" is how `tmp/` accumulates.
+- If `tmp/` holds artifacts that predate the current task, leave them alone rather than guessing whether they're still wanted. Clean up only what the current task created.
+- A worktree created solely for comparison or diagnostic purposes (e.g. checking out an older commit to capture a before/after baseline) is a temporary artifact too -- remove it with `git worktree remove` once its evidence has been captured.
+
 ## Git Flow And Pull Requests
 
 - `dev` is the integration branch. Create feature, fix, and documentation branches from an up-to-date `dev` and return them through a PR targeting `dev`.
@@ -237,6 +245,7 @@ All booking constraints are recorded in `docs/decisions/booking.md`. Read it bef
 - Routing tests must also prove that Czech CMS article URLs return an HTTP redirect with no Czech hreflang response header.
 - SEO tests must cover locale-specific canonical URLs, language alternates and Open Graph locale.
 - Before claiming completion, run the relevant narrow tests followed by `pnpm test`, `pnpm typecheck`, `pnpm lint`, `pnpm format:check`, `pnpm build` and the required Chromium production smoke when route behavior changed.
+- A Playwright spec that asserts measured pixels (`toBeCloseTo`, `expectPx`, `getBoundingClientRect` values) or screenshots (`toHaveScreenshot`) is a parity spec: add it to `PARITY_SPECS` in `playwright.config.ts` so it runs only on Chromium in the pinned image. Everything else is functional and must pass on all four projects via `pnpm test:e2e:pinned`.
 
 ## Documentation Discipline
 
