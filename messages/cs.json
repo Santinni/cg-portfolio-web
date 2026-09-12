@@ -13,6 +13,7 @@
 		"items": {
 			"work": "Projekty",
 			"experience": "Zkušenosti",
+			"curriculumVitae": "Životopis",
 			"about": "O mně",
 			"contact": "Kontakt",
 			"insights": "Články"
@@ -423,25 +424,25 @@
 				"eyebrow": "DOMLUVIT ROZHOVOR",
 				"title": "Vyberte si termín úvodního rozhovoru.",
 				"body": "Hodí se pro rozhovor o roli, týmu, projektu nebo jiném tématu, které chcete probrat.",
-				"action": "Domluvit rozhovor"
+				"action": "Domluvit hovor"
 			},
 			"experience": {
 				"eyebrow": "DALŠÍ KROK",
 				"title": "Proberme zkušenosti za profesním profilem.",
 				"body": "V úvodním rozhovoru můžeme porovnat roli, kontext týmu a problémy, které potřebují jasnou odpovědnost.",
-				"action": "Domluvit rozhovor"
+				"action": "Domluvit hovor"
 			},
 			"curriculumVitae": {
 				"eyebrow": "POKRAČOVAT V ROZHOVORU",
 				"title": "Proberme profesní profil v souvislostech.",
 				"body": "Domluvte si úvodní rozhovor o roli, týmu, projektu nebo jiném tématu, které chcete probrat.",
-				"action": "Domluvit rozhovor"
+				"action": "Domluvit hovor"
 			},
 			"caseStudy": {
 				"eyebrow": "ŘEŠÍTE PODOBNÝ PROBLÉM?",
 				"title": "Pojďme probrat projekt v souvislostech.",
 				"body": "V úvodním rozhovoru můžeme porovnat omezení, rozhodnutí a další užitečný krok.",
-				"action": "Domluvit rozhovor"
+				"action": "Domluvit hovor"
 			}
 		}
 	},
@@ -536,40 +537,24 @@
 		"download": {
 			"label": "Stáhnout životopis",
 			"languageLabel": "Čeština",
-			"profileLabel": "Obecný profesní profil",
-			"description": "Český obecný profesní životopis ve formátu PDF.",
+			"roleLabel": "Senior Frontend Engineer",
+			"description": "Jeden soubor s celou praxí, dovednostmi, vzděláním a kontakty, ať už obsazujete tým, nebo hledáte partnera pro projekt.",
 			"accessibilityLabel": "Stáhnout životopis Karla Kutchana"
 		},
 		"accessibility": {
-			"currentRole": "Aktuální role",
-			"externalLink": "Otevře se v nové kartě"
-		},
-		"header": {
-			"headline": "curriculum vitæ",
-			"profession": "Senior frontend engineer"
+			"currentRole": "Aktuální role"
 		},
 		"biography": {
-			"title": "Kdo jsem?",
-			"paragraphs": {
-				"focus": "Jsem Senior frontend engineer se zaměřením na udržitelné produktové systémy, přístupnost a spolehlivou dodávku.",
-				"experience": "Ve webovém vývoji mám více než deset let zkušeností a nyní působím jako Lead Frontend Engineer v BlueGhost.",
-				"quality": "Největší přínos mám tam, kde se potkává dodávka produktu, frontendová architektura a srozumitelná týmová spolupráce.",
-				"systems": "Stavím rozhraní v Reactu a TypeScriptu, znovupoužitelné komponentové základy a testovací postupy pro komplexní produkty.",
-				"collaboration": "Zakládám si na přímé komunikaci, viditelných kompromisech a úzké spolupráci s produktovými, designérskými a backendovými týmy."
-			}
+			"title": "Kdo jsem?"
 		},
 		"technology": {
-			"title": "Technologický stack",
-			"javascript": "JS frameworky, knihovny a nástroje",
-			"styling": "Styling a design systémy"
+			"title": "Technologický stack"
 		},
 		"experience": {
 			"eyebrow": "ZKUŠENOSTI",
 			"title": "Pracovní zkušenosti",
 			"intro": "Vybrané frontendové role v obráceném chronologickém pořadí.",
 			"presentLabel": "Současnost",
-			"presentPeriod": "6/2024 – 2/2025",
-			"freelancerAt": "Externista pro {company}",
 			"entries": {
 				"blueghost": {
 					"title": "Lead Frontend Engineer",
@@ -693,16 +678,6 @@
 					"name": "Švédština",
 					"level": "Začátečník"
 				}
-			},
-			"degree": "Elektrotechnika, telekomunikace a výpočetní technika",
-			"coursesTitle": "Kurzy a semináře",
-			"courses": {
-				"vzhuruDolu": "Optimalizace rychlosti načítání, CSS kód: organizace a údržba, SVG do hloubky, principy JavaScriptu",
-				"learn2code": "CSS preprocesory: Sass",
-				"webrebel": "Webrebel – online kurz webdesignu",
-				"freeCodeCamp": "Certifikace Full Stack Web Development, softwarové inženýrství",
-				"codecademy": "Základy HTML a CSS - www.codecademy.com",
-				"scomp": "Programátor webových aplikací, pracovník grafického studia"
 			},
 			"ongoingLabel": "současnost"
 		},

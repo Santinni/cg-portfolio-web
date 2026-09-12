@@ -13,6 +13,7 @@
 		"items": {
 			"work": "Work",
 			"experience": "Experience",
+			"curriculumVitae": "Curriculum vitae",
 			"about": "About",
 			"contact": "Contact",
 			"insights": "Insights"
@@ -377,7 +378,7 @@
 			},
 			"location": {
 				"label": "Location",
-				"value": "Prague, Czech Republic"
+				"value": "Prague, Czechia"
 			},
 			"linkedin": {
 				"label": "LinkedIn"
@@ -423,25 +424,25 @@
 				"eyebrow": "BOOK A CONVERSATION",
 				"title": "Choose a time for an introductory conversation.",
 				"body": "Useful for discussing a role, team, project or another reason to connect.",
-				"action": "Book a conversation"
+				"action": "Book a call"
 			},
 			"experience": {
 				"eyebrow": "NEXT STEP",
 				"title": "Discuss the experience behind the profile.",
 				"body": "Use an introductory conversation to compare the role, team context and the problems that need ownership.",
-				"action": "Book a conversation"
+				"action": "Book a call"
 			},
 			"curriculumVitae": {
 				"eyebrow": "CONTINUE THE CONVERSATION",
 				"title": "Discuss the profile in context.",
 				"body": "Book an introductory conversation about a role, team, project or another reason to connect.",
-				"action": "Book a conversation"
+				"action": "Book a call"
 			},
 			"caseStudy": {
 				"eyebrow": "WORKING ON A RELATED PROBLEM?",
 				"title": "Bring the project context into a conversation.",
 				"body": "Use an introductory conversation to compare constraints, decisions and the next useful step.",
-				"action": "Book a conversation"
+				"action": "Book a call"
 			}
 		}
 	},
@@ -473,7 +474,7 @@
 				},
 				"location": {
 					"title": "Prague",
-					"description": "Based in Prague, Czech Republic."
+					"description": "Based in Prague, Czechia."
 				}
 			}
 		},
@@ -536,40 +537,24 @@
 		"download": {
 			"label": "Download CV",
 			"languageLabel": "English",
-			"profileLabel": "React profile",
-			"description": "English React-focused curriculum vitae in PDF format.",
+			"roleLabel": "Senior Frontend Engineer",
+			"description": "One file with the full experience, skills, education and contact details, whether you are hiring for a team or looking for a partner on a project.",
 			"accessibilityLabel": "Download CV — Karel Kutchan"
 		},
 		"accessibility": {
-			"currentRole": "Current role",
-			"externalLink": "Opens in a new tab"
-		},
-		"header": {
-			"headline": "curriculum vitæ",
-			"profession": "Senior Frontend Engineer"
+			"currentRole": "Current role"
 		},
 		"biography": {
-			"title": "Who am I?",
-			"paragraphs": {
-				"focus": "I am a Senior Frontend Engineer focused on maintainable product systems, accessibility and dependable delivery.",
-				"experience": "I have more than ten years of experience in web development and currently work as Lead Frontend Engineer at BlueGhost.",
-				"quality": "My strongest work sits where product delivery, frontend architecture and team clarity meet.",
-				"systems": "I build React and TypeScript interfaces, reusable component foundations and testing practices for complex products.",
-				"collaboration": "I value direct communication, visible trade-offs and close collaboration with product, design and backend teams."
-			}
+			"title": "Who am I?"
 		},
 		"technology": {
-			"title": "Technological Stack",
-			"javascript": "JS Frameworks, Libraries and tools",
-			"styling": "Styling & Design Systems"
+			"title": "Technological Stack"
 		},
 		"experience": {
 			"eyebrow": "EXPERIENCE",
 			"title": "Experience",
 			"intro": "Selected frontend roles in reverse chronological order.",
 			"presentLabel": "Present",
-			"presentPeriod": "6/2024 – 2/2025",
-			"freelancerAt": "Freelancer at {company}",
 			"entries": {
 				"blueghost": {
 					"title": "Lead Frontend Engineer",
@@ -693,16 +678,6 @@
 					"name": "Swedish",
 					"level": "Beginner"
 				}
-			},
-			"degree": "Electrical engineering, telecommunications and computer technologies",
-			"coursesTitle": "Courses and Seminars",
-			"courses": {
-				"vzhuruDolu": "Loading speed optimization, CSS code organization and maintenance, in-depth SVG, JavaScript principles",
-				"learn2code": "CSS preprocessors: Sass",
-				"webrebel": "Webrebel – online web design course",
-				"freeCodeCamp": "Full Stack Web Development Certification, Computer Software Engineering",
-				"codecademy": "Basics of HTML & CSS - www.codecademy.com",
-				"scomp": "Web Application Programmer, Graphic studio worker"
 			},
 			"ongoingLabel": "Present"
 		},

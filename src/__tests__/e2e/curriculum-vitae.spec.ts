@@ -16,7 +16,7 @@ const cvLocales = [
 		heroEyebrow: 'CURRICULUM VITAE',
 		heroRole: 'Senior Frontend Engineer',
 		currentRole: 'Current role',
-		contactLocation: 'Prague, Czech Republic',
+		contactLocation: 'Prague, Czechia',
 		downloadAccessibleName: 'Download CV — Karel Kutchan',
 		pdfHref: '/curriculum-vitae/CV_Karel_Kutchan.pdf',
 		filename: 'CV_Karel_Kutchan.pdf',
@@ -76,16 +76,61 @@ const compactOverflowViewports = [
 
 const themes = ['light', 'dark'] as const satisfies readonly HomeTheme[]
 
+/**
+ * The two methods that render as a brand mark instead of text. Their labels are platform
+ * names, so both catalogs carry the same string -- see `messages/*.json` `contact.methods`.
+ */
+const externalProfiles = [
+	{ label: 'LinkedIn', method: 'linkedin' },
+	{ label: 'GitHub', method: 'github' },
+] as const
+
+/**
+ * How many rows the hero contact block is allowed to occupy at each width, and the height
+ * that follows from it.
+ *
+ * This is the assertion the 2026-09-03 audit named and did not add. The regression it exists
+ * for reflowed one contact line into two and grew the hero by 52px, while every other
+ * assertion in this file stayed green: nothing overflowed, no touch target changed size and
+ * no single element's geometry moved. Row count is the only thing that actually moved, so it
+ * is the only thing that can name the failure -- "expected 2 rows, got 3" instead of a
+ * screenshot diff reporting that two images differ.
+ *
+ * The values are measured, not derived: `--touch-target-min` (44) per row plus the
+ * `--space-8` row gap between rows, which is where the original 52px came from. Both locales
+ * wrap at the same widths despite the Czech location string being ~54px wider, so one table
+ * covers both.
+ *
+ * Change these only with a decision record. A number edited to make a red suite go green
+ * records the regression as the intent.
+ */
+const contactRowCounts: Record<string, number> = {
+	'1440': 1,
+	'768': 1,
+	'430': 2,
+	'390': 2,
+	'320': 3,
+}
+
+/** 44px per row, 8px between rows -- `--touch-target-min` and `--space-8`. */
+function expectedContactBlockHeight(rows: number): number {
+	return rows * 44 + (rows - 1) * 8
+}
+
 const themeColors = {
 	light: {
 		defaultBackground: 'rgb(10, 110, 128)',
 		hoverBackground: 'rgb(8, 90, 106)',
 		focus: 'rgb(10, 110, 128)',
+		// `--text-primary: #08090c` -- what CV-05 binds the brand mark to.
+		textPrimary: 'rgb(8, 9, 12)',
 	},
 	dark: {
 		defaultBackground: 'rgb(34, 211, 238)',
 		hoverBackground: 'rgb(103, 232, 249)',
 		focus: 'rgb(34, 211, 238)',
+		// `--text-primary: #ffffff` in dark.
+		textPrimary: 'rgb(255, 255, 255)',
 	},
 } as const
 
@@ -148,7 +193,7 @@ async function focusByKeyboard(page: Page, target: Locator) {
 		if (await target.evaluate((element) => document.activeElement === element)) return
 	}
 
-	throw new Error('Could not reach the fixed CV Download Action using keyboard navigation')
+	throw new Error('Could not reach the target element using keyboard navigation')
 }
 
 for (const locale of cvLocales) {
@@ -247,11 +292,140 @@ for (const locale of cvLocales) {
 				},
 			])
 
-			const targets = await rows.evaluateAll((elements) =>
-				elements.map((element) => element.getBoundingClientRect().height),
+			const targetSizes = await rows.evaluateAll((elements) =>
+				elements.map((element) => ({
+					height: element.getBoundingClientRect().height,
+					method: element.getAttribute('data-contact-method'),
+					width: element.getBoundingClientRect().width,
+				})),
 			)
-			for (const height of targets) expect(height).toBeGreaterThanOrEqual(44)
+			for (const { height, method, width } of targetSizes) {
+				expect(height, `${method} target height`).toBeGreaterThanOrEqual(44)
+				expect(width, `${method} target width`).toBeGreaterThanOrEqual(44)
+			}
 		})
+
+		test('renders external profiles as an icon-only brand target at every width', async ({
+			page,
+		}) => {
+			// Every width the design claims, not just the ones that were convenient: dropping the
+			// width switch means no viewport is a special case, and 320 is the width the decision
+			// record names as the lower bound.
+			const widths = [...primaryViewports, ...compactOverflowViewports]
+
+			for (const viewport of widths) {
+				await gotoCv(page, locale.path, 'light', viewport)
+
+				// Both profiles, not just the first one: a swapped ternary in BrandGlyph or a
+				// dropped key in hasBrandGlyph would otherwise leave the suite green.
+				for (const profile of externalProfiles) {
+					const link = page.locator(
+						`[data-cv-content] address a[data-contact-method="${profile.method}"]`,
+					)
+					const label = link.getByText(profile.label, { exact: true })
+					const brandGlyph = link.locator('[data-contact-glyph="brand"]')
+					const where = `${profile.method} @ ${viewport.id}px`
+
+					// The accessible name is the assertion that matters: `display: none` would take
+					// the label out of the accessibility tree, which the clipped label avoids.
+					await expect(link, where).toHaveAccessibleName(profile.label)
+					await expect(brandGlyph, where).toBeVisible()
+					await expect(link.locator('svg'), where).toHaveCount(1)
+
+					// `boundingBox()` returns null for a `display: none` element, so the null case
+					// must fail rather than coalesce to a passing zero -- that is the exact
+					// substitution this assertion exists to catch.
+					const labelBox = await label.boundingBox()
+					expect(labelBox, `${where}: clipped label must still occupy a box`).not.toBeNull()
+					expect(
+						labelBox?.width,
+						`${where}: clipped label must not occupy layout`,
+					).toBeLessThanOrEqual(1)
+
+					const iconTarget = await link.boundingBox()
+					expect(iconTarget, `${where}: target must be laid out`).not.toBeNull()
+					expectPx(iconTarget?.height ?? 0, 44)
+					expectPx(iconTarget?.width ?? 0, 44)
+
+					// CV-05 binds the mark to `--text-primary`, deliberately not the platform's
+					// brand colour. Nothing but a pixel baseline asserted that, and those do not
+					// run in GitHub CI.
+					const glyphColor = await brandGlyph.evaluate((el) => getComputedStyle(el).color)
+					expect(glyphColor, `${where}: brand mark stays monochrome`).toBe(
+						themeColors.light.textPrimary,
+					)
+				}
+			}
+		})
+
+		test('keeps the hero contact block to its approved row count at every width', async ({
+			browserName,
+			page,
+		}) => {
+			// The guard the audit named: a reflow changes row count and block height and nothing
+			// else, so this is what turns "the images differ" into a failure that says which row
+			// appeared and how much taller the hero got.
+			//
+			// The row counts and block heights are Chromium-on-Linux measurements (the pinned
+			// image), like every other Figma-derived number in the parity class; WebKit wraps the
+			// row differently and would fail on font metrics, not on a regression.
+			test.skip(browserName !== 'chromium', 'Measured row geometry is pinned to Chromium.')
+			for (const viewport of [...primaryViewports, ...compactOverflowViewports]) {
+				await gotoCv(page, locale.path, 'light', viewport)
+
+				const block = page.locator('[data-cv-content] address')
+				const geometry = await block.evaluate((element) => {
+					const items = Array.from(element.querySelectorAll('[data-contact-method]'))
+					const tops = new Set(items.map((item) => Math.round(item.getBoundingClientRect().top)))
+					return {
+						height: element.getBoundingClientRect().height,
+						items: items.length,
+						rows: tops.size,
+					}
+				})
+
+				// If a method stops rendering, row count collapses and would otherwise "pass".
+				expect(geometry.items, `${viewport.id}px contact methods`).toBe(4)
+
+				const expectedRows = contactRowCounts[viewport.id]
+				expect(expectedRows, `no approved row count recorded for ${viewport.id}px`).toBeDefined()
+				expect(geometry.rows, `${viewport.id}px contact rows`).toBe(expectedRows)
+				expectPx(geometry.height, expectedContactBlockHeight(expectedRows))
+			}
+		})
+
+		for (const theme of themes) {
+			test(`shows a visible ${theme} focus ring on the icon-only profile target`, async ({
+				page,
+			}) => {
+				// Without a visible label, the focus ring is the only thing telling a keyboard user
+				// where they are -- and dark resolves it through a different token.
+				await gotoCv(page, locale.path, theme, primaryViewports[0])
+
+				for (const profile of externalProfiles) {
+					const link = page.locator(
+						`[data-cv-content] address a[data-contact-method="${profile.method}"]`,
+					)
+					await focusByKeyboard(page, link)
+					await expect(link, profile.method).toBeFocused()
+
+					const outline = await link.evaluate((element) => {
+						const styles = getComputedStyle(element)
+						return {
+							outlineColor: styles.outlineColor,
+							outlineStyle: styles.outlineStyle,
+							outlineWidth: styles.outlineWidth,
+						}
+					})
+
+					expect(outline, profile.method).toEqual({
+						outlineColor: themeColors[theme].focus,
+						outlineStyle: 'solid',
+						outlineWidth: '2px',
+					})
+				}
+			})
+		}
 
 		test('labels every shared CV section by its own heading', async ({ page }) => {
 			await page.goto(locale.path)
@@ -351,8 +525,15 @@ for (const locale of cvLocales) {
 
 for (const theme of themes) {
 	test(`fine-pointer ${theme} hover expands left and keeps the Download Action anchored`, async ({
+		isMobile,
 		page,
 	}) => {
+		// The hover expansion is a fine-pointer affordance, so the touch project has nothing to
+		// assert. Without this the test fails there on its own precondition -- which CI never sees,
+		// because it runs Chromium alone. The assertion below still proves the desktop projects
+		// really do report a fine pointer, so the test cannot quietly become a no-op.
+		test.skip(Boolean(isMobile), 'Hover expansion needs a fine pointer; this project has none')
+
 		const locale = cvLocales[0]
 		await gotoCv(page, locale.path, theme, primaryViewports[0])
 		expect(
@@ -390,24 +571,28 @@ for (const theme of themes) {
 
 		await focusByKeyboard(page, action)
 		await expect(action).toBeFocused()
-		const focusContract = await action.evaluate((element) => {
-			const label = element.querySelector('span')
-			if (!(label instanceof HTMLElement)) throw new Error('Expected a Download Action label')
-			const styles = getComputedStyle(element)
-			return {
-				labelOpacity: getComputedStyle(label).opacity,
-				outlineColor: styles.outlineColor,
-				outlineStyle: styles.outlineStyle,
-				outlineWidth: styles.outlineWidth,
-			}
-		})
-
-		expect(focusContract).toEqual({
-			labelOpacity: '1',
-			outlineColor: themeColors[theme].focus,
-			outlineStyle: 'solid',
-			outlineWidth: '2px',
-		})
+		// The label reveals through a 200ms opacity transition; sample until it settles rather
+		// than once, or an engine that starts the transition a frame later fails the contract.
+		await expect
+			.poll(() =>
+				action.evaluate((element) => {
+					const label = element.querySelector('span')
+					if (!(label instanceof HTMLElement)) throw new Error('Expected a Download Action label')
+					const styles = getComputedStyle(element)
+					return {
+						labelOpacity: getComputedStyle(label).opacity,
+						outlineColor: styles.outlineColor,
+						outlineStyle: styles.outlineStyle,
+						outlineWidth: styles.outlineWidth,
+					}
+				}),
+			)
+			.toEqual({
+				labelOpacity: '1',
+				outlineColor: themeColors[theme].focus,
+				outlineStyle: 'solid',
+				outlineWidth: '2px',
+			})
 	})
 }
 

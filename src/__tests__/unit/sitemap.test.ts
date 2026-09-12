@@ -87,6 +87,31 @@ describe('localized sitemap', () => {
 		).toBe(false)
 	})
 
+	it('contains only known portfolio and mocked CMS URLs', async () => {
+		const { default: sitemap } = await import('@/app/sitemap')
+		const entries = await sitemap()
+		const knownPaths = new Set([
+			'/',
+			...staticPaths,
+			...caseStudies.map((caseStudy) => `/work/${caseStudy.slug}`),
+			...staticPaths.map((path) => (path ? `/cs${path}` : '/cs')),
+			...caseStudies.map((caseStudy) => `/cs/work/${caseStudy.slug}`),
+			'/insights/shipping-resilient-interfaces',
+		])
+		const entryPaths = new Set(entries.map((entry) => new URL(entry.url).pathname))
+
+		expect(entryPaths).not.toEqual(
+			expect.arrayContaining([
+				'/not-a-real-page',
+				'/cs/not-a-real-page',
+				'/xx/work',
+				'/work/not-a-real-case',
+				'/insights/not-a-real-article',
+			]),
+		)
+		for (const path of entryPaths) expect(knownPaths).toContain(path)
+	})
+
 	it('still publishes localized portfolio routes when the CMS is unavailable', async () => {
 		listPublishedPosts.mockRejectedValueOnce(new Error('CMS unavailable'))
 		const { default: sitemap } = await import('@/app/sitemap')
