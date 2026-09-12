@@ -11,6 +11,7 @@ interface LocaleExpectation {
 	}
 	hrefs: {
 		flagship: string
+		booking: string
 		experience: string
 		contact: string
 	}
@@ -21,13 +22,14 @@ const localeExpectations: LocaleExpectation[] = [
 		path: '/',
 		labels: {
 			heroPrimary: 'Read flagship case',
-			heroSecondary: 'View experience',
+			heroSecondary: 'Book an intro call',
 			flagship: 'Read the case',
 			experience: 'View full experience',
 			final: 'Start a conversation',
 		},
 		hrefs: {
 			flagship: '/work/energy-customer-portal',
+			booking: '/contact/book',
 			experience: '/experience',
 			contact: '/contact',
 		},
@@ -36,13 +38,14 @@ const localeExpectations: LocaleExpectation[] = [
 		path: '/cs',
 		labels: {
 			heroPrimary: 'Přečíst hlavní případovou studii',
-			heroSecondary: 'Zobrazit zkušenosti',
+			heroSecondary: 'Domluvit úvodní hovor',
 			flagship: 'Přečíst studii',
 			experience: 'Zobrazit všechny zkušenosti',
 			final: 'Začít konverzaci',
 		},
 		hrefs: {
 			flagship: '/cs/work/energy-customer-portal',
+			booking: '/cs/contact/book',
 			experience: '/cs/experience',
 			contact: '/cs/contact',
 		},
@@ -123,6 +126,11 @@ interface HeroActionLayoutExpectation {
 	paragraphGap: number
 }
 
+/**
+ * HP-02: two 52px buttons after the final supporting paragraph, both hugging the left
+ * edge; one row on desktop (Figma 6:16, 16px gap), stacked below 1024px (7:382, 8:92,
+ * 24px gap). The availability line (HP-03) follows the row as a plain paragraph.
+ */
 async function expectHeroActionLayout(
 	primary: Locator,
 	secondary: Locator,
@@ -135,6 +143,7 @@ async function expectHeroActionLayout(
 			(child): child is HTMLAnchorElement => child instanceof HTMLAnchorElement,
 		)
 		const previousContent = element.previousElementSibling
+		const nextContent = element.nextElementSibling
 
 		if (links.length !== 2 || !(previousContent instanceof HTMLElement)) {
 			throw new Error('Expected two Hero actions after the final supporting paragraph')
@@ -149,6 +158,8 @@ async function expectHeroActionLayout(
 			alignItems: styles.alignItems,
 			columnGap: Number.parseFloat(styles.columnGap),
 			direction: styles.flexDirection,
+			nextTag: nextContent?.tagName ?? null,
+			nextLinkCount: nextContent?.querySelectorAll('a, button').length ?? null,
 			paragraphGap: primaryAction.top - previous.bottom,
 			primary: primaryAction.toJSON(),
 			row: row.toJSON(),
@@ -162,6 +173,8 @@ async function expectHeroActionLayout(
 	expect.soft(layout.paragraphGap).toBeCloseTo(expectation.paragraphGap, 5)
 	expect.soft(layout.primary.width).toBeLessThan(layout.row.width)
 	expect.soft(layout.secondary.width).toBeLessThan(layout.row.width)
+	expect.soft(layout.nextTag).toBe('P')
+	expect.soft(layout.nextLinkCount).toBe(0)
 
 	if (expectation.direction === 'row') {
 		expect.soft(layout.columnGap).toBe(expectation.gap)
@@ -211,7 +224,7 @@ for (const locale of localeExpectations) {
 			const ctas = getHomeCtas(page, locale)
 
 			await expect(ctas.heroPrimary).toHaveAttribute('href', locale.hrefs.flagship)
-			await expect(ctas.heroSecondary).toHaveAttribute('href', locale.hrefs.experience)
+			await expect(ctas.heroSecondary).toHaveAttribute('href', locale.hrefs.booking)
 			await expect(ctas.flagship).toHaveAttribute('href', locale.hrefs.flagship)
 			await expect(ctas.experience).toHaveAttribute('href', locale.hrefs.experience)
 			await expect(ctas.final).toHaveAttribute('href', locale.hrefs.contact)
@@ -241,7 +254,7 @@ for (const locale of localeExpectations) {
 
 				const ctas = getHomeCtas(page, locale)
 				await expect(ctas.heroPrimary).toHaveAttribute('href', locale.hrefs.flagship)
-				await expect(ctas.heroSecondary).toHaveAttribute('href', locale.hrefs.experience)
+				await expect(ctas.heroSecondary).toHaveAttribute('href', locale.hrefs.booking)
 				await expect(ctas.flagship).toHaveAttribute('href', locale.hrefs.flagship)
 				await expect(ctas.final).toHaveAttribute('href', locale.hrefs.contact)
 
@@ -273,7 +286,7 @@ test('keeps the long Czech Hero actions inside a 320px reflow viewport', async (
 	await expect(ctas.heroPrimary).toBeVisible()
 	await expect(ctas.heroSecondary).toBeVisible()
 	await expect(ctas.heroPrimary).toHaveAttribute('href', expectation.hrefs.flagship)
-	await expect(ctas.heroSecondary).toHaveAttribute('href', expectation.hrefs.experience)
+	await expect(ctas.heroSecondary).toHaveAttribute('href', expectation.hrefs.booking)
 
 	const reflow = await ctas.heroPrimary.locator('..').evaluate((element) => {
 		const links = Array.from(element.children).filter(

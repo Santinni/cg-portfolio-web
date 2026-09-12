@@ -36,7 +36,12 @@ export default async function ContactPage({ params }: ContactPageProps) {
 
 	return (
 		<>
-			<PageIntro eyebrow={t('hero.eyebrow')} title={t('hero.title')} intro={t('hero.intro')} />
+			<PageIntro
+				eyebrow={t('hero.eyebrow')}
+				title={t('hero.title')}
+				intro={t('hero.intro')}
+				secondary={t('hero.availability')}
+			/>
 
 			<Section aria-labelledby="contact-methods-heading" tone="raised">
 				<Container className={styles.layout}>

@@ -7,14 +7,24 @@ import { homeLinks } from '@/content/profile'
 
 import styles from './Hero.module.css'
 
-/** Home hero — eyebrow, headline, supporting copy and the two primary CTAs. */
+/**
+ * Home hero — identity row, the single brand headline, supporting copy, two actions and the
+ * availability line. The flagship case stays primary and the second action books an intro
+ * call (HP-02); the availability line names the current role and the roles Karel is open
+ * to (HP-03).
+ */
 export default async function Hero() {
 	const t = await getTranslations('home.hero')
 
 	return (
 		<section className={styles.hero} aria-labelledby="hero-heading">
 			<Container className={styles.inner}>
-				<Eyebrow className={styles.eyebrow}>{t('eyebrow')}</Eyebrow>
+				<Eyebrow className={styles.eyebrow}>
+					{t.rich('eyebrow', {
+						name: t('identity.name'),
+						identity: (chunks) => <span>{chunks}</span>,
+					})}
+				</Eyebrow>
 				<h1 id="hero-heading" className={styles.headline}>
 					{t('headline')}
 				</h1>
@@ -29,10 +39,11 @@ export default async function Hero() {
 						{t('primaryCta')}
 						<ArrowRight className={styles.ctaIcon} aria-hidden="true" />
 					</Button>
-					<Button renders="link" href={homeLinks.experience} variant="secondary" size="large">
+					<Button renders="link" href={homeLinks.booking} variant="secondary" size="large">
 						{t('secondaryCta')}
 					</Button>
 				</div>
+				<p className={styles.availability}>{t('availability')}</p>
 			</Container>
 		</section>
 	)

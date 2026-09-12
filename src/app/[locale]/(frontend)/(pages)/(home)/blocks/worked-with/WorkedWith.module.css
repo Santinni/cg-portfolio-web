@@ -1,0 +1,68 @@
+/*
+ * Worked-with row (HP-04). No approved Figma frame (DS-05), so every value comes from the
+ * token scale: the block padding is the small end of the spacing scale rather than
+ * `--section-block`, which is sized for full content sections.
+ */
+.section {
+  padding-block: var(--space-24);
+
+  @media (min-width: 1024px) {
+    padding-block: var(--space-32);
+  }
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+
+  @media (min-width: 1024px) {
+    gap: var(--space-24);
+  }
+}
+
+/* Same eyebrow treatment as the other Home blocks, carried by the section heading. */
+.eyebrow {
+  color: var(--action-primary);
+  font-size: var(--font-size-label);
+  line-height: var(--line-height-label);
+  font-weight: 600;
+  letter-spacing: 0;
+  margin: 0;
+}
+
+.logos {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-16) var(--space-32);
+  margin: 0;
+  padding: 0;
+
+  @media (min-width: 1024px) {
+    gap: var(--space-16) var(--space-48);
+  }
+}
+
+.item {
+  display: flex;
+}
+
+/*
+ * Uniform mark height (20px compact, 24px desktop); the width follows each file's
+ * intrinsic ratio through `aspect-ratio`. The silhouette is the mask, the colour is the
+ * secondary text token, so the row is monochrome and static in both themes.
+ */
+.mark {
+  display: block;
+  block-size: var(--icon-20);
+  color: var(--text-secondary);
+  background-color: currentColor;
+  -webkit-mask: var(--mark) center / contain no-repeat;
+  mask: var(--mark) center / contain no-repeat;
+
+  @media (min-width: 1024px) {
+    block-size: var(--icon-24);
+  }
+}
