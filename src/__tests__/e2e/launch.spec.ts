@@ -91,7 +91,14 @@ test.describe('responsive shell interactions', () => {
 		await page.goto('/')
 
 		const navigation = page.getByRole('navigation')
-		for (const label of ['Work', 'Experience', 'About', 'Contact', 'Insights']) {
+		for (const label of [
+			'Work',
+			'Experience',
+			'Curriculum vitae',
+			'About',
+			'Contact',
+			'Insights',
+		]) {
 			await expect(navigation.getByRole('link', { name: label, exact: true })).toBeVisible()
 		}
 	})
@@ -267,6 +274,28 @@ test.describe('responsive shell interactions', () => {
 		await expect.poll(() => page.locator('body').evaluate((body) => body.style.overflow)).toBe('')
 
 		await page.setViewportSize({ width: 390, height: 844 })
+		await trigger.click()
+		const curriculumVitaeLink = dialog.getByRole('link', { exact: true, name: 'Curriculum vitae' })
+		// Focus starts on the Close button; Tab walks Work, Experience, Curriculum vitae.
+		for (let index = 0; index < 3; index += 1) {
+			await page.keyboard.press('Tab')
+		}
+		await expect(curriculumVitaeLink).toBeFocused()
+		await page.keyboard.press('Enter')
+		await page.waitForURL('**/curriculum-vitae')
+		await expect
+			.poll(() => nativeDialog.evaluate((element: HTMLDialogElement) => element.open))
+			.toBe(false)
+		// The scroll lock is released by a React effect that runs after the dialog's
+		// close event, so this must poll rather than sample once.
+		await expect.poll(() => page.locator('body').evaluate((body) => body.style.overflow)).toBe('')
+
+		await page.goBack()
+		await page.waitForURL((url) => url.pathname === '/')
+		await expect(
+			page.getByRole('navigation').getByRole('link', { name: 'Codeguy – Home' }),
+		).toHaveAttribute('aria-current', 'page')
+
 		await trigger.click()
 		await dialog.getByRole('link', { name: 'Work', exact: true }).click()
 		await page.waitForURL('**/work')

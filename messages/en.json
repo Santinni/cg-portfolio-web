@@ -13,6 +13,7 @@
 		"items": {
 			"work": "Work",
 			"experience": "Experience",
+			"curriculumVitae": "Curriculum vitae",
 			"about": "About",
 			"contact": "Contact",
 			"insights": "Insights"
