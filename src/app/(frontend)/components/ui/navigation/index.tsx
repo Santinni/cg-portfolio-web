@@ -15,6 +15,7 @@ import styles from './Navigation.module.css'
 const navItems = [
 	{ key: 'work', href: '/work' },
 	{ key: 'experience', href: '/experience' },
+	{ key: 'curriculumVitae', href: '/curriculum-vitae' },
 	{ key: 'about', href: '/about' },
 	{ key: 'contact', href: '/contact' },
 	{ key: 'insights', href: '/insights' },

@@ -198,8 +198,14 @@ Verification run on 2026-09-02: `pnpm test` (177), `pnpm typecheck`, `pnpm lint`
 320/390/430/768/1440, the floating Download Action geometry, keyboard focus, reduced motion
 and the real PDF download. The PDF masthead is covered by `cv-pdf-layout.test.ts`.
 
-Still open against the Risks section below: no before/after screenshots were captured, so
-the refactor is proven behaviourally and by overflow/geometry assertions, not visually.
+~~Still open against the Risks section below: no before/after screenshots were captured, so
+the refactor is proven behaviourally and by overflow/geometry assertions, not visually.~~
+**Closed 2026-09-03.** The before/after capture was done in the pinned container and found a
+real regression this pass had missed — the arrow wrapped the 390 px contact row and grew the
+hero by 52 px. Evidence and the resulting redesign are in
+`docs/audits/2026-09-03-cv-contact-wrap.md`; the standing pixel baselines live in
+`src/__tests__/e2e/curriculum-vitae-visual.spec.ts`. Note that the arrow affordance recorded
+in the work items above no longer applies to the `inline` variant.
 
 ### Settled Decisions
 

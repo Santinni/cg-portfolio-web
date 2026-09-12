@@ -47,7 +47,10 @@
 .contactList {
 	display: flex;
 	flex-wrap: wrap;
-	gap: var(--space-8) var(--space-24);
+	align-items: center;
+	/* One gap at every width: the two profiles are fixed 44px icon targets now, not text of
+	   varying length, so there is no longer a wide-vs-narrow case to give a different value. */
+	gap: var(--space-8) var(--space-16);
 	margin-block-start: var(--space-12);
 	font-style: normal;
 }

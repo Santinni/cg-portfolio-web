@@ -68,6 +68,11 @@ test.describe('language switcher', () => {
 			await expect(
 				page.getByRole('navigation').getByRole('link', { name: 'Projekty' }),
 			).toBeVisible()
+			if (route.id === 'Curriculum Vitae') {
+				await expect(
+					page.getByRole('navigation').getByRole('link', { name: 'Životopis' }),
+				).toHaveAttribute('aria-current', 'page')
+			}
 
 			await switchLocaleAndExpectLocation(page, 'Přepnout do jazyka: Angličtina', {
 				hash: route.hash,

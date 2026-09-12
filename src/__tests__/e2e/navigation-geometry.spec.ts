@@ -111,7 +111,14 @@ test.describe('Figma navigation shell geometry', () => {
 	}
 })
 
-const primaryDestinations = ['Work', 'Experience', 'About', 'Contact', 'Insights'] as const
+const primaryDestinations = [
+	'Work',
+	'Experience',
+	'Curriculum vitae',
+	'About',
+	'Contact',
+	'Insights',
+] as const
 
 test.describe('Figma desktop primary-link visual states', () => {
 	test('matches the light default, hover, current and focus contracts at 1440px', async ({
@@ -286,7 +293,14 @@ test.describe('Figma mobile-menu composition', () => {
 		await expect(dialog.getByRole('link', { name: 'Codeguy – Home' })).toHaveText('Codeguy')
 		await expect(dialog.getByRole('button', { name: 'Toggle color theme' })).toBeVisible()
 		await expect(dialog.getByRole('group', { name: 'Choose language' })).toBeVisible()
-		await expect(links).toHaveText(['Work', 'Experience', 'About', 'Contact', 'Insights'])
+		await expect(links).toHaveText([
+			'Work',
+			'Experience',
+			'Curriculum vitae',
+			'About',
+			'Contact',
+			'Insights',
+		])
 		await expect(profile.locator('p')).toHaveText([
 			'Senior / Lead Frontend Engineer',
 			'Prague · React · TypeScript · Accessibility',
@@ -308,7 +322,7 @@ test.describe('Figma mobile-menu composition', () => {
 				!closeElement ||
 				!menuElement ||
 				!linkElements ||
-				linkElements.length !== 5 ||
+				linkElements.length !== 6 ||
 				!profileElement
 			) {
 				throw new Error('Expected the complete mobile-menu composition')
@@ -361,7 +375,7 @@ test.describe('Figma mobile-menu composition', () => {
 		expect(measurements.close).toMatchObject({ height: 44, width: 44, x: 326 })
 		expect(measurements.menu).toMatchObject({ width: 350, x: 20, y: 112 })
 		expect(measurements.links.map(({ height, width, x, y }) => ({ height, width, x, y }))).toEqual(
-			[112, 184, 256, 328, 400].map((y) => ({ height: 64, width: 350, x: 20, y })),
+			[112, 184, 256, 328, 400, 472].map((y) => ({ height: 64, width: 350, x: 20, y })),
 		)
 		expect(measurements.linkStyle).toEqual({
 			alignItems: 'center',
@@ -394,7 +408,14 @@ test.describe('Figma mobile-menu composition', () => {
 			'href',
 			'/cs',
 		)
-		await expect(links).toHaveText(['Projekty', 'Zkušenosti', 'O mně', 'Kontakt', 'Články'])
+		await expect(links).toHaveText([
+			'Projekty',
+			'Zkušenosti',
+			'Životopis',
+			'O mně',
+			'Kontakt',
+			'Články',
+		])
 		await expect(dialog.getByRole('button', { name: 'Přepnout barevný motiv' })).toBeVisible()
 		await expect(dialog.getByRole('group', { name: 'Vyberte jazyk' })).toBeVisible()
 		await expect(footer).toContainText('Seniorní frontend vývojář / vedoucí frontendu')
@@ -412,7 +433,7 @@ test.describe('Figma mobile-menu composition', () => {
 				!headerElement ||
 				!menuElement ||
 				!linkElements ||
-				linkElements.length !== 5 ||
+				linkElements.length !== 6 ||
 				!footerElement
 			) {
 				throw new Error('Expected the complete tablet menu composition')
@@ -480,7 +501,7 @@ test.describe('Figma mobile-menu composition', () => {
 			const profileLines = profileElement?.querySelectorAll<HTMLElement>('p')
 			const links = element.querySelectorAll<HTMLAnchorElement>('nav a')
 
-			if (!footerElement || !profileElement || !profileLines || links.length !== 5) {
+			if (!footerElement || !profileElement || !profileLines || links.length !== 6) {
 				throw new Error('Expected the complete short-height mobile-menu composition')
 			}
 
