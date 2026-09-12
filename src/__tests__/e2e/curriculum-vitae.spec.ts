@@ -360,6 +360,7 @@ for (const locale of cvLocales) {
 
 		test('keeps the hero contact block to its approved row count at every width', async ({
 			browserName,
+			isMobile,
 			page,
 		}) => {
 			// The guard the audit named: a reflow changes row count and block height and nothing
@@ -368,8 +369,12 @@ for (const locale of cvLocales) {
 			//
 			// The row counts and block heights are Chromium-on-Linux measurements (the pinned
 			// image), like every other Figma-derived number in the parity class; WebKit wraps the
-			// row differently and would fail on font metrics, not on a regression.
-			test.skip(browserName !== 'chromium', 'Measured row geometry is pinned to Chromium.')
+			// row differently and would fail on font metrics, not on a regression. The mobile
+			// project is Chromium too, but its device viewport ignores the widths this loop sets.
+			test.skip(
+				browserName !== 'chromium' || Boolean(isMobile),
+				'Measured row geometry is pinned to desktop Chromium.',
+			)
 			for (const viewport of [...primaryViewports, ...compactOverflowViewports]) {
 				await gotoCv(page, locale.path, 'light', viewport)
 
