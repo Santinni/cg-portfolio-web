@@ -561,8 +561,8 @@
 					"summary": "Development and maintenance of Seeder, the production system supporting the National Library Web Archive’s curatorial and archiving workflows.",
 					"descriptions": {
 						"platform": "Seeder is a production Django application backed by PostgreSQL. Curators use it to register web sources and publishers, track licensing agreements, schedule harvests, and assemble thematic collections for webarchiv.cz.",
-						"layers": "I design and build across the whole application: the PostgreSQL data model, the Django application logic and integrations, the administration interface and the workflows curators work with every day. A change goes from the database to the screen in one piece, not layer by layer.",
-						"delivery": "Django and PostgreSQL are the core; around them I keep delivery safe – Playwright tests, pull requests, Docker and Jenkins deployments to test and production."
+						"layers": "I design and build across the whole application: the PostgreSQL data model, Django logic and integrations, the admin interface and the workflows curators use every day. I take changes from the database all the way to the screen.",
+						"delivery": "Django and PostgreSQL are the core. To deliver changes safely I use Playwright tests, pull requests and Docker, then deploy them through Jenkins to the test and production environments."
 					}
 				},
 				"blueghost": {

@@ -561,8 +561,8 @@
 					"summary": "Rozvoj a údržba Seederu, produkčního systému pro kurátorské a archivační procesy Webarchivu Národní knihovny.",
 					"descriptions": {
 						"platform": "Seeder je produkční Django aplikace nad PostgreSQL. Kurátoři v ní evidují webové zdroje a vydavatele, hlídají licenční smlouvy, plánují sklizně a skládají tematické sbírky pro webarchiv.cz.",
-						"layers": "Navrhuji a vyvíjím celý průřez aplikace: datový model v PostgreSQL, aplikační logiku a integrace v Djangu, administrační rozhraní i workflow, se kterými kurátoři pracují denně. Změna tak projde od databáze po obrazovku v jednom kuse, ne po vrstvách.",
-						"delivery": "Jádro je Django a PostgreSQL; kolem něj držím dodávku bezpečnou – Playwright testy, pull requesty, Docker a nasazení na test i produkci přes Jenkins."
+						"layers": "Navrhuji a vyvíjím napříč celou aplikací: datový model v PostgreSQL, aplikační logiku a integrace v Djangu, administraci i workflow, se kterými kurátoři denně pracují. Změny dotahuji od databáze až po obrazovku.",
+						"delivery": "Jádrem jsou Django a PostgreSQL. Pro bezpečné dodání změn používám Playwright testy, pull requesty a Docker; přes Jenkins je nasazuji do testovacího i produkčního prostředí."
 					}
 				},
 				"blueghost": {
