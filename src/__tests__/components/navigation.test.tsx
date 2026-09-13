@@ -54,6 +54,7 @@ const navLabels = {
 	cs: {
 		about: 'O mně',
 		contact: 'Kontakt',
+		curriculumVitae: 'Životopis',
 		experience: 'Zkušenosti',
 		insights: 'Články',
 		work: 'Projekty',
@@ -61,11 +62,21 @@ const navLabels = {
 	en: {
 		about: 'About',
 		contact: 'Contact',
+		curriculumVitae: 'Curriculum vitae',
 		experience: 'Experience',
 		insights: 'Insights',
 		work: 'Work',
 	},
 } as const
+
+const primaryDestinations = [
+	['work', '/work'],
+	['experience', '/experience'],
+	['curriculumVitae', '/curriculum-vitae'],
+	['about', '/about'],
+	['contact', '/contact'],
+	['insights', '/insights'],
+] as const
 
 const mobileMenuProfiles = {
 	cs: {
@@ -265,10 +276,10 @@ describe('Navigation mobile-menu composition', () => {
 					name: locale === 'en' ? 'Codeguy – Home' : 'Codeguy – Domů',
 				}),
 			).toHaveAttribute('href', locale === 'en' ? '/' : '/cs')
-			expect(dialogQueries.getAllByRole('listitem')).toHaveLength(5)
+			expect(dialogQueries.getAllByRole('listitem')).toHaveLength(6)
 			expect(
 				dialogQueries.getAllByRole('link').filter((link) => link.textContent !== 'Codeguy'),
-			).toHaveLength(5)
+			).toHaveLength(6)
 			expect(dialogQueries.getByRole('button', { name: 'Theme' })).toBeInTheDocument()
 			expect(dialogQueries.getByText('Language switcher')).toBeInTheDocument()
 			expect(footer).toHaveTextContent(mobileMenuProfiles[locale].role)
@@ -327,15 +338,16 @@ describe('Navigation current-page semantics', () => {
 	it.each(['en', 'cs'] as const)(
 		'marks both responsive copies of every %s primary destination as current',
 		(locale) => {
-			for (const [key, label] of Object.entries(navLabels[locale])) {
-				const { container, unmount } = renderNavigation(locale, `/${key}`)
+			for (const [key, path] of primaryDestinations) {
+				const label = navLabels[locale][key]
+				const { container, unmount } = renderNavigation(locale, path)
 				const currentLinks = Array.from(
 					container.querySelectorAll<HTMLAnchorElement>('a[aria-current="page"]'),
 				)
 
 				expect(currentLinks).toHaveLength(2)
 				expect(currentLinks.every((link) => link.textContent === label)).toBe(true)
-				const expectedHref = locale === 'cs' ? `/cs/${key}` : `/${key}`
+				const expectedHref = locale === 'cs' ? `/cs${path}` : path
 				expect(currentLinks.every((link) => link.getAttribute('href') === expectedHref)).toBe(true)
 
 				unmount()
@@ -356,12 +368,57 @@ describe('Navigation current-page semantics', () => {
 		},
 	)
 
-	it.each(['/workshop', '/curriculum-vitae', '/unknown'])(
+	it.each(['/workshop', '/curriculum', '/unknown'])(
 		'does not infer a current destination from the unrelated path %s',
 		(pathname) => {
 			const { container } = renderNavigation('en', pathname)
 
 			expect(container.querySelector('a[aria-current="page"]')).not.toBeInTheDocument()
+		},
+	)
+
+	it.each([
+		['en', '/curriculum-vitae'],
+		['cs', '/cs/curriculum-vitae'],
+	] as const)(
+		'marks both responsive %s Curriculum vitae links as current on the CV route',
+		(locale, href) => {
+			const { container } = renderNavigation(locale, '/curriculum-vitae')
+			const currentLinks = Array.from(
+				container.querySelectorAll<HTMLAnchorElement>('a[aria-current="page"]'),
+			)
+
+			expect(currentLinks).toHaveLength(2)
+			expect(
+				currentLinks.every((link) => link.textContent === navLabels[locale].curriculumVitae),
+			).toBe(true)
+			expect(currentLinks.every((link) => link.getAttribute('href') === href)).toBe(true)
+		},
+	)
+})
+
+describe('Navigation primary destination order', () => {
+	it.each([
+		['en', ['Work', 'Experience', 'Curriculum vitae', 'About', 'Contact', 'Insights']],
+		['cs', ['Projekty', 'Zkušenosti', 'Životopis', 'O mně', 'Kontakt', 'Články']],
+	] as const)(
+		'renders the %s desktop menu and mobile dialog links in one shared order',
+		async (locale, expectedOrder) => {
+			const user = userEvent.setup()
+			renderNavigation(locale)
+
+			const desktopLinks = within(screen.getByRole('navigation'))
+				.getAllByRole('link')
+				.filter((link) => link.textContent !== 'Codeguy')
+			expect(desktopLinks.map((link) => link.textContent)).toEqual(expectedOrder)
+
+			await user.click(screen.getByRole('button', { name: controls[locale][0] }))
+
+			const dialog = screen.getByRole('dialog', {
+				name: locale === 'en' ? 'Site menu' : 'Hlavní nabídka',
+			})
+			const dialogLinks = within(within(dialog).getByRole('navigation')).getAllByRole('link')
+			expect(dialogLinks.map((link) => link.textContent)).toEqual(expectedOrder)
 		},
 	)
 })

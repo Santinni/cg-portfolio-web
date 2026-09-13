@@ -202,6 +202,14 @@ Feature-branch source paths refer to audited code revision `2e484a7`. Authoritat
 - **Current:** fixed on `fix/home-responsive-parity`. Hero, Flagship, Selected Work, Principles, desktop Experience, and Final CTA now implement the approved responsive section order, visibility, geometry, containment, and compact treatment. English is checked against Figma at all five target widths; Czech preserves the same semantic/responsive contract with localized compact copy and natural content-led height. Real theme toggling leaves the Home and section rectangles invariant at 1440 and 390 px.
 - **Evidence:** Figma nodes `6:2`, `7:377`, `8:193`, `8:87`, `8:140`, `8:246`, and `8:325`; localized Home sources; `home-hero-anchoring`, `home-flagship-parity`, `home-selected-work-parity`, `home-principles-parity`, `home-experience-anchoring`, `home-final-cta-anchoring`, and `home-integrated-parity`; Actions run `30471772408`.
 - **Verification detail:** English exact Figma dimensions use narrow rounding tolerances. When Chromium reserves a measured 15 px vertical-scrollbar gutter, the contract permits only the measured content-led line-wrap growth at 430, 390, and 320 px; section adjacency, cumulative positions, containment, and total height remain asserted. Accessibility, localized links/CTA destinations, reduced motion, and exact Home SEO metadata are independently covered.
+- **Measured Figma contract:** recorded here because the parity tests in `src/__tests__/e2e/support/home-parity.ts` are written against these exact numbers and this is now their only prose record.
+  - Desktop: header 72 px; Hero content begins at page y=176; Home frame 1440×3725; section headings 48 px/145% except Final CTA at 42 px/145%; body copy 18 px/145%.
+  - Tablet/mobile: header 64 px; Hero content begins at page y=120; section padding 64 px block with 24 px content rhythm; headings 32 px/145%; Final CTA 30 px/145%; body copy 17 px/145%.
+  - 320 px exception: Hero 36 px/112%; Final CTA 24 px/112%; Selected Work cards use the compact 16 px padding/HUG-height contract.
+  - Desktop Flagship: eyebrow and 48 px heading precede a 1196 px summary row; row gap 56 px; copy width 580 px; system map width 560 px, padding 32 px, gap 16 px, radius 8 px, `--action-primary` surface.
+  - Selected Work: eyebrow plus headline `Complex products. Clear frontend decisions.`; desktop three-column 3×368 px grid; single column at compact widths.
+  - Experience is desktop-only. The final supporting paragraph is desktop-only.
+  - Dark geometry equals light geometry and uses the existing semantic surface/action tokens.
 - **Disposition:** close after this feature branch is integrated into `dev`; do not reopen it solely because Czech text has a different content-led height from English.
 
 ### RPA-006 — Work page revision mismatch

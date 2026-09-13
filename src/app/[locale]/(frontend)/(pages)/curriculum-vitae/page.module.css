@@ -3,6 +3,11 @@
 	color: var(--text-primary);
 }
 
+/* The approved CV eyebrow is the accent colour, not the shared secondary text. */
+.page .eyebrowAccent {
+	color: var(--action-primary);
+}
+
 .hero {
 	padding-block-start: calc(var(--header-height) + var(--section-block));
 	padding-block-end: var(--section-block);
@@ -12,16 +17,6 @@
 .heroInner {
 	display: grid;
 	gap: var(--space-24);
-}
-
-.eyebrow {
-	margin: 0;
-	color: var(--action-primary);
-	font-size: var(--font-size-label);
-	font-weight: 600;
-	line-height: var(--line-height-label);
-	letter-spacing: 0.08em;
-	text-transform: uppercase;
 }
 
 .name {
@@ -52,37 +47,12 @@
 .contactList {
 	display: flex;
 	flex-wrap: wrap;
-	gap: var(--space-8) var(--space-24);
+	align-items: center;
+	/* One gap at every width: the two profiles are fixed 44px icon targets now, not text of
+	   varying length, so there is no longer a wide-vs-narrow case to give a different value. */
+	gap: var(--space-8) var(--space-16);
 	margin-block-start: var(--space-12);
 	font-style: normal;
-}
-
-.contactLocation {
-	display: inline-flex;
-	align-items: center;
-	min-block-size: var(--touch-target-min);
-	color: var(--text-secondary);
-	font-style: normal;
-}
-
-.contactLink {
-	display: inline-flex;
-	align-items: center;
-	min-block-size: var(--touch-target-min);
-	color: var(--text-primary);
-	font-weight: 600;
-	text-decoration: underline;
-	text-decoration-color: var(--border-strong);
-	text-underline-offset: 0.22em;
-	overflow-wrap: anywhere;
-	transition:
-		color 160ms ease,
-		text-decoration-color 160ms ease;
-}
-
-.contactLink:hover {
-	color: var(--action-primary-hover);
-	text-decoration-color: currentColor;
 }
 
 .heroActions {
@@ -90,19 +60,6 @@
 	flex-wrap: wrap;
 	align-items: center;
 	gap: var(--space-12);
-}
-
-.section {
-	padding-block: var(--section-block);
-	background: var(--surface-page);
-}
-
-.raisedSection {
-	background: var(--surface-raised);
-}
-
-.subtleSection {
-	background: var(--surface-subtle);
 }
 
 .sectionHeading {
@@ -460,11 +417,5 @@
 	.floatingDownload {
 		inset-inline-end: calc(var(--space-32) + env(safe-area-inset-right));
 		inset-block-end: calc(var(--space-32) + env(safe-area-inset-bottom));
-	}
-}
-
-@media (prefers-reduced-motion: reduce) {
-	.contactLink {
-		transition: none;
 	}
 }

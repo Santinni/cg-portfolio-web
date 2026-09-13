@@ -102,14 +102,32 @@ describe('curriculum vitae localization', () => {
 				profile: 'general',
 			},
 		})
+	})
+
+	it('describes the download by role and purpose, never by file format or profile variant', () => {
+		// 2026-09-12 (COD-92): the "React profile" eyebrow and the "... in PDF format"
+		// description were withdrawn. The eyebrow names the language and the role, the
+		// description says what the reader takes away and for whom; the locale-first
+		// behaviour and the distinct profile versions stay recorded in CV-03, not in the UI.
 		expect(enMessages.curriculumVitae.download.languageLabel).toBe('English')
-		expect(enMessages.curriculumVitae.download.profileLabel).toBe('React profile')
-		expect(enMessages.curriculumVitae.download.accessibilityLabel).toContain('English React CV')
 		expect(csMessages.curriculumVitae.download.languageLabel).toBe('Čeština')
-		expect(csMessages.curriculumVitae.download.profileLabel).toBe('Obecný profesní profil')
-		expect(csMessages.curriculumVitae.download.accessibilityLabel).toContain(
-			'český profesní životopis',
-		)
+		for (const messages of [enMessages, csMessages]) {
+			const download = messages.curriculumVitae.download as Record<string, string>
+			expect(download.roleLabel).toBe('Senior Frontend Engineer')
+			for (const value of Object.values(download)) {
+				expect(value).not.toMatch(/PDF|React|profil|profile|obecn/i)
+			}
+		}
+	})
+
+	it('names the person, not the language or format, in the download accessible name', () => {
+		// CV-03: language and profile belong to the copy that *describes* the download,
+		// not to the control that performs it.
+		for (const messages of [enMessages, csMessages]) {
+			const { accessibilityLabel } = messages.curriculumVitae.download
+			expect(accessibilityLabel).toContain('Kutchan')
+			expect(accessibilityLabel).not.toMatch(/PDF|English|angli|Čeština|česk|React/i)
+		}
 	})
 
 	it('derives the public email and omits private identity fields', () => {

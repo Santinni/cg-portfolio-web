@@ -95,6 +95,8 @@ test.describe('localized routing contract', () => {
 				page.getByRole('heading', { name: 'Tato stránka není součástí webu.' }),
 			).toBeVisible()
 			await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex/)
+			await expect(page.locator('link[rel="canonical"]')).toHaveCount(0)
+			await expect(page.locator('link[rel="alternate"][hreflang]')).toHaveCount(0)
 		})
 	}
 
@@ -113,6 +115,8 @@ test.describe('localized routing contract', () => {
 				page.getByRole('heading', { name: 'This page is not part of the system.' }),
 			).toBeVisible()
 			await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex/)
+			await expect(page.locator('link[rel="canonical"]')).toHaveCount(0)
+			await expect(page.locator('link[rel="alternate"][hreflang]')).toHaveCount(0)
 		})
 	}
 

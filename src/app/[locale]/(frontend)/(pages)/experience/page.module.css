@@ -38,17 +38,6 @@
 	gap: var(--space-16);
 }
 
-.downloadLink {
-	display: inline-flex;
-	align-items: center;
-	gap: var(--space-8);
-	min-height: 44px;
-	color: var(--text-primary);
-	font-weight: 600;
-	text-decoration: underline;
-	text-underline-offset: 0.2em;
-}
-
 .icon {
 	width: var(--icon-16);
 	height: var(--icon-16);

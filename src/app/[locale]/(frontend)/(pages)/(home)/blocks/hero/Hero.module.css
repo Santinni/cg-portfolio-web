@@ -79,6 +79,10 @@
   }
 }
 
+/*
+ * Actions: two 52px buttons. Stacked and left-aligned below 1024px (Figma 7:382 / 8:92:
+ * 24px apart); one row on desktop (Figma 6:16: 16px gap).
+ */
 .ctaRow {
   display: flex;
   flex-direction: column;
@@ -88,6 +92,23 @@
   @media (min-width: 1024px) {
     flex-direction: row;
     gap: var(--space-16);
+  }
+}
+
+/*
+ * Availability line (HP-03): the body tier below the supporting paragraphs, in the
+ * secondary text colour, on the same measure as the paragraphs. It is a direct child of
+ * `.inner`, so the flex gap (24px / 32px) spaces it from the action row.
+ */
+.availability {
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  font-weight: 400;
+  color: var(--text-secondary);
+  margin: 0;
+
+  @media (min-width: 1024px) {
+    max-width: 780px;
   }
 }
 

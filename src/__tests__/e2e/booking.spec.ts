@@ -306,7 +306,7 @@ for (const locale of bookingLocales) {
 
 			const cta = page.locator(`[data-booking-source="${source.id}"]`).getByRole('link', {
 				exact: true,
-				name: locale.id === 'cs' ? 'Domluvit rozhovor' : 'Book a conversation',
+				name: locale.id === 'cs' ? 'Domluvit hovor' : 'Book a call',
 			})
 			await expect(cta).toHaveCount(1)
 			await expect(cta).toHaveAttribute('href', locale.bookingHref)

@@ -11,6 +11,11 @@ const eslintConfig = defineConfig([
     "build/**",
     "scripts/**",
     "next-env.d.ts",
+    // Playwright run artifacts are gitignored bundles; linting them after a pinned run
+    // produced thousands of findings against generated code.
+    "playwright-report/**",
+    "test-results/**",
+    ".playwright-mcp/**",
   ]),
 ]);
 

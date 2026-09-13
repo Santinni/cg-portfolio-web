@@ -38,56 +38,80 @@ function resolveEvidenceRevision(
 	return environment.APP_REVISION || environment.GITHUB_SHA || LOCAL_WORKING_TREE_REVISION
 }
 
+/*
+ * Section order: Hero, Worked with, Flagship, Selected Work, Principles, [Experience at
+ * >=1024px], Final CTA. Two sections carry derived rather than Figma-measured heights and
+ * must be re-measured in the pinned container:
+ *
+ * Hero (index 0) = the pre-COD-79 measured section (two 52px buttons, `git show
+ * 52746d2^`: 801 / 640 / 831 / 831 / 834) + the identity-eyebrow line at 320px (+16) +
+ * the availability paragraph (inner gap + N x 24px body lines, N assumed 2 / 2 / 3 / 3 / 4
+ * — see home-hero-anchoring.spec.ts):
+ *   1440: 801 + 32 + 48 = 881     768: 640 + 24 + 48 = 712
+ *    430: 831 + 24 + 72 = 927     390: 831 + 24 + 72 = 927     320: 850 + 24 + 96 = 970
+ *
+ * Worked with (index 1, HP-04, no frame) is token-derived: padding-block (24 compact /
+ * 32 desktop) x 2 + 16px heading line + inner gap (16 / 24) + logo rows (20px compact /
+ * 24px desktop, 16px row gap). Estimated rows: 1 at 1440 and 768, 2 at 430 and 390,
+ * 3 at 320 (Kontent.ai's mark is ~168px wide at 20px tall):
+ *   1440: 32 + 16 + 24 + 24 + 32 = 128        768: 24 + 16 + 16 + 20 + 24 = 100
+ *    430/390: 24 + 16 + 16 + 56 + 24 = 136     320: 24 + 16 + 16 + 92 + 24 = 172
+ */
 const FIGMA_EN_INTEGRATED_GEOMETRY = {
 	1440: {
-		mainHeight: 3725,
+		mainHeight: 3933,
 		sections: [
-			{ height: 801, top: 0 },
-			{ height: 635, top: 801 },
-			{ height: 713, top: 1436 },
-			{ height: 529, top: 2149 },
-			{ height: 565, top: 2678 },
-			{ height: 482, top: 3243 },
+			{ height: 881, top: 0 },
+			{ height: 128, top: 881 },
+			{ height: 635, top: 1009 },
+			{ height: 713, top: 1644 },
+			{ height: 529, top: 2357 },
+			{ height: 565, top: 2886 },
+			{ height: 482, top: 3451 },
 		],
 	},
 	768: {
-		mainHeight: 3090,
+		mainHeight: 3262,
 		sections: [
-			{ height: 640, top: 0 },
-			{ height: 364, top: 640 },
-			{ height: 1184, top: 1004 },
-			{ height: 610, top: 2188 },
-			{ height: 292, top: 2798 },
+			{ height: 712, top: 0 },
+			{ height: 100, top: 712 },
+			{ height: 364, top: 812 },
+			{ height: 1184, top: 1176 },
+			{ height: 610, top: 2360 },
+			{ height: 292, top: 2970 },
 		],
 	},
 	430: {
-		mainHeight: 3486,
+		mainHeight: 3718,
 		sections: [
-			{ height: 831, top: 0 },
-			{ height: 435, top: 831 },
-			{ height: 1184, top: 1266 },
-			{ height: 656, top: 2450 },
-			{ height: 380, top: 3106 },
+			{ height: 927, top: 0 },
+			{ height: 136, top: 927 },
+			{ height: 435, top: 1063 },
+			{ height: 1184, top: 1498 },
+			{ height: 656, top: 2682 },
+			{ height: 380, top: 3338 },
 		],
 	},
 	390: {
-		mainHeight: 3532,
+		mainHeight: 3800,
 		sections: [
-			{ height: 831, top: 0 },
-			{ height: 435, top: 831 },
-			{ height: 1230, top: 1266 },
-			{ height: 656, top: 2496 },
-			{ height: 380, top: 3152 },
+			{ height: 927, top: 0 },
+			{ height: 172, top: 927 },
+			{ height: 435, top: 1099 },
+			{ height: 1230, top: 1534 },
+			{ height: 656, top: 2764 },
+			{ height: 380, top: 3420 },
 		],
 	},
 	320: {
-		mainHeight: 3484,
+		mainHeight: 3792,
 		sections: [
-			{ height: 834, top: 0 },
-			{ height: 460, top: 834 },
-			{ height: 1176, top: 1294 },
-			{ height: 702, top: 2470 },
-			{ height: 312, top: 3172 },
+			{ height: 970, top: 0 },
+			{ height: 172, top: 970 },
+			{ height: 460, top: 1142 },
+			{ height: 1176, top: 1602 },
+			{ height: 702, top: 2778 },
+			{ height: 312, top: 3480 },
 		],
 	},
 } as const
@@ -228,7 +252,7 @@ for (const locale of HOME_PARITY_LOCALES) {
 			}
 
 			const visibleSections = geometry.children.filter((section) => section.visible)
-			expect(visibleSections).toHaveLength(viewport.width >= 1024 ? 6 : 5)
+			expect(visibleSections).toHaveLength(viewport.width >= 1024 ? 7 : 6)
 			for (let index = 1; index < visibleSections.length; index += 1) {
 				expectPx(visibleSections[index].rect.top, visibleSections[index - 1].rect.bottom)
 			}

@@ -58,6 +58,26 @@ describe('DownloadAction', () => {
 		expect(screen.getByText('Stáhnout české CV')).toBeInTheDocument()
 	})
 
+	it('lets an accessible name override the visible label', () => {
+		const { rerender } = render(
+			<DownloadAction href="/curriculum-vitae/CV_Karel_Kutchan.pdf" label="Download CV" />,
+		)
+
+		expect(screen.getByRole('link', { name: 'Download CV' })).not.toHaveAttribute('aria-label')
+
+		rerender(
+			<DownloadAction
+				href="/curriculum-vitae/CV_Karel_Kutchan.pdf"
+				label="Download CV"
+				accessibilityLabel="Download CV — Karel Kutchan"
+			/>,
+		)
+
+		const link = screen.getByRole('link', { name: 'Download CV — Karel Kutchan' })
+		expect(link).toHaveAttribute('aria-label', 'Download CV — Karel Kutchan')
+		expect(screen.getByText('Download CV')).toBeInTheDocument()
+	})
+
 	it('renders the persistent expanded component mode', () => {
 		render(
 			<DownloadAction
