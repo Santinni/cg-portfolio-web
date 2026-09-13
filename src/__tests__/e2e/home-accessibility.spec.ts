@@ -7,6 +7,8 @@ import {
 	waitForHomeRender,
 } from './support/home-parity'
 
+import { APPROVED_HOME_HERO } from './support/approved-copy'
+
 interface ExpectedHeading {
 	level: 1 | 2 | 3
 	name: string
@@ -38,7 +40,7 @@ interface HomeAccessibilityContract {
 }
 
 const englishSharedHeadings: ExpectedHeading[] = [
-	{ level: 1, name: 'I build frontend systems for products that have to last.' },
+	{ level: 1, name: APPROVED_HOME_HERO.en.headline },
 	// HP-04: the eyebrow-styled section heading of the Worked-with row.
 	{ level: 2, name: 'WORKED WITH' },
 	{ level: 2, name: 'A customer portal built as a system, not a collection of screens.' },
@@ -75,7 +77,7 @@ function withCompactHeadings(
 }
 
 const czechSharedHeadings: ExpectedHeading[] = [
-	{ level: 1, name: 'Stavím frontendové systémy pro produkty, které musí vydržet.' },
+	{ level: 1, name: APPROVED_HOME_HERO.cs.headline },
 	{ level: 2, name: 'SPOLUPRACOVAL JSEM S' },
 	{
 		level: 2,
@@ -113,8 +115,8 @@ const contracts: HomeAccessibilityContract[] = [
 				},
 			],
 			links: [
-				{ href: '/work/energy-customer-portal', name: 'Read flagship case' },
-				{ href: '/contact/book', name: 'Book an intro call' },
+				{ href: '/work/energy-customer-portal', name: APPROVED_HOME_HERO.en.primaryCta },
+				{ href: '/contact/book', name: APPROVED_HOME_HERO.en.secondaryCta },
 				{ href: '/work/energy-customer-portal', name: 'Read the case' },
 				{ href: '/work/maintenance-applications', name: 'Read case' },
 				{ href: '/work/distributed-energy-platform', name: 'Read case' },
@@ -122,7 +124,7 @@ const contracts: HomeAccessibilityContract[] = [
 				{ href: '/contact', name: 'Start a conversation' },
 			],
 			sectionNames: [
-				'I build frontend systems for products that have to last.',
+				APPROVED_HOME_HERO.en.headline,
 				'WORKED WITH',
 				'A customer portal built as a system, not a collection of screens.',
 				'Complex products. Clear frontend decisions.',
@@ -145,15 +147,15 @@ const contracts: HomeAccessibilityContract[] = [
 				},
 			],
 			links: [
-				{ href: '/work/energy-customer-portal', name: 'Read flagship case' },
-				{ href: '/contact/book', name: 'Book an intro call' },
+				{ href: '/work/energy-customer-portal', name: APPROVED_HOME_HERO.en.primaryCta },
+				{ href: '/contact/book', name: APPROVED_HOME_HERO.en.secondaryCta },
 				{ href: '/work/energy-customer-portal', name: 'Read the case' },
 				{ href: '/work/maintenance-applications', name: 'Read case' },
 				{ href: '/work/distributed-energy-platform', name: 'Read case' },
 				{ href: '/contact', name: 'Start a conversation' },
 			],
 			sectionNames: [
-				'I build frontend systems for products that have to last.',
+				APPROVED_HOME_HERO.en.headline,
 				'WORKED WITH',
 				'A customer portal built as a system.',
 				'Complex products. Clear frontend decisions.',
@@ -181,9 +183,9 @@ const contracts: HomeAccessibilityContract[] = [
 			links: [
 				{
 					href: '/cs/work/energy-customer-portal',
-					name: 'Přečíst hlavní případovou studii',
+					name: APPROVED_HOME_HERO.cs.primaryCta,
 				},
-				{ href: '/cs/contact/book', name: 'Domluvit úvodní hovor' },
+				{ href: '/cs/contact/book', name: APPROVED_HOME_HERO.cs.secondaryCta },
 				{ href: '/cs/work/energy-customer-portal', name: 'Přečíst studii' },
 				{ href: '/cs/work/maintenance-applications', name: 'Přečíst studii' },
 				{ href: '/cs/work/distributed-energy-platform', name: 'Přečíst studii' },
@@ -191,7 +193,7 @@ const contracts: HomeAccessibilityContract[] = [
 				{ href: '/cs/contact', name: 'Začít konverzaci' },
 			],
 			sectionNames: [
-				'Stavím frontendové systémy pro produkty, které musí vydržet.',
+				APPROVED_HOME_HERO.cs.headline,
 				'SPOLUPRACOVAL JSEM S',
 				'Zákaznický portál postavený jako systém, ne jako sbírka obrazovek.',
 				'Komplexní produkty. Jasná frontendová rozhodnutí.',
@@ -216,16 +218,16 @@ const contracts: HomeAccessibilityContract[] = [
 			links: [
 				{
 					href: '/cs/work/energy-customer-portal',
-					name: 'Přečíst hlavní případovou studii',
+					name: APPROVED_HOME_HERO.cs.primaryCta,
 				},
-				{ href: '/cs/contact/book', name: 'Domluvit úvodní hovor' },
+				{ href: '/cs/contact/book', name: APPROVED_HOME_HERO.cs.secondaryCta },
 				{ href: '/cs/work/energy-customer-portal', name: 'Přečíst studii' },
 				{ href: '/cs/work/maintenance-applications', name: 'Přečíst studii' },
 				{ href: '/cs/work/distributed-energy-platform', name: 'Přečíst studii' },
 				{ href: '/cs/contact', name: 'Začít konverzaci' },
 			],
 			sectionNames: [
-				'Stavím frontendové systémy pro produkty, které musí vydržet.',
+				APPROVED_HOME_HERO.cs.headline,
 				'SPOLUPRACOVAL JSEM S',
 				'Zákaznický portál postavený jako systém.',
 				'Komplexní produkty. Jasná frontendová rozhodnutí.',

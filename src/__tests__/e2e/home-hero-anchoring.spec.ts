@@ -10,22 +10,17 @@ import {
 	waitForHomeRender,
 } from './support/home-parity'
 
-const desktopExperience =
-	'More than ten years in web development, currently in a lead frontend role. I work with React, TypeScript and Next.js across customer portals, internal enterprise applications and the component libraries underneath them.'
-const desktopQuality =
-	'Architecture, accessibility and long-term maintainability are part of the delivery, not follow-up work.'
-const compactExperience =
-	'More than ten years in web development, currently in a lead frontend role. I work with React, TypeScript and Next.js across customer portals, enterprise applications and component systems.'
-const compactQuality = 'Architecture, accessibility and maintainability are part of the delivery.'
-const czechDesktopExperience =
-	'Webům se věnuji přes deset let a dnes působím jako vedoucí frontend vývoje. S Reactem, TypeScriptem a Next.js pracuji na zákaznických portálech, interních podnikových aplikacích i komponentových knihovnách, na kterých stojí.'
-const czechDesktopQuality =
-	'Architektura, přístupnost a dlouhodobá udržitelnost jsou součástí dodávky, ne práce odložená na později.'
-const czechCompactExperience =
-	'Webům se věnuji přes deset let a nyní působím ve vedoucí frontendové roli. S Reactem, TypeScriptem a Next.js pracuji na zákaznických portálech, podnikových aplikacích a komponentových systémech.'
-const czechCompactQuality = 'Architektura, přístupnost a udržovatelnost jsou součástí dodávky.'
-const availabilityLine =
-	'Open to senior and lead frontend roles in Prague or remote (EU), employee or contract.'
+import { APPROVED_HOME_HERO } from './support/approved-copy'
+
+const desktopExperience = APPROVED_HOME_HERO.en.paragraphs.experience
+const desktopQuality = APPROVED_HOME_HERO.en.paragraphs.quality
+const compactExperience = APPROVED_HOME_HERO.en.paragraphsCompact.experience
+const compactQuality = APPROVED_HOME_HERO.en.paragraphsCompact.quality
+const czechDesktopExperience = APPROVED_HOME_HERO.cs.paragraphs.experience
+const czechDesktopQuality = APPROVED_HOME_HERO.cs.paragraphs.quality
+const czechCompactExperience = APPROVED_HOME_HERO.cs.paragraphsCompact.experience
+const czechCompactQuality = APPROVED_HOME_HERO.cs.paragraphsCompact.quality
+const availabilityLine = APPROVED_HOME_HERO.en.availability
 const RESERVED_SCROLLBAR_GUTTER = 15
 
 /**
