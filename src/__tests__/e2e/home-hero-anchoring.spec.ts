@@ -25,15 +25,15 @@ const czechCompactExperience =
 	'Webům se věnuji přes deset let a nyní působím ve vedoucí frontendové roli. S Reactem, TypeScriptem a Next.js pracuji na zákaznických portálech, podnikových aplikacích a komponentových systémech.'
 const czechCompactQuality = 'Architektura, přístupnost a udržovatelnost jsou součástí dodávky.'
 const availabilityLine =
-	'Lead Frontend Engineer at BlueGhost. Open to senior and lead frontend roles in Prague or remote (EU), employee or contract.'
+	'Open to senior and lead frontend roles in Prague or remote (EU), employee or contract.'
 const RESERVED_SCROLLBAR_GUTTER = 15
 
 /**
  * The availability line (HP-03) uses the body tier: 16px / 24px at every width. It has no
  * Figma frame, so its contribution to the Hero height is derived, not measured: one
- * inner-gap plus `availabilityLines` line boxes. The line counts below are estimates for
- * the ~118-character English sentence on the content measure (780px at 1440, otherwise
- * the content width); re-measure in the pinned container and pin the measured count.
+ * inner-gap plus `availabilityLines` line boxes. The line counts below were measured in the
+ * pinned container for the 86-character English sentence (HP-03, employer removed on
+ * 2026-09-13) on the content measure (780px at 1440, otherwise the content width).
  */
 const AVAILABILITY_LINE_HEIGHT = 24
 
@@ -58,16 +58,16 @@ async function expectResponsiveCopyVisibility(
 /*
  * `heroHeight` per viewport = the pre-COD-79 measured Hero (two 52px buttons; git show
  * 52746d2^) + the identity-eyebrow growth this branch added (+16 at 320px only) + the
- * availability paragraph (gap + availabilityLines x 24). Re-measure in the pinned container.
- *   1440: 729 + 32 + 2 x 24 = 809
+ * availability paragraph (gap + availabilityLines x 24), measured in the pinned container.
+ *   1440: 729 + 32 + 1 x 24 = 785
  *    768: 576 + 24 + 2 x 24 = 648
- *    430: 767 + 24 + 3 x 24 = 863
+ *    430: 767 + 24 + 2 x 24 = 839
  *    390: 767 + 24 + 3 x 24 = 863
- *    320: 770 + 16 + 24 + 4 x 24 = 906   (4 lines is borderline; 3 would give 882)
+ *    320: 770 + 16 + 24 + 3 x 24 = 882
  */
 const viewports = [
 	{
-		availabilityLines: 2,
+		availabilityLines: 1,
 		bodySize: 18,
 		compact: false,
 		eyebrowLines: 1,
@@ -79,7 +79,7 @@ const viewports = [
 		headlineHeight: 186,
 		headlineSize: 64,
 		height: HOME_PARITY_VIEWPORTS.desktop.height,
-		heroHeight: 809,
+		heroHeight: 785,
 		node: HOME_PARITY_VIEWPORTS.desktop.figmaNode,
 		paddingBottom: 112,
 		paragraphWidth: 780,
@@ -107,7 +107,7 @@ const viewports = [
 		x: 48,
 	},
 	{
-		availabilityLines: 3,
+		availabilityLines: 2,
 		bodySize: 17,
 		compact: true,
 		eyebrowLines: 1,
@@ -119,7 +119,7 @@ const viewports = [
 		headlineHeight: 232,
 		headlineSize: 40,
 		height: HOME_PARITY_VIEWPORTS.responsive430.height,
-		heroHeight: 863,
+		heroHeight: 839,
 		node: HOME_PARITY_VIEWPORTS.responsive430.figmaNode,
 		paddingBottom: 64,
 		paragraphWidth: null,
@@ -147,7 +147,7 @@ const viewports = [
 		x: 20,
 	},
 	{
-		availabilityLines: 4,
+		availabilityLines: 3,
 		bodySize: 17,
 		compact: true,
 		eyebrowLines: 2,
@@ -159,7 +159,7 @@ const viewports = [
 		headlineHeight: 160,
 		headlineSize: 36,
 		height: HOME_PARITY_VIEWPORTS.responsive320.height,
-		heroHeight: 906,
+		heroHeight: 882,
 		node: HOME_PARITY_VIEWPORTS.responsive320.figmaNode,
 		paddingBottom: 64,
 		paragraphWidth: null,

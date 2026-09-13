@@ -52,7 +52,7 @@
 			},
 			"primaryCta": "Přečíst hlavní případovou studii",
 			"secondaryCta": "Domluvit úvodní hovor",
-			"availability": "Lead Frontend Engineer v BlueGhost. Otevřený seniorním a lead frontend rolím v Praze nebo remote (EU), zaměstnanecky i na kontrakt."
+			"availability": "Otevřený seniorním a lead frontend rolím v Praze nebo remote (EU), zaměstnanecky i na kontrakt."
 		},
 		"workedWith": {
 			"eyebrow": "SPOLUPRACOVAL JSEM S"
@@ -368,7 +368,7 @@
 			"eyebrow": "KONTAKT",
 			"title": "Pojďme probrat produkt, tým a frontendové problémy, které stojí za řešení.",
 			"intro": "Hledám především správnou seniorní nebo vedoucí frontendovou roli. Rád proberu i vybrané možnosti konzultací, pokud si konkrétně sedneme.",
-			"availability": "Lead Frontend Engineer v BlueGhost. Otevřený seniorním a lead frontend rolím v Praze nebo remote (EU), zaměstnanecky i na kontrakt."
+			"availability": "Otevřený seniorním a lead frontend rolím v Praze nebo remote (EU), zaměstnanecky i na kontrakt."
 		},
 		"methods": {
 			"eyebrow": "KONTAKTNÍ ÚDAJE",
@@ -454,7 +454,7 @@
 		"hero": {
 			"eyebrow": "ŽIVOTOPIS",
 			"role": "Senior frontend engineer",
-			"intro": "Senior frontend engineer z Prahy s více než deseti lety zkušeností ve webovém vývoji, který nyní vede frontend v BlueGhost."
+			"intro": "Senior frontend engineer z Prahy s více než deseti lety zkušeností ve webovém vývoji, nyní ve vedoucí frontendové roli."
 		},
 		"highlights": {
 			"eyebrow": "PROFIL",
@@ -466,7 +466,7 @@
 				},
 				"currentRole": {
 					"title": "Vedoucí role",
-					"description": "Aktuálně Lead Frontend Engineer v BlueGhost."
+					"description": "Vedu frontendový vývoj produktového týmu: delivery, architektura, kvalita kódu, mentoring."
 				},
 				"productSystems": {
 					"title": "Produktové systémy",

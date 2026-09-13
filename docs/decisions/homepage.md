@@ -58,12 +58,12 @@ JSON-LD pattern to extend, and inventing one is a separate decision.
 (e-mail or otherwise) back into the hero, or the booking route being withdrawn (BK entries
 in `booking.md`).
 
-## HP-03 — The hero states availability in one line under the actions · `provisional`
+## HP-03 — The hero states availability in one line under the actions · `locked`
 
 **Decision.** Below the action row the hero renders one plain paragraph, in both locales,
-naming the current role and what Karel is open to:
+naming what Karel is open to:
 
-> Lead Frontend Engineer at BlueGhost. Open to senior and lead frontend roles in Prague or
+> Open to senior and lead frontend roles in Prague or
 > remote (EU), employee or contract.
 
 It is set in the body tier (16 px / 24 px) in the secondary text colour, on the paragraphs'
@@ -76,9 +76,12 @@ what, and where". The headline and paragraphs answer what he does; nothing above
 answered the availability question. A factual line, not a badge or a status pill, keeps the
 hero's restraint (HP-01).
 
-**Status.** `provisional` until Karel confirms the wording in both locales. The facts it
-states (employer, openness to employee and contract roles, Prague or remote EU) must stay
-consistent with the CV; a change in employment reopens it.
+**Status.** Locked on 2026-09-13. Karel confirmed the wording in both locales and removed the
+employer from it: the line states openness (employee and contract roles, Prague or remote EU),
+not where he works today. The same day the employer left every self-description on the site
+(CV hero intro, the "Lead role" profile card); the CV and Experience timelines still name it
+as a fact of the record, and the PDF CV keeps it in its profile paragraph. A change in the
+role or location reopens the line.
 
 **What would reopen it.** Karel changing role or location, withdrawing from the market, or
 choosing to show availability as a status element rather than a sentence.

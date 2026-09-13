@@ -52,7 +52,7 @@
 			},
 			"primaryCta": "Read flagship case",
 			"secondaryCta": "Book an intro call",
-			"availability": "Lead Frontend Engineer at BlueGhost. Open to senior and lead frontend roles in Prague or remote (EU), employee or contract."
+			"availability": "Open to senior and lead frontend roles in Prague or remote (EU), employee or contract."
 		},
 		"workedWith": {
 			"eyebrow": "WORKED WITH"
@@ -368,7 +368,7 @@
 			"eyebrow": "CONTACT",
 			"title": "Let’s discuss the product, the team and the frontend problems worth solving.",
 			"intro": "I am primarily looking for the right senior or lead frontend role. Selected consulting conversations are welcome when the fit is specific.",
-			"availability": "Lead Frontend Engineer at BlueGhost. Open to senior and lead frontend roles in Prague or remote (EU), employee or contract."
+			"availability": "Open to senior and lead frontend roles in Prague or remote (EU), employee or contract."
 		},
 		"methods": {
 			"eyebrow": "CONTACT DETAILS",
@@ -454,7 +454,7 @@
 		"hero": {
 			"eyebrow": "CURRICULUM VITAE",
 			"role": "Senior Frontend Engineer",
-			"intro": "Prague-based Senior Frontend Engineer with more than ten years in web development, currently leading frontend work at BlueGhost."
+			"intro": "Prague-based Senior Frontend Engineer with more than ten years in web development, currently in a lead frontend role."
 		},
 		"highlights": {
 			"eyebrow": "PROFILE",
@@ -466,7 +466,7 @@
 				},
 				"currentRole": {
 					"title": "Lead role",
-					"description": "Currently Lead Frontend Engineer at BlueGhost."
+					"description": "Leads frontend delivery for a product teams: architecture, code quality, mentoring."
 				},
 				"productSystems": {
 					"title": "Product systems",

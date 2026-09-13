@@ -45,10 +45,11 @@ function resolveEvidenceRevision(
  *
  * Hero (index 0) = the pre-COD-79 measured section (two 52px buttons, `git show
  * 52746d2^`: 801 / 640 / 831 / 831 / 834) + the identity-eyebrow line at 320px (+16) +
- * the availability paragraph (inner gap + N x 24px body lines, N assumed 2 / 2 / 3 / 3 / 4
- * — see home-hero-anchoring.spec.ts):
- *   1440: 801 + 32 + 48 = 881     768: 640 + 24 + 48 = 712
- *    430: 831 + 24 + 72 = 927     390: 831 + 24 + 72 = 927     320: 850 + 24 + 96 = 970
+ * the availability paragraph (inner gap + N x 24px body lines, N measured 1 / 2 / 2 / 3 / 3
+ * in the pinned container after HP-03 dropped the employer on 2026-09-13 — see
+ * home-hero-anchoring.spec.ts):
+ *   1440: 801 + 32 + 24 = 857     768: 640 + 24 + 48 = 712
+ *    430: 831 + 24 + 48 = 903     390: 831 + 24 + 72 = 927     320: 850 + 24 + 72 = 946
  *
  * Worked with (index 1, HP-04, no frame) is token-derived: padding-block (24 compact /
  * 32 desktop) x 2 + 16px heading line + inner gap (16 / 24) + logo rows (20px compact /
@@ -59,15 +60,15 @@ function resolveEvidenceRevision(
  */
 const FIGMA_EN_INTEGRATED_GEOMETRY = {
 	1440: {
-		mainHeight: 3933,
+		mainHeight: 3909,
 		sections: [
-			{ height: 881, top: 0 },
-			{ height: 128, top: 881 },
-			{ height: 635, top: 1009 },
-			{ height: 713, top: 1644 },
-			{ height: 529, top: 2357 },
-			{ height: 565, top: 2886 },
-			{ height: 482, top: 3451 },
+			{ height: 857, top: 0 },
+			{ height: 128, top: 857 },
+			{ height: 635, top: 985 },
+			{ height: 713, top: 1620 },
+			{ height: 529, top: 2333 },
+			{ height: 565, top: 2862 },
+			{ height: 482, top: 3427 },
 		],
 	},
 	768: {
@@ -82,14 +83,14 @@ const FIGMA_EN_INTEGRATED_GEOMETRY = {
 		],
 	},
 	430: {
-		mainHeight: 3718,
+		mainHeight: 3694,
 		sections: [
-			{ height: 927, top: 0 },
-			{ height: 136, top: 927 },
-			{ height: 435, top: 1063 },
-			{ height: 1184, top: 1498 },
-			{ height: 656, top: 2682 },
-			{ height: 380, top: 3338 },
+			{ height: 903, top: 0 },
+			{ height: 136, top: 903 },
+			{ height: 435, top: 1039 },
+			{ height: 1184, top: 1474 },
+			{ height: 656, top: 2658 },
+			{ height: 380, top: 3314 },
 		],
 	},
 	390: {
@@ -104,14 +105,14 @@ const FIGMA_EN_INTEGRATED_GEOMETRY = {
 		],
 	},
 	320: {
-		mainHeight: 3792,
+		mainHeight: 3768,
 		sections: [
-			{ height: 970, top: 0 },
-			{ height: 172, top: 970 },
-			{ height: 460, top: 1142 },
-			{ height: 1176, top: 1602 },
-			{ height: 702, top: 2778 },
-			{ height: 312, top: 3480 },
+			{ height: 946, top: 0 },
+			{ height: 172, top: 946 },
+			{ height: 460, top: 1118 },
+			{ height: 1176, top: 1578 },
+			{ height: 702, top: 2754 },
+			{ height: 312, top: 3456 },
 		],
 	},
 } as const
