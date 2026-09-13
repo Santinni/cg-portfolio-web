@@ -21,6 +21,7 @@ const PARITY_SPECS = [
 	'navigation-geometry',
 	'curriculum-vitae-visual',
 	'not-found-visual',
+	'contact-rows-alignment',
 ].map((name) => `**/${name}.spec.ts`)
 
 export default defineConfig({
