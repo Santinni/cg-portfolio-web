@@ -558,11 +558,11 @@
 			"entries": {
 				"nkp": {
 					"title": "Softwarový vývojář",
-					"summary": "Vývoj Seederu, open-source kurátorské platformy, na které stojí český Webarchiv Národní knihovny.",
+					"summary": "Rozvoj a údržba Seederu, produkčního systému pro kurátorské a archivační procesy Webarchivu Národní knihovny.",
 					"descriptions": {
-						"platform": "Převzal jsem vývoj a údržbu Seederu (Python, Django, PostgreSQL) po předchozím vývojáři. Kurátoři Webarchivu Národní knihovny v něm evidují webové zdroje a vydavatele, spravují licenční smlouvy, plánují sklizně a publikují tematické sbírky na webarchiv.cz.",
-						"admin": "Rozšířil jsem kurátorskou administraci o nové modely a obrazovky pro kategorizaci (kategorie, podkategorie, klíčová slova) s přeloženými popisky polí, aby šly sbírky popisovat jednotně.",
-						"delivery": "Pracuji ve veřejném GitHub repozitáři (licence MIT) přes issues, feature větve, pull requesty a review, v kontejnerizovaném Docker stacku nasazovaném přes Jenkins na test i produkci."
+						"platform": "Seeder je produkční Django aplikace nad PostgreSQL. Kurátoři v ní evidují webové zdroje a vydavatele, hlídají licenční smlouvy, plánují sklizně a skládají tematické sbírky pro webarchiv.cz.",
+						"layers": "Navrhuji a vyvíjím celý průřez aplikace: datový model v PostgreSQL, aplikační logiku a integrace v Djangu, administrační rozhraní i workflow, se kterými kurátoři pracují denně. Změna tak projde od databáze po obrazovku v jednom kuse, ne po vrstvách.",
+						"delivery": "Jádro je Django a PostgreSQL; kolem něj držím dodávku bezpečnou – Playwright testy, pull requesty, Docker a nasazení na test i produkci přes Jenkins."
 					}
 				},
 				"blueghost": {

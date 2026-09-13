@@ -558,11 +558,11 @@
 			"entries": {
 				"nkp": {
 					"title": "Software Engineer",
-					"summary": "Development of Seeder, the open-source curatorial platform behind the Czech Web Archive of the National Library.",
+					"summary": "Development and maintenance of Seeder, the production system supporting the National Library Web Archive’s curatorial and archiving workflows.",
 					"descriptions": {
-						"platform": "Took over the development and maintenance of Seeder (Python, Django, PostgreSQL) from its previous developer: the tool the National Library of the Czech Republic’s Web Archive curators use to register web sources and publishers, manage licensing contracts, plan harvests and publish thematic collections on webarchiv.cz.",
-						"admin": "Extended the curator administration with new categorisation models and admin screens (categories, subcategories, keywords) with translated field labels, so collections can be described consistently.",
-						"delivery": "Works in the public GitHub repository (MIT licence) through issues, feature branches, pull requests and review, in a containerised Docker stack deployed through Jenkins to test and production environments."
+						"platform": "Seeder is a production Django application backed by PostgreSQL. Curators use it to register web sources and publishers, track licensing agreements, schedule harvests, and assemble thematic collections for webarchiv.cz.",
+						"layers": "I design and build across the whole application: the PostgreSQL data model, the Django application logic and integrations, the administration interface and the workflows curators work with every day. A change goes from the database to the screen in one piece, not layer by layer.",
+						"delivery": "Django and PostgreSQL are the core; around them I keep delivery safe – Playwright tests, pull requests, Docker and Jenkins deployments to test and production."
 					}
 				},
 				"blueghost": {
