@@ -86,11 +86,11 @@ role or location reopens the line.
 **What would reopen it.** Karel changing role or location, withdrawing from the market, or
 choosing to show availability as a status element rather than a sentence.
 
-## HP-04 — A "Worked with" row of six monochrome marks follows the hero · `locked`
+## HP-04 — A "Worked with" row of seven monochrome marks follows the hero · `locked`
 
 **Decision.** Directly under the hero, before the flagship case, a low section labelled
-"WORKED WITH" / "SPOLUPRACOVAL JSEM S" shows six marks at a uniform height (20 px below
-1024 px, 24 px above): E.ON, MND, Kontent.ai, Skype, Jobs.cz, eMan. The marks are rendered as
+"WORKED WITH" / "SPOLUPRACOVAL JSEM S" shows seven marks at a uniform height (20 px below
+1024 px, 24 px above): Národní knihovna ČR, E.ON, MND, Kontent.ai, Skype, Jobs.cz, eMan. The marks are rendered as
 masks filled with the secondary text colour, so they are monochrome in both themes, and they
 are static — no links, no hover state. Company names are brand names and live in
 `src/content/workedWith.ts`, not the catalogs; each mark exposes its name as an image label.
@@ -110,6 +110,9 @@ clients reached through eMan. Skype was added the same day (simple-icons 12 glyp
 brand was retired in 2025 and later icon sets dropped it). LMC was considered and left out:
 lmc.eu now serves the Alma Career identity the company adopted in 2024, so no LMC-era mark
 exists to show, and Jobs.cz already represents that employer's product in the row.
+Národní knihovna ČR was added on 2026-09-13 as the current client (Seeder, the Web Archive's
+curatorial platform, CV entry `nkp`), first in the row; the mark is the library's own wordmark
+from nkp.cz, used with Karel's confirmation as its contractor.
 
 **What would reopen it.** A rights objection, a new employer or client worth naming, or a
 decision to link the marks to the case studies (which would make the row a navigation

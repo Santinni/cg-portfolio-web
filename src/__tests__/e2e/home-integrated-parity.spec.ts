@@ -53,9 +53,9 @@ function resolveEvidenceRevision(
  *
  * Worked with (index 1, HP-04, no frame) is token-derived: padding-block (24 compact /
  * 32 desktop) x 2 + 16px heading line + inner gap (16 / 24) + logo rows (20px compact /
- * 24px desktop, 16px row gap). Estimated rows: 1 at 1440 and 768, 2 at 430 and 390,
- * 3 at 320 (Kontent.ai's mark is ~168px wide at 20px tall):
- *   1440: 32 + 16 + 24 + 24 + 32 = 128        768: 24 + 16 + 16 + 20 + 24 = 100
+ * 24px desktop, 16px row gap). Measured rows with seven marks (Národní knihovna ČR added
+ * 2026-09-13, ~102px wide at 20px): 1 at 1440, 2 at 768, 430 and 390, 3 at 320:
+ *   1440: 32 + 16 + 24 + 24 + 32 = 128        768: 24 + 16 + 16 + 56 + 24 = 136
  *    430/390: 24 + 16 + 16 + 56 + 24 = 136     320: 24 + 16 + 16 + 92 + 24 = 172
  */
 const FIGMA_EN_INTEGRATED_GEOMETRY = {
@@ -72,14 +72,14 @@ const FIGMA_EN_INTEGRATED_GEOMETRY = {
 		],
 	},
 	768: {
-		mainHeight: 3262,
+		mainHeight: 3298,
 		sections: [
 			{ height: 712, top: 0 },
-			{ height: 100, top: 712 },
-			{ height: 364, top: 812 },
-			{ height: 1184, top: 1176 },
-			{ height: 610, top: 2360 },
-			{ height: 292, top: 2970 },
+			{ height: 136, top: 712 },
+			{ height: 364, top: 848 },
+			{ height: 1184, top: 1212 },
+			{ height: 610, top: 2396 },
+			{ height: 292, top: 3006 },
 		],
 	},
 	430: {

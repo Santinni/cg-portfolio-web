@@ -556,6 +556,15 @@
 			"intro": "Vybrané frontendové role v obráceném chronologickém pořadí.",
 			"presentLabel": "Současnost",
 			"entries": {
+				"nkp": {
+					"title": "Softwarový vývojář",
+					"summary": "Vývoj Seederu, open-source kurátorské platformy, na které stojí český Webarchiv Národní knihovny.",
+					"descriptions": {
+						"platform": "Převzal jsem vývoj a údržbu Seederu (Python, Django, PostgreSQL) po předchozím vývojáři. Kurátoři Webarchivu Národní knihovny v něm evidují webové zdroje a vydavatele, spravují licenční smlouvy, plánují sklizně a publikují tematické sbírky na webarchiv.cz.",
+						"admin": "Rozšířil jsem kurátorskou administraci o nové modely a obrazovky pro kategorizaci (kategorie, podkategorie, klíčová slova) s přeloženými popisky polí, aby šly sbírky popisovat jednotně.",
+						"delivery": "Pracuji ve veřejném GitHub repozitáři (licence MIT) přes issues, feature větve, pull requesty a review, v kontejnerizovaném Docker stacku nasazovaném přes Jenkins na test i produkci."
+					}
+				},
 				"blueghost": {
 					"title": "Lead Frontend Engineer",
 					"summary": "Frontendová architektura, standardy dodávky a inženýrská kvalita napříč produktovými týmy.",

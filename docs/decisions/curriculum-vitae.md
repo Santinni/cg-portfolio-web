@@ -239,6 +239,22 @@ routes, so the prefix match is safe), keyboard activation and drawer close cover
 **What would reopen it.** A navigation redesign in Figma (component set `21:357`), or a
 decision to make the CV a download rather than a page.
 
+## CV-10 — One "Current role" badge; parallel engagements show only "present" · `locked`
+
+**Decision.** The timeline badge ("Current role" / "Aktuální role") marks the single entry
+named by `currentExperienceId` in `src/content/curriculum-vitae.ts`, not every entry whose
+`end` is `null`. An ongoing parallel engagement renders "present" in its period and nothing
+else. Entries stay in reverse chronological order of `start`, so a parallel engagement that
+began later sits above the primary role.
+
+**Why.** On 2026-09-13 the Národní knihovna ČR contract (Seeder, since 2026-02) joined the
+timeline next to the BlueGhost lead role. Two badges would have said "current role" twice,
+and the badge exists to answer "what is he now", which has one answer; the period already
+tells the reader the contract is ongoing.
+
+**What would reopen it.** The primary role changing (move `currentExperienceId`), or a
+decision to present parallel engagements as a distinct kind of entry.
+
 ## CV-06 — CV content stays out of Payload · `provisional`
 
 **Decision.** Static HTML CV copy lives in the `curriculumVitae` namespace in both

@@ -7,6 +7,7 @@ import { curriculumVitae } from '@/content/curriculum-vitae'
 import { createLocalizedMetadata } from '@/i18n/metadata'
 
 const selectedExperienceIds = [
+	'nkp',
 	'blueghost',
 	'kontentAi',
 	'tldrit',
@@ -59,8 +60,29 @@ describe('curriculum vitae localization', () => {
 		expect(curriculumVitae.skills.map(({ id }) => id)).toEqual(coreSkillIds)
 		expect(Object.keys(enMessages.curriculumVitae.highlights.entries)).toEqual(highlightIds)
 		expect(Object.keys(csMessages.curriculumVitae.highlights.entries)).toEqual(highlightIds)
+		// Every experience entry has its copy in both catalogs, in the same order (2026-09-13,
+		// after the `nkp` entry was added; a missing key would only fail at render time).
+		expect(Object.keys(enMessages.curriculumVitae.experience.entries)).toEqual(
+			selectedExperienceIds,
+		)
+		expect(Object.keys(csMessages.curriculumVitae.experience.entries)).toEqual(
+			selectedExperienceIds,
+		)
 		expect(Object.keys(enMessages.curriculumVitae.skills.entries)).toEqual(coreSkillIds)
 		expect(Object.keys(csMessages.curriculumVitae.skills.entries)).toEqual(coreSkillIds)
+	})
+
+	it('keeps every experience period as YYYY-MM, end after start, newest first', () => {
+		const month = /^\d{4}-(0[1-9]|1[0-2])$/
+		for (const { start, end } of curriculumVitae.experience) {
+			expect(start).toMatch(month)
+			if (end) {
+				expect(end).toMatch(month)
+				expect(end >= start).toBe(true)
+			}
+		}
+		const starts = curriculumVitae.experience.map(({ start }) => start)
+		expect([...starts].sort().reverse()).toEqual(starts)
 	})
 
 	it('freezes the current role, selected chronology and public positioning', () => {
@@ -71,13 +93,21 @@ describe('curriculum vitae localization', () => {
 		})
 		expect(curriculumVitae.currentExperienceId).toBe('blueghost')
 		expect(curriculumVitae.experience[0]).toMatchObject({
+			id: 'nkp',
+			company: 'Národní knihovna ČR',
+			roleId: 'softwareEngineer',
+			start: '2026-02',
+			end: null,
+			engagement: 'contract',
+		})
+		expect(curriculumVitae.experience[1]).toMatchObject({
 			id: 'blueghost',
 			company: 'BlueGhost',
 			roleId: 'leadFrontendEngineer',
 			start: '2025-03',
 			end: null,
 		})
-		expect(curriculumVitae.experience[1]).toMatchObject({
+		expect(curriculumVitae.experience[2]).toMatchObject({
 			id: 'kontentAi',
 			company: 'Kontent.ai',
 			roleId: 'frontendEngineer',
