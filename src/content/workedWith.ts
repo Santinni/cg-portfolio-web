@@ -9,7 +9,8 @@ export interface WorkedWithCompany {
 	/**
 	 * Public path of the mark. Every file is a single-colour silhouette on a transparent ground.
 	 * `skype.svg` is the simple-icons 12 glyph (CC0), kept because the brand was retired in 2025
-	 * and later icon sets dropped it.
+	 * and later icon sets dropped it. `nkp.svg` is the library's own wordmark from nkp.cz
+	 * (svgo-optimised), first in the row as the current client.
 	 */
 	src: string
 	/** Intrinsic `viewBox` size; only the ratio is used, the rendered height comes from tokens. */
@@ -18,6 +19,7 @@ export interface WorkedWithCompany {
 }
 
 export const workedWith = [
+	{ key: 'nkp', name: 'Národní knihovna ČR', src: '/nkp.svg', width: 204, height: 40 },
 	{ key: 'eon', name: 'E.ON', src: '/eon.svg', width: 240, height: 73.846 },
 	{ key: 'mnd', name: 'MND', src: '/mnd.svg', width: 181, height: 87 },
 	{ key: 'kontent', name: 'Kontent.ai', src: '/kontent.svg', width: 555, height: 66 },

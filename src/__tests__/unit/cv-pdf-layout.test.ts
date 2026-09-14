@@ -4,6 +4,7 @@ import { resolve } from 'node:path'
 
 import { describe, expect, it } from 'vitest'
 
+import { curriculumVitaeExperience } from '@/content/curriculum-vitae'
 import { loadFacts, loadMessages } from '../../../tools/cv-pdf/data.mjs'
 import { renderCv } from '../../../tools/cv-pdf/render.mjs'
 import { loadLightTokens, tokensToCss } from '../../../tools/cv-pdf/tokens.mjs'
@@ -91,6 +92,9 @@ describe('cv pdf layout contract', () => {
 		const entries = html.match(/class="entry"/g) ?? []
 		expect(entries.length).toBeGreaterThanOrEqual(10)
 		expect(stackRows.length).toBe(entries.length)
+		// Every selected experience entry reaches the document by company name, so a new entry
+		// (2026-09-13: Národní knihovna ČR) cannot be dropped by the generator unnoticed.
+		for (const { company } of curriculumVitaeExperience) expect(html).toContain(company)
 	})
 
 	it('leads with the professional summary, not a one-line intro', async () => {

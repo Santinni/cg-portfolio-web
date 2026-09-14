@@ -1,10 +1,12 @@
 .row {
 	display: grid;
-	grid-template-columns: minmax(88px, 0.35fr) minmax(0, 1fr) auto;
+	/* The arrow column is reserved even when a row has no arrow (the static location row),
+	   otherwise its label track resolves wider and the value shifts against the other rows. */
+	grid-template-columns: minmax(88px, 0.35fr) minmax(0, 1fr) var(--icon-20);
 	align-items: center;
 	gap: var(--space-16);
 	min-height: var(--touch-target-min);
-	padding-block: var(--space-16);
+	padding: var(--space-16) var(--space-12);
 	border-bottom: 1px solid var(--border-default);
 }
 
@@ -124,7 +126,7 @@
 
 @media (max-width: 479px) {
 	.row {
-		grid-template-columns: 1fr auto;
+		grid-template-columns: 1fr var(--icon-20);
 		gap: var(--space-8) var(--space-16);
 	}
 
