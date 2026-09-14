@@ -52,7 +52,7 @@
 			},
 			"primaryCta": "Read flagship case",
 			"secondaryCta": "Book an intro call",
-			"availability": "Lead Frontend Engineer at BlueGhost. Open to senior and lead frontend roles in Prague or remote (EU), employee or contract."
+			"availability": "Open to senior and lead frontend roles in Prague or remote (EU), employee or contract."
 		},
 		"workedWith": {
 			"eyebrow": "WORKED WITH"
@@ -368,7 +368,7 @@
 			"eyebrow": "CONTACT",
 			"title": "Let’s discuss the product, the team and the frontend problems worth solving.",
 			"intro": "I am primarily looking for the right senior or lead frontend role. Selected consulting conversations are welcome when the fit is specific.",
-			"availability": "Lead Frontend Engineer at BlueGhost. Open to senior and lead frontend roles in Prague or remote (EU), employee or contract."
+			"availability": "Open to senior and lead frontend roles in Prague or remote (EU), employee or contract."
 		},
 		"methods": {
 			"eyebrow": "CONTACT DETAILS",
@@ -454,7 +454,7 @@
 		"hero": {
 			"eyebrow": "CURRICULUM VITAE",
 			"role": "Senior Frontend Engineer",
-			"intro": "Prague-based Senior Frontend Engineer with more than ten years in web development, currently leading frontend work at BlueGhost."
+			"intro": "Prague-based Senior Frontend Engineer with more than ten years in web development, currently in a lead frontend role."
 		},
 		"highlights": {
 			"eyebrow": "PROFILE",
@@ -466,7 +466,7 @@
 				},
 				"currentRole": {
 					"title": "Lead role",
-					"description": "Currently Lead Frontend Engineer at BlueGhost."
+					"description": "Leads frontend delivery for a product team: architecture, code quality, mentoring."
 				},
 				"productSystems": {
 					"title": "Product systems",
@@ -556,6 +556,15 @@
 			"intro": "Selected frontend roles in reverse chronological order.",
 			"presentLabel": "Present",
 			"entries": {
+				"nkp": {
+					"title": "Software Engineer",
+					"summary": "Development and maintenance of Seeder, the production system supporting the National Library Web Archive’s curatorial and archiving workflows.",
+					"descriptions": {
+						"platform": "Seeder is a production Django application backed by PostgreSQL. Curators use it to register web sources and publishers, track licensing agreements, schedule harvests, and assemble thematic collections for webarchiv.cz.",
+						"layers": "I design and build across the whole application: the PostgreSQL data model, Django logic and integrations, the admin interface and the workflows curators use every day. I take changes from the database all the way to the screen.",
+						"delivery": "Django and PostgreSQL are the core. To deliver changes safely I use Playwright tests, pull requests and Docker, then deploy them through Jenkins to the test and production environments."
+					}
+				},
 				"blueghost": {
 					"title": "Lead Frontend Engineer",
 					"summary": "Frontend architecture, delivery standards and engineering quality across product teams.",

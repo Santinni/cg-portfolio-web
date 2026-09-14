@@ -1,5 +1,6 @@
 import { expect, type Locator, type Page, test } from '@playwright/test'
 
+import { APPROVED_HOME_HERO } from './support/approved-copy'
 interface LocaleExpectation {
 	path: '/' | '/cs'
 	labels: {
@@ -21,8 +22,8 @@ const localeExpectations: LocaleExpectation[] = [
 	{
 		path: '/',
 		labels: {
-			heroPrimary: 'Read flagship case',
-			heroSecondary: 'Book an intro call',
+			heroPrimary: APPROVED_HOME_HERO.en.primaryCta,
+			heroSecondary: APPROVED_HOME_HERO.en.secondaryCta,
 			flagship: 'Read the case',
 			experience: 'View full experience',
 			final: 'Start a conversation',
@@ -37,8 +38,8 @@ const localeExpectations: LocaleExpectation[] = [
 	{
 		path: '/cs',
 		labels: {
-			heroPrimary: 'Přečíst hlavní případovou studii',
-			heroSecondary: 'Domluvit úvodní hovor',
+			heroPrimary: APPROVED_HOME_HERO.cs.primaryCta,
+			heroSecondary: APPROVED_HOME_HERO.cs.secondaryCta,
 			flagship: 'Přečíst studii',
 			experience: 'Zobrazit všechny zkušenosti',
 			final: 'Začít konverzaci',
