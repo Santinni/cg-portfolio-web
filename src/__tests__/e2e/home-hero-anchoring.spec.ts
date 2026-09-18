@@ -10,30 +10,25 @@ import {
 	waitForHomeRender,
 } from './support/home-parity'
 
-const desktopExperience =
-	'More than ten years in web development, currently in a lead frontend role. I work with React, TypeScript and Next.js across customer portals, internal enterprise applications and the component libraries underneath them.'
-const desktopQuality =
-	'Architecture, accessibility and long-term maintainability are part of the delivery, not follow-up work.'
-const compactExperience =
-	'More than ten years in web development, currently in a lead frontend role. I work with React, TypeScript and Next.js across customer portals, enterprise applications and component systems.'
-const compactQuality = 'Architecture, accessibility and maintainability are part of the delivery.'
-const czechDesktopExperience =
-	'Webům se věnuji přes deset let a dnes působím jako vedoucí frontend vývoje. S Reactem, TypeScriptem a Next.js pracuji na zákaznických portálech, interních podnikových aplikacích i komponentových knihovnách, na kterých stojí.'
-const czechDesktopQuality =
-	'Architektura, přístupnost a dlouhodobá udržitelnost jsou součástí dodávky, ne práce odložená na později.'
-const czechCompactExperience =
-	'Webům se věnuji přes deset let a nyní působím ve vedoucí frontendové roli. S Reactem, TypeScriptem a Next.js pracuji na zákaznických portálech, podnikových aplikacích a komponentových systémech.'
-const czechCompactQuality = 'Architektura, přístupnost a udržovatelnost jsou součástí dodávky.'
-const availabilityLine =
-	'Lead Frontend Engineer at BlueGhost. Open to senior and lead frontend roles in Prague or remote (EU), employee or contract.'
+import { APPROVED_HOME_HERO } from './support/approved-copy'
+
+const desktopExperience = APPROVED_HOME_HERO.en.paragraphs.experience
+const desktopQuality = APPROVED_HOME_HERO.en.paragraphs.quality
+const compactExperience = APPROVED_HOME_HERO.en.paragraphsCompact.experience
+const compactQuality = APPROVED_HOME_HERO.en.paragraphsCompact.quality
+const czechDesktopExperience = APPROVED_HOME_HERO.cs.paragraphs.experience
+const czechDesktopQuality = APPROVED_HOME_HERO.cs.paragraphs.quality
+const czechCompactExperience = APPROVED_HOME_HERO.cs.paragraphsCompact.experience
+const czechCompactQuality = APPROVED_HOME_HERO.cs.paragraphsCompact.quality
+const availabilityLine = APPROVED_HOME_HERO.en.availability
 const RESERVED_SCROLLBAR_GUTTER = 15
 
 /**
  * The availability line (HP-03) uses the body tier: 16px / 24px at every width. It has no
  * Figma frame, so its contribution to the Hero height is derived, not measured: one
- * inner-gap plus `availabilityLines` line boxes. The line counts below are estimates for
- * the ~118-character English sentence on the content measure (780px at 1440, otherwise
- * the content width); re-measure in the pinned container and pin the measured count.
+ * inner-gap plus `availabilityLines` line boxes. The line counts below were measured in the
+ * pinned container for the 86-character English sentence (HP-03, employer removed on
+ * 2026-09-13) on the content measure (780px at 1440, otherwise the content width).
  */
 const AVAILABILITY_LINE_HEIGHT = 24
 
@@ -58,16 +53,16 @@ async function expectResponsiveCopyVisibility(
 /*
  * `heroHeight` per viewport = the pre-COD-79 measured Hero (two 52px buttons; git show
  * 52746d2^) + the identity-eyebrow growth this branch added (+16 at 320px only) + the
- * availability paragraph (gap + availabilityLines x 24). Re-measure in the pinned container.
- *   1440: 729 + 32 + 2 x 24 = 809
+ * availability paragraph (gap + availabilityLines x 24), measured in the pinned container.
+ *   1440: 729 + 32 + 1 x 24 = 785
  *    768: 576 + 24 + 2 x 24 = 648
- *    430: 767 + 24 + 3 x 24 = 863
+ *    430: 767 + 24 + 2 x 24 = 839
  *    390: 767 + 24 + 3 x 24 = 863
- *    320: 770 + 16 + 24 + 4 x 24 = 906   (4 lines is borderline; 3 would give 882)
+ *    320: 770 + 16 + 24 + 3 x 24 = 882
  */
 const viewports = [
 	{
-		availabilityLines: 2,
+		availabilityLines: 1,
 		bodySize: 18,
 		compact: false,
 		eyebrowLines: 1,
@@ -79,7 +74,7 @@ const viewports = [
 		headlineHeight: 186,
 		headlineSize: 64,
 		height: HOME_PARITY_VIEWPORTS.desktop.height,
-		heroHeight: 809,
+		heroHeight: 785,
 		node: HOME_PARITY_VIEWPORTS.desktop.figmaNode,
 		paddingBottom: 112,
 		paragraphWidth: 780,
@@ -107,7 +102,7 @@ const viewports = [
 		x: 48,
 	},
 	{
-		availabilityLines: 3,
+		availabilityLines: 2,
 		bodySize: 17,
 		compact: true,
 		eyebrowLines: 1,
@@ -119,7 +114,7 @@ const viewports = [
 		headlineHeight: 232,
 		headlineSize: 40,
 		height: HOME_PARITY_VIEWPORTS.responsive430.height,
-		heroHeight: 863,
+		heroHeight: 839,
 		node: HOME_PARITY_VIEWPORTS.responsive430.figmaNode,
 		paddingBottom: 64,
 		paragraphWidth: null,
@@ -147,7 +142,7 @@ const viewports = [
 		x: 20,
 	},
 	{
-		availabilityLines: 4,
+		availabilityLines: 3,
 		bodySize: 17,
 		compact: true,
 		eyebrowLines: 2,
@@ -159,7 +154,7 @@ const viewports = [
 		headlineHeight: 160,
 		headlineSize: 36,
 		height: HOME_PARITY_VIEWPORTS.responsive320.height,
-		heroHeight: 906,
+		heroHeight: 882,
 		node: HOME_PARITY_VIEWPORTS.responsive320.figmaNode,
 		paddingBottom: 64,
 		paragraphWidth: null,

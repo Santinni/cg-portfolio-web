@@ -2,6 +2,15 @@ import { contact } from './site'
 
 export const curriculumVitaeExperience = [
 	{
+		id: 'nkp',
+		stack: ['Python', 'Django', 'PostgreSQL', 'Docker', 'Playwright', 'Git'],
+		company: 'Národní knihovna ČR',
+		roleId: 'softwareEngineer',
+		start: '2026-02',
+		end: null,
+		engagement: 'contract',
+	},
+	{
 		id: 'blueghost',
 		stack: [
 			'Next.js',

@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test'
 
+import { APPROVED_HOME_HERO } from './support/approved-copy'
 function getTestOrigin(baseURL: unknown): string {
 	if (typeof baseURL !== 'string') {
 		throw new Error('Playwright baseURL must be configured for i18n routing tests.')
@@ -39,7 +40,7 @@ test.describe('localized routing contract', () => {
 		await expect(
 			page.getByRole('heading', {
 				level: 1,
-				name: 'I build frontend systems for products that have to last.',
+				name: APPROVED_HOME_HERO.en.headline,
 			}),
 		).toBeVisible()
 		await expect(page.getByRole('link', { name: 'Skip to main content' })).toBeAttached()
@@ -54,7 +55,7 @@ test.describe('localized routing contract', () => {
 		await expect(
 			page.getByRole('heading', {
 				level: 1,
-				name: 'Stavím frontendové systémy pro produkty, které musí vydržet.',
+				name: APPROVED_HOME_HERO.cs.headline,
 			}),
 		).toBeVisible()
 		await expect(page.getByRole('link', { name: 'Přeskočit na hlavní obsah' })).toBeAttached()

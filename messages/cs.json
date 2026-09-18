@@ -52,7 +52,7 @@
 			},
 			"primaryCta": "Přečíst hlavní případovou studii",
 			"secondaryCta": "Domluvit úvodní hovor",
-			"availability": "Lead Frontend Engineer v BlueGhost. Otevřený seniorním a lead frontend rolím v Praze nebo remote (EU), zaměstnanecky i na kontrakt."
+			"availability": "Otevřený seniorním a lead frontend rolím v Praze nebo remote (EU), zaměstnanecky i na kontrakt."
 		},
 		"workedWith": {
 			"eyebrow": "SPOLUPRACOVAL JSEM S"
@@ -368,7 +368,7 @@
 			"eyebrow": "KONTAKT",
 			"title": "Pojďme probrat produkt, tým a frontendové problémy, které stojí za řešení.",
 			"intro": "Hledám především správnou seniorní nebo vedoucí frontendovou roli. Rád proberu i vybrané možnosti konzultací, pokud si konkrétně sedneme.",
-			"availability": "Lead Frontend Engineer v BlueGhost. Otevřený seniorním a lead frontend rolím v Praze nebo remote (EU), zaměstnanecky i na kontrakt."
+			"availability": "Otevřený seniorním a lead frontend rolím v Praze nebo remote (EU), zaměstnanecky i na kontrakt."
 		},
 		"methods": {
 			"eyebrow": "KONTAKTNÍ ÚDAJE",
@@ -454,7 +454,7 @@
 		"hero": {
 			"eyebrow": "ŽIVOTOPIS",
 			"role": "Senior frontend engineer",
-			"intro": "Senior frontend engineer z Prahy s více než deseti lety zkušeností ve webovém vývoji, který nyní vede frontend v BlueGhost."
+			"intro": "Senior frontend engineer z Prahy s více než deseti lety zkušeností ve webovém vývoji, nyní ve vedoucí frontendové roli."
 		},
 		"highlights": {
 			"eyebrow": "PROFIL",
@@ -466,7 +466,7 @@
 				},
 				"currentRole": {
 					"title": "Vedoucí role",
-					"description": "Aktuálně Lead Frontend Engineer v BlueGhost."
+					"description": "Vedu frontendový vývoj produktového týmu: delivery, architektura, kvalita kódu, mentoring."
 				},
 				"productSystems": {
 					"title": "Produktové systémy",
@@ -556,6 +556,15 @@
 			"intro": "Vybrané frontendové role v obráceném chronologickém pořadí.",
 			"presentLabel": "Současnost",
 			"entries": {
+				"nkp": {
+					"title": "Softwarový vývojář",
+					"summary": "Rozvoj a údržba Seederu, produkčního systému pro kurátorské a archivační procesy Webarchivu Národní knihovny.",
+					"descriptions": {
+						"platform": "Seeder je produkční Django aplikace nad PostgreSQL. Kurátoři v ní evidují webové zdroje a vydavatele, hlídají licenční smlouvy, plánují sklizně a skládají tematické sbírky pro webarchiv.cz.",
+						"layers": "Navrhuji a vyvíjím napříč celou aplikací: datový model v PostgreSQL, aplikační logiku a integrace v Djangu, administraci i workflow, se kterými kurátoři denně pracují. Změny dotahuji od databáze až po obrazovku.",
+						"delivery": "Jádrem jsou Django a PostgreSQL. Pro bezpečné dodání změn používám Playwright testy, pull requesty a Docker; přes Jenkins je nasazuji do testovacího i produkčního prostředí."
+					}
+				},
 				"blueghost": {
 					"title": "Lead Frontend Engineer",
 					"summary": "Frontendová architektura, standardy dodávky a inženýrská kvalita napříč produktovými týmy.",

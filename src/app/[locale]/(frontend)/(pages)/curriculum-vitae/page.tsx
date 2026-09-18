@@ -154,7 +154,9 @@ export default async function CurriculumPage({ params }: CurriculumPageProps) {
 					</div>
 					<ol className={styles.timeline}>
 						{curriculumVitaeExperience.map((experience) => {
-							const isCurrent = experience.end === null
+							// The badge names the primary current role, not every ongoing engagement: a
+							// parallel contract (NKP since 2026-02) shows "present" in its period only.
+							const isCurrent = experience.id === curriculumVitae.currentExperienceId
 
 							return (
 								<li
