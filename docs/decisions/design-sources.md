@@ -28,7 +28,8 @@ This file is the visual source of truth for redesign work.
 | Tablet page | `4:5` · Home frame `7:377` (instances, no Experience snapshot: the block is hidden below 1024 px) |
 | Mobile page | `4:6` · Home frame `8:87` |
 | Responsive QA page | `4:7` · Home frames `8:140` (320) and `8:193` (430), plain instances of the fluid `Width=390` variants (Selected work uses `Width=320` at 320) |
-| Dark-mode page | `4:8` · Home frames `8:246` (1440) and `8:325` (390), `Theme=Dark` instances; 768 / 430 / 320 dark frames added by COD-180 |
+| Dark-mode page | `4:8` · Home frames `8:246` (1440), `291:858` (768), `8:325` (390), `291:1087` (430), `291:1316` (320) — `Theme=Dark` instances throughout, heights equal to the light twins |
+| Dark previews of base sets | frames `<Set> / Dark preview` beside each set on `4:3` with the Dark mode pinned: Button `291:2274`, Icon Button `291:2392`, Link `291:4848`, Work Card `291:4899`, Contact Link `291:5003`, Tag `291:5076`, Timeline Item `291:5089`, Article Card `291:5114`, Code Block `291:5178`, Callout `291:5191`, CV Download Action `291:5201`, Marks `291:5247` — one instance per variant, so the dark theme is reviewable without a second axis on 54-variant sets |
 | Navigation component set | `21:357` — extended 2026-09-23: desktop variants full-bleed 1440 with the locale switcher and theme toggle, `Theme=Dark` variants, section `286:3364` |
 | Hero component set | `286:3362`, section `286:3363` — HP-01…HP-03 |
 | Worked with component set | `282:2805`, section `281:212`; marks in section `260:178` — HP-04 |
