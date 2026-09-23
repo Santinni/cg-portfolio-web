@@ -43,13 +43,14 @@ the device has (often none), and recruiters reach for a booking or contact actio
 they write an e-mail. The e-mail stays on `/contact` and the CV, and returns to `/` in a
 site footer (COD-91); the hero itself routes contact through the booking page.
 
-**Recorded deltas against Figma.** The approved frames still show the e-mail token in the
-hero action row and must be updated to the two-button row under DS-04's "Figma holds the
-resulting design" rule: desktop `6:11`, tablet `7:382`, mobile `8:92`, 430 px `8:198`,
-320 px `8:145`, dark desktop `8:255`. Until they are, the file and the shipped hero
-disagree and the parity specs pin the shipped geometry. The primary button renders
-`ArrowRight` while the Figma button has no glyph — a reconciliation item between the file
-and the contract, not a defect.
+**Figma reconciled (2026-09-23).** The hero frames now show the two-button row and the
+availability line (HP-03): desktop `6:11`, tablet `7:382`, mobile `8:92`, 430 px `8:198`,
+320 px `8:145`, dark desktop `8:255`, dark mobile `8:330`. The e-mail token instance was
+replaced by the Button component (`Kind=Secondary, Size=LG`, label "Book an intro call")
+and a body-tier paragraph in `text/secondary` was added after the actions, so the file and
+the shipped hero agree. One remaining delta: the primary button renders `ArrowRight` while
+the Figma button has no glyph — a reconciliation item between the file and the contract,
+not a defect.
 
 **Deferred.** `Person` structured data was considered and not added: the repository has no
 JSON-LD pattern to extend, and inventing one is a separate decision.
