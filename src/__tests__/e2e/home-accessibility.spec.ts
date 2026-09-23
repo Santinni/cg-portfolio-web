@@ -453,6 +453,7 @@ async function expectReducedMotionContract(page: Page) {
 			document.body,
 			document.querySelector('a[href="#main-content"]'),
 			document.querySelector('main'),
+			document.querySelector('footer'),
 		].filter((element): element is Element => element !== null)
 		const elements = Array.from(
 			new Set(roots.flatMap((root) => [root, ...root.querySelectorAll('*')])),

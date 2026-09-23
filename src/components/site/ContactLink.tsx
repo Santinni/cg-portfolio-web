@@ -1,4 +1,4 @@
-import { ArrowUpRight } from 'lucide-react'
+import { ArrowUpRight, Mail } from 'lucide-react'
 
 import { GitHubIcon, LinkedInIcon } from '@/app/(frontend)/components/icons/BrandIcons'
 import type { ContactMethod } from '@/content/contact'
@@ -33,11 +33,14 @@ interface ResolvedContactMethod extends Omit<ContactMethod, 'key'> {
 	label: string
 }
 
-type ContactLinkVariant = 'row' | 'inline'
+type ContactLinkVariant = 'row' | 'inline' | 'list'
 
 interface ContactLinkProps {
 	method: ResolvedContactMethod
-	/** `row` is the labelled contact-page row; `inline` is the compact hero token. */
+	/**
+	 * `row` is the labelled contact-page row; `inline` is the compact hero token; `list` is the
+	 * footer row — a leading glyph and one string, no label column, no arrow (SC-01).
+	 */
 	variant?: ContactLinkVariant
 }
 
@@ -63,12 +66,26 @@ interface ContactLinkProps {
  * for. The label is clipped, not removed, so it stays the anchor's accessible name and its
  * text content -- density is presentation only, and `data-contact-method`, href, target
  * and rel never change.
+ *
+ * `list` (the site footer, SC-01) is a directory again, but a compact one: a mail glyph and
+ * the address for the direct channel, an outward arrow and the label for an external
+ * profile. The glyph is decorative; the string is the accessible name.
  */
 export function ContactLink({ method, variant = 'row' }: ContactLinkProps) {
 	const isInline = variant === 'inline'
+	const isList = variant === 'list'
 	const brandKey = isInline && method.external && hasBrandGlyph(method.key) ? method.key : undefined
 
-	const content = isInline ? (
+	const content = isList ? (
+		<>
+			{method.external ? (
+				<ArrowUpRight className={styles.listIcon} aria-hidden="true" />
+			) : (
+				<Mail className={styles.listIcon} aria-hidden="true" />
+			)}
+			<span className={styles.listText}>{method.external ? method.label : method.value}</span>
+		</>
+	) : isInline ? (
 		<>
 			{brandKey ? <BrandGlyph methodKey={brandKey} /> : null}
 			<span className={styles.inlineText}>{method.external ? method.label : method.value}</span>
@@ -81,11 +98,13 @@ export function ContactLink({ method, variant = 'row' }: ContactLinkProps) {
 		</>
 	)
 
-	const shell = isInline
-		? brandKey
-			? `${styles.inline} ${styles.inlineIconic}`
-			: styles.inline
-		: styles.row
+	const shell = isList
+		? styles.list
+		: isInline
+			? brandKey
+				? `${styles.inline} ${styles.inlineIconic}`
+				: styles.inline
+			: styles.row
 
 	if (!method.href) {
 		return (
@@ -95,7 +114,7 @@ export function ContactLink({ method, variant = 'row' }: ContactLinkProps) {
 		)
 	}
 
-	const linkClass = isInline ? styles.inlineLink : styles.rowLink
+	const linkClass = isList ? styles.listLink : isInline ? styles.inlineLink : styles.rowLink
 
 	return (
 		<a

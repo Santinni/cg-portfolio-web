@@ -17,8 +17,12 @@ headline stays the only `h1`. No portrait, no brand mark, no second headline.
 not tell whose site it was without scrolling. The eyebrow already carried the role and city,
 so the name joins the row it belongs to instead of competing with the headline.
 
-**Approved frames.** Desktop `6:11` (identity row `6:12`), tablet `7:382`, mobile `8:92`,
-430 px `8:198`, 320 px `8:145`, dark desktop `8:255`. The row wraps to two lines only at
+**Approved frames.** Since 2026-09-23 (COD-180) the hero is the component set `Hero`
+(`286:3362`, `Width=1440 / 768 / 390` × `Theme=Light / Dark`, section `286:3363`) with
+instances in every Home frame: desktop `286:3365`, tablet `286:3376`, mobile `286:3387`,
+320 px `286:3420` (carries the 36 px headline override), 430 px `286:3431`, dark desktop
+`286:3398`, dark mobile `286:3409`. The earlier frame ids (`6:11`, `7:382`, `8:92`, `8:198`,
+`8:145`, `8:255`) are superseded. The row wraps to two lines only at
 320 px in Figma; in a browser it also wraps at 390 px, which the parity specs accept as
 line-box growth.
 
@@ -106,10 +110,13 @@ technology hears the label once.
 names, so the claim is backed before the visitor scrolls to the case studies. E.ON and MND
 were clients served through eMan, and the CV states them as such.
 
-**Approved frames.** Since 2026-09-23 (COD-179) the row is a block inside every Home frame —
-desktop `260:682`, tablet `260:2303`, mobile `260:2356`, 320 px `260:2411`, 430 px `260:2433`,
-dark desktop `260:2521`, dark mobile `260:2539` — with the seven mark components and the spec
-note in the Components page section `260:178`. Built from tokens: block padding `space/8` (`space/6` below 1280),
+**Approved frames.** Since 2026-09-23 (COD-179) the row is the component set `Worked with`
+(`282:2805`, variants `Width=1440 / 768 / 390` × `Theme=Light / Dark`, dark variants carrying
+the explicit Dark mode) in the Components page section `281:212`, next to the seven mark
+components in section `260:178`. Instances sit in every Home frame — desktop `282:2806`,
+tablet `282:2857`, mobile `282:2910`, 320 px `282:2965`, 430 px `282:3020`, dark desktop
+`282:3075`, dark mobile `282:3126`; the 390 variants are fluid (FILL cells) so the 320 and
+430 frames are plain instances. Built from tokens: block padding `space/8` (`space/6` below 1280),
 inner gap `space/6` (`space/4`), row gap `space/4`, column gap `space/6` (`space/8` on four
 columns), cell height `space/10` (`space/8`). The parity specs pin that geometry. Before
 that the row was a uniform-height flex row with no frame; Karel rejected it on 2026-09-23
