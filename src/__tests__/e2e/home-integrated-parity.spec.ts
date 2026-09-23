@@ -51,68 +51,68 @@ function resolveEvidenceRevision(
  *   1440: 801 + 32 + 24 = 857     768: 640 + 24 + 48 = 712
  *    430: 831 + 24 + 48 = 903     390: 831 + 24 + 72 = 927     320: 850 + 24 + 72 = 946
  *
- * Worked with (index 1, HP-04, no frame) is token-derived: padding-block (24 compact /
- * 32 desktop) x 2 + 16px heading line + inner gap (16 / 24) + logo rows (20px compact /
- * 24px desktop, 16px row gap). Measured rows with seven marks (Národní knihovna ČR added
- * 2026-09-13, ~102px wide at 20px): 1 at 1440, 2 at 768, 430 and 390, 3 at 320:
- *   1440: 32 + 16 + 24 + 24 + 32 = 128        768: 24 + 16 + 16 + 56 + 24 = 136
- *    430/390: 24 + 16 + 16 + 56 + 24 = 136     320: 24 + 16 + 16 + 92 + 24 = 172
+ * Worked with (index 1, HP-04, approved frames since 2026-09-23 — COD-179) is a grid of
+ * equal cells: 2 columns below 768 (4 rows), 4 columns from 768 (2 rows), 7 columns in one
+ * row from 1280. Block padding 24 (32 wide), eyebrow line 16, inner gap 16 (24 wide), cell
+ * height 32 (40 wide), row gap 16:
+ *   1440: 32 + 16 + 24 + 40 + 32 = 144                768: 24 + 16 + 16 + (2 x 32 + 16) + 24 = 160
+ *    430/390/320: 24 + 16 + 16 + (4 x 32 + 3 x 16) + 24 = 256
  */
 const FIGMA_EN_INTEGRATED_GEOMETRY = {
 	1440: {
-		mainHeight: 3909,
+		mainHeight: 3925,
 		sections: [
 			{ height: 857, top: 0 },
-			{ height: 128, top: 857 },
-			{ height: 635, top: 985 },
-			{ height: 713, top: 1620 },
-			{ height: 529, top: 2333 },
-			{ height: 565, top: 2862 },
-			{ height: 482, top: 3427 },
+			{ height: 144, top: 857 },
+			{ height: 635, top: 1001 },
+			{ height: 713, top: 1636 },
+			{ height: 529, top: 2349 },
+			{ height: 565, top: 2878 },
+			{ height: 482, top: 3443 },
 		],
 	},
 	768: {
-		mainHeight: 3298,
+		mainHeight: 3322,
 		sections: [
 			{ height: 712, top: 0 },
-			{ height: 136, top: 712 },
-			{ height: 364, top: 848 },
-			{ height: 1184, top: 1212 },
-			{ height: 610, top: 2396 },
-			{ height: 292, top: 3006 },
+			{ height: 160, top: 712 },
+			{ height: 364, top: 872 },
+			{ height: 1184, top: 1236 },
+			{ height: 610, top: 2420 },
+			{ height: 292, top: 3030 },
 		],
 	},
 	430: {
-		mainHeight: 3694,
+		mainHeight: 3814,
 		sections: [
 			{ height: 903, top: 0 },
-			{ height: 136, top: 903 },
-			{ height: 435, top: 1039 },
-			{ height: 1184, top: 1474 },
-			{ height: 656, top: 2658 },
-			{ height: 380, top: 3314 },
+			{ height: 256, top: 903 },
+			{ height: 435, top: 1159 },
+			{ height: 1184, top: 1594 },
+			{ height: 656, top: 2778 },
+			{ height: 380, top: 3434 },
 		],
 	},
 	390: {
-		mainHeight: 3800,
+		mainHeight: 3884,
 		sections: [
 			{ height: 927, top: 0 },
-			{ height: 172, top: 927 },
-			{ height: 435, top: 1099 },
-			{ height: 1230, top: 1534 },
-			{ height: 656, top: 2764 },
-			{ height: 380, top: 3420 },
+			{ height: 256, top: 927 },
+			{ height: 435, top: 1183 },
+			{ height: 1230, top: 1618 },
+			{ height: 656, top: 2848 },
+			{ height: 380, top: 3504 },
 		],
 	},
 	320: {
-		mainHeight: 3768,
+		mainHeight: 3852,
 		sections: [
 			{ height: 946, top: 0 },
-			{ height: 172, top: 946 },
-			{ height: 460, top: 1118 },
-			{ height: 1176, top: 1578 },
-			{ height: 702, top: 2754 },
-			{ height: 312, top: 3456 },
+			{ height: 256, top: 946 },
+			{ height: 460, top: 1202 },
+			{ height: 1176, top: 1662 },
+			{ height: 702, top: 2838 },
+			{ height: 312, top: 3540 },
 		],
 	},
 } as const

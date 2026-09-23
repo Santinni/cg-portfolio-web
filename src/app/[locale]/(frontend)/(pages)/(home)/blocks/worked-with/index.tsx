@@ -7,13 +7,13 @@ import { workedWith } from '@/content/workedWith'
 import styles from './WorkedWith.module.css'
 
 /**
- * Worked with — five client and employer marks directly under the hero (HP-04).
+ * Worked with — seven client and employer marks directly under the hero (HP-04).
  *
  * The eyebrow-styled `h2` is both the visible label and the section's accessible name, so
  * assistive technology hears it once rather than as an eyebrow plus a hidden heading.
  *
  * The marks are painted through a CSS mask in the secondary text colour instead of an
- * `<img>`: four of the five SVGs are white silhouettes and the fifth uses `currentColor`,
+ * `<img>`: most of the SVGs are white silhouettes and the rest use `currentColor`,
  * so an image would be invisible on the light surface and black on the dark one. Masking
  * makes the file's intrinsic colour irrelevant and keeps the row monochrome in both themes.
  */
@@ -41,6 +41,7 @@ export default async function WorkedWith() {
 								style={
 									{
 										'--mark': `url("${company.src}")`,
+										'--scale': company.scale,
 										aspectRatio: `${company.width} / ${company.height}`,
 									} as CSSProperties
 								}
