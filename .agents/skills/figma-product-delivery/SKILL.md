@@ -53,6 +53,36 @@ If the user explicitly asks to store a plan in Figma, confirm whether they mean 
 5. Validate the resulting product design with structure and screenshots.
 6. Store the implementation plan, validation matrix and dead-end record in the repository.
 
+## Canvas placement (no overlaps)
+
+Every top-level frame written by a script is placed from measured bounds, never from a
+guessed offset. A frame's height is only known after it is built (HUG layouts, wrapped
+text), so:
+
+1. Build the frame, then read `width`/`height` and place it: next free `x` on its row is
+   `previous.x + previous.width + 80`; the next row starts at `max(bottom of the row) + 80`.
+   Group variants of one surface on one row (light | dark), one row per width, widest first.
+2. Before returning, run an overlap check over `page.children` (axis-aligned rectangles) and
+   return the offending pairs; a non-empty list is a failed step — reflow before moving on.
+3. Working pages are temporary and stay outside the numbered sequence (`00`–`11` are the
+   file's permanent sections): name them `WIP · COD-xxx <surface> (temporary)` and keep them
+   last in the page list. After approval move product frames into the Home/route frames and
+   components into `02 - Components`, then delete the page. Never take the next number for
+   a working page — a deleted `12` leaves a gap the owner has to explain.
+4. Prefer sections or a reflow helper over hand-typed coordinates when more than two frames
+   are created in a session.
+
+Dead end (2026-09-23, COD-91): six footer frames were placed with hand-typed offsets, the
+1440 dark frame at y = 250 under a 316 px light frame; the overlap was only noticed by the
+owner in the file. The reflow above fixed it in one call.
+
+Dead end (2026-09-23, COD-179 and COD-91): a "spec note" — a text block listing tiers,
+tokens and heights — was placed next to the proposal frames. The owner could not tell what
+it was. That block is process documentation and belongs in `docs/decisions/` (HP-04 for the
+Worked-with row); it was deleted from the file. If a frame needs an explanation in Figma,
+name the layers so they explain themselves, or use Figma's own annotations on the node —
+never a free-standing text dump on the canvas.
+
 ## Pre-write check
 
 Before creating any top-level frame, section, page or text-heavy documentation block, answer:
