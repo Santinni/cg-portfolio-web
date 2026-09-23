@@ -34,10 +34,13 @@ address, the profiles, the CV and the booking route are reachable from every pag
 adding a third hero action or repeating the navigation.
 
 **Approved frames.** Figma component set `Site Footer` (`272:59`, variants `Width=1440 /
-768 / 390`) in `02 - Components`; instances close every Home frame — desktop `272:616`,
+768 / 390` × `Theme=Light / Dark`; the dark variants carry the explicit Dark mode of the
+Semantic Color collection so both themes are visible where the component lives) in
+`02 - Components`; instances close every Home frame — desktop `272:616`,
 tablet `272:963`, mobile `272:1308`, 320 px `272:1486`, 430 px `272:1516`, dark desktop
-`272:1992`, dark mobile `272:2022`. Karel approved the proposal on 2026-09-23 and asked for
-it to be a component rather than pasted frames.
+`272:1992`, dark mobile `272:2022` (both `Theme=Dark`). Karel approved the proposal on
+2026-09-23 and asked for it to be a component rather than pasted frames, with the dark
+theme kept visible in the set.
 
 **Tests.** `site-footer.spec.ts` (functional, every engine) pins the landmark, the link
 semantics, the locale-prefixed routes and the 44 px targets; the Home accessibility

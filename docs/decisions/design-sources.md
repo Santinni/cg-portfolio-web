@@ -31,7 +31,7 @@ This file is the visual source of truth for redesign work.
 | Dark-mode page | `4:8` |
 | Button component set | `21:110` |
 | Contact Link component set | `21:273` — gained `Kind=LinkedIn Icon` and `Kind=GitHub Icon` on 2026-09-03; see CV-05 |
-| Site Footer component set | `272:59` (`Width=1440 / 768 / 390`), added 2026-09-23; instances close every Home frame — see SC-01 in [`site-chrome.md`](site-chrome.md) |
+| Site Footer component set | `272:59` (`Width=1440 / 768 / 390` × `Theme=Light / Dark`, dark variants carry the explicit Dark mode), added 2026-09-23; instances close every Home frame — see SC-01 in [`site-chrome.md`](site-chrome.md) |
 | Worked-with marks | section `260:178` on the Components page; the row lives inside every Home frame — see HP-04 |
 | Brand Identity page `11 - Brand Identity` | `146:2` · chapter frames `146:3`, `147:2`, `149:2`, `150:2`, `151:2`, `153:15` |
 
@@ -70,7 +70,10 @@ and the process documentation stops being reviewable or diffable.
 
 Some routes and blocks were delivered without approved frames and cannot carry a parity
 claim. (The Home "Worked with" row left this table on 2026-09-23, COD-179, when its frames
-were approved; see HP-04 in [`homepage.md`](homepage.md).) Do not report measured Figma parity for a surface with no approved source.
+were approved; see HP-04 in [`homepage.md`](homepage.md).) An audit of the file against
+production on 2026-09-23 added two gaps that are not routes: the Home *Experience snapshot*
+has a desktop frame only (the block is hidden below 1440 px on the site), and the Dark-mode
+page holds 1440 and 390 frames only, so 768, 430 and 320 have no approved dark geometry. Do not report measured Figma parity for a surface with no approved source.
 
 | Surface | Record |
 | --- | --- |
