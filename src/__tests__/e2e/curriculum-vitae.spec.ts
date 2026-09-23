@@ -230,7 +230,8 @@ for (const locale of cvLocales) {
 			})
 			expect(duplicateIds).toEqual([])
 
-			await expect(page.getByRole('link', { name: 'karel@codeguy.cz' })).toHaveAttribute(
+			// Scoped to main: the site footer (SC-01) carries the same address on every page.
+			await expect(page.locator('main').getByRole('link', { name: 'karel@codeguy.cz' })).toHaveAttribute(
 				'href',
 				'mailto:karel@codeguy.cz',
 			)
