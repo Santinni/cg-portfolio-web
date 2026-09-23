@@ -5,6 +5,7 @@ import { Inter } from 'next/font/google'
 import { hasLocale, NextIntlClientProvider } from 'next-intl'
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server'
 
+import { SiteFooter } from '@/app/(frontend)/components/layout/SiteFooter'
 import { SkipLink } from '@/app/(frontend)/components/layout/SkipLink'
 import { ThemeScript } from '@/app/(frontend)/components/theme/ThemeScript'
 import Navigation from '@/app/(frontend)/components/ui/navigation'
@@ -126,6 +127,7 @@ export default async function RootLayout({
 					<main id="main-content" tabIndex={-1}>
 						{children}
 					</main>
+					<SiteFooter />
 				</NextIntlClientProvider>
 			</body>
 		</html>

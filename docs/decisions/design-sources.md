@@ -31,6 +31,8 @@ This file is the visual source of truth for redesign work.
 | Dark-mode page | `4:8` |
 | Button component set | `21:110` |
 | Contact Link component set | `21:273` — gained `Kind=LinkedIn Icon` and `Kind=GitHub Icon` on 2026-09-03; see CV-05 |
+| Site Footer component set | `272:59` (`Width=1440 / 768 / 390`), added 2026-09-23; instances close every Home frame — see SC-01 in [`site-chrome.md`](site-chrome.md) |
+| Worked-with marks | section `260:178` on the Components page; the row lives inside every Home frame — see HP-04 |
 | Brand Identity page `11 - Brand Identity` | `146:2` · chapter frames `146:3`, `147:2`, `149:2`, `150:2`, `151:2`, `153:15` |
 
 The Brand Identity page is the visual working reference for the identity; its governing

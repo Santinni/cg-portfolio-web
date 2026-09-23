@@ -1,0 +1,139 @@
+/*
+ * Site footer (SC-01). Raised surface, no divider; every value is a token. Three columns
+ * from 768px, stacked below; the meta row sits side by side from 768px.
+ */
+.footer {
+  background: var(--surface-raised);
+  color: var(--text-primary);
+  padding-block: var(--space-32);
+
+  @media (min-width: 1280px) {
+    padding-block: var(--space-48);
+  }
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-24);
+
+  @media (min-width: 1280px) {
+    gap: var(--space-32);
+  }
+}
+
+.columns {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-24);
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: var(--space-32);
+  }
+
+  @media (min-width: 1280px) {
+    gap: var(--space-48);
+  }
+}
+
+.brand,
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  min-inline-size: 0;
+
+  @media (min-width: 768px) {
+    flex: 1 1 0;
+  }
+}
+
+/* Same wordmark treatment as the header (BD-19); no lockup with the name below it. */
+.wordmark {
+  margin: 0;
+  font-size: var(--font-size-title);
+  line-height: var(--line-height-title);
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.name,
+.role {
+  margin: 0;
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+}
+
+.role {
+  color: var(--text-secondary);
+}
+
+/* Same eyebrow treatment as the page blocks, carried by the column heading. */
+.eyebrow {
+  margin: 0;
+  color: var(--action-primary);
+  font-size: var(--font-size-label);
+  line-height: var(--line-height-label);
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  margin: 0;
+  padding: 0;
+}
+
+/* Text links share the ContactLink list rhythm: a 44px row, underlined on hover. */
+.link {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--touch-target-min);
+  color: var(--text-primary);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  text-decoration: underline;
+  text-decoration-color: var(--border-strong);
+  text-underline-offset: 0.22em;
+  transition:
+    color 160ms ease,
+    text-decoration-color 160ms ease;
+}
+
+.link:hover {
+  color: var(--action-primary-hover);
+  text-decoration-color: currentColor;
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: var(--space-16);
+  }
+}
+
+.metaText {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--font-size-label);
+  line-height: var(--line-height-label);
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .link {
+    transition: none;
+  }
+}

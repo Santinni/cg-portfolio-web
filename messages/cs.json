@@ -809,5 +809,15 @@
 			"description": "Odkaz může být zastaralý nebo byla stránka přesunuta.",
 			"returnHome": "Vrátit se domů"
 		}
+	},
+	"footer": {
+		"role": "Senior Frontend Engineer · Praha",
+		"contactEyebrow": "KONTAKT",
+		"nextEyebrow": "DALŠÍ KROK",
+		"links": {
+			"curriculumVitae": "Životopis",
+			"booking": "Domluvit úvodní hovor"
+		},
+		"copyright": "© {year} {name}"
 	}
 }

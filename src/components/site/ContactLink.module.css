@@ -158,3 +158,42 @@
 		transition: none;
 	}
 }
+
+/* Footer directory row (SC-01): glyph + one string, 44px row, teal like the other links. */
+.list {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--space-8);
+	min-block-size: var(--touch-target-min);
+	min-inline-size: 0;
+	color: var(--text-primary);
+}
+
+.listLink {
+	color: var(--action-primary);
+	text-decoration: none;
+	transition: color 160ms ease;
+}
+
+.listLink:hover {
+	color: var(--action-primary-hover);
+	text-decoration: underline;
+	text-underline-offset: 0.22em;
+}
+
+.listIcon {
+	flex: 0 0 auto;
+	width: var(--icon-16);
+	height: var(--icon-16);
+}
+
+.listText {
+	min-inline-size: 0;
+	overflow-wrap: anywhere;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.listLink {
+		transition: none;
+	}
+}
