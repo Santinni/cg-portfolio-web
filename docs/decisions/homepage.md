@@ -17,8 +17,12 @@ headline stays the only `h1`. No portrait, no brand mark, no second headline.
 not tell whose site it was without scrolling. The eyebrow already carried the role and city,
 so the name joins the row it belongs to instead of competing with the headline.
 
-**Approved frames.** Desktop `6:11` (identity row `6:12`), tablet `7:382`, mobile `8:92`,
-430 px `8:198`, 320 px `8:145`, dark desktop `8:255`. The row wraps to two lines only at
+**Approved frames.** Since 2026-09-23 (COD-180) the hero is the component set `Hero`
+(`286:3362`, `Width=1440 / 768 / 390` × `Theme=Light / Dark`, section `286:3363`) with
+instances in every Home frame: desktop `286:3365`, tablet `286:3376`, mobile `286:3387`,
+320 px `286:3420` (carries the 36 px headline override), 430 px `286:3431`, dark desktop
+`286:3398`, dark mobile `286:3409`. The earlier frame ids (`6:11`, `7:382`, `8:92`, `8:198`,
+`8:145`, `8:255`) are superseded. The row wraps to two lines only at
 320 px in Figma; in a browser it also wraps at 390 px, which the parity specs accept as
 line-box growth.
 
