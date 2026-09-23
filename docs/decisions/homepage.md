@@ -105,10 +105,13 @@ technology hears the label once.
 names, so the claim is backed before the visitor scrolls to the case studies. E.ON and MND
 were clients served through eMan, and the CV states them as such.
 
-**Approved frames.** Since 2026-09-23 (COD-179) the row is a block inside every Home frame —
-desktop `260:682`, tablet `260:2303`, mobile `260:2356`, 320 px `260:2411`, 430 px `260:2433`,
-dark desktop `260:2521`, dark mobile `260:2539` — with the seven mark components and the spec
-note in the Components page section `260:178`. Built from tokens: block padding `space/8` (`space/6` below 1280),
+**Approved frames.** Since 2026-09-23 (COD-179) the row is the component set `Worked with`
+(`282:2805`, variants `Width=1440 / 768 / 390` × `Theme=Light / Dark`, dark variants carrying
+the explicit Dark mode) in the Components page section `281:212`, next to the seven mark
+components in section `260:178`. Instances sit in every Home frame — desktop `282:2806`,
+tablet `282:2857`, mobile `282:2910`, 320 px `282:2965`, 430 px `282:3020`, dark desktop
+`282:3075`, dark mobile `282:3126`; the 390 variants are fluid (FILL cells) so the 320 and
+430 frames are plain instances. Built from tokens: block padding `space/8` (`space/6` below 1280),
 inner gap `space/6` (`space/4`), row gap `space/4`, column gap `space/6` (`space/8` on four
 columns), cell height `space/10` (`space/8`). The parity specs pin that geometry. Before
 that the row was a uniform-height flex row with no frame; Karel rejected it on 2026-09-23
