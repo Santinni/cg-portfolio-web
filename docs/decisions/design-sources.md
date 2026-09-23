@@ -4,7 +4,7 @@
 | --- | --- |
 | Scope | The Figma file of record and its approved node inventory |
 | Status vocabulary | See [`README.md`](README.md) |
-| Last updated | 2026-09-12 |
+| Last updated | 2026-09-23 |
 
 ## DS-01 — Figma file of record · `locked`
 
@@ -67,12 +67,12 @@ and the process documentation stops being reviewable or diffable.
 ## DS-05 — Routes and blocks without approved frames · `locked`
 
 Some routes and blocks were delivered without approved frames and cannot carry a parity
-claim. Do not report measured Figma parity for a surface with no approved source.
+claim. (The Home "Worked with" row left this table on 2026-09-23, COD-179, when its frames
+were approved; see HP-04 in [`homepage.md`](homepage.md).) Do not report measured Figma parity for a surface with no approved source.
 
 | Surface | Record |
 | --- | --- |
 | `/contact/book` | [`booking.md`](booking.md) BK-02 |
-| Home "Worked with" row (the block between the hero and the flagship case) | [`homepage.md`](homepage.md) HP-04 |
 
 For these the parity specs pin token-derived geometry, and the decision record says which
 tokens. Adding an approved frame later moves the surface out of this table and into DS-02

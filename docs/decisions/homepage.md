@@ -89,10 +89,14 @@ choosing to show availability as a status element rather than a sentence.
 ## HP-04 — A "Worked with" row of seven monochrome marks follows the hero · `locked`
 
 **Decision.** Directly under the hero, before the flagship case, a low section labelled
-"WORKED WITH" / "SPOLUPRACOVAL JSEM S" shows seven marks at a uniform height (20 px below
-1024 px, 24 px above): Národní knihovna ČR, E.ON, MND, Kontent.ai, Skype, Jobs.cz, eMan. The marks are rendered as
-masks filled with the secondary text colour, so they are monochrome in both themes, and they
-are static — no links, no hover state. Company names are brand names and live in
+"WORKED WITH" / "SPOLUPRACOVAL JSEM S" shows seven marks: Národní knihovna ČR, E.ON, MND,
+Kontent.ai, Skype, Jobs.cz, eMan. They sit in a grid of equal cells — two columns below
+768 px, four from 768 px, seven in one row from 1280 px — with a partial last row centred.
+Each mark is sized optically, not by a uniform height: the tier's base height (20 px, 24 px
+from 1280 px) times a per-mark factor in `src/content/workedWith.ts` derived from the mark's
+ink area (exponent 0.35, clamped to 0.72–1.35), so wide wordmarks and compact symbols carry a
+similar weight. The marks are rendered as masks filled with the secondary text colour, so
+they are monochrome in both themes, and they are static — no links, no hover state. Company names are brand names and live in
 `src/content/workedWith.ts`, not the catalogs; each mark exposes its name as an image label.
 The eyebrow-styled `h2` is the section's only heading and its accessible name, so assistive
 technology hears the label once.
@@ -101,9 +105,15 @@ technology hears the label once.
 names, so the claim is backed before the visitor scrolls to the case studies. E.ON and MND
 were clients served through eMan, and the CV states them as such.
 
-**No approved frame.** The row has no Figma source (DS-05). Its geometry is token-derived —
-block padding from the spacing scale, the label tier for the heading, icon tokens for the
-mark heights — and the parity specs pin that derived geometry, not a Figma measurement.
+**Approved frames.** Since 2026-09-23 (COD-179) the row is a block inside every Home frame —
+desktop `260:682`, tablet `260:2303`, mobile `260:2356`, 320 px `260:2411`, 430 px `260:2433`,
+dark desktop `260:2521`, dark mobile `260:2539` — with the seven mark components and the spec
+note in the Components page section `260:178`. Built from tokens: block padding `space/8` (`space/6` below 1280),
+inner gap `space/6` (`space/4`), row gap `space/4`, column gap `space/6` (`space/8` on four
+columns), cell height `space/10` (`space/8`). The parity specs pin that geometry. Before
+that the row was a uniform-height flex row with no frame; Karel rejected it on 2026-09-23
+because a 7× spread in ink area (Kontent.ai 202 px wide against eMan 26 px) and orphaned
+wrap rows read as unbalanced on a phone.
 
 **Status.** Rights confirmed by Karel on 2026-09-12 for every mark, including E.ON and MND as
 clients reached through eMan. Skype was added the same day (simple-icons 12 glyph, CC0; the
@@ -114,6 +124,6 @@ Národní knihovna ČR was added on 2026-09-13 as the current client (Seeder, th
 curatorial platform, CV entry `nkp`), first in the row; the mark is the library's own wordmark
 from nkp.cz, used with Karel's confirmation as its contractor.
 
-**What would reopen it.** A rights objection, a new employer or client worth naming, or a
-decision to link the marks to the case studies (which would make the row a navigation
+**What would reopen it.** A rights objection, a new employer or client worth naming (re-derive
+the optical factors), or a decision to link the marks to the case studies (which would make the row a navigation
 element and change its accessibility contract).
