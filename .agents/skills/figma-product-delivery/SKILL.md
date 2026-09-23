@@ -73,6 +73,13 @@ Dead end (2026-09-23, COD-91): six footer frames were placed with hand-typed off
 1440 dark frame at y = 250 under a 316 px light frame; the overlap was only noticed by the
 owner in the file. The reflow above fixed it in one call.
 
+Dead end (2026-09-23, COD-179 and COD-91): a "spec note" — a text block listing tiers,
+tokens and heights — was placed next to the proposal frames. The owner could not tell what
+it was. That block is process documentation and belongs in `docs/decisions/` (HP-04 for the
+Worked-with row); it was deleted from the file. If a frame needs an explanation in Figma,
+name the layers so they explain themselves, or use Figma's own annotations on the node —
+never a free-standing text dump on the canvas.
+
 ## Pre-write check
 
 Before creating any top-level frame, section, page or text-heavy documentation block, answer:
