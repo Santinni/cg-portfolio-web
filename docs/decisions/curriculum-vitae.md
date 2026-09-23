@@ -255,6 +255,21 @@ tells the reader the contract is ongoing.
 **What would reopen it.** The primary role changing (move `currentExperienceId`), or a
 decision to present parallel engagements as a distinct kind of entry.
 
+## CV-11 — The CV timeline and cards stay CV-only · `locked`
+
+**Decision.** The `/curriculum-vitae` experience timeline, the highlight cards and the
+download block keep their own components. They are not variants of the shared `Timeline`
+(`/experience`) or of any shared card, and BL-002 work item 3 is closed without a refactor.
+
+**Why.** The COD-84 decision brief (2026-09-11) measured the two timelines and found different
+information contracts, not different densities: the shared `Timeline` renders NDA-safe
+role/description pairs by design, the CV renders dated engagements with employer, badge and
+stack (CV-10). The cards and the download block have a single consumer. Sharing would trade
+one fork for a component with two modes and no second user. Karel decided on 2026-09-23.
+
+**What would reopen it.** A second surface that needs dated engagements with employer and
+stack, or the Experience page adopting the CV's information contract.
+
 ## CV-06 — CV content stays out of Payload · `provisional`
 
 **Decision.** Static HTML CV copy lives in the `curriculumVitae` namespace in both
