@@ -1,12 +1,16 @@
 /*
- * Worked-with row (HP-04). No approved Figma frame (DS-05), so every value comes from the
- * token scale: the block padding is the small end of the spacing scale rather than
- * `--section-block`, which is sized for full content sections.
+ * Worked-with row (HP-04, revised 2026-09-23 with the approved Figma frames). Every value is a
+ * token: block padding and gaps from the spacing scale, mark heights from the icon tokens.
+ *
+ * Tiers follow the site's breakpoints: compact (< 768) two columns, medium/large (768–1279)
+ * four columns, wide (>= 1280) seven columns in one row. Cells are equal-width (the container
+ * minus the gaps, divided by the column count) and a partial last row is centred; a full row
+ * therefore fills the container and reads as left-aligned under the eyebrow.
  */
 .section {
   padding-block: var(--space-24);
 
-  @media (min-width: 1024px) {
+  @media (min-width: 1280px) {
     padding-block: var(--space-32);
   }
 }
@@ -16,7 +20,7 @@
   flex-direction: column;
   gap: var(--space-16);
 
-  @media (min-width: 1024px) {
+  @media (min-width: 1280px) {
     gap: var(--space-24);
   }
 }
@@ -32,37 +36,58 @@
 }
 
 .logos {
+  --columns: 2;
+  --column-gap: var(--space-24);
+  --row-gap: var(--space-16);
+  --cell-height: var(--space-32);
+  --mark-base: var(--icon-20);
+
   list-style: none;
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-16) var(--space-32);
+  justify-content: center;
+  gap: var(--row-gap) var(--column-gap);
   margin: 0;
   padding: 0;
 
-  @media (min-width: 1024px) {
-    gap: var(--space-16) var(--space-48);
+  @media (min-width: 768px) {
+    --columns: 4;
+    --column-gap: var(--space-32);
+  }
+
+  @media (min-width: 1280px) {
+    --columns: 7;
+    --column-gap: var(--space-24);
+    --cell-height: var(--space-40);
+    --mark-base: var(--icon-24);
   }
 }
 
 .item {
   display: flex;
+  align-items: center;
+  justify-content: center;
+  /* 1px under the exact share: fractional widths otherwise round a full row past 100% and
+     wrap its last cell (seen at 320px and 1280px). */
+  flex: 0 0 calc((100% - (var(--columns) - 1) * var(--column-gap)) / var(--columns) - 1px);
+  /* Without this a flex item's automatic minimum is its content, and the widest wordmark
+     would push the cell past its share at 1280px and wrap the row. */
+  min-inline-size: 0;
+  block-size: var(--cell-height);
 }
 
 /*
- * Uniform mark height (20px compact, 24px desktop); the width follows each file's
- * intrinsic ratio through `aspect-ratio`. The silhouette is the mask, the colour is the
- * secondary text token, so the row is monochrome and static in both themes.
+ * Optical size: the tier's base mark height times the per-mark factor from the content model,
+ * the width following each file's intrinsic ratio through `aspect-ratio`. The silhouette is
+ * the mask, the colour is the secondary text token, so the row is monochrome and static in
+ * both themes. `max-inline-size` keeps the widest wordmark inside its cell at 320px.
  */
 .mark {
   display: block;
-  block-size: var(--icon-20);
+  block-size: calc(var(--mark-base) * var(--scale, 1));
+  max-inline-size: 100%;
   color: var(--text-secondary);
   background-color: currentColor;
   -webkit-mask: var(--mark) center / contain no-repeat;
   mask: var(--mark) center / contain no-repeat;
-
-  @media (min-width: 1024px) {
-    block-size: var(--icon-24);
-  }
 }
