@@ -64,8 +64,11 @@ text), so:
    Group variants of one surface on one row (light | dark), one row per width, widest first.
 2. Before returning, run an overlap check over `page.children` (axis-aligned rectangles) and
    return the offending pairs; a non-empty list is a failed step — reflow before moving on.
-3. Working pages (`NN - COD-xxx …`) are temporary: after approval move product frames into
-   the Home/route frames and components into `02 - Components`, then delete the page.
+3. Working pages are temporary and stay outside the numbered sequence (`00`–`11` are the
+   file's permanent sections): name them `WIP · COD-xxx <surface> (temporary)` and keep them
+   last in the page list. After approval move product frames into the Home/route frames and
+   components into `02 - Components`, then delete the page. Never take the next number for
+   a working page — a deleted `12` leaves a gap the owner has to explain.
 4. Prefer sections or a reflow helper over hand-typed coordinates when more than two frames
    are created in a session.
 
