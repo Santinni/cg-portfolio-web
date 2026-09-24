@@ -23,12 +23,22 @@ This file is the visual source of truth for redesign work.
 
 | Surface | Node |
 | --- | --- |
-| Components page | `4:3` |
-| Desktop page | `4:4` · Home frame `6:2` |
-| Tablet page | `4:5` · Home frame `7:377` |
+| Components page | `4:3` — every Home block is a component set with `Width` × `Theme=Light / Dark` variants (dark variants carry the explicit Dark mode of the Semantic Color collection); each set sits in its own section, sections stacked without overlap |
+| Desktop page | `4:4` · Home frame `6:2` — instances only, top to bottom: Navigation, Hero, Worked with, Flagship case, Selected work, Principles, Experience snapshot, Final CTA, Site footer |
+| Tablet page | `4:5` · Home frame `7:377` (instances, no Experience snapshot: the block is hidden below 1024 px) |
 | Mobile page | `4:6` · Home frame `8:87` |
-| Responsive QA page | `4:7` |
-| Dark-mode page | `4:8` |
+| Responsive QA page | `4:7` · Home frames `8:140` (320) and `8:193` (430), plain instances of the fluid `Width=390` variants (Selected work uses `Width=320` at 320) |
+| Dark-mode page | `4:8` · Home frames `8:246` (1440), `291:858` (768), `8:325` (390), `291:1087` (430), `291:1316` (320) — `Theme=Dark` instances throughout, heights equal to the light twins |
+| Dark previews of base sets | frames `<Set> / Dark preview` beside each set on `4:3` with the Dark mode pinned: Button `291:2274`, Icon Button `291:2392`, Link `291:4848`, Work Card `291:4899`, Contact Link `291:5003`, Tag `291:5076`, Timeline Item `291:5089`, Article Card `291:5114`, Code Block `291:5178`, Callout `291:5191`, CV Download Action `291:5201`, Marks `291:5247` — one instance per variant, so the dark theme is reviewable without a second axis on 54-variant sets |
+| Navigation component set | `21:357` — extended 2026-09-23: desktop variants full-bleed 1440 with the locale switcher and theme toggle, `Theme=Dark` variants, section `286:3364` |
+| Hero component set | `286:3362`, section `286:3363` — HP-01…HP-03 |
+| Worked with component set | `282:2805`, section `281:212`; marks in section `260:178` — HP-04 |
+| Flagship case component set | `286:2966`, section `286:2967` |
+| Selected work component set | `287:3649`, section `287:3650` (eight variants: `Width=1440 / 768 / 390 / 320`; Work Card `21:248` gained `Action` / `Pending` properties for the pending case) |
+| Principles component set | `286:3136`, section `286:3137` |
+| Experience snapshot component set | `286:2511`, section `286:2876` (1440 only) |
+| Final CTA component set | `286:2998`, section `286:3011` |
+| Site Footer component set | `272:59`, section `272:60` — SC-01 in [`site-chrome.md`](site-chrome.md) |
 | Button component set | `21:110` |
 | Contact Link component set | `21:273` — gained `Kind=LinkedIn Icon` and `Kind=GitHub Icon` on 2026-09-03; see CV-05 |
 | Brand Identity page `11 - Brand Identity` | `146:2` · chapter frames `146:3`, `147:2`, `149:2`, `150:2`, `151:2`, `153:15` |
@@ -68,7 +78,11 @@ and the process documentation stops being reviewable or diffable.
 
 Some routes and blocks were delivered without approved frames and cannot carry a parity
 claim. (The Home "Worked with" row left this table on 2026-09-23, COD-179, when its frames
-were approved; see HP-04 in [`homepage.md`](homepage.md).) Do not report measured Figma parity for a surface with no approved source.
+were approved; see HP-04 in [`homepage.md`](homepage.md).) An audit of the file against
+production on 2026-09-23 (COD-180) found the Home blocks pasted as frames and the dark
+mode held as two frames; the same day every block became a component set with `Theme`
+variants and the dark page gained its 768 / 430 / 320 frames, so the only block without a
+compact frame is the *Experience snapshot*, which the site hides below 1024 px by design. Do not report measured Figma parity for a surface with no approved source.
 
 | Surface | Record |
 | --- | --- |
