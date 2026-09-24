@@ -7,13 +7,19 @@ TypeScript, ESLint, unit/integration tests, a production build and the Chromium 
 successful push to `main` builds one immutable GHCR image tagged with the full commit SHA, then
 deploys that exact image to the VPS.
 
-The VPS runs one Docker Compose project:
+The VPS runs two Docker Compose projects. This repository owns the first one, `codeguy` in
+`/opt/codeguy`:
 
-- Caddy terminates HTTPS on ports 80/443 and proxies to `app:3000`.
+- Caddy terminates HTTPS on ports 80/443 for both sites. It proxies `codeguy.cz` to `app:3000` and
+  `jobs.codeguy.cz` to `cztechjobs-api:8080`. Caddy joins the project network `default` and the
+  shared external network `edge`; `app` and `database` stay on `default` only.
 - The application is also bound to `127.0.0.1:3000` for private deploy health checks.
 - PostgreSQL is reachable only on the Compose network and persists in `db_data`.
 - Caddy certificates and runtime configuration persist in `caddy_data` and `caddy_config`.
 - Payload uploads persist in `media_data` instead of the replaceable application container.
+
+The second project, `cztechjobs` in `/opt/cztechjobs`, is deployed from its own repository and
+only attaches its API to `edge`. See [Second stack: jobs.codeguy.cz](#second-stack-jobscodeguycz).
 
 ## One-time VPS provisioning
 
@@ -31,6 +37,33 @@ without sudo, and confirm that `curl` is installed for deploy revision checks.
 Create `/opt/codeguy/.env` from `.env.production.example`. Generate independent hexadecimal values
 for `PAYLOAD_SECRET` and `DB_PASSWORD`, use the same database password inside `DATABASE_URI`, and
 set file permissions to `0600`. Do not commit the production file.
+
+Create the shared network once. No Compose project owns it, so `docker compose down` in either
+project neither removes it nor fails on it:
+
+```bash
+docker network create --driver bridge edge
+```
+
+Create `/opt/codeguy/.env.caddy` from `.env.caddy.example` with mode `0600`. It holds only
+`JOBS_BASIC_AUTH_HASH`, the bcrypt hash of the `jobs.codeguy.cz` password, and is passed to the
+Caddy container alone. Never put that hash into `/opt/codeguy/.env`: that file is the `env_file` of
+the Next.js container.
+
+Use a random password of at least 32 characters from the password manager and hash it at bcrypt
+cost 10. Caddy's own `caddy hash-password` uses cost 14, roughly one second of CPU per failed login
+on the CPU that `codeguy.cz` shares; with a long random password cost 10 loses no practical
+strength. Generate the hash interactively so the password stays out of shell history:
+
+```bash
+docker run --rm -it httpd:2.4-alpine htpasswd -nBC 10 karel
+install -m 0600 /dev/null /opt/codeguy/.env.caddy
+# htpasswd prints karel:$2y$10$...; keep only the hash, in single quotes:
+# JOBS_BASIC_AUTH_HASH='$2y$10$...'
+```
+
+Caddy's bcrypt accepts the `$2y$` prefix. The deploy fails before touching the running stack when
+`.env.caddy` or `edge` is missing, or when the value is not a well-formed bcrypt hash.
 
 Ports 80 and 443 must be free. The repository runs Caddy inside Compose; a host-level Caddy, nginx
 or Apache service is not required.
@@ -129,7 +162,16 @@ the matcher is also safe if CMS administration should remain available only thro
 ## Deployment and rollback
 
 The workflow uploads `compose.yaml` and `Caddyfile` into a commit-specific staging directory. It
-validates both files before replacing the active copies. Compose and Caddy rollback copies are kept
+first requires `/opt/codeguy/.env.caddy` and the `edge` network to exist and checks that
+`JOBS_BASIC_AUTH_HASH` is a well-formed bcrypt hash, then validates both files before replacing the
+active copies. Caddy is validated with `docker compose run --no-deps` against the staged
+`compose.yaml` in the throw-away project `codeguy-caddy-validate`, which is removed with
+`down -v` right after, so the staged `Caddyfile` sees exactly the runtime environment without
+touching production volumes. `caddy validate` itself reliably rejects only an empty or missing hash; a
+malformed value starting with `$` passes it and would fail only on the first login, which is why
+the format check runs first. A well-formed but wrong hash shows up only as failed logins. After the
+public `codeguy.cz` check, the deploy probes `https://jobs.codeguy.cz/ready` and warns, without
+failing, unless it answers `401`. Compose and Caddy rollback copies are kept
 next to the active files, and the previous application image is restored automatically if container
 startup, Caddy reload, private database readiness or an update deployment's public HTTPS revision
 check fails. The successful image reference is written atomically to `/opt/codeguy/.env`, so manual
@@ -178,6 +220,83 @@ docker ps
 
 The app, Caddy and database must be healthy; deep health must return `database: ok`; and unrelated
 containers such as `docling-service` must still be running.
+
+Check which containers share `edge`. Expect only this project's Caddy and the jobs API:
+
+```bash
+docker network inspect edge --format '{{range .Containers}}{{.Name}} {{end}}'
+```
+
+## Second stack: jobs.codeguy.cz
+
+`jobs.codeguy.cz` serves cztechjobs, a separate Compose project in `/opt/cztechjobs` with its own
+repository, image, PostgreSQL and deploy. This repository contributes only the Caddy site block,
+the `edge` network attachment and the Caddy secret. The decision is recorded in
+[`docs/decisions/jobs-subdomain-edge.md`](decisions/jobs-subdomain-edge.md).
+
+### Network contract
+
+- `edge` is external in both projects and created once by hand.
+- Caddy reaches the jobs API only through the alias `cztechjobs-api` on `edge`. The jobs database
+  never joins `edge`, and the jobs stack publishes no host ports.
+- Caddy resolves upstream names across all of its networks. The jobs stack must therefore never use
+  `app`, `database` or `caddy` as a service name, alias or `container_name`, otherwise
+  `codeguy.cz` traffic could reach the wrong container.
+- This project must never add a service named `api`: the jobs service `api` is visible on `edge`
+  under that name as well as under its alias.
+
+### Authentication scope
+
+Caddy `basic_auth` (realm `cztechjobs`, user `karel`) covers every request to `jobs.codeguy.cz`
+except `GET` or `HEAD` on the exact, case-sensitive path `/health` (`path_regexp ^/health$`; the
+plain `path` matcher lowercases, so `/HEALTH` would slip past it). It stays public for an external uptime
+monitor and returns only `ok`. Build revision and readiness live on `/ready`, behind
+authentication. Caddy strips the `Authorization` header before proxying and answers `403` to
+state-changing requests that a browser marks as `Sec-Fetch-Site: cross-site` or `same-site`, or
+that carry an `Origin` other than `https://jobs.codeguy.cz`, because browsers send Basic
+credentials on cross-site requests regardless of SameSite. Writes without an `Origin` header, such
+as `curl`, pass, matching the API's own origin check.
+
+Every failed login costs a bcrypt comparison. Banning repeated `401` responses from Caddy's JSON
+log with fail2ban is a planned follow-up.
+
+### Password rotation
+
+Environment variables are fixed when a container is created, so `caddy reload` does not pick up a
+new hash. Replace the value in `/opt/codeguy/.env.caddy`, validate, then recreate Caddy only:
+
+```bash
+cd /opt/codeguy
+docker run --rm -it httpd:2.4-alpine htpasswd -nBC 10 karel
+# edit .env.caddy: keep only the hash, in single quotes
+docker compose run --rm --no-deps --entrypoint caddy caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile
+docker compose up -d --no-deps --wait caddy
+```
+
+The validation runs a one-off Caddy container in the production project and removes it when it
+exits; it creates no volumes or networks, obtains no certificates and leaves the running Caddy
+untouched. It checks that the hash is present, not its format, so check that the value starts with
+`$2y$10$` (or `$2a$`/`$2b$`) and is 60 characters long, and after recreating Caddy log in once to
+prove the new password. Recreating Caddy interrupts both sites for a few seconds.
+
+**Never type `docker compose down -v` in `/opt/codeguy`.** It deletes the production database,
+media and certificate volumes. The deploy workflow's isolated validation project and its cleanup
+exist only inside the CI script, where nobody types them by hand.
+
+### Ordering and blast radius
+
+- Order of the first rollout: DNS for `jobs.codeguy.cz` (A and AAAA) → the jobs stack running and
+  healthy on `edge` → the portfolio release carrying the Caddy block. Caddy requests the certificate
+  as soon as it loads the configuration, so DNS must already be correct.
+- Without a healthy upstream the Caddy configuration still loads; `jobs.codeguy.cz` answers `502`
+  or `503` and `codeguy.cz` is unaffected. Caddy fails to start only when the Caddyfile does not
+  adapt, which the deploy validation prevents.
+- A portfolio deploy that changes the Caddy service recreates Caddy: seconds of downtime for both
+  sites.
+- Emergency stop for the jobs site: `cd /opt/cztechjobs && docker compose stop api`.
+- The jobs stack must never run `docker image prune` or `docker system prune`, never
+  `docker compose down -v`, never touch `docling-service` or anything in `/opt/codeguy`, and never
+  publish host ports.
 
 ## Troubleshooting and recovery lessons
 

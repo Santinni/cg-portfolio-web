@@ -2,9 +2,13 @@ services:
   caddy:
     image: caddy:2.11.4-alpine
     restart: unless-stopped
+    env_file: ${CADDY_ENV_FILE:-./.env.caddy}
     depends_on:
       app:
         condition: service_healthy
+    networks:
+      - default
+      - edge
     ports:
       - "80:80"
       - "443:443"
@@ -59,6 +63,13 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
     restart: unless-stopped
+
+networks:
+  # Shared with the separate cztechjobs Compose project; created once on the host with
+  # `docker network create edge`. External, so no project's `down` can remove it.
+  edge:
+    name: edge
+    external: true
 
 volumes:
   db_data:
