@@ -269,16 +269,19 @@ new hash. Replace the value in `/opt/codeguy/.env.caddy`, validate, then recreat
 cd /opt/codeguy
 docker run --rm -it httpd:2.4-alpine htpasswd -nBC 10 karel
 # edit .env.caddy: keep only the hash, in single quotes
-docker compose -p codeguy-caddy-validate run --rm --no-deps --entrypoint caddy caddy \
-  validate --config /etc/caddy/Caddyfile --adapter caddyfile
-docker compose -p codeguy-caddy-validate down -v --remove-orphans
+docker compose run --rm --no-deps --entrypoint caddy caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile
 docker compose up -d --no-deps --wait caddy
 ```
 
-Never run the `down -v` line without `-p codeguy-caddy-validate`: in `/opt/codeguy` it would
-delete the production database, media and certificate volumes. `caddy validate` does not parse the
-hash, so after recreating Caddy log in once to prove the new password. Recreating Caddy interrupts
-both sites for a few seconds.
+The validation runs a one-off Caddy container in the production project and removes it when it
+exits; it creates no volumes or networks, obtains no certificates and leaves the running Caddy
+untouched. It checks that the hash is present, not its format, so check that the value starts with
+`$2y$10$` (or `$2a$`/`$2b$`) and is 60 characters long, and after recreating Caddy log in once to
+prove the new password. Recreating Caddy interrupts both sites for a few seconds.
+
+**Never type `docker compose down -v` in `/opt/codeguy`.** It deletes the production database,
+media and certificate volumes. The deploy workflow's isolated validation project and its cleanup
+exist only inside the CI script, where nobody types them by hand.
 
 ### Ordering and blast radius
 

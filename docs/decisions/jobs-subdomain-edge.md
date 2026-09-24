@@ -73,3 +73,9 @@ value that starts with `$`, so the deploy also checks the bcrypt format before v
 well-formed but wrong hash can only show up as failed logins. The hash uses bcrypt cost 10 over a
 random password of at least 32 characters: cost 14, Caddy's default, spends about a second of the
 CPU shared with `codeguy.cz` on every failed attempt.
+
+**Operating rule.** A hash rotation is validated by hand only with `docker compose run --rm
+--no-deps --entrypoint caddy caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile` in
+the production project, which leaves nothing behind. `docker compose down -v` is never typed in
+`/opt/codeguy`: it deletes the production database, media and certificate volumes. The isolated
+validation project and its `down -v` cleanup exist only inside the CI deploy script.
