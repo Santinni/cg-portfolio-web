@@ -56,9 +56,11 @@ codeguy.cz, www.codeguy.cz {
 # substituted at adapt time: an empty value fails validation instead of starting open.
 jobs.codeguy.cz {
 	# Everything is private except the exact GET/HEAD /health probe for uptime monitoring.
+	# path_regexp, not path: the path matcher lowercases, so /HEALTH would skip auth and
+	# reach the case-sensitive Go router.
 	@protected not {
 		method GET HEAD
-		path /health
+		path_regexp ^/health$
 	}
 	basic_auth @protected bcrypt "cztechjobs" {
 		karel {$JOBS_BASIC_AUTH_HASH}
@@ -72,6 +74,15 @@ jobs.codeguy.cz {
 		header Sec-Fetch-Site same-site
 	}
 	respond @crossSiteWrite 403
+
+	# Sec-Fetch-Site may be absent, so also refuse writes carrying a foreign Origin.
+	# Requests without Origin (curl, scripts) pass, as they do in the API's own check.
+	@foreignOrigin {
+		not method GET HEAD OPTIONS
+		header Origin *
+		not header Origin https://jobs.codeguy.cz
+	}
+	respond @foreignOrigin 403
 
 	request_body {
 		max_size 8MB

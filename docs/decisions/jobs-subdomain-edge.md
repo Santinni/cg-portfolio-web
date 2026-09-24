@@ -28,19 +28,22 @@ Caddy covers the SPA and the API from the first byte with no application code. P
 be shared: its cookie is host-only on `codeguy.cz`, `/api/users*` is publicly blocked, and its rate
 limit is built for the CMS. Because browsers send Basic credentials on cross-site requests
 regardless of SameSite, Caddy also refuses state-changing requests marked `Sec-Fetch-Site:
-cross-site` or `same-site`, and strips `Authorization` before proxying.
+cross-site` or `same-site` or carrying a foreign `Origin`, and strips `Authorization` before
+proxying. Repeated `401`s cost bcrypt CPU; fail2ban on Caddy's JSON log is a follow-up.
 
 **What would reopen it.** An application session login in cztechjobs (planned separately), or a
 second user.
 
 ## JE-02 — Only `GET`/`HEAD /health` is public · `locked`
 
-**Decision.** The single path exempt from authentication is the exact `/health`, for `GET` and
-`HEAD` only. It returns `ok` and nothing else. Build revision and readiness are served on `/ready`,
+**Decision.** The single path exempt from authentication is the exact, case-sensitive `/health`,
+for `GET` and `HEAD` only, matched with `path_regexp ^/health$`. It returns `ok` and nothing else. Build revision and readiness are served on `/ready`,
 behind authentication.
 
 **Why.** An external uptime monitor needs one unauthenticated probe; exposing the revision or
-dependency state publicly would leak more than liveness.
+dependency state publicly would leak more than liveness. The plain `path` matcher lowercases the
+request path while the Go router does not, so with it `/HEALTH` would skip authentication and reach
+the SPA fallback.
 
 **What would reopen it.** A monitor that can authenticate, which would remove the exemption.
 
@@ -64,5 +67,9 @@ value), which Compose passes only to Caddy through `CADDY_ENV_FILE`. The Caddyfi
 `{$JOBS_BASIC_AUTH_HASH}`. Only `.env.caddy.example` with a placeholder is committed.
 
 **Why.** `/opt/codeguy/.env` is the Next.js container's `env_file`; the hash does not belong there.
-`{$VAR}` is substituted when the Caddyfile is adapted, so an empty or malformed value fails
-`caddy validate` in the deploy instead of starting an unprotected or broken site.
+`{$VAR}` is substituted when the Caddyfile is adapted, so an empty or missing value fails
+`caddy validate` in the deploy instead of starting a broken site. `caddy validate` does not parse a
+value that starts with `$`, so the deploy also checks the bcrypt format before validating; a
+well-formed but wrong hash can only show up as failed logins. The hash uses bcrypt cost 10 over a
+random password of at least 32 characters: cost 14, Caddy's default, spends about a second of the
+CPU shared with `codeguy.cz` on every failed attempt.

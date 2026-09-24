@@ -48,16 +48,22 @@ docker network create --driver bridge edge
 Create `/opt/codeguy/.env.caddy` from `.env.caddy.example` with mode `0600`. It holds only
 `JOBS_BASIC_AUTH_HASH`, the bcrypt hash of the `jobs.codeguy.cz` password, and is passed to the
 Caddy container alone. Never put that hash into `/opt/codeguy/.env`: that file is the `env_file` of
-the Next.js container. Generate the hash interactively so the password stays out of shell history,
-and keep the value in single quotes:
+the Next.js container.
+
+Use a random password of at least 32 characters from the password manager and hash it at bcrypt
+cost 10. Caddy's own `caddy hash-password` uses cost 14, roughly one second of CPU per failed login
+on the CPU that `codeguy.cz` shares; with a long random password cost 10 loses no practical
+strength. Generate the hash interactively so the password stays out of shell history:
 
 ```bash
-docker run --rm -it caddy:2.11.4-alpine caddy hash-password
+docker run --rm -it httpd:2.4-alpine htpasswd -nBC 10 karel
 install -m 0600 /dev/null /opt/codeguy/.env.caddy
-# then edit the file: JOBS_BASIC_AUTH_HASH='$2a$14$...'
+# htpasswd prints karel:$2y$10$...; keep only the hash, in single quotes:
+# JOBS_BASIC_AUTH_HASH='$2y$10$...'
 ```
 
-The deploy fails before touching the running stack when `.env.caddy` or `edge` is missing.
+Caddy's bcrypt accepts the `$2y$` prefix. The deploy fails before touching the running stack when
+`.env.caddy` or `edge` is missing, or when the value is not a well-formed bcrypt hash.
 
 Ports 80 and 443 must be free. The repository runs Caddy inside Compose; a host-level Caddy, nginx
 or Apache service is not required.
@@ -156,10 +162,16 @@ the matcher is also safe if CMS administration should remain available only thro
 ## Deployment and rollback
 
 The workflow uploads `compose.yaml` and `Caddyfile` into a commit-specific staging directory. It
-first requires `/opt/codeguy/.env.caddy` and the `edge` network to exist, then validates both files
-before replacing the active copies. Caddy is validated with `docker compose run --no-deps` against
-the staged `compose.yaml`, so the staged `Caddyfile` sees exactly the runtime environment, including
-`JOBS_BASIC_AUTH_HASH`; an empty or malformed hash fails validation instead of starting Caddy. Compose and Caddy rollback copies are kept
+first requires `/opt/codeguy/.env.caddy` and the `edge` network to exist and checks that
+`JOBS_BASIC_AUTH_HASH` is a well-formed bcrypt hash, then validates both files before replacing the
+active copies. Caddy is validated with `docker compose run --no-deps` against the staged
+`compose.yaml` in the throw-away project `codeguy-caddy-validate`, which is removed with
+`down -v` right after, so the staged `Caddyfile` sees exactly the runtime environment without
+touching production volumes. `caddy validate` itself reliably rejects only an empty or missing hash; a
+malformed value starting with `$` passes it and would fail only on the first login, which is why
+the format check runs first. A well-formed but wrong hash shows up only as failed logins. After the
+public `codeguy.cz` check, the deploy probes `https://jobs.codeguy.cz/ready` and warns, without
+failing, unless it answers `401`. Compose and Caddy rollback copies are kept
 next to the active files, and the previous application image is restored automatically if container
 startup, Caddy reload, private database readiness or an update deployment's public HTTPS revision
 check fails. The successful image reference is written atomically to `/opt/codeguy/.env`, so manual
@@ -236,11 +248,17 @@ the `edge` network attachment and the Caddy secret. The decision is recorded in
 ### Authentication scope
 
 Caddy `basic_auth` (realm `cztechjobs`, user `karel`) covers every request to `jobs.codeguy.cz`
-except `GET` or `HEAD` on the exact path `/health`, which stays public for an external uptime
+except `GET` or `HEAD` on the exact, case-sensitive path `/health` (`path_regexp ^/health$`; the
+plain `path` matcher lowercases, so `/HEALTH` would slip past it). It stays public for an external uptime
 monitor and returns only `ok`. Build revision and readiness live on `/ready`, behind
 authentication. Caddy strips the `Authorization` header before proxying and answers `403` to
-state-changing requests that a browser marks as `Sec-Fetch-Site: cross-site` or `same-site`,
-because browsers send Basic credentials on cross-site requests regardless of SameSite.
+state-changing requests that a browser marks as `Sec-Fetch-Site: cross-site` or `same-site`, or
+that carry an `Origin` other than `https://jobs.codeguy.cz`, because browsers send Basic
+credentials on cross-site requests regardless of SameSite. Writes without an `Origin` header, such
+as `curl`, pass, matching the API's own origin check.
+
+Every failed login costs a bcrypt comparison. Banning repeated `401` responses from Caddy's JSON
+log with fail2ban is a planned follow-up.
 
 ### Password rotation
 
@@ -249,13 +267,18 @@ new hash. Replace the value in `/opt/codeguy/.env.caddy`, validate, then recreat
 
 ```bash
 cd /opt/codeguy
-docker run --rm -it caddy:2.11.4-alpine caddy hash-password
-# edit .env.caddy, keep single quotes
-docker compose run --rm --no-deps --entrypoint caddy caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile
+docker run --rm -it httpd:2.4-alpine htpasswd -nBC 10 karel
+# edit .env.caddy: keep only the hash, in single quotes
+docker compose -p codeguy-caddy-validate run --rm --no-deps --entrypoint caddy caddy \
+  validate --config /etc/caddy/Caddyfile --adapter caddyfile
+docker compose -p codeguy-caddy-validate down -v --remove-orphans
 docker compose up -d --no-deps --wait caddy
 ```
 
-Recreating Caddy interrupts both sites for a few seconds.
+Never run the `down -v` line without `-p codeguy-caddy-validate`: in `/opt/codeguy` it would
+delete the production database, media and certificate volumes. `caddy validate` does not parse the
+hash, so after recreating Caddy log in once to prove the new password. Recreating Caddy interrupts
+both sites for a few seconds.
 
 ### Ordering and blast radius
 
