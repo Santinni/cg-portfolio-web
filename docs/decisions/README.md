@@ -52,6 +52,7 @@ delivered plan is deleted rather than archived.
 | [`design-sources.md`](design-sources.md) | Figma file of record and approved node inventory |
 | [`homepage.md`](homepage.md) | The `/` hero: identity row and the two actions |
 | [`site-chrome.md`](site-chrome.md) | Chrome shared by every route: the site footer |
+| [`jobs-subdomain-edge.md`](jobs-subdomain-edge.md) | `jobs.codeguy.cz`: the separate cztechjobs stack behind this Caddy, basic_auth scope, the external `edge` network |
 | `../brand/brand-decision-log.md` | Brand identity and control geometry — governs; referenced from these records, never restated |
 
 ## Writing a record
