@@ -50,3 +50,78 @@ codeguy.cz, www.codeguy.cz {
 		level INFO
 	}
 }
+
+# cztechjobs, a separate Compose project (/opt/cztechjobs) reached over the external
+# network "edge" by its alias. The bcrypt hash comes from /opt/codeguy/.env.caddy and is
+# substituted at adapt time: an empty value fails validation instead of starting open.
+jobs.codeguy.cz {
+	# Everything is private except the exact GET/HEAD /health probe for uptime monitoring.
+	@protected not {
+		method GET HEAD
+		path /health
+	}
+	basic_auth @protected bcrypt "cztechjobs" {
+		karel {$JOBS_BASIC_AUTH_HASH}
+	}
+
+	# Browsers attach Basic credentials to cross-site requests and SameSite does not
+	# apply to them, so refuse state-changing requests that another site initiated.
+	@crossSiteWrite {
+		not method GET HEAD OPTIONS
+		header Sec-Fetch-Site cross-site
+		header Sec-Fetch-Site same-site
+	}
+	respond @crossSiteWrite 403
+
+	request_body {
+		max_size 8MB
+	}
+
+	reverse_proxy cztechjobs-api:8080 {
+		header_up -Authorization
+		health_uri /health
+		health_interval 10s
+		health_timeout 5s
+		health_status 200
+		lb_try_duration 10s
+		lb_try_interval 250ms
+	}
+
+	header {
+		-Server
+		-X-Powered-By
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options nosniff
+		X-Frame-Options DENY
+		Referrer-Policy no-referrer
+		X-Robots-Tag "noindex, nofollow"
+	}
+
+	encode gzip zstd {
+		minimum_length 1000
+	}
+
+	@api path /api/*
+	header @api {
+		defer
+		Cache-Control "private, no-store"
+	}
+
+	@assets path /assets/*
+	header @assets {
+		defer
+		Cache-Control "private, max-age=31536000, immutable"
+	}
+
+	@shell not path /api/* /assets/* /health
+	header @shell {
+		defer
+		Cache-Control "private, no-cache"
+	}
+
+	log {
+		output stdout
+		format json
+		level INFO
+	}
+}

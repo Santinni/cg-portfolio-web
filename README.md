@@ -26,6 +26,8 @@ Payload administrace je dostupná pod `/admin`.
 ## Docker
 
 ```bash
+docker network create edge          # jednou; sdílená síť Caddy a stacku jobs.codeguy.cz
+cp .env.caddy.example .env.caddy    # jen pro Caddy; lokálně stačí hash z `caddy hash-password`
 docker compose up --build
 ```
 
