@@ -55,6 +55,7 @@
     --font-weight-light: 300;
     --font-weight-normal: 400;
     --font-weight-medium: 500;
+    --font-weight-semibold: 600;
     --font-weight-bold: 700;
 
     /* Font sizes */
@@ -122,6 +123,12 @@
     --action-secondary: var(--surface-raised);
     --action-secondary-hover: var(--surface-subtle);
     --action-icon-hover: #e8f6f2;
+
+    /* Status (callouts, notices); each pair keeps >= 4.5:1 on its theme's surfaces */
+    --status-info: #1d4ed8;
+    --status-success: #047857;
+    --status-warning: #b45309;
+    --status-danger: #be123c;
 
     /* Spacing scale */
     --space-0: 0px;
@@ -245,6 +252,11 @@
     --action-secondary: var(--surface-raised);
     --action-secondary-hover: var(--surface-subtle);
     --action-icon-hover: var(--surface-subtle);
+
+    --status-info: #60a5fa;
+    --status-success: #34d399;
+    --status-warning: #fbbf24;
+    --status-danger: #fb7185;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -270,5 +282,10 @@
         --action-secondary: var(--surface-raised);
         --action-secondary-hover: var(--surface-subtle);
         --action-icon-hover: var(--surface-subtle);
+
+        --status-info: #60a5fa;
+        --status-success: #34d399;
+        --status-warning: #fbbf24;
+        --status-danger: #fb7185;
     }
 }

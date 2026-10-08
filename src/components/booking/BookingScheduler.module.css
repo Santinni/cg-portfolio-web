@@ -81,7 +81,7 @@
 
 .fallbackTitle {
 	font-size: var(--font-size-body-lg);
-	font-weight: var(--font-weight-semibold, 600);
+	font-weight: var(--font-weight-semibold);
 	line-height: var(--line-height-body-lg);
 }
 

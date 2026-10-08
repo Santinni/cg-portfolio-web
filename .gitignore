@@ -66,3 +66,6 @@ src/components/**/files.json
 
 # CV PDF build artefacts
 tools/cv-pdf/out/
+
+# Claude Code desktop preview config (per-machine, regenerated on demand)
+.claude/launch.json

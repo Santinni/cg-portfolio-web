@@ -13,7 +13,6 @@
     padding: var(--spacing-2xl);
     background-color: var(--background-secondary);
     border-radius: var(--border-radius);
-    box-shadow: var(--shadow-md);
 }
 
 .title {

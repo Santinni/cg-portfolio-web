@@ -12,9 +12,10 @@ codeguy.cz, www.codeguy.cz {
 	}
 	respond @privateReadiness 404
 
-	# Keep Payload's first-user bootstrap private until the owner account exists.
+	# CMS administration stays private (SSH tunnel only). Instead of Caddy's empty 404,
+	# send these paths to a route the app does not have, so the branded 404 renders.
 	@cmsBootstrap path /admin* /api/users*
-	respond @cmsBootstrap 404
+	rewrite @cmsBootstrap /cms-unavailable
 
 	reverse_proxy app:3000 {
 		health_uri /api/health
