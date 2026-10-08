@@ -162,6 +162,12 @@ the matcher is also safe if CMS administration should remain available only thro
 
 ## Deployment and rollback
 
+The Caddy container bind-mounts `/opt/codeguy/Caddyfile` as a single file. A replacement that
+creates a new inode (`install`, `mv`) is invisible to the running container: `caddy reload` then
+re-reads the old content and the deploy looks green while the old rules stay active (release #78,
+2026-10-08). The workflow therefore overwrites the file in place (`cat > Caddyfile`); do the same
+by hand, or recreate the container (`docker compose up -d --force-recreate --no-deps caddy`).
+
 The workflow uploads `compose.yaml` and `Caddyfile` into a commit-specific staging directory. It
 first requires `/opt/codeguy/.env.caddy` and the `edge` network to exist and checks that
 `JOBS_BASIC_AUTH_HASH` is a well-formed bcrypt hash, then validates both files before replacing the
