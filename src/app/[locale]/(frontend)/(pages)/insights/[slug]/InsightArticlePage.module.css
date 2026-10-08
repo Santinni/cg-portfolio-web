@@ -1,7 +1,6 @@
 .hero {
 	--text-primary: var(--text-on-contrast);
 	--text-secondary: var(--text-on-contrast-muted);
-	--surface-muted: transparent;
 
 	padding-block: var(--space-64);
 	color: var(--text-on-contrast);
@@ -50,11 +49,14 @@
 	color: var(--text-on-contrast-muted);
 }
 
-.hero :global([aria-label='Article topics']) a,
-.hero :global([aria-label='Article topics']) span {
-	color: var(--text-on-contrast);
-	background: transparent;
-	border: 1px solid var(--border-strong);
+/* Topic tags are quiet Buttons; on the contrast hero they take on-contrast colours
+   through the Button's own custom properties instead of a parallel pill style. */
+.hero :global([data-article-topics]) > li > a {
+	--button-foreground: var(--accent-on-contrast);
+	--button-background-hover: var(--text-on-contrast-muted);
+	--button-foreground-hover: var(--surface-contrast);
+	--button-background-active: var(--text-on-contrast-muted);
+	--button-foreground-active: var(--surface-contrast);
 }
 
 .mediaContainer {

@@ -29,16 +29,16 @@
 }
 
 .downloadAction:hover {
-	background: var(--action-hover, var(--action-primary-hover));
+	background: var(--action-primary-hover);
 }
 
 .downloadAction:active {
-	background: var(--action-pressed, var(--action-primary-pressed));
+	background: var(--action-primary-pressed);
 	transition-duration: 100ms;
 }
 
 .downloadAction:focus-visible {
-	outline: 2px solid var(--focus-ring, var(--action-focus));
+	outline: 2px solid var(--action-focus);
 	outline-offset: 2px;
 }
 

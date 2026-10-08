@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { NextIntlClientProvider } from 'next-intl'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
@@ -57,6 +57,47 @@ describe('localized article chrome', () => {
 		expect(screen.getByText('Publikováno')).toBeVisible()
 		expect(screen.getByRole('list', { name: 'Témata článku' })).toBeVisible()
 		expect(screen.getByRole('link', { name: 'Architecture' })).toHaveAttribute('lang', 'en')
+	})
+
+	it('renders linked topics as small quiet design-system button links', () => {
+		renderCzech(
+			<ArticleMetadata
+				topics={[
+					{ href: '/insights?topic=architecture', label: 'Architecture' },
+					{ href: '/insights?topic=performance', label: 'Performance' },
+				]}
+			/>,
+		)
+		const list = screen.getByRole('list', { name: 'Témata článku' })
+		expect(list).toHaveAttribute('data-article-topics')
+		const topics = within(list)
+		const links = topics.getAllByRole('link')
+
+		expect(links).toHaveLength(2)
+		expect(links.map((link) => link.getAttribute('href'))).toEqual([
+			'/insights?topic=architecture',
+			'/insights?topic=performance',
+		])
+		for (const link of links) {
+			expect(link.tagName).toBe('A')
+			expect(link).toHaveAttribute('lang', 'en')
+			expect(link.className).toContain('variant-quiet')
+			expect(link.className).toContain('size-small')
+			expect(link.className).not.toContain('variant-secondary')
+			expect(link.className).not.toContain('variant-primary')
+			expect(link.closest('li')).not.toBeNull()
+		}
+	})
+
+	it('renders a topic without href as English text, never as a link', () => {
+		renderCzech(<ArticleMetadata topics={[{ label: 'Accessibility' }]} />)
+		const topics = within(screen.getByRole('list', { name: 'Témata článku' }))
+
+		expect(topics.queryAllByRole('link')).toHaveLength(0)
+		const label = topics.getByText('Accessibility')
+		expect(label.tagName).toBe('SPAN')
+		expect(label).toHaveAttribute('lang', 'en')
+		expect(label.className).toContain('topicLabel')
 	})
 
 	it('localizes share controls and copy success feedback', async () => {
