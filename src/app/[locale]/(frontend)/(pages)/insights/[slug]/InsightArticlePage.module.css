@@ -49,14 +49,15 @@
 	color: var(--text-on-contrast-muted);
 }
 
-/* Topic tags are quiet Buttons; on the contrast hero they take on-contrast colours
-   through the Button's own custom properties instead of a parallel pill style. */
+/* Topic tags are secondary Buttons. The hero already remaps --text-primary to the
+   on-contrast text, so only the hover/active surfaces and the focus ring need
+   on-contrast values; they go through the Button's own custom properties. */
 .hero :global([data-article-topics]) > li > a {
-	--button-foreground: var(--accent-on-contrast);
 	--button-background-hover: var(--text-on-contrast-muted);
 	--button-foreground-hover: var(--surface-contrast);
 	--button-background-active: var(--text-on-contrast-muted);
 	--button-foreground-active: var(--surface-contrast);
+	--action-focus: var(--accent-on-contrast);
 }
 
 .mediaContainer {

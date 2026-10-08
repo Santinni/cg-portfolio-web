@@ -9,7 +9,8 @@ import { loadLightTokens, resolveToken } from '../../../tools/cv-pdf/tokens.mjs'
  * Colour pairs the article chrome relies on, checked in both themes from the token file
  * itself. The pairs are the ones a reviewer cannot eyeball in a diff: topic tags on the
  * contrast hero, their hover state, and the four status accents used by callouts.
- * WCAG 2.x contrast; 4.5:1 for text, 3:1 for the non-text callout accent bar.
+ * WCAG 2.x contrast: 4.5:1 for text and for the status accents (variables.css promises it), 3:1 for
+ * non-text borders.
  */
 const variablesPath = resolve(process.cwd(), 'src/app/(frontend)/styles/variables.css')
 
@@ -60,7 +61,9 @@ describe.each([
 		const tokens = await load()
 		const hero = colour(tokens, '--surface-contrast')
 
-		expect(contrast(colour(tokens, '--accent-on-contrast'), hero)).toBeGreaterThanOrEqual(4.5)
+		expect(contrast(colour(tokens, '--text-on-contrast'), hero)).toBeGreaterThanOrEqual(4.5)
+		expect(contrast(colour(tokens, '--border-control'), hero)).toBeGreaterThanOrEqual(3)
+		expect(contrast(colour(tokens, '--accent-on-contrast'), hero)).toBeGreaterThanOrEqual(3)
 		expect(
 			contrast(colour(tokens, '--surface-contrast'), colour(tokens, '--text-on-contrast-muted')),
 		).toBeGreaterThanOrEqual(4.5)
@@ -78,18 +81,41 @@ describe.each([
 				expect(
 					contrast(colour(tokens, status), colour(tokens, surface)),
 					`${status} on ${surface}`,
-				).toBeGreaterThanOrEqual(3)
+				).toBeGreaterThanOrEqual(4.5)
 			}
 		}
 	})
 
-	it('keeps quiet button text readable where topic tags render outside the hero', async () => {
+	it('keeps secondary button tags readable on article cards, at rest and on hover', async () => {
+		const tokens = await load()
+		const text = colour(tokens, '--text-primary')
+		expect(contrast(text, colour(tokens, '--surface-raised'))).toBeGreaterThanOrEqual(4.5)
+		expect(contrast(text, colour(tokens, '--surface-subtle'))).toBeGreaterThanOrEqual(4.5)
+		expect(
+			contrast(colour(tokens, '--border-control'), colour(tokens, '--surface-raised')),
+		).toBeGreaterThanOrEqual(3)
+	})
+
+	it('keeps the loading skeleton visible on the raised surface', async () => {
 		const tokens = await load()
 		expect(
-			contrast(colour(tokens, '--action-primary'), colour(tokens, '--surface-raised')),
-		).toBeGreaterThanOrEqual(4.5)
-		expect(
-			contrast(colour(tokens, '--action-primary'), colour(tokens, '--surface-subtle')),
-		).toBeGreaterThanOrEqual(4.5)
+			contrast(colour(tokens, '--border-default'), colour(tokens, '--surface-raised')),
+		).toBeGreaterThanOrEqual(1.25)
 	})
+})
+
+it('keeps the system-dark block identical to the explicit dark block', async () => {
+	// `loadDarkTokens` reads only `:root[data-theme='dark']`; the `prefers-color-scheme`
+	// block must carry the same declarations, or the contrast checks above would cover
+	// the toggle but not the OS default.
+	const css = await readFile(variablesPath, 'utf8')
+	const explicit = css.match(/:root\[data-theme=['"]dark['"]\]\s*\{([\s\S]*?)\n\}/)
+	const system = css.match(
+		/:root:not\(\[data-theme=['"]light['"]\]\):not\(\[data-theme=['"]dark['"]\]\)\s*\{([\s\S]*?)\n\s*\}/,
+	)
+	expect(explicit, 'explicit dark block').not.toBeNull()
+	expect(system, 'system dark block').not.toBeNull()
+	const declarations = (block: string) =>
+		[...block.matchAll(/(--[\w-]+)\s*:\s*([^;]+);/g)].map((m) => `${m[1]}: ${m[2].trim()}`).sort()
+	expect(declarations(system![1])).toEqual(declarations(explicit![1]))
 })

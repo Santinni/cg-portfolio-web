@@ -257,6 +257,8 @@
   overflow: auto;
   max-inline-size: 100%;
   scrollbar-gutter: stable;
+  color: var(--text-on-contrast);
+  background: var(--surface-contrast);
 }
 
 .codeScroll pre {
@@ -264,8 +266,6 @@
   max-inline-size: none;
   margin: 0;
   padding: 1rem;
-  color: var(--text-on-contrast);
-  background: var(--surface-contrast);
   font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
   font-size: 0.875rem;
   line-height: 1.65;
@@ -365,7 +365,7 @@
   inline-size: min(100%, 36rem);
   block-size: 1rem;
   border-radius: 999px;
-  background: var(--surface-subtle);
+  background: var(--border-default);
   animation: pulse 1.4s ease-in-out infinite alternate;
 }
 

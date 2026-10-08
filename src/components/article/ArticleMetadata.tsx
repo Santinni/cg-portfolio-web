@@ -42,7 +42,14 @@ export function ArticleMetadata({
 					{topics.map((topic) => (
 						<li key={topic.href ?? topic.label}>
 							{topic.href ? (
-								<Button renders="link" href={topic.href} size="small" variant="quiet" lang="en">
+								<Button
+									renders="link"
+									href={topic.href}
+									prefetch={false}
+									size="small"
+									variant="secondary"
+									lang="en"
+								>
 									{topic.label}
 								</Button>
 							) : (

@@ -20,9 +20,16 @@ vi.mock('next/link', () => ({
 	),
 }))
 
+// `prefetch` is a Link prop, not an anchor attribute: expose it as a data attribute so the
+// topic-tag test can assert the navigation contract without a real router.
 vi.mock('@/i18n/navigation', () => ({
-	Link: ({ children, href, ...props }: React.AnchorHTMLAttributes<HTMLAnchorElement>) => (
-		<a href={href} {...props}>
+	Link: ({
+		children,
+		href,
+		prefetch,
+		...props
+	}: React.AnchorHTMLAttributes<HTMLAnchorElement> & { prefetch?: boolean | null }) => (
+		<a href={href} data-prefetch={String(prefetch)} {...props}>
 			{children}
 		</a>
 	),
@@ -59,7 +66,7 @@ describe('localized article chrome', () => {
 		expect(screen.getByRole('link', { name: 'Architecture' })).toHaveAttribute('lang', 'en')
 	})
 
-	it('renders linked topics as small quiet design-system button links', () => {
+	it('renders linked topics as small secondary design-system button links without prefetch', () => {
 		renderCzech(
 			<ArticleMetadata
 				topics={[
@@ -81,11 +88,13 @@ describe('localized article chrome', () => {
 		for (const link of links) {
 			expect(link.tagName).toBe('A')
 			expect(link).toHaveAttribute('lang', 'en')
-			expect(link.className).toContain('variant-quiet')
+			expect(link.className).toContain('variant-secondary')
 			expect(link.className).toContain('size-small')
-			expect(link.className).not.toContain('variant-secondary')
+			expect(link.className).not.toContain('variant-quiet')
 			expect(link.className).not.toContain('variant-primary')
-			expect(link.closest('li')).not.toBeNull()
+			expect(link).toHaveAttribute('data-prefetch', 'false')
+			// The hero override targets `[data-article-topics] > li > a`; keep the markup that shape.
+			expect(link.parentElement?.parentElement).toBe(list)
 		}
 	})
 
