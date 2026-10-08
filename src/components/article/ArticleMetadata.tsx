@@ -1,6 +1,6 @@
 import { useTranslations } from 'next-intl'
 
-import { Link } from '@/i18n/navigation'
+import { Button } from '@/app/(frontend)/components/primitives/button'
 
 import styles from './Article.module.css'
 import type { ArticleDate, ArticleTopic } from './types'
@@ -38,15 +38,22 @@ export function ArticleMetadata({
 				{readingTime ? <li className={styles.metadataItem}>{readingTime}</li> : null}
 			</ul>
 			{topics.length ? (
-				<ul className={styles.topics} aria-label={t('topics')}>
+				<ul className={styles.topics} aria-label={t('topics')} data-article-topics>
 					{topics.map((topic) => (
 						<li key={topic.href ?? topic.label}>
 							{topic.href ? (
-								<Link className={styles.topic} href={topic.href} lang="en">
+								<Button
+									renders="link"
+									href={topic.href}
+									prefetch={false}
+									size="small"
+									variant="secondary"
+									lang="en"
+								>
 									{topic.label}
-								</Link>
+								</Button>
 							) : (
-								<span className={styles.topic} lang="en">
+								<span className={styles.topicLabel} lang="en">
 									{topic.label}
 								</span>
 							)}
