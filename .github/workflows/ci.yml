@@ -335,7 +335,10 @@ jobs:
             if [ -f compose.yaml ]; then cp compose.yaml compose.yaml.rollback; fi
             if [ -f Caddyfile ]; then cp Caddyfile Caddyfile.rollback; fi
             install -m 0644 "$release_path/compose.yaml" compose.yaml
-            install -m 0644 "$release_path/Caddyfile" Caddyfile
+            # Write the Caddyfile in place: the Caddy container bind-mounts this exact file, so a new
+            # inode (install, mv) would leave the container reloading the old content.
+            cat "$release_path/Caddyfile" > Caddyfile
+            chmod 0644 Caddyfile
 
             check_revision() {
               check_url="$1"
