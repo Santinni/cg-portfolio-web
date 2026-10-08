@@ -147,9 +147,10 @@ public DNS and the relevant IPv4/IPv6 firewall paths reach the VPS.
 
 ## Claim the first Payload administrator
 
-The production Caddyfile intentionally returns 404 for `/admin*` and `/api/users*` while the first
-administrator is unclaimed. The application port itself is bound only to VPS loopback. After the
-first healthy deployment, create an SSH tunnel from the operator machine:
+The production Caddyfile intentionally keeps `/admin*` and `/api/users*` private: it rewrites them
+to `/cms-unavailable`, a route the application does not have, so visitors get the branded 404 page
+(HTTP 404, `noindex`) instead of an empty response. The application port itself is bound only to
+VPS loopback. CMS administration happens through an SSH tunnel from the operator machine:
 
 ```bash
 ssh -L 3001:127.0.0.1:3000 codeguy-karel
