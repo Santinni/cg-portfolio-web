@@ -50,14 +50,99 @@ pnpm generate:types
 pnpm build
 ```
 
-E2E testy se spouštějí přes `pnpm test:e2e`. Icon pipeline nabízí příkazy
-`pnpm icons:scan`, `pnpm icons:convert` a `pnpm icons:generate`.
+E2E testy se spouštějí přes `pnpm test:e2e`. Generování ikon a log popisuje
+sekce [Ikony a loga](#ikony-a-loga-svg--react-komponenty).
 
 Rozhodnutí, slepé cesty, stav implementace a review jsou v:
 
 - `IMPLEMENTATION_NOTES.md`
 - `IMPLEMENTATION_REPORT.md`
 - `CODE_REVIEW.md`
+
+## Ikony a loga (SVG → React komponenty)
+
+SVG soubory se nevkládají do `public/`, ale generují se z nich React komponenty.
+O tom, jak se SVG zpracuje, rozhoduje složka, ve které leží:
+
+| Rodina | Zdroj | Výstup | Komponenta | Rozměry |
+| --- | --- | --- | --- | --- |
+| ikony | `src/assets/icons` | `src/components/icons` | `DownloadIconSvg` | `1em × 1em`, roste s písmem |
+| loga | `src/assets/logos` | `src/components/logos` | `EonLogoSvg` | jen `viewBox`, poměr stran zůstane |
+
+Ikony jsou čtvercové a mají sedět k textu. Loga jsou často široká, proto nesmí
+dostat čtvercový rámeček a jejich velikost určuje CSS.
+
+### Přidání ikony nebo loga
+
+1. Uložte SVG do `src/assets/icons` nebo `src/assets/logos` (název v kebab-case,
+   např. `arrow-right.svg` → `ArrowRightIconSvg`).
+2. Spusťte `pnpm icons:generate`.
+3. Importujte komponentu z `@/components/icons` nebo `@/components/logos`.
+
+### Co generátor dělá
+
+`pnpm icons:generate` (skript `scripts/iconConverter/icon-converter.cjs`) pro
+každou rodinu:
+
+- smaže dříve vygenerované komponenty, takže po přejmenovaném nebo smazaném SVG
+  nic nezůstane,
+- převede SVG přes SVGR a SVGO:
+  - odstraní editorské atributy a metadata (`image-rendering`, `version`, …),
+  - odstraní přístupnostní atributy ze zdroje (`role`, `aria-*`, `<title>`),
+  - převede všechny barvy na `currentColor`; tvarům bez barvy doplní
+    `fill="currentColor"` na kořenovém `<svg>` (ikony s `fill="none"` zůstanou
+    obrysové),
+  - přidá k `id` předponu podle souboru, aby se `clip-path` dvou SVG na stránce
+    nepletly,
+  - u log odstraní `width`/`height` a chybějící `viewBox` dopočítá,
+- vygeneruje komponentu bez `import * as React` a s `displayName`,
+- přepíše `index.ts` rodiny a vše naformátuje Biomem.
+
+### Použití
+
+**Barva** se nastavuje přes CSS `color`, takže funguje ve světlém i tmavém
+režimu i v režimu vysokého kontrastu.
+
+**Velikost**: ikona má `1em`, lze ji přebít CSS třídou. Logu nastavte jen výšku,
+šířka se dopočítá z `viewBox`. Výšku zadávejte pevně (`rem`, token), ne
+procentem obalu, který je široký jako jeho obsah — šířka by vyšla 0.
+
+**Přístupnost**: komponenta je ve výchozím stavu dekorativní (`aria-hidden`),
+což je správně u ikony vedle textu. Pokud má grafika nést význam, dejte jí název
+až na místě použití (lze ho přeložit):
+
+```tsx
+// 1) title → <svg role="img"> s <title>
+<EonLogoSvg title="E.ON" />
+
+// 2) obal s názvem, SVG uvnitř zůstane skryté (sekce Worked with)
+<span role="img" aria-label="E.ON">
+	<EonLogoSvg className={styles.logo} />
+</span>
+```
+
+### Konfigurace
+
+- `scripts/iconConverter/profiles.cjs` — rodiny a jejich pravidla. Novou rodinu
+  (např. ilustrace) přidáte jedním záznamem: zdroj, výstup, přípona, volby SVGR
+  a SVGO.
+- `scripts/iconConverter/svgr.config.cjs` — nastavení společné pro všechny
+  rodiny (šablona komponenty, přístupnost, formátování). Profil vybírá proměnná
+  `ICON_PROFILE`, kterou nastavuje generátor.
+
+Konfigurace záměrně neleží v kořeni projektu: kořenový `svgr.config.*` by načetl
+i `@svgr/webpack` v `next.config.ts` a změnil SVG importovaná přímo v kódu.
+
+### Pravidla
+
+- Složky `src/components/icons` a `src/components/logos` se ručně neupravují;
+  mění se zdrojové SVG a generuje se znovu.
+- Zdrojové SVG má být jednobarevné. Vícebarevné logo by převodem na
+  `currentColor` přišlo o barvy — pro takové by vznikla samostatná rodina bez
+  převodu barev.
+- Kontrakt vygenerovaných komponent (výchozí `aria-hidden`, název přes `title`,
+  jen `currentColor`, rozměry podle rodiny) hlídá
+  `src/__tests__/unit/generated-svg-components.test.tsx`.
 
 ## Plánování a evidence práce
 

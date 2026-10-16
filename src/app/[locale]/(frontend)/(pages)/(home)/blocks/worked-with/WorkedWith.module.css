@@ -77,17 +77,24 @@
 }
 
 /*
- * Optical size: the tier's base mark height times the per-mark factor from the content model,
- * the width following each file's intrinsic ratio through `aspect-ratio`. The silhouette is
- * the mask, the colour is the secondary text token, so the row is monochrome and static in
- * both themes. `max-inline-size` keeps the widest wordmark inside its cell at 320px.
+ * Optical size: the tier's base mark height times the per-mark factor from the content model.
+ * The SVG paints in `currentColor`, so the secondary text token colours the whole row in both
+ * themes. `max-inline-size` keeps the widest wordmark inside its cell at 320px.
  */
 .mark {
-  display: block;
-  block-size: calc(var(--mark-base) * var(--scale, 1));
+  display: flex;
   max-inline-size: 100%;
   color: var(--text-secondary);
-  background-color: currentColor;
-  -webkit-mask: var(--mark) center / contain no-repeat;
-  mask: var(--mark) center / contain no-repeat;
+}
+
+/* A fixed height on the SVG itself, the width following the viewBox ratio since the generated
+   logos have no width/height attributes. Percentages are avoided here: the span is as wide as
+   its content, so a percentage of it would be circular and collapse the width to 0. When the
+   span is clamped by its cell, the SVG may shrink (min-inline-size: 0) and draws centred. */
+.logo {
+  display: block;
+  flex: 0 1 auto;
+  min-inline-size: 0;
+  block-size: calc(var(--mark-base) * var(--scale, 1));
+  inline-size: auto;
 }

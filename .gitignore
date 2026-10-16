@@ -56,6 +56,11 @@ postgres_data/
 caddy_data/
 caddy_config/
 
+# Payload CMS uploads (Media collection staticDir) are runtime content, never committed.
+# img.webp stays tracked as the seed.ts placeholder.
+/public/media/*
+!/public/media/img.webp
+
 # Logs
 *.log
 

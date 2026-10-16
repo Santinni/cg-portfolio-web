@@ -70,7 +70,7 @@
     "icons:convert": "node scripts/iconConverter/icon-converter.cjs",
     "icons:index": "node scripts/iconConverter/listfiles.cjs ./src/components/icons \"**/*.tsx\" files.json",
     "icons:generate": "pnpm run icons:scan && pnpm run icons:convert && pnpm run icons:index",
-    "icons:clean": "node -e \"const fs=require('node:fs');for(const p of fs.readdirSync('src/components/icons'))if(p.endsWith('.tsx'))fs.rmSync('src/components/icons/'+p);fs.rmSync('icon-scan-report.json',{force:true})\""
+    "icons:clean": "node -e \"const fs=require('node:fs');for(const d of ['src/components/icons','src/components/logos'])if(fs.existsSync(d))for(const p of fs.readdirSync(d))if(p.endsWith('.tsx'))fs.rmSync(d+'/'+p);fs.rmSync('icon-scan-report.json',{force:true})\""
   },
   "dependencies": {
     "@payloadcms/db-postgres": "^3.86.0",

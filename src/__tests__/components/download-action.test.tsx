@@ -25,23 +25,15 @@ describe('DownloadAction', () => {
 		expect(link).toHaveClass('custom-class')
 		expect(screen.getByText('Download English CV')).toBeInTheDocument()
 
+		// The icon is the generated DownloadIconSvg (src/assets/icons/download.svg): decorative,
+		// stroked in the text colour, and sized to 24px by the `.icon` class, not by attributes.
 		const icon = link.querySelector('svg')
 		expect(icon).toHaveAttribute('aria-hidden', 'true')
 		expect(icon).toHaveAttribute('viewBox', '0 0 24 24')
-		expect(icon).toHaveAttribute('width', '24')
-		expect(icon).toHaveAttribute('height', '24')
 		expect(icon).toHaveAttribute('fill', 'none')
 		expect(icon).toHaveAttribute('stroke', 'currentColor')
-		expect(icon).toHaveAttribute('stroke-width', '2')
-		expect(icon).toHaveAttribute('stroke-linecap', 'round')
-		expect(icon).toHaveAttribute('stroke-linejoin', 'round')
-		expect(
-			Array.from(icon?.querySelectorAll('path') ?? []).map((path) => path.getAttribute('d')),
-		).toEqual([
-			'M12 13v8l-4-4',
-			'm12 21 4-4',
-			'M4.393 15.269A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.436 8.284',
-		])
+		expect(icon).toHaveClass('icon')
+		expect(icon?.querySelectorAll('path').length).toBeGreaterThan(0)
 
 		await user.tab()
 		expect(link).toHaveFocus()

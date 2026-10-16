@@ -12,10 +12,10 @@ import styles from './WorkedWith.module.css'
  * The eyebrow-styled `h2` is both the visible label and the section's accessible name, so
  * assistive technology hears it once rather than as an eyebrow plus a hidden heading.
  *
- * The marks are painted through a CSS mask in the secondary text colour instead of an
- * `<img>`: most of the SVGs are white silhouettes and the rest use `currentColor`,
- * so an image would be invisible on the light surface and black on the dark one. Masking
- * makes the file's intrinsic colour irrelevant and keeps the row monochrome in both themes.
+ * The marks are inline SVG components painted in `currentColor`, so the row takes the
+ * secondary text colour in both themes and follows forced-colors (high contrast) mode. Each
+ * mark is wrapped in a `role="img"` span named after the company; the SVG itself stays
+ * decorative (`aria-hidden`, the generated default), so the name is announced exactly once.
  */
 export default async function WorkedWith() {
 	const t = await getTranslations('home.workedWith')
@@ -32,20 +32,16 @@ export default async function WorkedWith() {
 					{t('eyebrow')}
 				</h2>
 				<ul className={styles.logos}>
-					{workedWith.map((company) => (
-						<li key={company.key} className={styles.item}>
+					{workedWith.map(({ key, name, Logo, scale }) => (
+						<li key={key} className={styles.item}>
 							<span
 								role="img"
-								aria-label={company.name}
+								aria-label={name}
 								className={styles.mark}
-								style={
-									{
-										'--mark': `url("${company.src}")`,
-										'--scale': company.scale,
-										aspectRatio: `${company.width} / ${company.height}`,
-									} as CSSProperties
-								}
-							/>
+								style={{ '--scale': scale } as CSSProperties}
+							>
+								<Logo className={styles.logo} />
+							</span>
 						</li>
 					))}
 				</ul>

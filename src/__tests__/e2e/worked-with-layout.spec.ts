@@ -18,6 +18,23 @@ const cases = [
 	{ width: 1440, columns: 7 },
 ] as const
 
+test('names every mark after its company', async ({ page }) => {
+	await page.goto('/')
+	const section = page.locator('#worked-with')
+	// Brand names as in src/content/workedWith.ts, kept literal so the spec checks the public contract.
+	for (const name of [
+		'Národní knihovna ČR',
+		'E.ON',
+		'MND',
+		'Kontent.ai',
+		'Skype',
+		'Jobs.cz',
+		'eMan',
+	]) {
+		await expect(section.getByRole('img', { name, exact: true })).toBeVisible()
+	}
+})
+
 for (const { width, columns } of cases) {
 	test(`lays the marks out in ${columns} columns at ${width}px`, async ({ page, isMobile }) => {
 		test.skip(Boolean(isMobile), 'The mobile project ignores viewport widths set by the test.')
