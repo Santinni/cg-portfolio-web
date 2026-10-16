@@ -2,3 +2,5 @@
 
 export { default as CodeguyLogoIconSvg } from './CodeguyLogoIconSvg'
 export { default as DownloadIconSvg } from './DownloadIconSvg'
+export { default as GithubIconSvg } from './GithubIconSvg'
+export { default as LinkedinIconSvg } from './LinkedinIconSvg'

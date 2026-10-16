@@ -1,6 +1,6 @@
 import { ArrowUpRight, Mail } from 'lucide-react'
 
-import { GitHubIcon, LinkedInIcon } from '@/app/(frontend)/components/icons/BrandIcons'
+import { GithubIconSvg, LinkedinIconSvg } from '@/components/icons'
 import type { ContactMethod } from '@/content/contact'
 
 import styles from './ContactLink.module.css'
@@ -22,9 +22,9 @@ function hasBrandGlyph(key: ContactMethod['key'] | undefined): key is BrandKey {
  */
 function BrandGlyph({ methodKey }: { methodKey: BrandKey }) {
 	return methodKey === 'github' ? (
-		<GitHubIcon className={styles.inlineBrand} data-contact-glyph="brand" aria-hidden="true" />
+		<GithubIconSvg className={styles.inlineBrand} data-contact-glyph="brand" aria-hidden="true" />
 	) : (
-		<LinkedInIcon className={styles.inlineBrand} data-contact-glyph="brand" aria-hidden="true" />
+		<LinkedinIconSvg className={styles.inlineBrand} data-contact-glyph="brand" aria-hidden="true" />
 	)
 }
 

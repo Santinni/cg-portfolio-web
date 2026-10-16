@@ -10,20 +10,95 @@ přesměruje na HTTPS a `www` na hlavní doménu.
 - Node.js 24 LTS (`>=24 <25`)
 - pnpm 10.28
 - PostgreSQL 15 pro stávající prostředí
+- Docker (Docker Desktop) pro lokální databázi
+- SSH přístup na VPS, jen pro `pnpm db:pull`
 
 Lokální Node 25 není podporovaný runtime projektu. Příkazy na něm mohou
 fungovat, ale vypisují očekávané upozornění na nesplněný engine.
 
 ## Lokální spuštění
 
-1. Vytvořte `.env` podle interního deployment kontraktu.
-2. Nastavte minimálně `DATABASE_URI`, `PAYLOAD_SECRET` a `DB_PASSWORD`.
-3. Nainstalujte závislosti: `pnpm install --frozen-lockfile`.
-4. Spusťte vývojový server: `pnpm dev`.
+Lokální vývoj běží proti vlastní databázi v Dockeru (`compose.dev.yaml`), nikdy
+proti produkční databázi.
 
-Payload administrace je dostupná pod `/admin`.
+1. Vytvořte `.env` podle šablony `.env.example` a interního deployment
+   kontraktu (pro `pnpm dev` stačí `PAYLOAD_SECRET`).
+2. Vytvořte `.env.local` (je v `.gitignore`). Next.js ho načte po `.env`,
+   takže jeho hodnoty mají přednost:
+
+   ```bash
+   DB_USER=postgres
+   DB_PASSWORD=postgres
+   DB_HOST=localhost
+   DB_PORT=5432
+   DB_NAME=codeguy
+   DATABASE_URI=postgres://postgres:postgres@localhost:5432/codeguy
+
+   # pro pnpm db:pull
+   DB_PULL_SSH_HOST=<SSH alias VPS z ~/.ssh/config>
+   DB_PULL_REMOTE_DIR=/opt/codeguy
+   ```
+
+3. Nainstalujte závislosti: `pnpm install --frozen-lockfile`.
+4. Naplňte lokální databázi kopií produkce: `pnpm db:pull` (databázi
+   v Dockeru sám spustí).
+5. Spusťte vývojový server: `pnpm dev`.
+
+Payload administrace je dostupná pod `/admin`. Po `pnpm db:pull` se přihlásíte
+stejným účtem jako v produkci. Ukázková data bez přístupu na server popisuje
+[docs/seed.md](docs/seed.md). Pozor: `seed.ts` zatím načítá jen `.env`, ne
+`.env.local`, takže se s tímto nastavením k lokální databázi nepřipojí.
+
+### Data z produkce (`pnpm db:pull`)
+
+Skript `scripts/database/pull.mjs` zkopíruje produkční databázi a média do
+lokálního prostředí. Funguje jen jedním směrem: v produkci přes SSH spouští
+pouze čtecí `pg_dump` a `tar`, zapisuje jen do lokální databáze
+z `compose.dev.yaml` a do `public/media`.
+
+1. spustí lokální databázi a počká na healthcheck,
+2. stáhne dump databáze do `tmp/db-dump/codeguy.dump`,
+3. stáhne média do `tmp/db-dump/codeguy-media.tar.gz`,
+4. nahraje dump do lokální databáze (`pg_restore --clean`, stará data nahradí),
+5. nahradí obsah `public/media` médii z produkce (kromě `img.webp`).
+
+- **Lokální data se přepíšou.** Co vzniklo jen lokálně v adminu, zmizí.
+- Soubory v `tmp/db-dump` obsahují celou databázi včetně uživatelů. Jsou
+  v `.gitignore` a nikam se nesdílejí.
+- Potřebujete SSH přístup na VPS s právem spouštět `docker`.
+
+### Lokální databáze
+
+```bash
+docker compose -f compose.dev.yaml up -d      # spuštění
+docker compose -f compose.dev.yaml down       # zastavení, data zůstanou
+docker compose -f compose.dev.yaml down -v    # smazání lokálních dat
+```
+
+Databáze je dostupná jen z tohoto počítače na `127.0.0.1:5432` a používá stejnou
+hlavní verzi PostgreSQL (15) jako produkce, aby šly produkční dumpy obnovit.
+
+## Média (uploady Payload CMS)
+
+Složka `public/media` patří výhradně Payloadu: je to `staticDir` kolekce
+`Media` (`src/collections/Media.ts`), kam CMS ukládá nahrané obrázky včetně
+automaticky generovaných velikostí. Odpovídá to oficiální šabloně Payloadu
+`website`.
+
+- Obsah `public/media` je runtime obsah, ne kód, a do gitu se necommituje
+  (`.gitignore`). Výjimkou je `img.webp`, zástupný obrázek pro `seed.ts`.
+- V produkci je složka Docker volume `media_data`; soubory z gitu se v ní
+  neuplatní.
+- Statické soubory webu sem nepatří: ikony a loga se generují z
+  `src/assets` (viz [Ikony a loga](#ikony-a-loga-svg--react-komponenty)),
+  favicony, manifest a CV leží přímo v `public/`.
 
 ## Docker
+
+Celý produkční stack (aplikace, PostgreSQL, Caddy) podle `compose.yaml`. Pro
+běžný vývoj stačí lokální databáze výše; tento stack slouží k ověření
+produkčního image. Používá `.env` s `DB_HOST=database` (název služby v Compose
+síti) a obsazuje port 3000 stejně jako `pnpm dev`.
 
 ```bash
 docker network create edge          # jednou; sdílená síť Caddy a stacku jobs.codeguy.cz
@@ -43,6 +118,7 @@ jsou vyloučené z build contextu.
 
 ```bash
 pnpm lint
+pnpm format:check
 pnpm test:unit
 pnpm test
 pnpm typecheck

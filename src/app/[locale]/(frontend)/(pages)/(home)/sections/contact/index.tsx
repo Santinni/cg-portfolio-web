@@ -1,4 +1,4 @@
-import { GitHubIcon, LinkedInIcon } from '@/app/(frontend)/components/icons/BrandIcons'
+import { GithubIconSvg, LinkedinIconSvg } from '@/components/icons'
 import type { Contact as ContactType } from '@/payload-types'
 
 import styles from './Contact.module.css'
@@ -37,7 +37,7 @@ export default function Contact({ data }: ContactProps) {
 								rel="noopener noreferrer"
 								aria-label="LinkedIn profile"
 							>
-								<LinkedInIcon />
+								<LinkedinIconSvg />
 							</a>
 						)}
 						{data.github && (
@@ -48,7 +48,7 @@ export default function Contact({ data }: ContactProps) {
 								rel="noopener noreferrer"
 								aria-label="GitHub profile"
 							>
-								<GitHubIcon />
+								<GithubIconSvg />
 							</a>
 						)}
 					</div>

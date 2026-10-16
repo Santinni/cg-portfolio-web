@@ -1,0 +1,27 @@
+# Local development database only (no app, no Caddy).
+# Start:  docker compose -f compose.dev.yaml up -d
+# Stop:   docker compose -f compose.dev.yaml down      (data is kept)
+# Wipe:   docker compose -f compose.dev.yaml down -v   (deletes local data)
+name: cg-portfolio-dev
+
+services:
+  database:
+    # Same major version as production, so production dumps restore cleanly.
+    image: postgres:15
+    environment:
+      # Local-only credentials; the port below is reachable from this machine only.
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: codeguy
+    ports:
+      - "127.0.0.1:5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:
