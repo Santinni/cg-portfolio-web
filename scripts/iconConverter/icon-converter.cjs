@@ -2,143 +2,158 @@ const fs = require("node:fs")
 const path = require("node:path")
 const { execSync } = require("node:child_process")
 const fg = require("fast-glob")
+const { transform } = require("@svgr/core")
 const { profiles } = require("./profiles.cjs")
-
-const configFile = path.resolve(__dirname, "svgr.config.cjs")
+const { createSvgrConfig } = require("./svgr.config.cjs")
 
 /**
  * Converts SVG sources into React components, one family (profile) at a time.
  * Families and their rules are defined in profiles.cjs, SVGR/SVGO options in svgr.config.cjs.
  *
- * Each output directory is fully owned by this script: stale components are removed,
- * every SVG is regenerated, index.ts is rewritten and the result is formatted with Biome.
+ * Subfolders of the source are mirrored in the output (icons/social/github.svg ->
+ * components/icons/social/GithubIconSvg.tsx), but every component is exported from the
+ * family's root index.ts, so imports always stay `from '@/components/icons'`.
+ *
+ * Each output directory is fully owned by this script: it is rebuilt from scratch on every
+ * run, so renamed, moved or deleted SVGs leave nothing behind. The result is formatted with Biome.
  */
-class IconConverter {
-	generateComponentName(svgFileName, suffix) {
-		const baseName = path.basename(svgFileName, ".svg")
-		// Support both kebab/snake case and camelCase filenames.
-		const normalized = baseName.replace(/([a-z0-9])([A-Z])/g, "$1-$2")
-		const pascalCase = normalized
-			.split(/[-_]/)
-			.filter(Boolean)
-			.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-			.join("")
 
-		return `${pascalCase}${suffix}`
-	}
+/** "chevron-left.svg" / "chevron_left.svg" / "chevronLeft.svg" -> "ChevronLeft" + suffix. */
+function generateComponentName(svgFile, suffix) {
+	const baseName = path.posix.basename(svgFile, ".svg")
+	const normalized = baseName.replace(/([a-z0-9])([A-Z])/g, "$1-$2")
+	const pascalCase = normalized
+		.split(/[-_]/)
+		.filter(Boolean)
+		.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+		.join("")
 
-	/** Removes previously generated components so renamed or deleted SVGs leave nothing behind. */
-	cleanOutputDir(outputDir) {
-		fs.mkdirSync(outputDir, { recursive: true })
+	return `${pascalCase}${suffix}`
+}
 
-		for (const file of fs.readdirSync(outputDir)) {
-			if (file.endsWith(".tsx") || file === "index.ts") {
-				fs.rmSync(path.join(outputDir, file))
-			}
+/**
+ * Decides the component name and output path for every SVG of a family.
+ * `svgFiles` are paths relative to the family's source dir, with forward slashes (fast-glob).
+ *
+ * The name is built from the file name only, so it must be unique across subfolders:
+ * arrows/left.svg and chevrons/left.svg would both become LeftIconSvg. That is an error,
+ * not a silent overwrite; the convention is to repeat the category in the file name
+ * (arrows/arrow-left.svg, chevrons/chevron-left.svg).
+ */
+function planComponents(svgFiles, suffix) {
+	const sourceByName = new Map()
+
+	return svgFiles.map((svgFile) => {
+		const componentName = generateComponentName(svgFile, suffix)
+
+		const clash = sourceByName.get(componentName)
+		if (clash) {
+			throw new Error(
+				`Duplicate component name ${componentName}: "${clash}" and "${svgFile}". ` +
+					"Rename one of the SVG files (e.g. add its category: chevron-left.svg).",
+			)
 		}
-	}
+		sourceByName.set(componentName, svgFile)
 
-	convertProfile(profile) {
-		const sourceDir = path.resolve(process.cwd(), profile.sourceDir)
-		const outputDir = path.resolve(process.cwd(), profile.outputDir)
+		// Same subfolder as the source; "." for files directly in the source dir.
+		const dir = path.posix.dirname(svgFile)
+		const outputFile = dir === "." ? `${componentName}.tsx` : `${dir}/${componentName}.tsx`
 
-		console.log(`\n🔄 ${profile.name}: ${profile.sourceDir} -> ${profile.outputDir}`)
+		return { svgFile, componentName, outputFile }
+	})
+}
 
-		const svgFiles = fs.existsSync(sourceDir)
-			? fg.globSync("**/*.svg", { cwd: sourceDir, onlyFiles: true }).sort()
-			: []
+/** Root index.ts of a family: one export per component, including those in subfolders. */
+function createIndexContent(components) {
+	const exports = components
+		.map(({ componentName, outputFile }) => {
+			const importPath = `./${outputFile.replace(/\.tsx$/, "")}`
+			return `export { default as ${componentName} } from '${importPath}'`
+		})
+		.sort()
+		.join("\n")
 
-		if (svgFiles.length === 0) {
-			console.log("⚠️  No SVG files found to convert")
-			return []
-		}
-
-		this.cleanOutputDir(outputDir)
-
-		const convertedFiles = []
-
-		for (const svgFile of svgFiles) {
-			const svgPath = path.join(sourceDir, svgFile)
-			const componentName = this.generateComponentName(svgFile, profile.suffix)
-			const outputFile = `${componentName}.tsx`
-
-			console.log(`   📝 ${svgFile} -> ${outputFile}`)
-
-			try {
-				const result = execSync(`pnpm exec svgr --config-file "${configFile}" "${svgPath}"`, {
-					encoding: "utf8",
-					env: { ...process.env, ICON_PROFILE: profile.name },
-					// pnpm prints config warnings on stderr; keep them out of the console noise.
-					stdio: ["ignore", "pipe", "ignore"],
-				})
-
-				// SVGR names the component after the file (e.g. SvgEon); rename every occurrence,
-				// including the displayName written by the template.
-				const svgrName = result.match(/const (\w+) = /)?.[1]
-				if (!svgrName) {
-					throw new Error("Could not extract component name from generated code")
-				}
-
-				fs.writeFileSync(path.join(outputDir, outputFile), result.replaceAll(svgrName, componentName))
-				convertedFiles.push({ svgFile, componentName })
-			} catch (error) {
-				console.error(`❌ Failed to convert ${svgFile}:`, error.message)
-			}
-		}
-
-		this.generateIndexFile(outputDir, convertedFiles)
-		return convertedFiles
-	}
-
-	generateIndexFile(outputDir, convertedFiles) {
-		const exports = convertedFiles
-			.map(({ componentName }) => `export { default as ${componentName} } from './${componentName}'`)
-			.sort()
-			.join("\n")
-
-		const indexContent = `// Auto-generated by scripts/iconConverter/icon-converter.cjs - DO NOT EDIT MANUALLY
+	return `// Auto-generated by scripts/iconConverter/icon-converter.cjs - DO NOT EDIT MANUALLY
 
 ${exports}
 `
+}
 
-		fs.writeFileSync(path.join(outputDir, "index.ts"), indexContent)
-		console.log(`📁 index.ts with ${convertedFiles.length} exports`)
+async function convertProfile(profile) {
+	const sourceDir = path.resolve(process.cwd(), profile.sourceDir)
+	const outputDir = path.resolve(process.cwd(), profile.outputDir)
+
+	console.log(`\n🔄 ${profile.name}: ${profile.sourceDir} -> ${profile.outputDir}`)
+
+	const svgFiles = fs.existsSync(sourceDir)
+		? fg.globSync("**/*.svg", { cwd: sourceDir, onlyFiles: true }).sort()
+		: []
+
+	if (svgFiles.length === 0) {
+		console.log("⚠️  No SVG files found to convert")
+		return []
 	}
 
-	/** Formats generated code with Biome so it matches the project style (tabs, single quotes). */
-	formatOutput() {
-		const dirs = profiles.map((profile) => `"${profile.outputDir}"`).join(" ")
-		console.log("\n🎨 Formatting with Biome...")
-		execSync(`pnpm exec biome format --write ${dirs}`, { stdio: ["ignore", "ignore", "inherit"] })
+	const components = planComponents(svgFiles, profile.suffix)
+	const svgrConfig = createSvgrConfig(profile)
+
+	// Convert everything in memory first: if any SVG fails, the run stops before the
+	// output directory is touched, so a broken run never leaves half the icons deleted.
+	const converted = []
+	for (const component of components) {
+		const svgPath = path.join(sourceDir, component.svgFile)
+		console.log(`   📝 ${component.svgFile} -> ${component.outputFile}`)
+
+		const code = await transform(fs.readFileSync(svgPath, "utf8"), svgrConfig, {
+			componentName: component.componentName,
+			// SVGO's prefixIds uses the file path to make ids unique per file.
+			filePath: svgPath,
+		})
+		converted.push({ ...component, code })
 	}
 
-	run() {
-		console.log("🚀 Starting icon conversion...")
+	fs.rmSync(outputDir, { recursive: true, force: true })
 
-		try {
-			const summary = profiles.map((profile) => ({
-				profile,
-				convertedFiles: this.convertProfile(profile),
-			}))
+	for (const { outputFile, code } of converted) {
+		const outputPath = path.join(outputDir, outputFile)
+		fs.mkdirSync(path.dirname(outputPath), { recursive: true })
+		fs.writeFileSync(outputPath, code)
+	}
 
-			this.formatOutput()
+	fs.writeFileSync(path.join(outputDir, "index.ts"), createIndexContent(converted))
+	console.log(`📁 index.ts with ${converted.length} exports`)
 
-			console.log("\n📈 Conversion Summary:")
-			for (const { profile, convertedFiles } of summary) {
-				console.log(`   ${profile.name}: ${convertedFiles.length} components`)
-			}
+	return converted
+}
 
-			return summary
-		} catch (error) {
-			console.error("❌ Error during conversion:", error.message)
-			process.exit(1)
-		}
+/** Formats generated code with Biome so it matches the project style (tabs, single quotes). */
+function formatOutput() {
+	const dirs = profiles.map((profile) => `"${profile.outputDir}"`).join(" ")
+	console.log("\n🎨 Formatting with Biome...")
+	execSync(`pnpm exec biome format --write ${dirs}`, { stdio: ["ignore", "ignore", "inherit"] })
+}
+
+async function run() {
+	console.log("🚀 Starting icon conversion...")
+
+	const summary = []
+	for (const profile of profiles) {
+		summary.push({ profile, converted: await convertProfile(profile) })
+	}
+
+	formatOutput()
+
+	console.log("\n📈 Conversion Summary:")
+	for (const { profile, converted } of summary) {
+		console.log(`   ${profile.name}: ${converted.length} components`)
 	}
 }
 
 if (require.main === module) {
-	const converter = new IconConverter()
-	converter.run()
+	run().catch((error) => {
+		console.error("❌ Icon conversion failed:", error.message)
+		process.exit(1)
+	})
 }
 
-module.exports = IconConverter
+module.exports = { generateComponentName, planComponents, createIndexContent }

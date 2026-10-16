@@ -151,18 +151,27 @@ dostat čtvercový rámeček a jejich velikost určuje CSS.
 ### Přidání ikony nebo loga
 
 1. Uložte SVG do `src/assets/icons` nebo `src/assets/logos` (název v kebab-case,
-   např. `arrow-right.svg` → `ArrowRightIconSvg`).
+   např. `arrow-right.svg` → `ArrowRightIconSvg`). Ikony lze třídit do podsložek
+   (např. `src/assets/icons/social/github.svg`).
 2. Spusťte `pnpm icons:generate`.
-3. Importujte komponentu z `@/components/icons` nebo `@/components/logos`.
+3. Importujte komponentu z `@/components/icons` nebo `@/components/logos`, a to i
+   když leží v podsložce (`import { GithubIconSvg } from '@/components/icons'`).
+
+**Podsložky** se do výstupu zrcadlí (`icons/social/github.svg` →
+`components/icons/social/GithubIconSvg.tsx`), ale název komponenty vzniká jen
+z názvu souboru. Musí proto být unikátní napříč podsložkami: kategorii pište i do
+názvu souboru (`chevrons/chevron-left.svg`, ne `chevrons/left.svg`). Když by dva
+soubory daly stejný název, generátor skončí chybou a nic nepřepíše.
 
 ### Co generátor dělá
 
 `pnpm icons:generate` (skript `scripts/iconConverter/icon-converter.cjs`) pro
 každou rodinu:
 
-- smaže dříve vygenerované komponenty, takže po přejmenovaném nebo smazaném SVG
-  nic nezůstane,
-- převede SVG přes SVGR a SVGO:
+- převede všechna SVG v paměti a teprve když se povedou všechna, sestaví výstupní
+  složku znovu od nuly; po přejmenovaném, přesunutém nebo smazaném SVG tak nic
+  nezůstane a chyba převodu nesmaže stávající komponenty,
+- převede SVG přes SVGR a SVGO (`@svgr/core`, v jednom procesu):
   - odstraní editorské atributy a metadata (`image-rendering`, `version`, …),
   - odstraní přístupnostní atributy ze zdroje (`role`, `aria-*`, `<title>`),
   - převede všechny barvy na `currentColor`; tvarům bez barvy doplní
@@ -172,7 +181,8 @@ každou rodinu:
     nepletly,
   - u log odstraní `width`/`height` a chybějící `viewBox` dopočítá,
 - vygeneruje komponentu bez `import * as React` a s `displayName`,
-- přepíše `index.ts` rodiny a vše naformátuje Biomem.
+- zapíše jeden `index.ts` rodiny s exporty všech komponent včetně podsložek a vše
+  naformátuje Biomem.
 
 ### Použití
 
@@ -203,8 +213,8 @@ až na místě použití (lze ho přeložit):
   (např. ilustrace) přidáte jedním záznamem: zdroj, výstup, přípona, volby SVGR
   a SVGO.
 - `scripts/iconConverter/svgr.config.cjs` — nastavení společné pro všechny
-  rodiny (šablona komponenty, přístupnost, formátování). Profil vybírá proměnná
-  `ICON_PROFILE`, kterou nastavuje generátor.
+  rodiny (šablona komponenty, přístupnost, formátování). Funkce
+  `createSvgrConfig(profile)` k nim přidá volby dané rodiny.
 
 Konfigurace záměrně neleží v kořeni projektu: kořenový `svgr.config.*` by načetl
 i `@svgr/webpack` v `next.config.ts` a změnil SVG importovaná přímo v kódu.
@@ -218,7 +228,8 @@ i `@svgr/webpack` v `next.config.ts` a změnil SVG importovaná přímo v kódu.
   převodu barev.
 - Kontrakt vygenerovaných komponent (výchozí `aria-hidden`, název přes `title`,
   jen `currentColor`, rozměry podle rodiny) hlídá
-  `src/__tests__/unit/generated-svg-components.test.tsx`.
+  `src/__tests__/unit/generated-svg-components.test.tsx`; pojmenování, zrcadlení
+  podsložek a kontrolu kolizí `src/__tests__/unit/icon-converter.test.ts`.
 
 ## Plánování a evidence práce
 
