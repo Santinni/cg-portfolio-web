@@ -51,6 +51,9 @@ jobs:
       - name: ESLint
         run: pnpm lint
 
+      - name: shellcheck deploy/backup.sh
+        run: shellcheck deploy/backup.sh
+
   test:
     name: Unit and integration tests
     runs-on: ubuntu-latest
@@ -243,7 +246,7 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_KEY }}
           fingerprint: ${{ secrets.VPS_FINGERPRINT }}
-          source: compose.yaml,Caddyfile
+          source: compose.yaml,Caddyfile,deploy/backup.sh
           target: /tmp/codeguy-${{ github.sha }}
           overwrite: true
 
@@ -254,8 +257,9 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_KEY }}
           fingerprint: ${{ secrets.VPS_FINGERPRINT }}
-          script_stop: true
           command_timeout: 15m
+          # appleboy/ssh-action@v1 has no `script_stop` input (it only warned "Unexpected
+          # input"); the script's own `set -eu` is the only stop-on-error in effect.
           script: |
             set -eu
 
@@ -267,6 +271,7 @@ jobs:
             test -f "$deploy_path/.env" || { echo "Production environment file $deploy_path/.env does not exist" >&2; exit 1; }
             test -f "$release_path/compose.yaml" || { echo "Staged compose.yaml is missing" >&2; exit 1; }
             test -f "$release_path/Caddyfile" || { echo "Staged Caddyfile is missing" >&2; exit 1; }
+            test -f "$release_path/deploy/backup.sh" || { echo "Staged deploy/backup.sh is missing" >&2; exit 1; }
 
             export APP_ENV_FILE="$deploy_path/.env"
             export CADDY_ENV_FILE="$deploy_path/.env.caddy"
@@ -296,6 +301,9 @@ jobs:
             if [ -n "$previous_container" ]; then
               previous_image="$(docker inspect --format '{{.Config.Image}}' "$previous_container")"
             fi
+            # `compose ps -q` lists running containers only. When app is stopped, previous_image is
+            # empty, so the image retention below also protects the last accepted image from .env.
+            persisted_image="$(sed -n 's/^APP_IMAGE=//p' .env | tail -n 1)"
 
             umask 077
             mkdir -p backups
@@ -364,6 +372,37 @@ jobs:
                 echo "Public HTTPS verification is not ready; leaving the first healthy stack running for DNS/ACME diagnosis" >&2
               fi
               exit 1
+            fi
+
+            # The release is accepted from here on; nothing below rolls back.
+
+            # Keep only this project's deployed tag and the rollback tags. Named `docker image rm`,
+            # never prune: the host is shared and cztechjobs keeps its own previous tag on disk.
+            # Docker refuses (no -f) to remove a tag a container still uses; that is a warning.
+            image_repo="${{ needs.build.outputs.image_name }}"
+            if image_refs="$(docker image ls --format '{{.Repository}}:{{.Tag}}' "$image_repo")"; then
+              printf '%s\n' "$image_refs" | while read -r ref; do
+                [ -n "$ref" ] || continue
+                case "$ref" in
+                  "$APP_IMAGE"|"$previous_image"|"$persisted_image"|*:"<none>") continue ;;
+                esac
+                if docker image rm "$ref" >/dev/null 2>&1; then
+                  echo "removed old image tag $ref"
+                else
+                  echo "::warning::could not remove image tag $ref (still in use?); left on disk"
+                fi
+              done
+            else
+              echo "::warning::could not list $image_repo images; image retention skipped"
+            fi
+
+            # The nightly backup script is independent of the running stack, so a failure here is
+            # a warning, not a rollback. The cron line itself is installed by hand (docs/deployment.md).
+            install -m 0755 "$release_path/deploy/backup.sh" backup.sh \
+              || echo "::warning::could not install backup.sh into $deploy_path"
+            if ! crontab -l 2>/dev/null | grep -q '/opt/codeguy/backup.sh' \
+              && ! grep -rqs '/opt/codeguy/backup.sh' /etc/crontab /etc/cron.d; then
+              echo "::warning::backup cron for $deploy_path/backup.sh is not installed"
             fi
 
             # Not fatal: the jobs stack deploys separately and may not exist yet.

@@ -23,6 +23,15 @@ services:
       timeout: 5s
       retries: 6
       start_period: 10s
+    # Limits are decided in docs/decisions/production-operations.md (PO-03); the host is a
+    # shared 3.8 GB VPS without swap. No `cpus` here: Caddy also fronts jobs.codeguy.cz.
+    mem_limit: 256m
+    pids_limit: 256
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
 
   app:
     image: ${APP_IMAGE:-cg-portfolio-web:local}
@@ -48,6 +57,18 @@ services:
       start_period: 20s
     volumes:
       - media_data:/app/public/media
+    # 1 GiB = 1.65x the measured peak (docs/audits/2026-10-22-vps-stack-baseline.md). Node sizes
+    # the V8 heap from this cgroup limit, so no NODE_OPTIONS are needed.
+    mem_limit: 1g
+    cpus: "1.5"
+    pids_limit: 256
+    stop_grace_period: 30s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
+
   database:
     image: postgres:15
     environment:
@@ -63,6 +84,17 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
     restart: unless-stopped
+    # Postgres needs longer than the 10s default to shut down cleanly; parallel queries use
+    # /dev/shm, which Docker caps at 64 MB by default.
+    stop_grace_period: 60s
+    shm_size: 128m
+    mem_limit: 512m
+    pids_limit: 256
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 networks:
   # Shared with the separate cztechjobs Compose project; created once on the host with

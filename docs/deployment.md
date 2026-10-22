@@ -21,6 +21,22 @@ The VPS runs two Docker Compose projects. This repository owns the first one, `c
 The second project, `cztechjobs` in `/opt/cztechjobs`, is deployed from its own repository and
 only attaches its API to `edge`. See [Second stack: jobs.codeguy.cz](#second-stack-jobscodeguycz).
 
+## Shared host
+
+The VPS is not this project's alone. Besides the two Compose projects it carries whatever the
+owner keeps there (an inventory is in the cztechjobs repository). The boundary is decided in
+[`docs/decisions/production-operations.md`](decisions/production-operations.md), PO-01:
+
+- The deploy and every procedure in this document touch only `/opt/codeguy`, the Compose project
+  `codeguy`, its volumes and the image repository `ghcr.io/santinni/cg-portfolio-web`.
+- Never run `docker image prune -a`, `docker system prune`, `docker volume prune` or
+  `docker compose down -v` on the host. cztechjobs keeps its previous image tag on disk for its
+  own rollback; a host-wide prune would delete it. The deploy's final
+  `docker image prune --force --filter "until=168h"` removes dangling layers only.
+- Never modify or stop containers that belong to another project while operating this stack.
+- The host has 2 vCPU, 3.8 GB RAM and no swap. The limits in `compose.yaml` are sized against the
+  cztechjobs ceilings (640 + 512 MiB); see [Resource limits](#resource-limits).
+
 ## One-time VPS provisioning
 
 The production host is currently `46.225.237.67` and the SSH user is `karel`. Run these commands
@@ -77,8 +93,7 @@ Keep the host firewall enabled. The current UFW ingress contract is:
 
 Apply the rules for both IPv4 and IPv6. A Hetzner Cloud Firewall is a separate layer: if one is
 attached to the server, it must allow the same public web ports and a safe SSH source. If no Hetzner
-firewall is attached, UFW remains the active ingress filter. Never modify or stop the unrelated
-`docling-service` container while operating the portfolio stack.
+firewall is attached, UFW remains the active ingress filter.
 
 ## GitHub production environment
 
@@ -168,8 +183,13 @@ re-reads the old content and the deploy looks green while the old rules stay act
 2026-10-08). The workflow therefore overwrites the file in place (`cat > Caddyfile`); do the same
 by hand, or recreate the container (`docker compose up -d --force-recreate --no-deps caddy`).
 
-The workflow uploads `compose.yaml` and `Caddyfile` into a commit-specific staging directory. It
-first requires `/opt/codeguy/.env.caddy` and the `edge` network to exist and checks that
+The deploy script runs over `appleboy/ssh-action@v1`, which has no `script_stop` input (the
+workflow carried one until 2026-10-22; the action only warned `Unexpected input(s)` and ignored
+it). The script's own `set -eu` is the only stop-on-error in effect, so multi-line shell
+constructs are safe and a function called inside `if ! …` returns normally on failure.
+
+The workflow uploads `compose.yaml`, `Caddyfile` and `deploy/backup.sh` into a commit-specific
+staging directory. It first requires `/opt/codeguy/.env.caddy` and the `edge` network to exist and checks that
 `JOBS_BASIC_AUTH_HASH` is a well-formed bcrypt hash, then validates both files before replacing the
 active copies. Caddy is validated with `docker compose run --no-deps` against the staged
 `compose.yaml` in the throw-away project `codeguy-caddy-validate`, which is removed with
@@ -197,11 +217,86 @@ runs committed `prodMigrations`, and verifies a real database query before deplo
 The public Caddy route blocks the deep variant; ordinary container liveness remains shallow. Image
 rollback does not reverse a database migration that already completed. If a migration must be
 reversed, stop editorial writes and restore the matching custom-format dump deliberately; never
-restore it automatically as part of a failed deploy. Database and media volumes still need an
-off-host scheduled backup before the site carries irreplaceable editorial content.
+restore it automatically as part of a failed deploy. The nightly on-host backup is described in
+[Backups](#backups); an off-host copy is still open and should exist before the site carries
+irreplaceable editorial content.
 
 The deployment is successful only when the private deep readiness check proves the database and the
 public shallow health check returns the full expected commit SHA through `https://codeguy.cz`.
+
+### Image retention
+
+Once the release is accepted, the deploy removes every on-disk tag of
+`ghcr.io/santinni/cg-portfolio-web` except three values it read before touching the stack: the
+tag just deployed, the image of the `app` container that was running (the one `rollback` would
+restore), and the `APP_IMAGE` recorded in `/opt/codeguy/.env` by the last accepted release. The
+third one matters when `app` happens to be stopped at deploy time: `docker compose ps -q` lists
+running containers only, so the previous image would otherwise be unknown and the last good tag
+would be deleted. Removal is by name (`docker image rm`, no `-f`); a tag Docker refuses to remove
+or a failed image listing is a workflow warning, never a failed deploy. The step sits after every
+rollback path, so a rolled-back deploy removes nothing. Expect exactly two portfolio tags on the
+host after a normal release, one after a redeploy of the same SHA. The decision is PO-02.
+
+### Resource limits
+
+`compose.yaml` caps the three services (PO-03; measured baseline in
+[`docs/audits/2026-10-22-vps-stack-baseline.md`](audits/2026-10-22-vps-stack-baseline.md)):
+
+| Service | `mem_limit` | `cpus` | `pids_limit` | `stop_grace_period` | `shm_size` | Logs |
+| --- | --- | --- | --- | --- | --- | --- |
+| `app` | 1 GiB | 1.5 | 256 | 30 s | — | `json-file`, 10 MB × 5 |
+| `database` | 512 MiB | — | 256 | 60 s | 128 MB | `json-file`, 10 MB × 3 |
+| `caddy` | 256 MiB | — | 256 | — | — | `json-file`, 10 MB × 5 |
+
+Node derives the V8 heap from the cgroup limit: 560 MB under 1 GiB, measured with
+`docker run --rm -m 1g node:24.18.0-slim node -e "console.log(require('v8').getHeapStatistics().heap_size_limit/1048576)"`.
+No `NODE_OPTIONS` are set; if a future measurement shows the heap under 400 MB, PO-03 reopens.
+Caddy has no CPU cap because it also fronts `jobs.codeguy.cz`. There is no `memswap_limit`: once
+the host has swap, a container may spill up to its `mem_limit` into it, which is the intended
+safety net. An OOM-killed container is restarted by `restart: unless-stopped`; watch
+`docker events --filter event=oom` after a change.
+
+A limit is a property of the container, not the image. Changing one recreates that container on
+the next deploy: the release carrying this table recreated all three at once, which costs tens of
+seconds on `codeguy.cz` (Postgres start plus the application `start_period`) rather than the
+usual seconds for Caddy alone. Deploy such a change outside peak hours.
+
+### Backups
+
+Two kinds of backup live in `/opt/codeguy/backups` (mode 0700, files 0600):
+
+- `predeploy-<sha>.dump`: written by the deploy before each release when Postgres is running.
+- `daily-<timestamp>.dump` and `media-<timestamp>.tar.gz`: written by `/opt/codeguy/backup.sh`,
+  which the deploy installs from `deploy/backup.sh` after each accepted release. It dumps the
+  database with `pg_dump --format=custom` and archives the media volume from the running `app`
+  container with a single `tar -czf` (no host-side pipe, so a failed `exec` or `tar` cannot
+  produce a valid-looking empty archive). Daily files are kept for 14 days, pre-deploy dumps to the
+  newest ten. The log is `backups/backup.log`.
+
+The cron line is installed once by hand; the deploy only warns when it is missing. As `karel` on
+the VPS:
+
+```bash
+( crontab -l 2>/dev/null; echo '47 3 * * * /opt/codeguy/backup.sh >> /opt/codeguy/backups/backup.log 2>&1' ) | crontab -
+```
+
+03:47 is half an hour after the cztechjobs backup so the two `pg_dump` runs never share the two
+cores. Run it once by hand to prove it before trusting the schedule:
+
+```bash
+/opt/codeguy/backup.sh && ls -la /opt/codeguy/backups && tail -n 5 /opt/codeguy/backups/backup.log
+```
+
+Restore is manual and deliberate. Stop editorial writes first, then:
+
+```bash
+cd /opt/codeguy
+docker compose exec -T database sh -c 'PGPASSWORD="$POSTGRES_PASSWORD" pg_restore --username="$POSTGRES_USER" --dbname="$POSTGRES_DB" --clean --if-exists' < backups/daily-<timestamp>.dump
+docker compose exec -T app tar -C /app/public/media -xzf - < backups/media-<timestamp>.tar.gz
+```
+
+The dumps contain the Payload accounts and the editorial content. Any copy that leaves the host
+must be encrypted first (`age` or `gpg`). An off-host copy is not yet decided (PO-04).
 
 ## Operator verification after deployment
 
@@ -223,10 +318,19 @@ cd /opt/codeguy
 docker compose ps
 curl --fail --silent "http://127.0.0.1:3000/api/health?deep=1&revision=<full-commit-sha>"
 docker ps
+docker images ghcr.io/santinni/cg-portfolio-web
+docker stats --no-stream
+docker inspect --format '{{.HostConfig.PidsLimit}} {{.HostConfig.LogConfig}}' codeguy-app-1
+docker exec codeguy-app-1 node -e "console.log(require('v8').getHeapStatistics().heap_size_limit/1048576)"
+docker system df
 ```
 
-The app, Caddy and database must be healthy; deep health must return `database: ok`; and unrelated
-containers such as `docling-service` must still be running.
+The app, Caddy and database must be healthy; deep health must return `database: ok`; containers
+of other projects must be untouched; exactly two portfolio tags remain (the new one and the
+previous one); `docker stats` shows the limits of the table above; the heap limit is about
+560 MB; and the deploy log shows `removed old image tag …` lines without a `could not remove`
+warning. Container log files are readable only with sudo:
+`sudo du -sh /var/lib/docker/containers/*/*-json.log`.
 
 Check which containers share `edge`. Expect only this project's Caddy and the jobs API:
 
