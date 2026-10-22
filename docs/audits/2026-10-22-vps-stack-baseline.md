@@ -79,5 +79,16 @@ Still on the host and outside this project's retention: `alpine:3.20`, `curlimag
 and an untagged `postgres:<none>` (420 MB). They belong to the cztechjobs housekeeping step
 `images`, which the owner runs by hand.
 
-Not measured: container log file sizes (need sudo) and the first nightly backup run (needs the
-cron line).
+First backup, run by hand by the owner at 17:25 UTC after installing the cron line
+(`47 3 * * * /opt/codeguy/backup.sh >> /opt/codeguy/backups/backup.log 2>&1`, present in the
+`karel` crontab):
+
+| File | Size | Check |
+| --- | --- | --- |
+| `daily-20261022T172548Z.dump` | 124 019 B | `pg_restore --list` reads it, 23 `TABLE DATA` entries |
+| `media-20261022T172548Z.tar.gz` | 434 333 B | `gzip -t` passes, 12 files, matching the volume |
+
+`backups/backup.log` does not exist yet because the manual run wrote to the terminal; the first
+cron run at 03:47 creates it.
+
+Not measured: container log file sizes (need sudo) and the first scheduled run.
