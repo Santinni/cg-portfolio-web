@@ -15,6 +15,9 @@ services:
       - "443:443/udp"
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      # Holding page for Caddy's own 502/503/504 (handle_errors in the Caddyfile). A directory
+      # mount, so a replaced file is visible without recreating the container.
+      - ./errors:/srv/errors:ro
       - caddy_data:/data
       - caddy_config:/config
     healthcheck:

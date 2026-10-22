@@ -246,7 +246,7 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_KEY }}
           fingerprint: ${{ secrets.VPS_FINGERPRINT }}
-          source: compose.yaml,Caddyfile,deploy/backup.sh
+          source: compose.yaml,Caddyfile,errors/503.html,deploy/backup.sh
           target: /tmp/codeguy-${{ github.sha }}
           overwrite: true
 
@@ -272,6 +272,7 @@ jobs:
             test -f "$release_path/compose.yaml" || { echo "Staged compose.yaml is missing" >&2; exit 1; }
             test -f "$release_path/Caddyfile" || { echo "Staged Caddyfile is missing" >&2; exit 1; }
             test -f "$release_path/deploy/backup.sh" || { echo "Staged deploy/backup.sh is missing" >&2; exit 1; }
+            test -f "$release_path/errors/503.html" || { echo "Staged errors/503.html is missing" >&2; exit 1; }
 
             export APP_ENV_FILE="$deploy_path/.env"
             export CADDY_ENV_FILE="$deploy_path/.env.caddy"
@@ -325,6 +326,7 @@ jobs:
             rollback() {
               if [ -f compose.yaml.rollback ]; then cp compose.yaml.rollback compose.yaml; fi
               if [ -f Caddyfile.rollback ]; then cp Caddyfile.rollback Caddyfile; fi
+              if [ -f 503.html.rollback ]; then cp 503.html.rollback errors/503.html; fi
               if [ -n "$previous_image" ]; then
                 export APP_IMAGE="$previous_image"
                 docker compose up --wait --wait-timeout 180
@@ -342,7 +344,12 @@ jobs:
 
             if [ -f compose.yaml ]; then cp compose.yaml compose.yaml.rollback; fi
             if [ -f Caddyfile ]; then cp Caddyfile Caddyfile.rollback; fi
+            # The rollback copy stays outside errors/: that directory is what Caddy serves.
+            if [ -f errors/503.html ]; then cp errors/503.html 503.html.rollback; fi
             install -m 0644 "$release_path/compose.yaml" compose.yaml
+            # Before `compose up`: a missing bind-mount source would be created empty by Docker.
+            install -d -m 0755 errors
+            install -m 0644 "$release_path/errors/503.html" errors/503.html
             # Write the Caddyfile in place: the Caddy container bind-mounts this exact file, so a new
             # inode (install, mv) would leave the container reloading the old content.
             cat "$release_path/Caddyfile" > Caddyfile

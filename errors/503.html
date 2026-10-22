@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<!-- Served by Caddy for its own 502/503/504 on codeguy.cz (Caddyfile, handle_errors) while
+     the app is down, so nothing here may depend on the app: no /_next, no /icon.svg, no
+     external fonts or scripts. Contacts mirror `contact` in src/content/site.ts. The phone number stays
+     out on purpose: CV-04 in docs/decisions/curriculum-vitae.md keeps it off HTML pages. -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="refresh" content="10">
+<meta name="robots" content="noindex">
+<meta name="color-scheme" content="light dark">
+<title>Codeguy · chvilku strpení</title>
+<style>
+  /* Semantic tokens from src/app/(frontend)/styles/variables.css (Figma cs38WzlXKY9xfDYBinoKel).
+     Light is the default; dark follows prefers-color-scheme because the app's
+     data-theme switch is not available while the app is down. */
+  :root {
+    --surface-page: #ffffff;
+    --surface-raised: #f8faff;
+    --text-primary: #08090c;
+    --text-secondary: #4a5963;
+    --border-default: #d8dee8;
+    --action-primary: #0a6e80;
+    --action-primary-hover: #085a6a;
+    --action-focus: #0a6e80;
+    --space-8: 8px; --space-12: 12px; --space-16: 16px; --space-20: 20px;
+    --space-24: 24px; --space-32: 32px; --space-48: 48px; --space-64: 64px;
+    --radius-4: 4px;
+    --font-size-h1: 36px; --line-height-h1: 44px;
+    --font-size-body-lg: 17px; --line-height-body-lg: 27px;
+    --font-size-body: 16px; --line-height-body: 24px;
+    --font-size-label: 11px; --line-height-label: 16px;
+    --container-gutter: 20px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --surface-page: #08090c;
+      --surface-raised: #151a22;
+      --text-primary: #ffffff;
+      --text-secondary: #9aa6b2;
+      --border-default: #29313d;
+      --action-primary: #22d3ee;
+      --action-primary-hover: #67e8f9;
+      --action-focus: #22d3ee;
+    }
+  }
+  @media (min-width: 768px) { :root { --container-gutter: 48px; } }
+  @media (min-width: 1280px) {
+    :root { --font-size-h1: 48px; --line-height-h1: 56px; --font-size-body-lg: 18px; --line-height-body-lg: 28px; --font-size-label: 12px; }
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { color-scheme: light dark; }
+  body {
+    min-height: 100dvh;
+    background: var(--surface-page);
+    color: var(--text-primary);
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-body);
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--space-24) var(--container-gutter);
+  }
+  /* One centred column: header, content and footer share the same 640px measure. */
+  header, main, footer { width: 100%; max-width: 640px; }
+  header {
+    height: 64px;
+    display: flex;
+    align-items: center;
+    gap: var(--space-12);
+  }
+  /* BD-19 wordmark, as in the site navigation: Inter 600, 18/24, zero tracking, uppercase. */
+  header span { font-size: 18px; line-height: 24px; font-weight: 600; letter-spacing: 0; text-transform: uppercase; }
+  header svg { width: 28px; height: 28px; color: var(--action-primary); flex: none; }
+  main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+  .content { width: 100%; }
+  .label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-8);
+    font-size: var(--font-size-label);
+    line-height: var(--line-height-label);
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: var(--space-16);
+  }
+  .label::before {
+    content: "";
+    width: 8px; height: 8px;
+    border-radius: 9999px;
+    background: var(--action-primary);
+    animation: pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+  h1 {
+    font-size: var(--font-size-h1);
+    line-height: var(--line-height-h1);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: var(--space-16);
+  }
+  .lead {
+    font-size: var(--font-size-body-lg);
+    line-height: var(--line-height-body-lg);
+    color: var(--text-secondary);
+  }
+  .lead + .lead { margin-top: var(--space-8); }
+  .contact {
+    list-style: none;
+    margin-top: var(--space-48);
+    padding-top: var(--space-24);
+    border-top: 1px solid var(--border-default);
+    display: grid;
+    gap: var(--space-12);
+  }
+  .contact li { display: grid; grid-template-columns: 6rem 1fr; gap: var(--space-16); align-items: baseline; }
+  .contact span { font-size: var(--font-size-label); line-height: var(--line-height-label); letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-secondary); }
+  a {
+    color: var(--action-primary);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.16s ease;
+  }
+  a:hover { color: var(--action-primary-hover); text-decoration: underline; text-underline-offset: 3px; }
+  a:focus-visible { outline: 2px solid var(--action-focus); outline-offset: 2px; border-radius: var(--radius-4); }
+  footer {
+    padding-top: var(--space-24);
+    font-size: var(--font-size-label);
+    line-height: var(--line-height-label);
+    letter-spacing: 0.04em;
+    color: var(--text-secondary);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Codeguy">
+    <path fill="currentColor" d="M25.19 23.71A12 12 0 1 1 25.19 8.29L20.6 12.14A6 6 0 1 0 20.6 19.86Z"/>
+    <path fill="currentColor" d="M16 13.5h11v5H16Z"/>
+  </svg>
+  <span>Codeguy</span>
+</header>
+
+<main>
+  <div class="content">
+    <p class="label">Čekáme na odpověď serveru</p>
+    <h1>Web se právě restartuje.</h1>
+    <p class="lead">Za chvíli to zkusíme znovu, stránka se obnoví sama.</p>
+    <p class="lead" lang="en">The site is restarting and this page will retry in a few seconds.</p>
+
+    <ul class="contact">
+      <li><span>E-mail</span><a href="mailto:karel@codeguy.cz">karel@codeguy.cz</a></li>
+      <li><span>LinkedIn</span><a href="https://www.linkedin.com/in/karelkutchan/" rel="noopener">linkedin.com/in/karelkutchan</a></li>
+    </ul>
+  </div>
+</main>
+
+<footer>Karel Kutchan · Senior Frontend Engineer · Praha</footer>
+</body>
+</html>
