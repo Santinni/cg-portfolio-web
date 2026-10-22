@@ -798,6 +798,7 @@
 	"errors": {
 		"loading": "Loading…",
 		"runtime": {
+			"eyebrow": "500 / UNEXPECTED ERROR",
 			"title": "Something went wrong",
 			"description": "An unexpected error occurred. Please try again.",
 			"tryAgain": "Try again",

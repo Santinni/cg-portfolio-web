@@ -188,7 +188,7 @@ workflow carried one until 2026-10-22; the action only warned `Unexpected input(
 it). The script's own `set -eu` is the only stop-on-error in effect, so multi-line shell
 constructs are safe and a function called inside `if ! …` returns normally on failure.
 
-The workflow uploads `compose.yaml`, `Caddyfile` and `deploy/backup.sh` into a commit-specific
+The workflow uploads `compose.yaml`, `Caddyfile`, `errors/503.html` and `deploy/backup.sh` into a commit-specific
 staging directory. It first requires `/opt/codeguy/.env.caddy` and the `edge` network to exist and checks that
 `JOBS_BASIC_AUTH_HASH` is a well-formed bcrypt hash, then validates both files before replacing the
 active copies. Caddy is validated with `docker compose run --no-deps` against the staged
@@ -223,6 +223,59 @@ irreplaceable editorial content.
 
 The deployment is successful only when the private deep readiness check proves the database and the
 public shallow health check returns the full expected commit SHA through `https://codeguy.cz`.
+
+### App start and the holding page
+
+Every app start (reboot, deploy, container restart, OOM restart) has a window in which `app:3000`
+is unreachable or Caddy's active health check has marked it unhealthy. Until 2026-10-22 Caddy
+answered every request in that window with an empty `503` (`no upstreams available` in the access
+log, a bare "HTTP ERROR 503" in the browser) for about a minute, because the check ran every 30 s and
+the proxy gave up on the first failed selection.
+
+The `codeguy.cz` block now does two things instead:
+
+- `lb_try_duration 60s` / `lb_try_interval 2s` hold a request that cannot reach the app and retry
+  the upstream selection every 2 s for up to 60 s. Caddy always retries a failed dial or a
+  "no upstreams" selection regardless of method; it never replays a request the app has already
+  received. The health check runs every 10 s (`health_interval 10s`, timeout 5 s), so a held
+  request is served at most one interval after the app answers `/api/health`.
+- `handle_errors` answers Caddy's own `502`, `503` and `504` with the static holding page
+  `errors/503.html`: logo, Czech copy with an English line, public e-mail and LinkedIn, semantic
+  colour tokens in light and dark via `prefers-color-scheme`, `<meta http-equiv="refresh"
+  content="10">`, plus `Retry-After: 10` and `Cache-Control: no-store` from Caddy. It is served by
+  `file_server` with `status {http.error.status_code}`, so the status stays the original one
+  (never `200`) and monitoring and crawlers still see the outage. Every other status passes
+  through unchanged; the app renders its own branded 404 and error pages (`not-found.tsx`,
+  `error.tsx`, `global-not-found.tsx`, `global-error.tsx`).
+
+The holding page must render while the app is down, so it carries everything inline: CSS, the
+Arc mark as SVG, no scripts, no web fonts, no path the app serves (`/_next`, `/icon.svg`). Its
+contacts mirror `contact` in `src/content/site.ts`; the phone number stays off it under CV-04.
+`src/__tests__/unit/error-boundaries.test.ts` guards those rules and the Caddy wiring.
+
+The page reaches the server like the Caddyfile: the workflow stages `errors/503.html`, keeps the
+previous copy as `/opt/codeguy/503.html.rollback` (outside the served directory) and installs the
+new one into `/opt/codeguy/errors/` before `docker compose up`. `compose.yaml` mounts that
+directory read-only at `/srv/errors`. Because it is a directory mount, a replaced file is visible
+to the running container; no Caddy recreation is needed for a copy change. Adding the mount itself
+recreated the Caddy container once, which briefly interrupts both sites.
+
+Net effect for a visitor who arrives during a start: the page loads after a pause of up to a
+minute. Only when the app stays down longer does the holding page appear, and it reloads itself
+until the app is back. `jobs.codeguy.cz` keeps its own `lb_try_duration 10s` and no holding page.
+
+Measured locally on 2026-10-22 with `caddy:2.11.4-alpine`, the production values and a stand-in
+upstream on the alias `app`:
+
+| Scenario | Result |
+|---|---|
+| Request sent with no upstream, upstream started 15 s later | `200` after 18.7 s |
+| Upstream stopped, request sent, upstream restarted 20 s later | `200` after 27.1 s |
+| No upstream for the whole try duration | `503` with the holding page, `Server` header removed |
+
+To reproduce, point a copy of the Caddyfile at `http://localhost:8080`, mount `errors/` at
+`/srv/errors`, run `caddy:2.11.4-alpine` with it on a Docker network and start or stop a container
+with the network alias `app` while a `curl -i` is waiting.
 
 ### Image retention
 

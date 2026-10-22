@@ -1,14 +1,20 @@
 'use client'
 
-import { useEffect } from 'react'
+import { ArrowLeft } from 'lucide-react'
 import { useTranslations } from 'next-intl'
+import { useEffect } from 'react'
 
+import { Container } from '@/app/(frontend)/components/layout/Container'
 import { Button } from '@/app/(frontend)/components/primitives/button'
-import styles from '@/app/(frontend)/styles/error.module.css'
+import { Eyebrow } from '@/components/site/Eyebrow'
+
+import styles from './not-found.module.css'
 
 /**
- * Global error boundary page displayed when an unhandled error occurs.
- * Provides a "Try again" button (calls `reset()`) and a "Go home" link.
+ * Error boundary for everything below the localized root layout: an unhandled runtime
+ * error renders this instead of the framework's bare "Application error" document.
+ * Same hierarchy and tokens as the 404 boundary (eyebrow, h1, lead, actions); the
+ * underlying message stays in the console and server logs, never on the page.
  */
 export default function Error({
 	error,
@@ -24,17 +30,23 @@ export default function Error({
 	}, [error])
 
 	return (
-		<div className={styles.container}>
-			<div className={styles.content}>
-				<h1 className={styles.title}>{t('title')}</h1>
+		<section className={styles.section} aria-labelledby="runtime-error-heading">
+			<Container className={styles.content}>
+				<Eyebrow>{t('eyebrow')}</Eyebrow>
+				<h1 id="runtime-error-heading" className={styles.title}>
+					{t('title')}
+				</h1>
 				<p className={styles.message}>{t('description')}</p>
 				<div className={styles.actions}>
-					<Button onClick={reset}>{t('tryAgain')}</Button>
-					<Button renders="link" href="/">
+					<Button onClick={reset} variant="primary">
+						{t('tryAgain')}
+					</Button>
+					<Button renders="link" href="/" variant="secondary">
+						<ArrowLeft className={styles.icon} aria-hidden="true" />
 						{t('goHome')}
 					</Button>
 				</div>
-			</div>
-		</div>
+			</Container>
+		</section>
 	)
 }

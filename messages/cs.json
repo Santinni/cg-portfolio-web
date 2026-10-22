@@ -798,6 +798,7 @@
 	"errors": {
 		"loading": "Načítání…",
 		"runtime": {
+			"eyebrow": "500 / NEOČEKÁVANÁ CHYBA",
 			"title": "Něco se nepovedlo",
 			"description": "Došlo k neočekávané chybě. Zkuste to prosím znovu.",
 			"tryAgain": "Zkusit znovu",

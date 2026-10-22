@@ -31,6 +31,7 @@
 			"src/proxy.ts",
 			"src/global.d.ts",
 			"src/app/global-not-found.tsx",
+			"src/app/global-error.tsx",
 			"src/collections/**/*.ts",
 			"src/access/**/*.ts",
 			"src/lib/**/*.ts",
