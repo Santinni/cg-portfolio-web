@@ -42,3 +42,14 @@
 		padding-block: var(--space-96);
 	}
 }
+
+.actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-12);
+}
+
+/* global-error.tsx renders without the root layout and without next/font. */
+.globalDocument {
+	font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
