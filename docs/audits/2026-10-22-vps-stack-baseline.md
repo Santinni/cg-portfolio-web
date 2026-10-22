@@ -10,8 +10,8 @@
 | Decision record | [`docs/decisions/production-operations.md`](../decisions/production-operations.md) |
 
 This is the "before" state of the change that adds image retention to the deploy, resource
-limits to `compose.yaml` and a nightly backup. The "after" numbers are added below once the
-first deploy carrying the change has been verified.
+limits to `compose.yaml` and a nightly backup. The "after" numbers below were measured right
+after the first deploy carrying the change.
 
 ## Before
 
@@ -54,6 +54,30 @@ reopen threshold is a heap limit under 400 MB.
 
 ## After
 
-Pending: filled in by the docs follow-up after the first `main` deploy that carries the change
-(expected: 2 tags on disk, `docker stats` limits 1 GiB / 512 MiB / 256 MiB, `PidsLimit` 256,
-`LogConfig` with `max-size`, `heap_size_limit` 560 MB, `/opt/codeguy/backup.sh` installed).
+Measured on 2026-10-22 at about 19:25 (UTC+2), a minute after the deploy of revision
+`ddc9aabba53532bec36f9ea06ae52d71fc1d55eb` (release PR #82, Actions run 39819260713, all five
+jobs green). Same method as above.
+
+| What | Measured |
+| --- | --- |
+| Public health | `/api/health?revision=ddc9aab…` returns that revision; `app`, `database`, `caddy` healthy, all three recreated |
+| Deploy log | 8 × `removed old image tag …`, no `could not remove`; one `::warning::backup cron … is not installed`; no `Unexpected input(s) 'script_stop'`; the dangling-layer prune reclaimed 633.3 MB |
+| `ghcr.io/santinni/cg-portfolio-web` tags on disk | 2: `ddc9aabb` (running) and `ee003d98` (rollback) |
+| `docker system df` images | 10 images, 2.909 GB, 1.056 GB reclaimable (the rollback tags of both stacks plus leftovers listed below) |
+| Disk `/` | 20 GB used of 38 GB (55 %), 17 GB free. Includes the owner's removal of `docling-service` the same day, so the delta is not attributable to retention alone |
+| RAM | 932 MB used, 2 887 MB available, no swap |
+| `codeguy-app-1` | 103 MB RSS / 1 GiB, `NanoCpus` 1.5e9, `PidsLimit` 256 (12 used), `StopTimeout` 30, logs `max-size:10m max-file:5` |
+| `codeguy-database-1` | 21 MB RSS / 512 MiB, `ShmSize` 128 MB, `PidsLimit` 256, `StopTimeout` 60, logs `max-size:10m max-file:3` |
+| `codeguy-caddy-1` | 13 MB RSS / 256 MiB, 8 PIDs |
+| V8 `heap_size_limit` inside `app` | 560 MB, equal to the local measurement under 1 GiB |
+| OOM events since the deploy | 0 (`docker events --filter event=oom`) |
+| `/opt/codeguy/backup.sh` | installed, 0755, 3 167 bytes; cron line not yet installed |
+| `/opt/codeguy/backups` | 9 pre-deploy dumps (the new one added, none rotated yet; rotation runs in `backup.sh`) |
+| Caddyfile inode, host vs container | identical (1023330): the in-place write of #79 reaches the bind mount |
+
+Still on the host and outside this project's retention: `alpine:3.20`, `curlimages/curl:8.10.1`
+and an untagged `postgres:<none>` (420 MB). They belong to the cztechjobs housekeeping step
+`images`, which the owner runs by hand.
+
+Not measured: container log file sizes (need sudo) and the first nightly backup run (needs the
+cron line).
