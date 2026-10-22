@@ -65,6 +65,22 @@ When Context7 applies:
 - When the user explicitly asks to add a change to an already published commit, amend that exact commit and update only its branch with `git push --force-with-lease`; then verify that the existing PR points to the amended SHA. Otherwise prefer an additional commit.
 - Never merge a PR, enable auto-merge, delete a branch, or trigger deployment unless the user explicitly requests that action.
 
+## Production Host
+
+The VPS is shared with other stacks. The constraints are decided in `docs/decisions/production-operations.md`;
+the working rules that follow from them:
+
+- Never run `docker image prune -a`, `docker system prune`, `docker volume prune` or `docker compose down -v`
+  on the host, from the workflow or by hand. Clean up only this project's own image tags, by name.
+- The deploy keeps the running tag and the rollback tags on disk and removes the rest; do not add
+  history-keeping or a different cleanup without reopening PO-02.
+- Change a container limit in `compose.yaml` only together with the decision record and a measurement
+  in `docs/audits/`. A limit change recreates that container on the next deploy.
+- The backup cron line is installed on the host by hand. The deploy installs the script and warns when the
+  cron entry is missing; it never edits the crontab.
+- Claude has read-only SSH without sudo. Anything that needs sudo is written out as exact commands for the
+  owner to run.
+
 ## Figma Source Of Truth
 
 The approved design file, its file key and the approved node inventory are recorded in `docs/decisions/design-sources.md`. Route-specific frames live with their own decision record.
