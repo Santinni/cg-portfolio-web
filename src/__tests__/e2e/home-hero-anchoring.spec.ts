@@ -27,8 +27,9 @@ const RESERVED_SCROLLBAR_GUTTER = 15
  * The availability line (HP-03) uses the body tier: 16px / 24px at every width. It has no
  * Figma frame, so its contribution to the Hero height is derived, not measured: one
  * inner-gap plus `availabilityLines` line boxes. The line counts below were measured in the
- * pinned container for the 86-character English sentence (HP-03, employer removed on
- * 2026-09-13) on the content measure (780px at 1440, otherwise the content width).
+ * pinned container for the 88-character English sentence (HP-03, employer removed on
+ * 2026-09-13, widened from "frontend" to "engineering" roles on 2026-11-06 under BD-29) on the
+ * content measure (780px at 1440, otherwise the content width).
  */
 const AVAILABILITY_LINE_HEIGHT = 24
 
@@ -58,7 +59,10 @@ async function expectResponsiveCopyVisibility(
  *    768: 576 + 24 + 2 x 24 = 648
  *    430: 767 + 24 + 2 x 24 = 839
  *    390: 767 + 24 + 3 x 24 = 863
- *    320: 770 + 16 + 24 + 3 x 24 = 882
+ *    320: 770 + 16 + 24 + 3 x 24 = 882, + 1 x 40.32 = 922.32 since BD-29 (2026-11-06): the
+ *         headline "I build software systems…" wraps onto a fifth 36px line in the 280px
+ *         column, where Figma 8:140 shows four lines of "…frontend systems…". Measured in
+ *         the pinned container; the frame is a known reconciliation item (HP-01).
  */
 const viewports = [
 	{
@@ -151,10 +155,10 @@ const viewports = [
 		headerHeight: 64,
 		gap: 24,
 		headlineLineHeight: 40.32,
-		headlineHeight: 160,
+		headlineHeight: 201.6,
 		headlineSize: 36,
 		height: HOME_PARITY_VIEWPORTS.responsive320.height,
-		heroHeight: 882,
+		heroHeight: 922.32,
 		node: HOME_PARITY_VIEWPORTS.responsive320.figmaNode,
 		paddingBottom: 64,
 		paragraphWidth: null,

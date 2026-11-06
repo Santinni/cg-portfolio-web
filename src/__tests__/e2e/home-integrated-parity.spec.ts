@@ -50,6 +50,9 @@ function resolveEvidenceRevision(
  * home-hero-anchoring.spec.ts):
  *   1440: 801 + 32 + 24 = 857     768: 640 + 24 + 48 = 712
  *    430: 831 + 24 + 48 = 903     390: 831 + 24 + 72 = 927     320: 850 + 24 + 72 = 946
+ *   320 since BD-29 (2026-11-06): 946 + 40.32 = 986.32, the fifth 36px headline line that
+ *   "I build software systems…" needs in the 280px column (see home-hero-anchoring.spec.ts);
+ *   every later section top and mainHeight at 320 carry the same +40.32.
  *
  * Worked with (index 1, HP-04, approved frames since 2026-09-23 — COD-179) is a grid of
  * equal cells: 2 columns below 768 (4 rows), 4 columns from 768 (2 rows), 7 columns in one
@@ -105,14 +108,14 @@ const FIGMA_EN_INTEGRATED_GEOMETRY = {
 		],
 	},
 	320: {
-		mainHeight: 3852,
+		mainHeight: 3892.32,
 		sections: [
-			{ height: 946, top: 0 },
-			{ height: 256, top: 946 },
-			{ height: 460, top: 1202 },
-			{ height: 1176, top: 1662 },
-			{ height: 702, top: 2838 },
-			{ height: 312, top: 3540 },
+			{ height: 986.32, top: 0 },
+			{ height: 256, top: 986.32 },
+			{ height: 460, top: 1242.32 },
+			{ height: 1176, top: 1702.32 },
+			{ height: 702, top: 2878.32 },
+			{ height: 312, top: 3580.32 },
 		],
 	},
 } as const
