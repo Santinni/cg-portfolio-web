@@ -5,8 +5,8 @@
 | Brand | Codeguy |
 | Domain | codeguy.cz |
 | Owner | Karel Kutchan |
-| Version | 1.1 |
-| Last updated | 2026-09-11 |
+| Version | 2.0 |
+| Last updated | 2026-11-06 |
 | Status | Current for strategy, voice, color, typography, digital UI expression and the logo system. |
 | Languages | English (primary), Czech (primary) |
 
@@ -32,7 +32,7 @@ Status labels used throughout: **approved**, **provisional**, **open**, **deprec
 
 ### 2.1 Positioning
 
-Karel Kutchan is a Senior Frontend Engineer based in Prague, with more than ten years in web development. Current work is senior/lead frontend engineering across React, TypeScript, Next.js, component systems, accessibility, testing and code review.
+Karel Kutchan is a Senior Software Engineer based in Prague, with more than ten years in web development. Frontend engineering across React, TypeScript, Next.js, component systems, accessibility, testing and code review remains the core of the work; it extends to architecture, data-model and API design, analysis with clients, and AI-assisted delivery kept under code review. The lead frontend role is stated in the past tense (it ended in April 2026). The positioning decision is BD-29 in the decision log.
 
 The brand is a professional identity, not a studio or agency persona. Codeguy is how that engineer's work is presented; Karel Kutchan is who does it. Both names appear together, never in competition.
 
@@ -40,15 +40,15 @@ The brand is a professional identity, not a studio or agency persona. Codeguy is
 
 The promise is the existing headline. Do not paraphrase it into something stronger.
 
-> **EN:** I build frontend systems for products that have to last.
+> **EN:** I build software systems for products that have to last.
 >
-> **CS:** Stavím frontendové systémy pro produkty, které musí vydržet.
+> **CS:** Stavím softwarové systémy pro produkty, které musí vydržet.
 
 The supporting idea that makes it concrete:
 
-> **EN:** Architecture, accessibility and long-term maintainability are part of delivery, not follow-up work.
+> **EN:** Architecture, accessibility, maintainability and working with AI are part of delivery, not follow-up work.
 >
-> **CS:** Architektura, přístupnost a dlouhodobá udržitelnost jsou součástí dodávky, ne práce odložená na později.
+> **CS:** Architektura, přístupnost, udržitelnost a práce s AI jsou součástí dodávky, ne práce odložená na později.
 
 The headline is the primary claim across all surfaces. Supporting copy may restate its logic in context, but the headline itself is fixed wording in both languages.
 
@@ -125,7 +125,7 @@ Tone shifts by surface, voice does not: the CV is compressed and factual, case s
 
 | Don't | Do |
 | --- | --- |
-| A world-class frontend engineer delivering revolutionary user experiences. | Senior Frontend Engineer working on React and TypeScript product systems, with more than ten years in web development. |
+| A world-class engineer delivering revolutionary user experiences. | Senior Software Engineer working on React and TypeScript product systems, from data model to interface, with more than ten years in web development. |
 | Improved performance by 300%. | Reduced the main-bundle size by removing three overlapping date libraries; the specific figures are available on request. |
 | Passionate about clean code and best practices. | I treat architecture, accessibility and maintainability as part of delivery, not as follow-up work. |
 | We also added accessibility. | Keyboard navigation and focus handling were part of the component contract from the first version. |
@@ -135,7 +135,7 @@ Tone shifts by surface, voice does not: the CV is compressed and factual, case s
 
 | Don't | Do |
 | --- | --- |
-| Špičkový frontend developer s revolučním přístupem k UX. | Senior frontend engineer se zaměřením na produktové systémy v Reactu a TypeScriptu, více než deset let ve webovém vývoji. |
+| Špičkový developer s revolučním přístupem k UX. | Senior software engineer se zaměřením na produktové systémy v Reactu a TypeScriptu, od datového modelu po rozhraní, více než deset let ve webovém vývoji. |
 | Zvýšil jsem výkon o 300 %. | Zmenšil jsem hlavní bundle odstraněním tří překrývajících se knihoven pro práci s daty; konkrétní čísla rád doplním. |
 | Jsem zapálený do čistého kódu a best practices. | Architekturu, přístupnost a udržitelnost považuji za součást dodávky, ne za práci odloženou na později. |
 | Přidali jsme i přístupnost. | Ovládání klávesnicí a práce s fokusem byly součástí kontraktu komponenty od první verze. |
@@ -147,7 +147,7 @@ Czech is written as professional Czech, not translated English. Avoid literal ca
 
 Never inflate or invent clients, results, metrics, roles or years.
 
-- **Approved standing claims:** more than ten years in web development; senior/lead frontend work across React, TypeScript, Next.js, component systems, accessibility, testing and code review; based in Prague.
+- **Approved standing claims:** more than ten years in web development; senior/lead frontend work across React, TypeScript, Next.js, component systems, accessibility, testing and code review (the lead role ended in April 2026 and is stated in the past tense); architecture, data-model and API design and analysis with clients on production systems; AI-assisted delivery introduced to a team and kept under code review; based in Prague.
 - **Numbers** require a real source and a stated basis (what was measured, how, over what period). A number without a basis is not evidence.
 - **Client names** appear only with permission. Otherwise describe the context generically ("a B2B SaaS product team") without hinting at identity.
 - **Role language** must match what was actually held. "Led" means led; "contributed to" means contributed to.

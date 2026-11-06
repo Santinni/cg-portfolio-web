@@ -83,7 +83,8 @@ both routes.
 file's format or the profile it was written for: the "English · React profile" eyebrow and
 the "... curriculum vitae in PDF format" description were withdrawn on Karel's decision,
 because a visitor needs neither and such meta-copy is not to appear anywhere on the site.
-The eyebrow now reads `languageLabel · roleLabel` ("English · Senior Frontend Engineer"),
+The eyebrow now reads `languageLabel · roleLabel` ("English · Senior Frontend Engineer";
+since 2026-11-06 "English · Senior Software Engineer", following BD-29),
 and the description says what the reader takes away and for whom (a team being staffed or
 a partner being sought for a project). The locale-first routing, the distinct profile
 versions and the stable URLs above are unchanged; the profile distinction lives in this
