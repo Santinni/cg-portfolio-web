@@ -34,9 +34,20 @@ container on 2026-11-06: the hero keeps its height at 1440, 768, 430 and 390 px;
 "I build software systems…" needs a fifth 36 px line in the 280 px column where Figma `8:140`
 shows four lines of "…frontend systems…", so the hero is 40.32 px taller there and the
 320 px constants in `home-hero-anchoring.spec.ts` and `home-integrated-parity.spec.ts` carry
-that line. The Figma `Hero` component still carries the previous role text and headline until
-it is reconciled; until then this record and the catalogs are the source of truth for the
-shipped copy.
+that line.
+
+**Figma reconciled, 2026-11-06.** The `Hero` set (`286:3362`) carries the BD-29 copy in all
+six variants: eyebrow, headline, both paragraphs and the availability line, with
+`home.hero.paragraphs` in the `Width=1440` variants and `home.hero.paragraphsCompact` in
+`Width=768` and `Width=390`, the split the hero styles make at 1024 px. The Home instances
+inherit it with no text override, so the component and the catalogs agree again.
+`Experience snapshot` (`286:2511`), `Final CTA` (`286:2998`) and `Site Footer` (`272:59`)
+carry the new title and description, heading and role. Two Figma-only deltas remain, and no
+node was resized for them: at 768 px the availability line takes a second line in Figma
+(hero 624 → 648 px) where the browser keeps one; at 320 px Figma still sets the headline in
+four lines, because "I build software" measures 269 px in the 280 px column, while the
+pinned browser needs the fifth line, which is consistent with the 15 px scrollbar gutter the
+parity audit measures rather than with the copy.
 
 **What would reopen it.** A portrait or brand mark entering the hero, or a change to the
 brand headline (BD entries in `docs/brand/brand-decision-log.md`).
