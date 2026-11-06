@@ -207,7 +207,10 @@ for (const locale of cvLocales) {
 			expect(new URL(page.url()).pathname).toBe(locale.path)
 			await expect(page.locator('html')).toHaveAttribute('lang', locale.lang)
 			await expect(page.getByText(locale.heroEyebrow, { exact: true })).toBeVisible()
-			await expect(page.getByText(locale.heroRole, { exact: true })).toBeVisible()
+			// Scoped to the CV content: the mobile menu profile carries the same role label (BD-29).
+			await expect(
+				page.locator('[data-cv-content]').getByText(locale.heroRole, { exact: true }),
+			).toBeVisible()
 			await expect(page.getByText(locale.currentRole, { exact: true })).toBeVisible()
 
 			const h1 = page.locator('[data-cv-content] h1')
