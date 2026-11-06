@@ -29,9 +29,14 @@ line-box growth.
 **Amended 2026-11-06 (BD-29).** The `<role>` segment reads `SENIOR SOFTWARE ENGINEER` in
 both locales (previously `SENIOR FRONTEND ENGINEER` / `SENIOR FRONTEND VÝVOJÁŘ`), the same
 24 characters, so the row keeps its line count at every width. The row's shape and the single
-`h1` are unchanged; the headline itself changed one word under BD-29. The Figma `Hero`
-component still carries the previous role text and headline until it is reconciled; until
-then this record and the catalogs are the source of truth for the shipped copy.
+`h1` are unchanged; the headline itself changed one word under BD-29. Measured in the pinned
+container on 2026-11-06: the hero keeps its height at 1440, 768, 430 and 390 px; at 320 px
+"I build software systems…" needs a fifth 36 px line in the 280 px column where Figma `8:140`
+shows four lines of "…frontend systems…", so the hero is 40.32 px taller there and the
+320 px constants in `home-hero-anchoring.spec.ts` and `home-integrated-parity.spec.ts` carry
+that line. The Figma `Hero` component still carries the previous role text and headline until
+it is reconciled; until then this record and the catalogs are the source of truth for the
+shipped copy.
 
 **What would reopen it.** A portrait or brand mark entering the hero, or a change to the
 brand headline (BD entries in `docs/brand/brand-decision-log.md`).

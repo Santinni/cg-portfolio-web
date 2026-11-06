@@ -1195,7 +1195,7 @@ Senior Software Engineer · Praha
 - Routes and locales: `/`, `/cs`, mobile menu, footer, 503 screen.
 - Themes, viewports, and interaction states: eyebrow at 1440/768/430/390/320 in the pinned run.
 - Manual content review: owner read-through of the plan table.
-- Result: Vitest green; pinned Playwright run recorded in the Notes of this entry.
+- Result: Vitest green; pinned Playwright run of 2026-11-06 green (53/53 across `home-hero-anchoring`, `home-integrated-parity`, `home-experience-anchoring`, `home-final-cta-anchoring`); `eyebrowLines` unchanged at every width.
 - Residual risk: the Figma `Hero` component lags the shipped text until reconciled.
 
 ### Lifecycle
@@ -1203,7 +1203,7 @@ Senior Software Engineer · Praha
 - Supersedes: COPY-20260729-001 (mobile menu role).
 - Reverted by: none.
 - Related entries: COPY-20261106-002 to -009.
-- Notes: pinned geometry run pending at the time of writing; see COPY-20261106-003 for the measured hero numbers.
+- Notes: measured hero numbers are in COPY-20261106-003.
 
 ## COPY-20261106-002 — Change one word of the brand headline
 
@@ -1285,8 +1285,8 @@ Stavím softwarové systémy pro produkty, které musí vydržet.
 - Routes and locales: `/`, `/cs`.
 - Themes, viewports, and interaction states: 1440/768/430/390/320, light and dark.
 - Manual content review: owner.
-- Result: see COPY-20261106-003 Notes for the pinned run.
-- Residual risk: "software" is slightly wider than "frontend"; the balanced break is verified by the pinned run.
+- Result: pinned run of 2026-11-06: two lines at 1440 and 768 px and four lines at 430 and 390 px as before; at 320 px the headline takes five 36 px lines (201.6 px) instead of four (160 px), because "I build software" no longer fits the first line of the 280 px column.
+- Residual risk: the 320 px Figma frame `8:140` shows four lines; recorded as a reconciliation item in HP-01.
 
 ### Lifecycle
 
@@ -1387,7 +1387,7 @@ Architektura, přístupnost, udržitelnost a práce s AI jsou součástí dodáv
 - Routes and locales: `/`, `/cs`.
 - Themes, viewports, and interaction states: 1440/768/430/390/320, light and dark; Czech compact variant checked for overflow at 320.
 - Manual content review: owner.
-- Result: Vitest green. Pinned measurement: pending at the time of writing; the measured hero heights and the resulting constants are appended to these Notes when the run completes.
+- Result: Vitest green. Pinned measurement of 2026-11-06 (Chromium, `mcr.microsoft.com/playwright:v1.62.0-noble`): hero height unchanged at 1440 (785), 768 (648), 430 (839) and 390 (863) px, so the longer paragraphs did not add a line at any of these widths; `availabilityLines` 1/2/2/3/3 unchanged. At 320 px the hero is 922.32 px (was 882): the extra 40.32 px is one 36 px headline line (COPY-20261106-002), not paragraph growth. Integrated geometry at 320 moves by the same 40.32 px (hero 986.32, main 3892.32); all other widths unchanged.
 - Residual risk: machine-dependent wrapping at 390 px (see `docs/audits/2026-07-29-redesign-parity.md`).
 
 ### Lifecycle
@@ -1395,7 +1395,7 @@ Architektura, přístupnost, udržitelnost a práce s AI jsou součástí dodáv
 - Supersedes: COPY-20260729-002.
 - Reverted by: none.
 - Related entries: COPY-20261106-001, -002, -004.
-- Notes: measurement pending.
+- Notes: constants updated in `home-hero-anchoring.spec.ts` and `home-integrated-parity.spec.ts` (320 px only), with the derivation comments extended.
 
 ## COPY-20261106-004 — Widen the availability line and move analysis to the contact intro
 
@@ -1485,8 +1485,8 @@ Kontaktujte Karla Kutchana ohledně seniorních či vedoucích inženýrských r
 - Routes and locales: `/`, `/cs`, `/contact`, `/cs/contact`.
 - Themes, viewports, and interaction states: 1440/768/430/390/320.
 - Manual content review: owner.
-- Result: Vitest green; pinned run pending (see COPY-20261106-003 Notes).
-- Residual risk: none beyond the pinned confirmation.
+- Result: Vitest green; pinned run of 2026-11-06 confirms one line at 1440 px and 2/2/3/3 lines below.
+- Residual risk: none.
 
 ### Lifecycle
 
@@ -1673,8 +1673,8 @@ Webovému vývoji se věnuji od roku 2014, od frontendové implementace k archit
 - Routes and locales: `/`, `/cs`.
 - Themes, viewports, and interaction states: 1440 light and dark; 1023/1024 boundary.
 - Manual content review: owner.
-- Result: pinned run pending (see COPY-20261106-003 Notes).
-- Residual risk: none beyond the measurement.
+- Result: pinned run of 2026-11-06: section height 565 px unchanged (two-line title, two-line description).
+- Residual risk: none.
 
 ### Lifecycle
 
@@ -1763,8 +1763,8 @@ Hledáte seniorního inženýra, který převezme odpovědnost za systém pod ro
 - Routes and locales: `/`, `/cs`.
 - Themes, viewports, and interaction states: 1440/768/390/320.
 - Manual content review: owner.
-- Result: pinned run pending (see COPY-20261106-003 Notes).
-- Residual risk: none beyond the measurement.
+- Result: pinned run of 2026-11-06: section heights 482/292/380/380 unchanged; the shorter heading keeps its line count.
+- Residual risk: none.
 
 ### Lifecycle
 
