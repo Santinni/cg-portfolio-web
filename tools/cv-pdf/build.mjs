@@ -51,6 +51,15 @@ const [facts, messages, variant, tokens, fontCss, printCss, qrSvg] = await Promi
 	readFile(resolve(here, 'qr-codeguy.svg'), 'utf8').catch(() => ''),
 ])
 
+// A variant carries prose in one language. Building it under the other locale
+// would print Czech bullets under English headings.
+if (variant?.locale && variant.locale !== values.locale) {
+	console.error(
+		`Variant "${values.variant}" is written for locale "${variant.locale}" but --locale is "${values.locale}".`,
+	)
+	process.exit(1)
+}
+
 // Fail loudly if the brand accent ever stops resolving to the canonical teal.
 // Brand guidelines §10.2: print uses #0A6E80 and never the dark-mode cyan.
 const accent = resolveToken(tokens, '--action-primary')?.toLowerCase()

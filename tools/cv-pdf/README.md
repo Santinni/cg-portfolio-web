@@ -6,7 +6,8 @@ same design tokens the website renders.
 ```bash
 node tools/cv-pdf/build.mjs --locale en
 node tools/cv-pdf/build.mjs --locale cs
-node tools/cv-pdf/build.mjs --locale en --variant ../../new_job/cv/variants/acme.json
+node tools/cv-pdf/build.mjs --locale en --variant ../new_job/cv/variants/acme.en.json
+node tools/cv-pdf/build-letter.mjs --locale en --letter ../new_job/cv/letters/acme.en.json
 ```
 
 | Flag | Meaning |
@@ -55,29 +56,82 @@ in the template.
 
 ## Variants
 
-A variant is an **overlay, never a copy**. It may reorder and re-emphasise, but
-hard facts always come from `curriculum-vitae.ts`.
+A variant is an **overlay, never a copy**. It may reorder, re-emphasise and
+rewrite prose, but hard facts always come from `curriculum-vitae.ts`.
 
 ```json
 {
   "slug": "acme",
-  "headline": "Frontend React Engineer",
-  "summary": "Tailored profile paragraph.",
+  "locale": "en",
+  "headline": "Technical Analyst",
+  "taglineKeywords": ["Requirements analysis", "API design"],
+  "summary": ["Tailored paragraph one.", "Tailored paragraph two."],
+  "highlightsTitle": "Target-fit highlights",
   "highlights": [{ "title": "Requirement from the ad", "body": "Evidence." }],
+  "skills": [
+    { "id": "analysis", "title": "Analysis and design", "description": "New row." },
+    { "id": "frontendEngineering", "title": "Frontend" },
+    "qualityAndTooling"
+  ],
+  "experienceCopy": {
+    "nkp": { "bullets": ["Rewritten bullet.", "Another one."] }
+  },
+  "earlierExperienceCopy": { "austroBohemia": { "summary": "Rewritten footnote." } },
   "emphasizeExperience": ["kontentAi", "blueghost"],
   "hideExperience": ["bitware"]
 }
 ```
 
-`emphasizeExperience` floats those roles to the top; everything else keeps
-chronological order. `hideExperience` drops entries — useful for length, not for
-hiding anything awkward.
+| Key | Effect |
+| --- | --- |
+| `locale` | Optional. The build refuses to render the variant under the other locale. |
+| `headline`, `taglineKeywords` | Masthead line: role, then keywords separated by bars. |
+| `summary` | Replaces the professional summary. A string or an array of paragraphs. |
+| `highlights`, `highlightsTitle` | Optional target-fit section between summary and skills. |
+| `skills` | Replaces the skills table. Each row is a catalog id (reuse its copy), an object with an `id` plus overriding `title`/`description`, or a new row with both. |
+| `emphasizeSkills` | Without `skills`: floats those catalog rows to the top. |
+| `experienceCopy` | Per role id, `summary` and/or `bullets`. The head line (title, company, period) and the stack are facts and cannot be set here. |
+| `earlierExperienceCopy` | Per earlier-experience id, `summary` only. |
+| `emphasizeExperience` | Floats those roles to the top; everything else keeps chronological order. |
+| `hideExperience` | Drops entries — useful for length, not for hiding anything awkward. |
 
-The build **refuses** a variant that sets `experience`, `education`, `person` or
-`contact`. Those are facts, and facts are edited in `curriculum-vitae.ts` where
-the website sees them too.
+Prose is still a claim about facts. A rewritten bullet may change emphasis and
+wording; it may not describe work that did not happen.
 
-Variants for specific companies live outside this repo, in `new_job/cv/variants/`.
+The build **refuses** a variant that sets `experience`, `education`, `person`,
+`contact` or `languages`, an unknown key, or a role overlay that touches
+anything but `summary` and `bullets`. Facts are edited in `curriculum-vitae.ts`
+where the website sees them too. `src/__tests__/unit/cv-pdf-variant.test.ts`
+holds this contract.
+
+Variants for specific companies live outside this repo, in `new_job/cv/variants/`,
+one file per locale (`<slug>.<locale>.json`).
+
+## Cover letters
+
+`build-letter.mjs` renders a cover letter with the CV's masthead, tokens and
+type scale, so the two documents in an application cannot disagree on identity.
+
+```json
+{
+  "slug": "acme",
+  "locale": "en",
+  "headline": "Technical Analyst",
+  "date": "2026-11-06",
+  "recipient": ["Acme Corp.", "Hiring team", "Street 1", "110 00 Prague"],
+  "subject": "Application: Technical Analyst",
+  "salutation": "Dear hiring team,",
+  "paragraphs": ["...", "..."],
+  "closing": "Kind regards,",
+  "enclosuresLabel": "Enclosure:",
+  "enclosures": ["Curriculum vitae (CV_Karel_Kutchan.pdf)"]
+}
+```
+
+Name, contact line and footer come from the shared facts; `headline` should
+match the variant's. `letter-print.css` adds the letter blocks on top of
+`cv-print.css` under the same rules (no colours, token spacing). Letter sources
+live in `new_job/cv/letters/`.
 
 ## Fonts
 
@@ -95,3 +149,8 @@ updating.
 `tools/cv-pdf/out/` is gitignored. Generated PDFs are build artefacts; the public
 downloads under `public/curriculum-vitae/` are updated deliberately, not on every
 run.
+
+A company-specific application can be published under its own folder with
+`--out public/<slug>/...`. Anything under `public/` is served once deployed, so
+such a folder is a deliberate choice, and the stable paths in
+`docs/decisions/curriculum-vitae.md` (CV-03) are never repointed at a variant.
