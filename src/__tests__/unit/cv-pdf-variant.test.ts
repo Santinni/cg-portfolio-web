@@ -70,7 +70,9 @@ describe('cv pdf variant contract', () => {
 	it('resolves skills from the catalog, with overrides and new rows', async () => {
 		const [facts, messages] = await Promise.all([loadFacts(), loadMessages('en')])
 		const canonical = resolveSkills(facts.curriculumVitaeSkills, messages, null)
-		expect(canonical.map((row) => row.id)).toEqual(facts.curriculumVitaeSkills.map((row) => row.id))
+		expect(canonical.map((row: { id: string | null }) => row.id)).toEqual(
+			facts.curriculumVitaeSkills.map((row: { id: string }) => row.id),
+		)
 
 		const emphasised = resolveSkills(facts.curriculumVitaeSkills, messages, {
 			emphasizeSkills: ['qualityAndTooling'],
@@ -85,7 +87,7 @@ describe('cv pdf variant contract', () => {
 				'stateAndData',
 			],
 		})
-		expect(replaced.map((row) => row.title)).toEqual([
+		expect(replaced.map((row: { title: string }) => row.title)).toEqual([
 			'Analysis',
 			'Frontend',
 			messages.skills.entries.stateAndData.title,
