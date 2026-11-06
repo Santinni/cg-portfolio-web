@@ -454,7 +454,7 @@
 		"hero": {
 			"eyebrow": "CURRICULUM VITAE",
 			"role": "Senior Frontend Engineer",
-			"intro": "Prague-based Senior Frontend Engineer with more than ten years in web development, currently in a lead frontend role."
+			"intro": "Prague-based Senior Frontend Engineer with more than ten years in web development and recent lead frontend experience."
 		},
 		"highlights": {
 			"eyebrow": "PROFILE",
@@ -465,8 +465,8 @@
 					"description": "More than ten years building and improving web products."
 				},
 				"currentRole": {
-					"title": "Lead role",
-					"description": "Leads frontend delivery for a product team: architecture, code quality, mentoring."
+					"title": "Lead experience",
+					"description": "Led frontend delivery for a product team in 2025–2026: architecture, code quality, mentoring."
 				},
 				"productSystems": {
 					"title": "Product systems",
@@ -693,7 +693,7 @@
 		"profile": {
 			"title": "Professional summary",
 			"paragraphs": {
-				"experience": "Senior Frontend Engineer with more than ten years of commercial experience, currently Lead Frontend Engineer at BlueGhost, where I own frontend architecture, delivery standards and engineering quality across product teams.",
+				"experience": "Senior Frontend Engineer with more than ten years of commercial experience. Until April 2026 I was Lead Frontend Engineer at BlueGhost, owning frontend architecture, delivery standards and engineering quality across product teams; since February 2026 I design and build Seeder, a production Django and PostgreSQL system for the National Library of the Czech Republic.",
 				"focus": "My work centres on React and TypeScript applications that have to last: component foundations, accessibility, testing strategy and code review, with hands-on CMS and platform background across Kentico, Kontent.ai, Payload CMS and PHP/Twig. I keep learning deliberately as a core student at 42 Prague, and use AI-assisted workflows while keeping architecture and maintainability under engineering control."
 			}
 		}

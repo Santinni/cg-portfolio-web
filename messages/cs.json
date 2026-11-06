@@ -454,7 +454,7 @@
 		"hero": {
 			"eyebrow": "ŽIVOTOPIS",
 			"role": "Senior frontend engineer",
-			"intro": "Senior frontend engineer z Prahy s více než deseti lety zkušeností ve webovém vývoji, nyní ve vedoucí frontendové roli."
+			"intro": "Senior frontend engineer z Prahy s více než deseti lety zkušeností ve webovém vývoji a nedávnou zkušeností z vedení frontend vývoje."
 		},
 		"highlights": {
 			"eyebrow": "PROFIL",
@@ -465,8 +465,8 @@
 					"description": "Více než deset let tvorby a zlepšování webových produktů."
 				},
 				"currentRole": {
-					"title": "Vedoucí role",
-					"description": "Vedu frontendový vývoj produktového týmu: delivery, architektura, kvalita kódu, mentoring."
+					"title": "Zkušenost s vedením",
+					"description": "V letech 2025–2026 jsem vedl frontendový vývoj produktového týmu: delivery, architektura, kvalita kódu, mentoring."
 				},
 				"productSystems": {
 					"title": "Produktové systémy",
@@ -693,7 +693,7 @@
 		"profile": {
 			"title": "Profesní shrnutí",
 			"paragraphs": {
-				"experience": "Senior frontend engineer s více než deseti lety komerční praxe, aktuálně Lead Frontend Engineer v BlueGhost, kde odpovídám za frontendovou architekturu, standardy dodávky a inženýrskou kvalitu napříč produktovými týmy.",
+				"experience": "Senior frontend engineer s více než deseti lety komerční praxe. Do dubna 2026 jsem byl Lead Frontend Engineer v BlueGhost, kde jsem odpovídal za frontendovou architekturu, standardy dodávky a inženýrskou kvalitu napříč produktovými týmy; od února 2026 navrhuji a vyvíjím Seeder, produkční systém Národní knihovny ČR nad Djangem a PostgreSQL.",
 				"focus": "Těžištěm mé práce jsou aplikace v Reactu a TypeScriptu, které musí vydržet: komponentové základy, přístupnost, strategie testování a code review, spolu s praktickou znalostí CMS a platforem — Kentico, Kontent.ai, Payload CMS a PHP/Twig. Cíleně se vzdělávám jako core student na 42 Prague a využívám postupy s podporou AI, přičemž architekturu a udržovatelnost ponechávám pod inženýrskou kontrolou."
 			}
 		}

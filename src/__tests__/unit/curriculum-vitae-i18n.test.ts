@@ -91,7 +91,7 @@ describe('curriculum vitae localization', () => {
 			minimumYearsInWeb: 10,
 			experienceQualifier: 'moreThan',
 		})
-		expect(curriculumVitae.currentExperienceId).toBe('blueghost')
+		expect(curriculumVitae.currentExperienceId).toBe('nkp')
 		expect(curriculumVitae.experience[0]).toMatchObject({
 			id: 'nkp',
 			company: 'Národní knihovna ČR',
@@ -105,7 +105,7 @@ describe('curriculum vitae localization', () => {
 			company: 'BlueGhost',
 			roleId: 'leadFrontendEngineer',
 			start: '2025-03',
-			end: null,
+			end: '2026-04',
 		})
 		expect(curriculumVitae.experience[2]).toMatchObject({
 			id: 'kontentAi',
