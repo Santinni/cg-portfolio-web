@@ -20,18 +20,18 @@ const locales: readonly LocaleExpectation[] = [
 	{
 		path: '/',
 		eyebrow: 'EXPERIENCE',
-		heading: 'From implementation to frontend leadership.',
+		heading: 'From implementation to architecture and leadership.',
 		description:
-			'Web development since 2014. Today I lead frontend work across architecture, component systems, accessibility, testing and code review.',
+			'Web development since 2014, from frontend implementation to architecture, team leadership and analysis with clients, from data model to interface.',
 		cta: 'View full experience',
 		href: '/experience',
 	},
 	{
 		path: '/cs',
 		eyebrow: 'ZKUŠENOSTI',
-		heading: 'Od implementace k vedení frontend vývoje.',
+		heading: 'Od implementace k architektuře a vedení.',
 		description:
-			'Webovému vývoji se věnuji od roku 2014. Dnes vedu frontendovou práci v oblasti architektury, komponentových systémů, přístupnosti, testování a code review.',
+			'Webovému vývoji se věnuji od roku 2014, od frontendové implementace k architektuře, vedení týmu a analýze se zadavatelem, od datového modelu po rozhraní.',
 		cta: 'Zobrazit všechny zkušenosti',
 		href: '/cs/experience',
 	},

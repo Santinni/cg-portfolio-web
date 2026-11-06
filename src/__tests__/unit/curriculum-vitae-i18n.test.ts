@@ -143,7 +143,7 @@ describe('curriculum vitae localization', () => {
 		expect(csMessages.curriculumVitae.download.languageLabel).toBe('Čeština')
 		for (const messages of [enMessages, csMessages]) {
 			const download = messages.curriculumVitae.download as Record<string, string>
-			expect(download.roleLabel).toBe('Senior Frontend Engineer')
+			expect(download.roleLabel).toBe('Senior Software Engineer')
 			for (const value of Object.values(download)) {
 				expect(value).not.toMatch(/PDF|React|profil|profile|obecn/i)
 			}

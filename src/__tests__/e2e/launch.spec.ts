@@ -241,7 +241,7 @@ test.describe('responsive shell interactions', () => {
 		await expect(dialog.getByRole('button', { name: 'Toggle color theme' })).toBeVisible()
 		await expect(dialog.getByRole('group', { name: 'Choose language' })).toBeVisible()
 		await expect(dialog.locator('[data-mobile-menu-footer]')).toContainText(
-			'Senior / Lead Frontend Engineer',
+			'Senior Software Engineer',
 		)
 		await expect
 			.poll(() => page.locator('body').evaluate((body) => body.style.overflow))

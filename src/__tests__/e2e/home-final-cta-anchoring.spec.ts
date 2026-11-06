@@ -18,7 +18,7 @@ interface LocaleExpectation {
 const locales: readonly LocaleExpectation[] = [
 	{
 		path: '/',
-		heading: 'Looking for a senior frontend engineer who can own the system behind the interface?',
+		heading: 'Looking for a senior engineer who can own the system behind the interface?',
 		supporting:
 			'I am primarily interested in the right product and team. Selected consulting conversations are welcome.',
 		cta: 'Start a conversation',
@@ -26,8 +26,7 @@ const locales: readonly LocaleExpectation[] = [
 	},
 	{
 		path: '/cs',
-		heading:
-			'Hledáte senior frontend vývojáře, který převezme odpovědnost za systém pod rozhraním?',
+		heading: 'Hledáte seniorního inženýra, který převezme odpovědnost za systém pod rozhraním?',
 		supporting:
 			'Nejdůležitější je pro mě správný produkt a tým. Rád proberu i vybrané možnosti konzultací.',
 		cta: 'Začít konverzaci',

@@ -73,12 +73,12 @@ test.describe('localized search metadata', () => {
 		await expectLocalizedSeo(page, {
 			canonicalPath: '/',
 			description:
-				'Karel Kutchan is a senior frontend engineer based in Prague, building resilient frontend systems with React, TypeScript and Next.js.',
+				'Karel Kutchan is a senior software engineer based in Prague, building resilient web systems with React, TypeScript and Next.js, from data model to interface.',
 			englishPath: '/',
 			czechPath: '/cs',
 			openGraphLocale: 'en_US',
 			openGraphType: 'website',
-			title: 'Karel Kutchan — Senior Frontend Engineer | Codeguy',
+			title: 'Karel Kutchan — Senior Software Engineer | Codeguy',
 		})
 		await expectIndexable(page)
 	})
@@ -90,12 +90,12 @@ test.describe('localized search metadata', () => {
 		await expectLocalizedSeo(page, {
 			canonicalPath: '/cs',
 			description:
-				'Karel Kutchan je senior frontend vývojář z Prahy. V Reactu, TypeScriptu a Next.js staví odolné frontendové systémy.',
+				'Karel Kutchan je senior software engineer z Prahy. S Reactem, TypeScriptem a Next.js staví odolné webové systémy od datového modelu po rozhraní.',
 			englishPath: '/',
 			czechPath: '/cs',
 			openGraphLocale: 'cs_CZ',
 			openGraphType: 'website',
-			title: 'Karel Kutchan — Senior frontend vývojář | Codeguy',
+			title: 'Karel Kutchan — Senior software engineer | Codeguy',
 		})
 		await expectIndexable(page)
 	})
@@ -138,7 +138,7 @@ test.describe('localized search metadata', () => {
 				czechPath: '/cs/curriculum-vitae',
 				lang: 'en',
 				description:
-					'Karel Kutchan — Senior Frontend Engineer with more than ten years in web development.',
+					'Karel Kutchan — Senior Software Engineer with more than ten years in web development.',
 				openGraphLocale: 'en_US',
 				title: 'Curriculum Vitae | Codeguy',
 			},
@@ -150,7 +150,7 @@ test.describe('localized search metadata', () => {
 				czechPath: '/cs/curriculum-vitae',
 				lang: 'cs',
 				description:
-					'Karel Kutchan — Senior frontend engineer s více než deseti lety zkušeností ve webovém vývoji.',
+					'Karel Kutchan — Senior software engineer s více než deseti lety zkušeností ve webovém vývoji.',
 				openGraphLocale: 'cs_CZ',
 				title: 'Životopis | Codeguy',
 			},
