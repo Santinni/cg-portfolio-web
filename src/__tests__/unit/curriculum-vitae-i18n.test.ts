@@ -91,7 +91,7 @@ describe('curriculum vitae localization', () => {
 			minimumYearsInWeb: 10,
 			experienceQualifier: 'moreThan',
 		})
-		expect(curriculumVitae.currentExperienceId).toBe('blueghost')
+		expect(curriculumVitae.currentExperienceId).toBe('nkp')
 		expect(curriculumVitae.experience[0]).toMatchObject({
 			id: 'nkp',
 			company: 'Národní knihovna ČR',
@@ -105,7 +105,7 @@ describe('curriculum vitae localization', () => {
 			company: 'BlueGhost',
 			roleId: 'leadFrontendEngineer',
 			start: '2025-03',
-			end: null,
+			end: '2026-04',
 		})
 		expect(curriculumVitae.experience[2]).toMatchObject({
 			id: 'kontentAi',
@@ -143,7 +143,7 @@ describe('curriculum vitae localization', () => {
 		expect(csMessages.curriculumVitae.download.languageLabel).toBe('Čeština')
 		for (const messages of [enMessages, csMessages]) {
 			const download = messages.curriculumVitae.download as Record<string, string>
-			expect(download.roleLabel).toBe('Senior Frontend Engineer')
+			expect(download.roleLabel).toBe('Senior Software Engineer')
 			for (const value of Object.values(download)) {
 				expect(value).not.toMatch(/PDF|React|profil|profile|obecn/i)
 			}

@@ -80,11 +80,11 @@ const primaryDestinations = [
 
 const mobileMenuProfiles = {
 	cs: {
-		role: 'Seniorní frontend vývojář / vedoucí frontendu',
+		role: 'Senior Software Engineer',
 		specialties: 'Praha · React · TypeScript · Přístupnost',
 	},
 	en: {
-		role: 'Senior / Lead Frontend Engineer',
+		role: 'Senior Software Engineer',
 		specialties: 'Prague · React · TypeScript · Accessibility',
 	},
 } as const

@@ -32,8 +32,18 @@ implementing against it.
 | Mobile dark | `136:283` |
 | Download Action component set | `122:181` (10 variants with approved prototype reactions) |
 
-The frames still contain `8+ years` and a non-canonical e-mail. Those are factual defects
-in the mockup; the confirmed public identity overrides them.
+The frames still contain a non-canonical e-mail and, in the highlights grid and the download
+section, copy that predates COD-92 (the four highlight cards, the `Download the CV as a PDF`
+heading and its paragraph). Those are mockup defects; the confirmed public identity and the
+catalogs override them.
+
+**Figma reconciled, 2026-11-06 (BD-29).** In all five frames the hero role (`124:392`,
+`132:405`, `131:599`, `136:196`, `136:289`) and intro (`124:393`, `132:406`, `131:600`,
+`136:197`, `136:290`) match `curriculumVitae.hero.role` and `.intro`, so the `8+ years`
+sentence is gone; the profile title (`126:399`, `132:423`, `131:617`, `136:214`, `136:307`)
+matches `curriculumVitae.highlights.title`; the download eyebrow (`130:468`, `132:486`,
+`131:680`, `136:277`, `136:370`) reads `ENGLISH · SENIOR SOFTWARE ENGINEER`, the rendered form
+of `languageLabel · roleLabel`. The "Lead experience" card has no counterpart in the file.
 
 Measured geometry lives in `docs/audits/2026-07-30-cv-redesign-baseline.md`, including
 an approved icon-size deviation from the Figma glyph. Look the values up there; do not
@@ -83,12 +93,17 @@ both routes.
 file's format or the profile it was written for: the "English · React profile" eyebrow and
 the "... curriculum vitae in PDF format" description were withdrawn on Karel's decision,
 because a visitor needs neither and such meta-copy is not to appear anywhere on the site.
-The eyebrow now reads `languageLabel · roleLabel` ("English · Senior Frontend Engineer"),
+The eyebrow now reads `languageLabel · roleLabel` ("English · Senior Frontend Engineer";
+since 2026-11-06 "English · Senior Software Engineer", following BD-29),
 and the description says what the reader takes away and for whom (a team being staffed or
 a partner being sought for a project). The locale-first routing, the distinct profile
 versions and the stable URLs above are unchanged; the profile distinction lives in this
 record, not in the UI. `curriculum-vitae-i18n.test.ts` keeps format and profile words out
 of the catalog.
+
+**Figma reconciled, 2026-11-06.** The download eyebrow in the five approved frames (CV-02)
+now shows the rendered form `ENGLISH · SENIOR SOFTWARE ENGINEER`; the heading and paragraph
+of that section in Figma still predate COD-92.
 
 The uniform-label clause was added on 2026-09-01 under COD-76, replacing an earlier
 requirement that each label state the PDF language or profile variant. That earlier

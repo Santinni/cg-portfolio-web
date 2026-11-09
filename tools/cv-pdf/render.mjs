@@ -16,6 +16,9 @@ const escapeHtml = (value) =>
 
 const SEPARATOR = '<span class="entrySeparator">|</span>'
 
+/** Drops "$comment" style entries a variant author may leave in a list. */
+const clean = (list) => list?.filter((item) => typeof item !== 'string' || !item.startsWith('$')) ?? []
+
 function formatPeriod(start, end, locale, presentLabel) {
 	const format = (value) => {
 		if (!value.includes('-')) return value // year-only, e.g. earlier experience
@@ -23,6 +26,56 @@ function formatPeriod(start, end, locale, presentLabel) {
 		return `${String(month).padStart(2, '0')}/${year}`
 	}
 	return `${format(start)} – ${end ? format(end) : presentLabel}`
+}
+
+/**
+ * Resolves the skills table. Without a variant it is the canonical list in
+ * canonical order. `emphasizeSkills` floats catalog rows to the top.
+ * `skills` replaces the list: each row is a catalog id (reuse its copy), an
+ * object with an id plus overriding title/description, or a brand-new row with
+ * both title and description. Rows are prose, so a variant may add one that
+ * the website does not show — the facts behind it still have to be true.
+ */
+export function resolveSkills(skills, messages, variant) {
+	const catalog = (id) => messages.skills.entries[id]
+
+	if (variant?.skills?.length) {
+		return clean(variant.skills).map((row) => {
+			const spec = typeof row === 'string' ? { id: row } : row
+			const base = spec.id ? catalog(spec.id) : undefined
+			if (spec.id && !base && !(spec.title && spec.description)) {
+				throw new Error(`Variant skill "${spec.id}" is not in the catalog and sets no title/description.`)
+			}
+			return {
+				id: spec.id ?? null,
+				title: spec.title ?? base.title,
+				description: spec.description ?? base.description,
+			}
+		})
+	}
+
+	const emphasised = clean(variant?.emphasizeSkills)
+	const ordered = [
+		...emphasised.map((id) => skills.find((row) => row.id === id)).filter(Boolean),
+		...skills.filter((row) => !emphasised.includes(row.id)),
+	]
+	return ordered.map(({ id }) => ({ id, ...catalog(id) }))
+}
+
+/**
+ * Resolves the bullet list for one role. A variant may replace the prose
+ * (summary, bullets) but never the head line, which is built from facts.
+ */
+export function resolveEntryBody(copy, overlay) {
+	if (overlay?.bullets?.length) return overlay.bullets
+
+	const summary = overlay?.summary ?? copy.summary
+	const bullets = Object.values(copy.descriptions ?? {}).filter(
+		(line) => line.trim() !== summary.trim(),
+	)
+	// Where an entry has a single bullet it restates the summary; a one-item
+	// list is not a list.
+	return bullets.length > 1 ? bullets : [summary]
 }
 
 export function renderCv({
@@ -44,7 +97,6 @@ export function renderCv({
 		curriculumVitaeLanguages: languages,
 	} = facts
 
-	const clean = (list) => list?.filter((id) => !id.startsWith('$')) ?? []
 	const hidden = new Set(clean(variant?.hideExperience))
 	const emphasised = clean(variant?.emphasizeExperience)
 
@@ -56,16 +108,16 @@ export function renderCv({
 
 	const headline = variant?.headline ?? messages.hero.role
 
-	// A variant may replace the whole summary with a single targeted paragraph;
-	// otherwise the multi-paragraph professional summary is used.
+	// A variant may replace the professional summary with one or more targeted
+	// paragraphs; otherwise the multi-paragraph catalog summary is used.
 	const summaryParagraphs = variant?.summary
-		? [variant.summary]
+		? [variant.summary].flat()
 		: Object.values(messages.profile.paragraphs)
 
 	// The original states the role followed by its defining technologies.
-	const tagline = [headline, ...(variant?.taglineKeywords ?? [])].join(
-		` <span class="entrySeparator">|</span> `,
-	)
+	const tagline = [headline, ...clean(variant?.taglineKeywords)]
+		.map(escapeHtml)
+		.join(` <span class="entrySeparator">|</span> `)
 
 	const contactLine = [
 		escapeHtml(messages.contact.location),
@@ -90,11 +142,10 @@ export function renderCv({
 
 	const skillsSection = section(
 		messages.skills.eyebrow,
-		`<dl class="skills">${skills
+		`<dl class="skills">${resolveSkills(skills, messages, variant)
 			.map(
-				({ id }) =>
-					`<dt>${escapeHtml(messages.skills.entries[id].title)}</dt>` +
-					`<dd>${escapeHtml(messages.skills.entries[id].description)}</dd>`,
+				({ title, description }) =>
+					`<dt>${escapeHtml(title)}</dt>` + `<dd>${escapeHtml(description)}</dd>`,
 			)
 			.join('')}</dl>`,
 	)
@@ -104,12 +155,7 @@ export function renderCv({
 		`<ol class="experience">${ordered
 			.map((entry) => {
 				const copy = messages.experience.entries[entry.id]
-				const bullets = Object.values(copy.descriptions ?? {}).filter(
-					(line) => line.trim() !== copy.summary.trim(),
-				)
-				// Where an entry has a single bullet it restates the summary; a
-				// one-item list is not a list.
-				const body = bullets.length > 1 ? bullets : [copy.summary]
+				const body = resolveEntryBody(copy, variant?.experienceCopy?.[entry.id])
 
 				return `<li class="entry">
 					<p class="entryHead">${escapeHtml(copy.title)}${SEPARATOR}<span class="entryCompany">${escapeHtml(entry.company)}</span>${SEPARATOR}<span class="entryPeriod">${escapeHtml(
@@ -129,7 +175,9 @@ export function renderCv({
 				? `<p class="earlier"><strong>${escapeHtml(messages.experience.earlierExperience.title)}:</strong> ${earlier
 						.map((entry) => {
 							const copy = messages.experience.earlierExperience.entries[entry.id]
-							return `${escapeHtml(copy.title)} · ${escapeHtml(entry.company)} (${entry.start}–${entry.end}) — ${escapeHtml(copy.summary)}`
+							const summary =
+								variant?.earlierExperienceCopy?.[entry.id]?.summary ?? copy.summary
+							return `${escapeHtml(copy.title)} · ${escapeHtml(entry.company)} (${entry.start}–${entry.end}) — ${escapeHtml(summary)}`
 						})
 						.join(' · ')}</p>`
 				: ''
@@ -189,7 +237,7 @@ export function renderCv({
 </html>`
 }
 
-function section(title, body) {
+export function section(title, body) {
 	return `<section class="section">
 		<h2 class="sectionTitle">${escapeHtml(title)}</h2>
 		${body}

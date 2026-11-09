@@ -302,7 +302,7 @@ test.describe('Figma mobile-menu composition', () => {
 			'Insights',
 		])
 		await expect(profile.locator('p')).toHaveText([
-			'Senior / Lead Frontend Engineer',
+			'Senior Software Engineer',
 			'Prague · React · TypeScript · Accessibility',
 		])
 
@@ -418,7 +418,7 @@ test.describe('Figma mobile-menu composition', () => {
 		])
 		await expect(dialog.getByRole('button', { name: 'Přepnout barevný motiv' })).toBeVisible()
 		await expect(dialog.getByRole('group', { name: 'Vyberte jazyk' })).toBeVisible()
-		await expect(footer).toContainText('Seniorní frontend vývojář / vedoucí frontendu')
+		await expect(footer).toContainText('Senior Software Engineer')
 		await expect(footer).toContainText('Praha · React · TypeScript · Přístupnost')
 
 		const measurements = await page.evaluate(() => {
@@ -491,7 +491,7 @@ test.describe('Figma mobile-menu composition', () => {
 		await expect(footer).toBeVisible()
 		await expect(languageSwitcher).toBeVisible()
 		await expect(profile.locator('p')).toHaveText([
-			'Seniorní frontend vývojář / vedoucí frontendu',
+			'Senior Software Engineer',
 			'Praha · React · TypeScript · Přístupnost',
 		])
 

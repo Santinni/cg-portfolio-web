@@ -108,10 +108,10 @@ const contracts: HomeAccessibilityContract[] = [
 		desktop: {
 			headings: [
 				...englishSharedHeadings,
-				{ level: 2, name: 'From implementation to frontend leadership.' },
+				{ level: 2, name: 'From implementation to architecture and leadership.' },
 				{
 					level: 2,
-					name: 'Looking for a senior frontend engineer who can own the system behind the interface?',
+					name: 'Looking for a senior engineer who can own the system behind the interface?',
 				},
 			],
 			links: [
@@ -129,8 +129,8 @@ const contracts: HomeAccessibilityContract[] = [
 				'A customer portal built as a system, not a collection of screens.',
 				'Complex products. Clear frontend decisions.',
 				'Senior engineering is mostly about making good decisions repeatable.',
-				'From implementation to frontend leadership.',
-				'Looking for a senior frontend engineer who can own the system behind the interface?',
+				'From implementation to architecture and leadership.',
+				'Looking for a senior engineer who can own the system behind the interface?',
 			],
 		},
 		compact: {
@@ -143,7 +143,7 @@ const contracts: HomeAccessibilityContract[] = [
 				}),
 				{
 					level: 2,
-					name: 'Looking for a senior frontend engineer who can own the system behind the interface?',
+					name: 'Looking for a senior engineer who can own the system behind the interface?',
 				},
 			],
 			links: [
@@ -160,7 +160,7 @@ const contracts: HomeAccessibilityContract[] = [
 				'A customer portal built as a system.',
 				'Complex products. Clear frontend decisions.',
 				'Good decisions should be repeatable.',
-				'Looking for a senior frontend engineer who can own the system behind the interface?',
+				'Looking for a senior engineer who can own the system behind the interface?',
 			],
 		},
 	},
@@ -174,10 +174,10 @@ const contracts: HomeAccessibilityContract[] = [
 		desktop: {
 			headings: [
 				...czechSharedHeadings,
-				{ level: 2, name: 'Od implementace k vedení frontend vývoje.' },
+				{ level: 2, name: 'Od implementace k architektuře a vedení.' },
 				{
 					level: 2,
-					name: 'Hledáte senior frontend vývojáře, který převezme odpovědnost za systém pod rozhraním?',
+					name: 'Hledáte seniorního inženýra, který převezme odpovědnost za systém pod rozhraním?',
 				},
 			],
 			links: [
@@ -198,8 +198,8 @@ const contracts: HomeAccessibilityContract[] = [
 				'Zákaznický portál postavený jako systém, ne jako sbírka obrazovek.',
 				'Komplexní produkty. Jasná frontendová rozhodnutí.',
 				'Seniorní práce je hlavně o tom, aby se dobrá rozhodnutí dala opakovat.',
-				'Od implementace k vedení frontend vývoje.',
-				'Hledáte senior frontend vývojáře, který převezme odpovědnost za systém pod rozhraním?',
+				'Od implementace k architektuře a vedení.',
+				'Hledáte seniorního inženýra, který převezme odpovědnost za systém pod rozhraním?',
 			],
 		},
 		compact: {
@@ -212,7 +212,7 @@ const contracts: HomeAccessibilityContract[] = [
 				}),
 				{
 					level: 2,
-					name: 'Hledáte senior frontend vývojáře, který převezme odpovědnost za systém pod rozhraním?',
+					name: 'Hledáte seniorního inženýra, který převezme odpovědnost za systém pod rozhraním?',
 				},
 			],
 			links: [
@@ -232,7 +232,7 @@ const contracts: HomeAccessibilityContract[] = [
 				'Zákaznický portál postavený jako systém.',
 				'Komplexní produkty. Jasná frontendová rozhodnutí.',
 				'Dobrá rozhodnutí se musí dát opakovat.',
-				'Hledáte senior frontend vývojáře, který převezme odpovědnost za systém pod rozhraním?',
+				'Hledáte seniorního inženýra, který převezme odpovědnost za systém pod rozhraním?',
 			],
 		},
 	},

@@ -1,0 +1,62 @@
+/*
+ * Cover letter additions to cv-print.css.
+ *
+ * Loaded after cv-print.css, so the masthead, section heading and page geometry
+ * are the CV's. This file only adds the letter-specific blocks and follows the
+ * same rules: no colours of its own, spacing from the token scale.
+ */
+
+.letterMeta {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	gap: var(--space-16);
+	margin-block-start: var(--space-24);
+}
+
+.letterRecipient {
+	margin: 0;
+	color: var(--text-primary);
+	font-size: var(--print-body);
+	line-height: var(--print-body-lh);
+}
+
+.letterDate {
+	margin: 0;
+	color: var(--text-secondary);
+	font-size: var(--print-body);
+	line-height: var(--print-body-lh);
+	white-space: nowrap;
+}
+
+.letterSalutation,
+.letterParagraph,
+.letterClosing {
+	margin: 0 0 var(--space-8);
+	color: var(--text-primary);
+	font-size: var(--print-body);
+	line-height: var(--print-body-lh);
+}
+
+.letterClosing {
+	margin-block-start: var(--space-12);
+	margin-block-end: var(--space-24);
+}
+
+.letterSignature {
+	margin: 0;
+	color: var(--text-primary);
+	font-weight: 600;
+}
+
+.letterEnclosures {
+	margin: var(--space-24) 0 0;
+	color: var(--text-secondary);
+	font-size: var(--print-stack);
+	line-height: var(--print-stack-lh);
+}
+
+.letterEnclosures strong {
+	color: var(--text-primary);
+	font-weight: 600;
+}

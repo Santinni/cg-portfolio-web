@@ -6,7 +6,7 @@
 		"siteMenu": "Site menu",
 		"mobileMenu": {
 			"profile": {
-				"role": "Senior / Lead Frontend Engineer",
+				"role": "Senior Software Engineer",
 				"specialties": "Prague · React · TypeScript · Accessibility"
 			}
 		},
@@ -33,26 +33,26 @@
 	},
 	"home": {
 		"metadata": {
-			"title": "Karel Kutchan — Senior Frontend Engineer",
-			"description": "Karel Kutchan is a senior frontend engineer based in Prague, building resilient frontend systems with React, TypeScript and Next.js."
+			"title": "Karel Kutchan — Senior Software Engineer",
+			"description": "Karel Kutchan is a senior software engineer based in Prague, building resilient web systems with React, TypeScript and Next.js, from data model to interface."
 		},
 		"hero": {
-			"eyebrow": "<identity>{name}</identity> / SENIOR FRONTEND ENGINEER / PRAGUE",
+			"eyebrow": "<identity>{name}</identity> / SENIOR SOFTWARE ENGINEER / PRAGUE",
 			"identity": {
 				"name": "Karel Kutchan"
 			},
-			"headline": "I build frontend systems for products that have to last.",
+			"headline": "I build software systems for products that have to last.",
 			"paragraphs": {
-				"experience": "More than ten years in web development, currently in a lead frontend role. I work with React, TypeScript and Next.js across customer portals, internal enterprise applications and the component libraries underneath them.",
-				"quality": "Architecture, accessibility and long-term maintainability are part of the delivery, not follow-up work."
+				"experience": "More than ten years in web development, in recent years owning frontend architecture and leading a team. I work with React, TypeScript and Next.js, design data models and APIs, and take solutions from analysis with the client through to production.",
+				"quality": "Architecture, accessibility, maintainability and working with AI are part of the delivery, not follow-up work."
 			},
 			"paragraphsCompact": {
-				"experience": "More than ten years in web development, currently in a lead frontend role. I work with React, TypeScript and Next.js across customer portals, enterprise applications and component systems.",
-				"quality": "Architecture, accessibility and maintainability are part of the delivery."
+				"experience": "More than ten years in web development, lately owning frontend architecture and leading a team. React, TypeScript and Next.js, data models and APIs, from analysis to production.",
+				"quality": "Architecture, accessibility, maintainability and AI are part of the delivery."
 			},
 			"primaryCta": "Read flagship case",
 			"secondaryCta": "Book an intro call",
-			"availability": "Open to senior and lead frontend roles in Prague or remote (EU), employee or contract."
+			"availability": "Open to senior and lead engineering roles in Prague or remote (EU), employee or contract."
 		},
 		"workedWith": {
 			"eyebrow": "WORKED WITH"
@@ -119,12 +119,12 @@
 		},
 		"experience": {
 			"eyebrow": "EXPERIENCE",
-			"title": "From implementation to frontend leadership.",
-			"description": "Web development since 2014. Today I lead frontend work across architecture, component systems, accessibility, testing and code review.",
+			"title": "From implementation to architecture and leadership.",
+			"description": "Web development since 2014, from frontend implementation to architecture, team leadership and analysis with clients, from data model to interface.",
 			"cta": "View full experience"
 		},
 		"finalCta": {
-			"heading": "Looking for a senior frontend engineer who can own the system behind the interface?",
+			"heading": "Looking for a senior engineer who can own the system behind the interface?",
 			"supporting": "I am primarily interested in the right product and team. Selected consulting conversations are welcome.",
 			"cta": "Start a conversation"
 		}
@@ -287,12 +287,12 @@
 	"about": {
 		"metadata": {
 			"title": "About",
-			"description": "About Karel Kutchan, a Prague-based senior frontend engineer focused on product delivery, architecture and team clarity."
+			"description": "About Karel Kutchan, a Prague-based senior software engineer focused on product delivery, architecture and team clarity."
 		},
 		"hero": {
 			"eyebrow": "ABOUT",
 			"title": "I care about the system behind the interface.",
-			"intro": "I am a Prague-based senior frontend engineer with more than ten years in web development. I currently work in a lead frontend role, helping teams turn product requirements into maintainable systems."
+			"intro": "I am a Prague-based software engineer with more than ten years in web development. I led frontend engineering for a product team and worked through requirements with backend, UX and project management. I introduced AI tooling to the team: agent rules, agentic CLI workflows, Figma-to-code and onboarding colleagues. The result is not less work, but more solutions delivered with fewer rounds of rework, always under code review."
 		},
 		"workingStyle": {
 			"eyebrow": "WORKING STYLE",
@@ -323,12 +323,12 @@
 	"experience": {
 		"metadata": {
 			"title": "Experience",
-			"description": "More than ten years of frontend engineering across customer portals, enterprise applications, energy products and component systems."
+			"description": "More than ten years of software engineering across customer portals, enterprise applications, energy products and component systems."
 		},
 		"hero": {
 			"eyebrow": "EXPERIENCE / CV",
 			"title": "More than ten years building for the web.",
-			"intro": "Senior frontend engineering across customer portals, enterprise applications, energy products and component systems."
+			"intro": "Senior software engineering across customer portals, enterprise applications, energy products and component systems."
 		},
 		"progression": {
 			"eyebrow": "PROGRESSION",
@@ -362,13 +362,13 @@
 	"contact": {
 		"metadata": {
 			"title": "Contact",
-			"description": "Contact Karel Kutchan about senior or lead frontend roles and selected consulting conversations."
+			"description": "Contact Karel Kutchan about senior or lead engineering roles and selected consulting conversations."
 		},
 		"hero": {
 			"eyebrow": "CONTACT",
 			"title": "Let’s discuss the product, the team and the frontend problems worth solving.",
-			"intro": "I am primarily looking for the right senior or lead frontend role. Selected consulting conversations are welcome when the fit is specific.",
-			"availability": "Open to senior and lead frontend roles in Prague or remote (EU), employee or contract."
+			"intro": "I am primarily looking for the right senior or lead role in engineering, architecture or analysis. Selected consulting conversations are welcome when the fit is specific.",
+			"availability": "Open to senior and lead engineering roles in Prague or remote (EU), employee or contract."
 		},
 		"methods": {
 			"eyebrow": "CONTACT DETAILS",
@@ -449,24 +449,24 @@
 	"curriculumVitae": {
 		"metadata": {
 			"title": "Curriculum Vitae",
-			"description": "Karel Kutchan — Senior Frontend Engineer with more than ten years in web development."
+			"description": "Karel Kutchan — Senior Software Engineer with more than ten years in web development."
 		},
 		"hero": {
 			"eyebrow": "CURRICULUM VITAE",
-			"role": "Senior Frontend Engineer",
-			"intro": "Prague-based Senior Frontend Engineer with more than ten years in web development, currently in a lead frontend role."
+			"role": "Senior Software Engineer",
+			"intro": "Prague-based Senior Software Engineer with more than ten years in web development and recent lead frontend experience."
 		},
 		"highlights": {
 			"eyebrow": "PROFILE",
-			"title": "Senior frontend engineering with increasing product and team ownership.",
+			"title": "Senior software engineering with increasing product and team ownership.",
 			"entries": {
 				"experience": {
 					"title": "10+ years",
 					"description": "More than ten years building and improving web products."
 				},
 				"currentRole": {
-					"title": "Lead role",
-					"description": "Leads frontend delivery for a product team: architecture, code quality, mentoring."
+					"title": "Lead experience",
+					"description": "Led frontend delivery for a product team in 2025–2026: architecture, code quality, mentoring."
 				},
 				"productSystems": {
 					"title": "Product systems",
@@ -537,7 +537,7 @@
 		"download": {
 			"label": "Download CV",
 			"languageLabel": "English",
-			"roleLabel": "Senior Frontend Engineer",
+			"roleLabel": "Senior Software Engineer",
 			"description": "One file with the full experience, skills, education and contact details, whether you are hiring for a team or looking for a partner on a project.",
 			"accessibilityLabel": "Download CV — Karel Kutchan"
 		},
@@ -553,7 +553,7 @@
 		"experience": {
 			"eyebrow": "EXPERIENCE",
 			"title": "Experience",
-			"intro": "Selected frontend roles in reverse chronological order.",
+			"intro": "Selected roles in reverse chronological order.",
 			"presentLabel": "Present",
 			"entries": {
 				"nkp": {
@@ -693,7 +693,7 @@
 		"profile": {
 			"title": "Professional summary",
 			"paragraphs": {
-				"experience": "Senior Frontend Engineer with more than ten years of commercial experience, currently Lead Frontend Engineer at BlueGhost, where I own frontend architecture, delivery standards and engineering quality across product teams.",
+				"experience": "Senior Software Engineer with more than ten years of commercial experience. Until April 2026 I was Lead Frontend Engineer at BlueGhost, owning frontend architecture, delivery standards and engineering quality across product teams; since February 2026 I design and build Seeder, a production Django and PostgreSQL system for the National Library of the Czech Republic.",
 				"focus": "My work centres on React and TypeScript applications that have to last: component foundations, accessibility, testing strategy and code review, with hands-on CMS and platform background across Kentico, Kontent.ai, Payload CMS and PHP/Twig. I keep learning deliberately as a core student at 42 Prague, and use AI-assisted workflows while keeping architecture and maintainability under engineering control."
 			}
 		}
@@ -812,7 +812,7 @@
 		}
 	},
 	"footer": {
-		"role": "Senior Frontend Engineer · Prague",
+		"role": "Senior Software Engineer · Prague",
 		"contactEyebrow": "CONTACT",
 		"nextEyebrow": "NEXT STEP",
 		"links": {

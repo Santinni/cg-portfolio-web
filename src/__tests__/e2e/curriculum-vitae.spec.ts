@@ -14,7 +14,7 @@ const cvLocales = [
 		path: '/curriculum-vitae',
 		lang: 'en',
 		heroEyebrow: 'CURRICULUM VITAE',
-		heroRole: 'Senior Frontend Engineer',
+		heroRole: 'Senior Software Engineer',
 		currentRole: 'Current role',
 		contactLocation: 'Prague, Czechia',
 		downloadAccessibleName: 'Download CV — Karel Kutchan',
@@ -23,7 +23,7 @@ const cvLocales = [
 		sections: [
 			{
 				id: 'cv-profile',
-				heading: 'Senior frontend engineering with increasing product and team ownership.',
+				heading: 'Senior software engineering with increasing product and team ownership.',
 			},
 			{ id: 'cv-skills', heading: 'Tools and practices used in delivery.' },
 			{ id: 'cv-experience', heading: 'Experience' },
@@ -40,7 +40,7 @@ const cvLocales = [
 		path: '/cs/curriculum-vitae',
 		lang: 'cs',
 		heroEyebrow: 'ŽIVOTOPIS',
-		heroRole: 'Senior frontend engineer',
+		heroRole: 'Senior software engineer',
 		currentRole: 'Aktuální role',
 		contactLocation: 'Praha, Česká republika',
 		downloadAccessibleName: 'Stáhnout životopis Karla Kutchana',
@@ -49,7 +49,7 @@ const cvLocales = [
 		sections: [
 			{
 				id: 'cv-profile',
-				heading: 'Seniorní frontendová práce s rostoucí odpovědností za produkt i tým.',
+				heading: 'Seniorní inženýrská práce s rostoucí odpovědností za produkt i tým.',
 			},
 			{ id: 'cv-skills', heading: 'Nástroje a postupy používané při dodávce.' },
 			{ id: 'cv-experience', heading: 'Pracovní zkušenosti' },
@@ -207,7 +207,10 @@ for (const locale of cvLocales) {
 			expect(new URL(page.url()).pathname).toBe(locale.path)
 			await expect(page.locator('html')).toHaveAttribute('lang', locale.lang)
 			await expect(page.getByText(locale.heroEyebrow, { exact: true })).toBeVisible()
-			await expect(page.getByText(locale.heroRole, { exact: true })).toBeVisible()
+			// Scoped to the CV content: the mobile menu profile carries the same role label (BD-29).
+			await expect(
+				page.locator('[data-cv-content]').getByText(locale.heroRole, { exact: true }),
+			).toBeVisible()
 			await expect(page.getByText(locale.currentRole, { exact: true })).toBeVisible()
 
 			const h1 = page.locator('[data-cv-content] h1')

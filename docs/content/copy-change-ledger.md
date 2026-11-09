@@ -1102,3 +1102,889 @@ Zviditelňuji kompromisy.
 - Related entries: `COPY-20260729-004`
 - Notes: append a new entry rather than rewriting this record if any principle,
   compact wording, breakpoint or scrollbar policy changes.
+
+## COPY-20261106-001 — Reposition the role label from frontend to software engineering
+
+- Status: implemented
+- Change type: replace
+- Surface: visitor-visible
+- Proposed date: 2026-11-06
+- Implemented date: 2026-11-06
+- Owner: Karel Kutchan
+- Author: Codeguy portfolio implementation team
+- Reviewer: Karel Kutchan (owner decision, direction 3: "brand engineer")
+- Pull request: Pending
+- Commit: Planned as `feat(brand): reposition the site from frontend to software engineering`
+- Routes and locales: every route in `/` and `/cs` (eyebrow, mobile menu, footer), the 503 error screen, the web app manifest
+- Source boundary: owner-approved-brief, next-intl
+- Message keys or public CMS fields: `home.hero.eyebrow`, `navigation.mobileMenu.profile.role`, `footer.role`; plus `src/app/manifest.json` (`name`) and `errors/503.html` footer
+- Rendering location: `(home)/blocks/hero/index.tsx`, `components/ui/navigation`, `src/components/site/SiteFooter`, `errors/503.html`
+- Figma file and node: `cs38WzlXKY9xfDYBinoKel`, `Hero` component set `286:3362` (still carries the previous role text; reconciliation pending)
+- Original source: BD-04 positioning (2026-07-29), COPY-20260729-001 (mobile menu role)
+- Original purpose: name the role beside the identity so a visitor knows whose site it is and what he does
+- Audience and user intent: recruiters and hiring managers deciding in seconds whether the profile matches the role they staff
+
+### Original (verbatim)
+
+#### English
+
+```text
+<identity>{name}</identity> / SENIOR FRONTEND ENGINEER / PRAGUE
+Senior / Lead Frontend Engineer
+Senior Frontend Engineer · Prague
+Karel Kutchan — Senior Frontend Engineer
+Karel Kutchan · Senior Frontend Engineer · Praha
+```
+
+#### Czech
+
+```text
+<identity>{name}</identity> / SENIOR FRONTEND VÝVOJÁŘ / PRAHA
+Seniorní frontend vývojář / vedoucí frontendu
+Senior Frontend Engineer · Praha
+```
+
+### Replacement (verbatim)
+
+#### English
+
+```text
+<identity>{name}</identity> / SENIOR SOFTWARE ENGINEER / PRAGUE
+Senior Software Engineer
+Senior Software Engineer · Prague
+Karel Kutchan — Senior Software Engineer
+Karel Kutchan · Senior Software Engineer · Praha
+```
+
+#### Czech
+
+```text
+<identity>{name}</identity> / SENIOR SOFTWARE ENGINEER / PRAHA
+Senior Software Engineer
+Senior Software Engineer · Praha
+```
+
+### Rationale
+
+- Problem being solved: the lead frontend engagement ended in April 2026 and the verified record now spans full-stack delivery and requirements work; "frontend" understated it and "Lead" in the mobile menu claimed a role no longer held.
+- Why this wording was selected: "Senior Software Engineer" is accurate, verifiable, and 24 characters in the eyebrow, the same as before, so the eyebrow keeps its line count at every width (HP-01). The mobile menu drops "Lead" and matches the footer.
+- Alternatives rejected: "Software Engineer" (understates seniority against the roles sought); "Software Engineer & Architect" (exceeds the verified record, BD-08).
+- Meaning intentionally preserved: identity, city, seniority.
+- Meaning intentionally changed: discipline widened from frontend to software engineering; no present-tense leadership claim.
+
+### Fact And Claim Controls
+
+- Claims affected: role label and seniority.
+- Evidence source and checked date: `src/content/curriculum-vitae.ts` and the CV catalogs, 2026-11-06.
+- Time-sensitive review: reconfirm with the next role change.
+- NDA or client review: none; no client is named.
+- Owner approval: Karel Kutchan, 2026-11-06 (plan approval).
+
+### Impact Review
+
+- Internationalization: the Czech role label uses the English title, as the footer already did; `i18n-messages.test.ts` key parity holds.
+- Accessibility: no change to accessible names beyond the text itself.
+- Responsive layout: eyebrow length unchanged (24 characters); `eyebrowLines` constants untouched.
+- SEO and metadata: handled in COPY-20261106-008.
+- CMS or data boundary: none.
+- Privacy and confidentiality: none.
+
+### Verification
+
+- Automated tests: `approved-copy.test.ts`, `navigation.test.tsx`, `site-footer.test.tsx`; Playwright `launch.spec.ts`, `navigation-geometry.spec.ts`, `home-hero-anchoring.spec.ts`.
+- Routes and locales: `/`, `/cs`, mobile menu, footer, 503 screen.
+- Themes, viewports, and interaction states: eyebrow at 1440/768/430/390/320 in the pinned run.
+- Manual content review: owner read-through of the plan table.
+- Result: Vitest green; pinned Playwright run of 2026-11-06 green (53/53 across `home-hero-anchoring`, `home-integrated-parity`, `home-experience-anchoring`, `home-final-cta-anchoring`); `eyebrowLines` unchanged at every width.
+- Residual risk: the Figma `Hero` component lags the shipped text until reconciled.
+
+### Lifecycle
+
+- Supersedes: COPY-20260729-001 (mobile menu role).
+- Reverted by: none.
+- Related entries: COPY-20261106-002 to -009.
+- Notes: measured hero numbers are in COPY-20261106-003.
+
+## COPY-20261106-002 — Change one word of the brand headline
+
+- Status: implemented
+- Change type: replace
+- Surface: visitor-visible
+- Proposed date: 2026-11-06
+- Implemented date: 2026-11-06
+- Owner: Karel Kutchan
+- Author: Codeguy portfolio implementation team
+- Reviewer: Karel Kutchan
+- Pull request: Pending
+- Commit: Planned as `feat(brand): reposition the site from frontend to software engineering`
+- Routes and locales: `/`, `/cs`
+- Source boundary: owner-approved-brief, next-intl
+- Message keys or public CMS fields: `home.hero.headline`
+- Rendering location: `(home)/blocks/hero/index.tsx` (`h1`)
+- Figma file and node: `Hero` component set `286:3362` (reconciliation pending)
+- Original source: BD-05 brand promise
+- Original purpose: the brand promise, fixed in both languages
+- Audience and user intent: every visitor; the one sentence the site is remembered by
+
+### Original (verbatim)
+
+#### English
+
+```text
+I build frontend systems for products that have to last.
+```
+
+#### Czech
+
+```text
+Stavím frontendové systémy pro produkty, které musí vydržet.
+```
+
+### Replacement (verbatim)
+
+#### English
+
+```text
+I build software systems for products that have to last.
+```
+
+#### Czech
+
+```text
+Stavím softwarové systémy pro produkty, které musí vydržet.
+```
+
+### Rationale
+
+- Problem being solved: the promise named frontend only; BD-29 widens the positioning.
+- Why this wording was selected: one word changes, the promise stays recognizable and the same length (57 English characters), so the two-line headline at 1440 and 768 px holds.
+- Alternatives rejected: a new headline (would discard a line that tests well against the offer).
+- Meaning intentionally preserved: durability as the promise.
+- Meaning intentionally changed: scope of "systems".
+
+### Fact And Claim Controls
+
+- Claims affected: none beyond scope of work.
+- Evidence source and checked date: BD-29, 2026-11-06.
+- Time-sensitive review: none.
+- NDA or client review: none.
+- Owner approval: Karel Kutchan, 2026-11-06.
+
+### Impact Review
+
+- Internationalization: Czech keeps natural word order.
+- Accessibility: `h1` name changes accordingly; asserted in `home-accessibility.spec.ts` and `i18n-routing.spec.ts`.
+- Responsive layout: `headlineHeight` constants (two lines at 1440/768, four below) are kept, not re-measured; a third line would mean the copy, not the constant, is wrong.
+- SEO and metadata: none directly.
+- CMS or data boundary: none.
+- Privacy and confidentiality: none.
+
+### Verification
+
+- Automated tests: `approved-copy.test.ts`; Playwright `home-hero-anchoring` (`headlineHeight`), `home-accessibility`, `i18n-routing`.
+- Routes and locales: `/`, `/cs`.
+- Themes, viewports, and interaction states: 1440/768/430/390/320, light and dark.
+- Manual content review: owner.
+- Result: pinned run of 2026-11-06: two lines at 1440 and 768 px and four lines at 430 and 390 px as before; at 320 px the headline takes five 36 px lines (201.6 px) instead of four (160 px), because "I build software" no longer fits the first line of the 280 px column.
+- Residual risk: the 320 px Figma frame `8:140` shows four lines; recorded as a reconciliation item in HP-01.
+
+### Lifecycle
+
+- Supersedes: none (BD-05 is superseded in the brand log).
+- Reverted by: none.
+- Related entries: COPY-20261106-001, -003.
+- Notes: `docs/brand/brand-guidelines.md` §2.2 updated in the same change.
+
+## COPY-20261106-003 — Rewrite the hero paragraphs for the widened positioning
+
+- Status: implemented
+- Change type: replace
+- Surface: visitor-visible
+- Proposed date: 2026-11-06
+- Implemented date: 2026-11-06
+- Owner: Karel Kutchan
+- Author: Codeguy portfolio implementation team
+- Reviewer: Karel Kutchan (wording conditions 1, 5, 6 of the plan review)
+- Pull request: Pending
+- Commit: Planned as `feat(brand): reposition the site from frontend to software engineering`
+- Routes and locales: `/`, `/cs`; wide variant at and above 1024 px, compact variant below
+- Source boundary: owner-approved-brief, next-intl
+- Message keys or public CMS fields: `home.hero.paragraphs.experience`, `home.hero.paragraphs.quality`, `home.hero.paragraphsCompact.experience`, `home.hero.paragraphsCompact.quality`
+- Rendering location: `(home)/blocks/hero/index.tsx`, variant chosen by CSS in `Hero.module.css`
+- Figma file and node: `Hero` component set `286:3362` (reconciliation pending)
+- Original source: BD-04 positioning, COPY-20260729-002 (compact variants)
+- Original purpose: state experience and working stance under the headline
+- Audience and user intent: recruiters and hiring managers reading the first screen
+
+### Original (verbatim)
+
+#### English
+
+```text
+More than ten years in web development, currently in a lead frontend role. I work with React, TypeScript and Next.js across customer portals, internal enterprise applications and the component libraries underneath them.
+Architecture, accessibility and long-term maintainability are part of the delivery, not follow-up work.
+More than ten years in web development, currently in a lead frontend role. I work with React, TypeScript and Next.js across customer portals, enterprise applications and component systems.
+Architecture, accessibility and maintainability are part of the delivery.
+```
+
+#### Czech
+
+```text
+Webům se věnuji přes deset let a dnes působím jako vedoucí frontend vývoje. S Reactem, TypeScriptem a Next.js pracuji na zákaznických portálech, interních podnikových aplikacích i komponentových knihovnách, na kterých stojí.
+Architektura, přístupnost a dlouhodobá udržitelnost jsou součástí dodávky, ne práce odložená na později.
+Webům se věnuji přes deset let a nyní působím ve vedoucí frontendové roli. S Reactem, TypeScriptem a Next.js pracuji na zákaznických portálech, podnikových aplikacích a komponentových systémech.
+Architektura, přístupnost a udržovatelnost jsou součástí dodávky.
+```
+
+### Replacement (verbatim)
+
+#### English
+
+```text
+More than ten years in web development, in recent years owning frontend architecture and leading a team. I work with React, TypeScript and Next.js, design data models and APIs, and take solutions from analysis with the client through to production.
+Architecture, accessibility, maintainability and working with AI are part of the delivery, not follow-up work.
+More than ten years in web development, lately owning frontend architecture and leading a team. React, TypeScript and Next.js, data models and APIs, from analysis to production.
+Architecture, accessibility, maintainability and AI are part of the delivery.
+```
+
+#### Czech
+
+```text
+Webům se věnuji přes deset let, poslední roky s odpovědností za frontendovou architekturu a vedení týmu. Pracuji s Reactem, TypeScriptem a Next.js, navrhuji datové modely i API a řešení dotahuji od analýzy se zadavatelem po nasazení.
+Architektura, přístupnost, udržitelnost a práce s AI jsou součástí dodávky, ne práce odložená na později.
+Webům se věnuji přes deset let, poslední roky s odpovědností za frontendovou architekturu a vedení týmu. React, TypeScript a Next.js, datové modely i API, od analýzy po nasazení.
+Architektura, přístupnost, udržitelnost a práce s AI jsou součástí dodávky.
+```
+
+### Rationale
+
+- Problem being solved: "currently in a lead frontend role" / "dnes působím jako vedoucí frontend vývoje" was untrue after April 2026; the paragraph also said nothing about data models, APIs, analysis or AI.
+- Why this wording was selected: the lead period is stated in the past ("in recent years owning", „poslední roky s odpovědností"), the stack stays named, and the added scope is the verified one. The AI clause has no time anchor ("dnes i" was rejected because it would tie the sentence to a state again). The compact quality line is 76 English characters to keep one line at 768 px.
+- Alternatives rejected: present-tense "vedu" in the Czech compact variant (false); "today, working with AI" (time-bound).
+- Meaning intentionally preserved: ten years, React/TypeScript/Next.js, delivery stance.
+- Meaning intentionally changed: leadership in the past tense; data models, APIs, analysis with clients and AI added.
+
+### Fact And Claim Controls
+
+- Claims affected: lead role (2025-03 to 2026-04), data-model and API design (Seeder, Moje MND), analysis with clients, AI-assisted delivery introduced at BlueGhost.
+- Evidence source and checked date: `src/content/curriculum-vitae.ts`, CV catalogs and the owner's account of the BlueGhost AI work, 2026-11-06.
+- Time-sensitive review: "in recent years" ages; review in 2027.
+- NDA or client review: no client is named in the hero.
+- Owner approval: Karel Kutchan, 2026-11-06.
+
+### Impact Review
+
+- Internationalization: Czech written as professional Czech, not a calque.
+- Accessibility: paragraph text only.
+- Responsive layout: the wide `experience` paragraph grows from 215 to 250 characters and the wide `quality` from 103 to 112; the pinned run decides whether the hero gains a line at 1440 (26.1 px per line) or below 1024 (24.65 px per line). Constants in `home-hero-anchoring.spec.ts` and `home-integrated-parity.spec.ts` are updated from that run only.
+- SEO and metadata: none.
+- CMS or data boundary: none.
+- Privacy and confidentiality: none.
+
+### Verification
+
+- Automated tests: `approved-copy.test.ts`, `home-hero.test.tsx`; Playwright `home-hero-anchoring`, `home-integrated-parity`, `home-cta-parity`.
+- Routes and locales: `/`, `/cs`.
+- Themes, viewports, and interaction states: 1440/768/430/390/320, light and dark; Czech compact variant checked for overflow at 320.
+- Manual content review: owner.
+- Result: Vitest green. Pinned measurement of 2026-11-06 (Chromium, `mcr.microsoft.com/playwright:v1.62.0-noble`): hero height unchanged at 1440 (785), 768 (648), 430 (839) and 390 (863) px, so the longer paragraphs did not add a line at any of these widths; `availabilityLines` 1/2/2/3/3 unchanged. At 320 px the hero is 922.32 px (was 882): the extra 40.32 px is one 36 px headline line (COPY-20261106-002), not paragraph growth. Integrated geometry at 320 moves by the same 40.32 px (hero 986.32, main 3892.32); all other widths unchanged.
+- Residual risk: machine-dependent wrapping at 390 px (see `docs/audits/2026-07-29-redesign-parity.md`).
+
+### Lifecycle
+
+- Supersedes: COPY-20260729-002.
+- Reverted by: none.
+- Related entries: COPY-20261106-001, -002, -004.
+- Notes: constants updated in `home-hero-anchoring.spec.ts` and `home-integrated-parity.spec.ts` (320 px only), with the derivation comments extended.
+
+## COPY-20261106-004 — Widen the availability line and move analysis to the contact intro
+
+- Status: implemented
+- Change type: replace
+- Surface: visitor-visible
+- Proposed date: 2026-11-06
+- Implemented date: 2026-11-06
+- Owner: Karel Kutchan
+- Author: Codeguy portfolio implementation team
+- Reviewer: Karel Kutchan (condition 3 of the plan review)
+- Pull request: Pending
+- Commit: Planned as `feat(brand): reposition the site from frontend to software engineering`
+- Routes and locales: `/`, `/cs`, `/contact`, `/cs/contact`
+- Source boundary: owner-approved-brief, next-intl
+- Message keys or public CMS fields: `home.hero.availability`, `contact.hero.availability`, `contact.hero.intro`, `contact.metadata.description`
+- Rendering location: `(home)/blocks/hero/index.tsx`, `contact/page.tsx` via `PageIntro`
+- Figma file and node: `Hero` component set `286:3362`; Contact hero frame (reconciliation pending)
+- Original source: HP-03 (locked 2026-09-13)
+- Original purpose: answer "is he available, for what, and where" in one line
+- Audience and user intent: recruiters qualifying the profile
+
+### Original (verbatim)
+
+#### English
+
+```text
+Open to senior and lead frontend roles in Prague or remote (EU), employee or contract.
+I am primarily looking for the right senior or lead frontend role. Selected consulting conversations are welcome when the fit is specific.
+Contact Karel Kutchan about senior or lead frontend roles and selected consulting conversations.
+```
+
+#### Czech
+
+```text
+Otevřený seniorním a lead frontend rolím v Praze nebo remote (EU), zaměstnanecky i na kontrakt.
+Hledám především správnou seniorní nebo vedoucí frontendovou roli. Rád proberu i vybrané možnosti konzultací, pokud si konkrétně sedneme.
+Kontaktujte Karla Kutchana ohledně seniorních či vedoucích frontendových rolí a vybraných konzultací.
+```
+
+### Replacement (verbatim)
+
+#### English
+
+```text
+Open to senior and lead engineering roles in Prague or remote (EU), employee or contract.
+I am primarily looking for the right senior or lead role in engineering, architecture or analysis. Selected consulting conversations are welcome when the fit is specific.
+Contact Karel Kutchan about senior or lead engineering roles and selected consulting conversations.
+```
+
+#### Czech
+
+```text
+Otevřený seniorním a lead inženýrským rolím v Praze nebo remote (EU), zaměstnanecky i na kontrakt.
+Hledám především správnou seniorní nebo vedoucí roli ve vývoji, architektuře nebo analýze. Rád proberu i vybrané možnosti konzultací, pokud si konkrétně sedneme.
+Kontaktujte Karla Kutchana ohledně seniorních či vedoucích inženýrských rolí a vybraných konzultací.
+```
+
+### Rationale
+
+- Problem being solved: the line limited openness to frontend roles.
+- Why this wording was selected: one word changes and the English line stays at 88 characters, inside the ≤ 92 budget derived from the 86-character line measured as one line at 1440 px; HP-03's one-line contract holds. Architecture and analysis are named in the contact intro, which no spec measures.
+- Alternatives rejected: naming engineering, architecture and analysis in the availability line (118 characters, two lines at 1440, three at 430, four at 320).
+- Meaning intentionally preserved: Prague or remote EU, employee or contract.
+- Meaning intentionally changed: discipline widened.
+
+### Fact And Claim Controls
+
+- Claims affected: availability.
+- Evidence source and checked date: owner statement, 2026-11-06.
+- Time-sensitive review: reconfirm on any role or location change (HP-03).
+- NDA or client review: none.
+- Owner approval: Karel Kutchan, 2026-11-06.
+
+### Impact Review
+
+- Internationalization: both copies kept identical per locale (`approved-copy.test.ts`, `home-hero.test.tsx`).
+- Accessibility: none.
+- Responsive layout: `availabilityLines` 1/2/2/3/3 kept; confirmed by the pinned run. `/contact` renders the line in `PageIntro` (720 px, body-lg), not measured.
+- SEO and metadata: contact description updated here.
+- CMS or data boundary: none.
+- Privacy and confidentiality: none.
+
+### Verification
+
+- Automated tests: `approved-copy.test.ts` (HP-03 identity check), `home-hero.test.tsx`; Playwright `home-hero-anchoring` (`availabilityLines`), `home-cta-parity`.
+- Routes and locales: `/`, `/cs`, `/contact`, `/cs/contact`.
+- Themes, viewports, and interaction states: 1440/768/430/390/320.
+- Manual content review: owner.
+- Result: Vitest green; pinned run of 2026-11-06 confirms one line at 1440 px and 2/2/3/3 lines below.
+- Residual risk: none.
+
+### Lifecycle
+
+- Supersedes: none (HP-03 wording of 2026-09-13 has no ledger entry; amended in `docs/decisions/homepage.md`).
+- Reverted by: none.
+- Related entries: COPY-20261106-003.
+- Notes: none.
+
+## COPY-20261106-005 — Rewrite the About intro
+
+- Status: implemented
+- Change type: replace
+- Surface: visitor-visible
+- Proposed date: 2026-11-06
+- Implemented date: 2026-11-06
+- Owner: Karel Kutchan
+- Author: Codeguy portfolio implementation team
+- Reviewer: Karel Kutchan (AI paragraph supplied by the owner)
+- Pull request: Pending
+- Commit: Planned as `feat(brand): reposition the site from frontend to software engineering`
+- Routes and locales: `/about`, `/cs/about`
+- Source boundary: owner-approved-brief, next-intl
+- Message keys or public CMS fields: `about.hero.intro`, `about.metadata.description`
+- Rendering location: `about/page.tsx` via `PageIntro`
+- Figma file and node: About hero frame (reconciliation pending)
+- Original source: BD-04 positioning
+- Original purpose: introduce the person behind the site
+- Audience and user intent: visitors who want to know who they would work with
+
+### Original (verbatim)
+
+#### English
+
+```text
+I am a Prague-based senior frontend engineer with more than ten years in web development. I currently work in a lead frontend role, helping teams turn product requirements into maintainable systems.
+About Karel Kutchan, a Prague-based senior frontend engineer focused on product delivery, architecture and team clarity.
+```
+
+#### Czech
+
+```text
+Jsem senior frontend vývojář z Prahy a webům se věnuji přes deset let. Dnes působím jako vedoucí frontend vývoje a pomáhám týmům převádět produktové požadavky do udržitelných systémů.
+Karel Kutchan je senior frontend vývojář z Prahy zaměřený na dodávku produktů, architekturu a srozumitelnou spolupráci v týmu.
+```
+
+### Replacement (verbatim)
+
+#### English
+
+```text
+I am a Prague-based software engineer with more than ten years in web development. I led frontend engineering for a product team and worked through requirements with backend, UX and project management. I introduced AI tooling to the team: agent rules, agentic CLI workflows, Figma-to-code and onboarding colleagues. The result is not less work, but more solutions delivered with fewer rounds of rework, always under code review.
+About Karel Kutchan, a Prague-based senior software engineer focused on product delivery, architecture and team clarity.
+```
+
+#### Czech
+
+```text
+Jsem software engineer z Prahy a webům se věnuji přes deset let. Vedl jsem frontend vývoj produktového týmu a zadání jsem řešil s backendem, UX i projektovým vedením. Do týmu jsem zavedl práci s AI nástroji: pravidla pro agenty, agentní workflow v CLI, převod návrhu z Figmy do kódu a zaučení kolegů. Výsledkem není méně práce, ale víc doručených řešení s menším počtem vratek, vždy pod code review.
+Karel Kutchan je senior software engineer z Prahy zaměřený na dodávku produktů, architekturu a srozumitelnou spolupráci v týmu.
+```
+
+### Rationale
+
+- Problem being solved: present-tense lead claim; nothing about the AI work or the cross-functional requirements work.
+- Why this wording was selected: the owner's own account, kept sober and under code review (BD-08: no metric is invented; "fewer rounds of rework" is the owner's observation, stated as such).
+- Alternatives rejected: a shorter intro without the AI paragraph (would leave the most differentiating recent work unsaid).
+- Meaning intentionally preserved: Prague, ten years, maintainable systems.
+- Meaning intentionally changed: lead role in the past tense; AI tooling named; requirements work with backend, UX and project management named.
+
+### Fact And Claim Controls
+
+- Claims affected: led frontend engineering (BlueGhost, 2025-03 to 2026-04); AI tooling introduced (agent rules, CLI workflows, Figma-to-code, onboarding); outcome statement.
+- Evidence source and checked date: owner statement relayed 2026-11-06; CV catalog `curriculumVitae.experience.entries.blueghost.descriptions.ai`.
+- Time-sensitive review: 2027, or on the next role.
+- NDA or client review: no client named.
+- Owner approval: Karel Kutchan, 2026-11-06.
+
+### Impact Review
+
+- Internationalization: Czech authored natively.
+- Accessibility: none.
+- Responsive layout: not measured by any spec (`docs/audits/2026-09-11-page-hero-inventory.md`: no test asserts hero geometry on `/about`); `launch.spec.ts` checks horizontal overflow at 390 and 1440.
+- SEO and metadata: about description updated here.
+- CMS or data boundary: none.
+- Privacy and confidentiality: none.
+
+### Verification
+
+- Automated tests: `i18n-messages.test.ts`; Playwright `launch.spec.ts`.
+- Routes and locales: `/about`, `/cs/about`.
+- Themes, viewports, and interaction states: manual at 1440, 768, 390, 320.
+- Manual content review: owner.
+- Result: Vitest green.
+- Residual risk: intro is four sentences; `PageIntro` is a 720 px measure, acceptable.
+
+### Lifecycle
+
+- Supersedes: none.
+- Reverted by: none.
+- Related entries: COPY-20261106-001.
+- Notes: none.
+
+## COPY-20261106-006 — Reframe the Home Experience snapshot
+
+- Status: implemented
+- Change type: replace
+- Surface: visitor-visible
+- Proposed date: 2026-11-06
+- Implemented date: 2026-11-06
+- Owner: Karel Kutchan
+- Author: Codeguy portfolio implementation team
+- Reviewer: Karel Kutchan
+- Pull request: Pending
+- Commit: Planned as `feat(brand): reposition the site from frontend to software engineering`
+- Routes and locales: `/`, `/cs`; section visible at and above 1024 px
+- Source boundary: owner-approved-brief, next-intl
+- Message keys or public CMS fields: `home.experience.title`, `home.experience.description`
+- Rendering location: `(home)/blocks/experience-snapshot/index.tsx`
+- Figma file and node: Home desktop frame `6:2`, Experience section (two-line description; reconciliation pending)
+- Original source: Figma-reference copy of 2026-07
+- Original purpose: summarise the career arc before the link to `/experience`
+- Audience and user intent: desktop visitors scanning the home page
+
+### Original (verbatim)
+
+#### English
+
+```text
+From implementation to frontend leadership.
+Web development since 2014. Today I lead frontend work across architecture, component systems, accessibility, testing and code review.
+```
+
+#### Czech
+
+```text
+Od implementace k vedení frontend vývoje.
+Webovému vývoji se věnuji od roku 2014. Dnes vedu frontendovou práci v oblasti architektury, komponentových systémů, přístupnosti, testování a code review.
+```
+
+### Replacement (verbatim)
+
+#### English
+
+```text
+From implementation to architecture and leadership.
+Web development since 2014, from frontend implementation to architecture, team leadership and analysis with clients, from data model to interface.
+```
+
+#### Czech
+
+```text
+Od implementace k architektuře a vedení.
+Webovému vývoji se věnuji od roku 2014, od frontendové implementace k architektuře, vedení týmu a analýze se zadavatelem, od datového modelu po rozhraní.
+```
+
+### Rationale
+
+- Problem being solved: "Today I lead frontend work" was untrue after April 2026.
+- Why this wording was selected: describes the path, not a current state; the English description is 146 characters, inside the ≤ 160 budget that keeps the two-line description and the section's 565 px height at 1440.
+- Alternatives rejected: the longer "Today I work across the whole solution…" sentence (215 characters, three lines, 591.1 px).
+- Meaning intentionally preserved: since 2014; architecture.
+- Meaning intentionally changed: leadership as a stage reached, not a present role; analysis with clients and data model added.
+
+### Fact And Claim Controls
+
+- Claims affected: career arc.
+- Evidence source and checked date: CV facts, 2026-11-06.
+- Time-sensitive review: none.
+- NDA or client review: none.
+- Owner approval: Karel Kutchan, 2026-11-06.
+
+### Impact Review
+
+- Internationalization: Czech sentence authored natively.
+- Accessibility: `h2` name changes; asserted in `home-accessibility.spec.ts`.
+- Responsive layout: section hidden below 1024 px; 565 px at 1440 to be confirmed by the pinned run; if it moves, `home-experience-anchoring.spec.ts` and the Final CTA `top` in `home-integrated-parity.spec.ts` move with it.
+- SEO and metadata: none.
+- CMS or data boundary: none.
+- Privacy and confidentiality: none.
+
+### Verification
+
+- Automated tests: Playwright `home-experience-anchoring`, `home-accessibility`, `home-integrated-parity`.
+- Routes and locales: `/`, `/cs`.
+- Themes, viewports, and interaction states: 1440 light and dark; 1023/1024 boundary.
+- Manual content review: owner.
+- Result: pinned run of 2026-11-06: section height 565 px unchanged (two-line title, two-line description).
+- Residual risk: none.
+
+### Lifecycle
+
+- Supersedes: none.
+- Reverted by: none.
+- Related entries: COPY-20261106-003.
+- Notes: none.
+
+## COPY-20261106-007 — Widen the final call to action
+
+- Status: implemented
+- Change type: replace
+- Surface: visitor-visible
+- Proposed date: 2026-11-06
+- Implemented date: 2026-11-06
+- Owner: Karel Kutchan
+- Author: Codeguy portfolio implementation team
+- Reviewer: Karel Kutchan
+- Pull request: Pending
+- Commit: Planned as `feat(brand): reposition the site from frontend to software engineering`
+- Routes and locales: `/`, `/cs`
+- Source boundary: owner-approved-brief, next-intl
+- Message keys or public CMS fields: `home.finalCta.heading`
+- Rendering location: `(home)/blocks/final-cta`
+- Figma file and node: Home frames, Final CTA section (reconciliation pending)
+- Original source: Figma-reference copy of 2026-07
+- Original purpose: the closing question before the contact action
+- Audience and user intent: hiring managers at the end of the page
+
+### Original (verbatim)
+
+#### English
+
+```text
+Looking for a senior frontend engineer who can own the system behind the interface?
+```
+
+#### Czech
+
+```text
+Hledáte senior frontend vývojáře, který převezme odpovědnost za systém pod rozhraním?
+```
+
+### Replacement (verbatim)
+
+#### English
+
+```text
+Looking for a senior engineer who can own the system behind the interface?
+```
+
+#### Czech
+
+```text
+Hledáte seniorního inženýra, který převezme odpovědnost za systém pod rozhraním?
+```
+
+### Rationale
+
+- Problem being solved: the question limited the offer to frontend.
+- Why this wording was selected: one noun phrase changes; the "system behind the interface" idea is kept.
+- Alternatives rejected: naming architecture or analysis in the question (longer, changes the pinned heights for little gain).
+- Meaning intentionally preserved: ownership of the system.
+- Meaning intentionally changed: discipline widened.
+
+### Fact And Claim Controls
+
+- Claims affected: none.
+- Evidence source and checked date: BD-29, 2026-11-06.
+- Time-sensitive review: none.
+- NDA or client review: none.
+- Owner approval: Karel Kutchan, 2026-11-06.
+
+### Impact Review
+
+- Internationalization: none.
+- Accessibility: `h2` name changes; asserted in `home-accessibility.spec.ts`.
+- Responsive layout: `home-final-cta-anchoring.spec.ts` pins the section at 482/292/380/380; the shorter English heading (74 characters, was 83) may drop a line, which the pinned run decides.
+- SEO and metadata: none.
+- CMS or data boundary: none.
+- Privacy and confidentiality: none.
+
+### Verification
+
+- Automated tests: Playwright `home-final-cta-anchoring`, `home-accessibility`, `home-integrated-parity`.
+- Routes and locales: `/`, `/cs`.
+- Themes, viewports, and interaction states: 1440/768/390/320.
+- Manual content review: owner.
+- Result: pinned run of 2026-11-06: section heights 482/292/380/380 unchanged; the shorter heading keeps its line count.
+- Residual risk: none.
+
+### Lifecycle
+
+- Supersedes: none.
+- Reverted by: none.
+- Related entries: COPY-20261106-003.
+- Notes: none.
+
+## COPY-20261106-008 — Page metadata, manifest and Experience page intro
+
+- Status: implemented
+- Change type: metadata
+- Surface: metadata
+- Proposed date: 2026-11-06
+- Implemented date: 2026-11-06
+- Owner: Karel Kutchan
+- Author: Codeguy portfolio implementation team
+- Reviewer: Karel Kutchan
+- Pull request: Pending
+- Commit: Planned as `feat(brand): reposition the site from frontend to software engineering`
+- Routes and locales: `/`, `/cs`, `/about`, `/cs/about`, `/experience`, `/cs/experience`, `/contact`, `/cs/contact`; web app manifest
+- Source boundary: owner-approved-brief, next-intl
+- Message keys or public CMS fields: `home.metadata.title`, `home.metadata.description`, `experience.metadata.description`, `experience.hero.intro`; `src/app/manifest.json` (`name`, `description`). About and contact descriptions are recorded in COPY-20261106-005 and -004.
+- Rendering location: `src/i18n/metadata.ts` (`createLocalizedMetadata`), `experience/page.tsx`, `src/app/manifest.json`
+- Figma file and node: None (metadata is not designed in Figma)
+- Original source: BD-04 positioning
+- Original purpose: search snippets and the installed-app name
+- Audience and user intent: search engines and visitors arriving from results
+
+### Original (verbatim)
+
+#### English
+
+```text
+Karel Kutchan — Senior Frontend Engineer
+Karel Kutchan is a senior frontend engineer based in Prague, building resilient frontend systems with React, TypeScript and Next.js.
+More than ten years of frontend engineering across customer portals, enterprise applications, energy products and component systems.
+Senior frontend engineering across customer portals, enterprise applications, energy products and component systems.
+```
+
+#### Czech
+
+```text
+Karel Kutchan — Senior frontend vývojář
+Karel Kutchan je senior frontend vývojář z Prahy. V Reactu, TypeScriptu a Next.js staví odolné frontendové systémy.
+Přes deset let frontendového vývoje zákaznických portálů, podnikových aplikací, energetických produktů a komponentových systémů.
+Seniorní frontendový vývoj zákaznických portálů, podnikových aplikací, energetických produktů a komponentových systémů.
+```
+
+### Replacement (verbatim)
+
+#### English
+
+```text
+Karel Kutchan — Senior Software Engineer
+Karel Kutchan is a senior software engineer based in Prague, building resilient web systems with React, TypeScript and Next.js, from data model to interface.
+More than ten years of software engineering across customer portals, enterprise applications, energy products and component systems.
+Senior software engineering across customer portals, enterprise applications, energy products and component systems.
+```
+
+#### Czech
+
+```text
+Karel Kutchan — Senior software engineer
+Karel Kutchan je senior software engineer z Prahy. S Reactem, TypeScriptem a Next.js staví odolné webové systémy od datového modelu po rozhraní.
+Přes deset let softwarového vývoje zákaznických portálů, podnikových aplikací, energetických produktů a komponentových systémů.
+Seniorní softwarový vývoj zákaznických portálů, podnikových aplikací, energetických produktů a komponentových systémů.
+```
+
+### Rationale
+
+- Problem being solved: search snippets and the manifest named the old positioning.
+- Why this wording was selected: mirrors BD-29 in snippet length; the home description stays under 160 characters.
+- Alternatives rejected: leaving metadata for a later pass (search results would contradict the page).
+- Meaning intentionally preserved: Prague, stack, ten years.
+- Meaning intentionally changed: discipline widened; "from data model to interface" added.
+
+### Fact And Claim Controls
+
+- Claims affected: role label.
+- Evidence source and checked date: BD-29, 2026-11-06.
+- Time-sensitive review: none.
+- NDA or client review: none.
+- Owner approval: Karel Kutchan, 2026-11-06.
+
+### Impact Review
+
+- Internationalization: both catalogs.
+- Accessibility: none.
+- Responsive layout: `experience.hero.intro` is a `PageIntro` lead, not measured.
+- SEO and metadata: title template `%s | Codeguy` unchanged; `i18n-seo.spec.ts` updated.
+- CMS or data boundary: none.
+- Privacy and confidentiality: none.
+
+### Verification
+
+- Automated tests: `i18n-metadata.test.ts`; Playwright `i18n-seo.spec.ts`.
+- Routes and locales: as listed.
+- Themes, viewports, and interaction states: None (metadata).
+- Manual content review: owner.
+- Result: Vitest green.
+- Residual risk: none.
+
+### Lifecycle
+
+- Supersedes: none.
+- Reverted by: none.
+- Related entries: COPY-20261106-001, -004, -005.
+- Notes: none.
+
+## COPY-20261106-009 — CV catalog role and profile wording
+
+- Status: implemented
+- Change type: replace
+- Surface: visitor-visible
+- Proposed date: 2026-11-06
+- Implemented date: 2026-11-06
+- Owner: Karel Kutchan
+- Author: Codeguy portfolio implementation team
+- Reviewer: Karel Kutchan
+- Pull request: Pending
+- Commit: Planned as `feat(brand): reposition the site from frontend to software engineering`
+- Routes and locales: `/curriculum-vitae`, `/cs/curriculum-vitae`; both generated PDFs under `/curriculum-vitae/`
+- Source boundary: owner-approved-brief, next-intl
+- Message keys or public CMS fields: `curriculumVitae.hero.role`, `curriculumVitae.hero.intro`, `curriculumVitae.highlights.title`, `curriculumVitae.download.roleLabel`, `curriculumVitae.metadata.description`, `curriculumVitae.experience.intro`, first sentence of `curriculumVitae.profile.paragraphs.experience`
+- Rendering location: `curriculum-vitae` page, download eyebrow (`languageLabel · roleLabel`), `tools/cv-pdf/render.mjs` (masthead and profile)
+- Figma file and node: CV frames `124:369`, `132:399`, `131:593`, `136:190`, `136:283` (still show the previous role; reconciliation pending)
+- Original source: CV-03 copy amendment (2026-09-12), BD-04
+- Original purpose: name the role on the CV page and in the PDF masthead
+- Audience and user intent: recruiters opening the CV from a sent link
+
+### Original (verbatim)
+
+#### English
+
+```text
+Senior Frontend Engineer
+Prague-based Senior Frontend Engineer with more than ten years in web development and recent lead frontend experience.
+Senior frontend engineering with increasing product and team ownership.
+Senior Frontend Engineer
+Karel Kutchan — Senior Frontend Engineer with more than ten years in web development.
+Selected frontend roles in reverse chronological order.
+Senior Frontend Engineer with more than ten years of commercial experience.
+```
+
+#### Czech
+
+```text
+Senior frontend engineer
+Senior frontend engineer z Prahy s více než deseti lety zkušeností ve webovém vývoji a nedávnou zkušeností z vedení frontend vývoje.
+Seniorní frontendová práce s rostoucí odpovědností za produkt i tým.
+Senior Frontend Engineer
+Karel Kutchan — Senior frontend engineer s více než deseti lety zkušeností ve webovém vývoji.
+Vybrané frontendové role v obráceném chronologickém pořadí.
+Senior frontend engineer s více než deseti lety komerční praxe.
+```
+
+### Replacement (verbatim)
+
+#### English
+
+```text
+Senior Software Engineer
+Prague-based Senior Software Engineer with more than ten years in web development and recent lead frontend experience.
+Senior software engineering with increasing product and team ownership.
+Senior Software Engineer
+Karel Kutchan — Senior Software Engineer with more than ten years in web development.
+Selected roles in reverse chronological order.
+Senior Software Engineer with more than ten years of commercial experience.
+```
+
+#### Czech
+
+```text
+Senior software engineer
+Senior software engineer z Prahy s více než deseti lety zkušeností ve webovém vývoji a nedávnou zkušeností z vedení frontend vývoje.
+Seniorní inženýrská práce s rostoucí odpovědností za produkt i tým.
+Senior Software Engineer
+Karel Kutchan — Senior software engineer s více než deseti lety zkušeností ve webovém vývoji.
+Vybrané role v obráceném chronologickém pořadí.
+Senior software engineer s více než deseti lety komerční praxe.
+```
+
+### Rationale
+
+- Problem being solved: the CV page and PDF masthead named the old positioning; the timeline intro said "frontend roles" although the current engagement is full-stack.
+- Why this wording was selected: role label aligned with BD-29; facts in the profile paragraph (BlueGhost until April 2026, Seeder since February 2026) untouched.
+- Alternatives rejected: leaving the CV at the old label (the PDF would contradict the site that links it).
+- Meaning intentionally preserved: all dates, employers, stack.
+- Meaning intentionally changed: role noun.
+
+### Fact And Claim Controls
+
+- Claims affected: role label.
+- Evidence source and checked date: `src/content/curriculum-vitae.ts`, 2026-11-06.
+- Time-sensitive review: none.
+- NDA or client review: none.
+- Owner approval: Karel Kutchan, 2026-11-06.
+
+### Impact Review
+
+- Internationalization: the Czech download eyebrow keeps the English title, as before.
+- Accessibility: download accessible name unchanged ("Download CV — Karel Kutchan").
+- Responsive layout: CV page not geometry-pinned for copy; PDF regenerated (3 pages each, as before).
+- SEO and metadata: CV description updated; `i18n-seo.spec.ts` updated.
+- CMS or data boundary: none (CV-06).
+- Privacy and confidentiality: none.
+
+### Verification
+
+- Automated tests: `curriculum-vitae-i18n.test.ts` (`roleLabel`, download wording rule), `cv-pdf-layout.test.ts`; Playwright `curriculum-vitae.spec.ts`, `i18n-seo.spec.ts`.
+- Routes and locales: `/curriculum-vitae`, `/cs/curriculum-vitae`, both PDFs.
+- Themes, viewports, and interaction states: CV page in both themes; PDF opened and page count checked.
+- Manual content review: owner.
+- Result: Vitest green; PDFs regenerated 2026-11-06.
+- Residual risk: Figma CV frames lag the shipped role text.
+
+### Lifecycle
+
+- Supersedes: none.
+- Reverted by: none.
+- Related entries: COPY-20261106-001, -008.
+- Notes: `docs/decisions/curriculum-vitae.md` CV-03 amended in the same change.

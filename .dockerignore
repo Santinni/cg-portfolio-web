@@ -47,3 +47,6 @@ compose*.yaml
 docker-compose*
 *.md
 README*
+
+# Claude desktop app worktrees and settings are not part of the image.
+.claude/

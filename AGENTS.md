@@ -118,7 +118,8 @@ For CV implementation:
 
 - Do not hand-author a CV PDF and do not reintroduce a Google Docs workflow. A CV that is not generated cannot stay in sync with the site.
 - The generator defines no colours of its own and fails the build if `--action-primary` stops resolving to `#0A6E80`. `src/__tests__/unit/cv-pdf-tokens.test.ts` guards that binding — treat a failure there as a brand defect, not a flaky test.
-- Company-specific variants are overlays that may reorder and re-emphasise but never restate hard facts. They live outside this repository, in `new_job/cv/variants/`.
+- Company-specific variants are overlays that may reorder, re-emphasise and rewrite prose (summary, highlights, skills rows, per-role bullets) but never restate hard facts (titles, companies, periods, stack, education). The allowed keys are `slug`, `company`, `position`, `locale`, `headline`, `taglineKeywords`, `summary`, `highlightsTitle`, `highlights`, `skills`, `emphasizeSkills`, `experienceCopy`, `earlierExperienceCopy`, `emphasizeExperience` and `hideExperience`; the build refuses any other key, a variant that restates facts, or a variant whose `locale` differs from `--locale`. `src/__tests__/unit/cv-pdf-variant.test.ts` holds the contract and `tools/cv-pdf/README.md` describes each key. Variants live outside this repository, in `new_job/cv/variants/<slug>.<locale>.json`; cover letters in `new_job/cv/letters/`, rendered by `tools/cv-pdf/build-letter.mjs` with the same identity layer.
+- A company-specific application may be published under `public/<slug>/` with `--out`. That folder is served once deployed; the stable CV paths (CV-03) are never repointed at a variant.
 - Changing how the CV looks means changing tokens, or the print type scale in `tools/cv-pdf/cv-print.css`. Do not put values in the template.
 
 ## Available Ways To Work With Figma

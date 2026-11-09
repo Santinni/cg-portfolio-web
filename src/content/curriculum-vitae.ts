@@ -29,7 +29,7 @@ export const curriculumVitaeExperience = [
 		company: 'BlueGhost',
 		roleId: 'leadFrontendEngineer',
 		start: '2025-03',
-		end: null,
+		end: '2026-04',
 	},
 	{
 		id: 'kontentAi',
@@ -224,7 +224,8 @@ export const curriculumVitae = {
 		minimumYearsInWeb: 10,
 		experienceQualifier: 'moreThan',
 	},
-	currentExperienceId: 'blueghost',
+	// BlueGhost ended 2026-04; the Národní knihovna contract is the one ongoing engagement (CV-10).
+	currentExperienceId: 'nkp',
 	experience: curriculumVitaeExperience,
 	earlierExperience: curriculumVitaeEarlierExperience,
 	highlights: curriculumVitaeHighlights,

@@ -1,5 +1,5 @@
 {
-  "name": "Karel Kutchan — Senior Frontend Engineer",
+  "name": "Karel Kutchan — Senior Software Engineer",
   "short_name": "Codeguy",
   "lang": "en",
   "icons": [
@@ -39,5 +39,5 @@
   "display": "standalone",
   "orientation": "portrait",
   "scope": "/",
-  "description": "Karel Kutchan is a senior frontend engineer based in Prague, building resilient frontend systems with React, TypeScript and Next.js."
+  "description": "Karel Kutchan is a senior software engineer based in Prague, building resilient web systems with React, TypeScript and Next.js, from data model to interface."
 }

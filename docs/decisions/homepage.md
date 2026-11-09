@@ -26,6 +26,30 @@ instances in every Home frame: desktop `286:3365`, tablet `286:3376`, mobile `28
 320 px in Figma; in a browser it also wraps at 390 px, which the parity specs accept as
 line-box growth.
 
+**Amended 2026-11-06 (BD-29).** The `<role>` segment reads `SENIOR SOFTWARE ENGINEER` in
+both locales (previously `SENIOR FRONTEND ENGINEER` / `SENIOR FRONTEND VÝVOJÁŘ`), the same
+24 characters, so the row keeps its line count at every width. The row's shape and the single
+`h1` are unchanged; the headline itself changed one word under BD-29. Measured in the pinned
+container on 2026-11-06: the hero keeps its height at 1440, 768, 430 and 390 px; at 320 px
+"I build software systems…" needs a fifth 36 px line in the 280 px column where Figma `8:140`
+shows four lines of "…frontend systems…", so the hero is 40.32 px taller there and the
+320 px constants in `home-hero-anchoring.spec.ts` and `home-integrated-parity.spec.ts` carry
+that line.
+
+**Figma reconciled, 2026-11-06.** The `Hero` set (`286:3362`) carries the BD-29 copy in all
+six variants: eyebrow, headline, both paragraphs and the availability line, with
+`home.hero.paragraphs` in the `Width=1440` variants and `home.hero.paragraphsCompact` in
+`Width=768` and `Width=390`, the split the hero styles make at 1024 px. The Home instances
+inherit it with no text override, so the component and the catalogs agree again.
+`Experience snapshot` (`286:2511`), `Final CTA` (`286:2998`) and `Site Footer` (`272:59`)
+carry the new title and description, heading and role. At 768 px the availability line now
+takes two lines in Figma as well (hero 624 → 648 px), which matches the pinned browser
+measurement in `home-hero-anchoring.spec.ts` (648 px, two availability lines) — no delta
+remains there. One Figma-only delta remains, and no node was resized for it: at 320 px Figma
+still sets the headline in four lines, because "I build software" measures 269 px in the
+280 px column, while the pinned browser needs the fifth line, which is consistent with the
+15 px scrollbar gutter the parity audit measures rather than with the copy.
+
 **What would reopen it.** A portrait or brand mark entering the hero, or a change to the
 brand headline (BD entries in `docs/brand/brand-decision-log.md`).
 
@@ -68,7 +92,7 @@ in `booking.md`).
 **Decision.** Below the action row the hero renders one plain paragraph, in both locales,
 naming what Karel is open to:
 
-> Open to senior and lead frontend roles in Prague or
+> Open to senior and lead engineering roles in Prague or
 > remote (EU), employee or contract.
 
 It is set in the body tier (16 px / 24 px) in the secondary text colour, on the paragraphs'
@@ -87,6 +111,14 @@ not where he works today. The same day the employer left every self-description 
 (CV hero intro, the "Lead role" profile card); the CV and Experience timelines still name it
 as a fact of the record, and the PDF CV keeps it in its profile paragraph. A change in the
 role or location reopens the line.
+
+**Amended 2026-11-06 (BD-29).** With the positioning widened from frontend to software
+engineering, the line reads "senior and lead engineering roles" (Czech: „seniorním a lead
+inženýrským rolím“). Nothing else in it changed. It stays one line at 1440 px: 88 English
+characters against the 86 measured on 2026-09-13, inside the ≤ 92 budget derived from that
+measurement. Architecture and analysis are named in the `/contact` lead paragraph
+(`contact.hero.intro`) instead, which no spec measures. The reopen conditions below are
+unchanged.
 
 **What would reopen it.** Karel changing role or location, withdrawing from the market, or
 choosing to show availability as a status element rather than a sentence.
